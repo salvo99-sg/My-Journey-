@@ -104,13 +104,13 @@ let paesi = {
 };
 
 const NAZIONI_CONTINENTE = {
-  EU: ["IT","FR","ES","GR","PT","DE","GB","NL","BE","CH","AT","IE","DK","SE","NO","FI","PL","CZ"],
-  AS: ["JP","TH","CN","IN","VN","KR","ID","MY","PH"],
-  NA: ["US","CA","MX"],
-  SA: ["BR","AR","CL","PE","CO"],
-  AF: ["MA","EG","ZA","KE","TN"],
-  OC: ["AU","NZ"],
-};
+  EU: ["AL","AD","AT","BY","BE","BA","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IE","IT","XK","LV","LI","LT","LU","MT","MD","MC","ME","NL","MK","NO","PL","PT","RO","RU","SM","RS","SK","SI","ES","SE","CH","UA","GB","VA"],
+  AS: ["AF","AM","AZ","BH","BD","BT","BN","KH","CN","GE","IN","ID","IR","IQ","IL","JP","JO","KZ","KW","KG","LA","LB","MY","MV","MN","MM","NP","KP","OM","PK","PS","PH","QA","SA","SG","KR","LK","SY","TW","TJ","TH","TL","TR","TM","AE","UZ","VN","YE"],
+  AF: ["DZ","AO","BJ","BW","BF","BI","CV","CM","CF","TD","KM","CG","CD","CI","DJ","EG","GQ","ER","SZ","ET","GA","GM","GH","GN","GW","KE","LS","LR","LY","MG","MW","ML","MR","MU","MA","MZ","NA","NE","NG","RW","ST","SN","SC","SL","SO","ZA","SS","SD","TZ","TG","TN","UG","ZM","ZW"],
+  NA: ["AG","BS","BB","BZ","CA","CR","CU","DM","DO","SV","GD","GT","HT","HN","JM","MX","NI","PA","KN","LC","VC","TT","US"],
+  SA: ["AR","BO","BR","CL","CO","EC","GY","PY","PE","SR","UY","VE"],
+  OC: ["AU","FJ","KI","MH","FM","NR","NZ","PW","PG","WS","SB","TO","TV","VU"],
+}
 const continenteDi = {};
 for (const c in NAZIONI_CONTINENTE) for (const n of NAZIONI_CONTINENTE[c]) continenteDi[n] = c;
 const TOTALE_PAESI_MONDO = 195;
@@ -183,18 +183,31 @@ map.on("style.load", () => {
     paint: { "line-color": "rgba(15,27,46,.8)", "line-width": 0.7 },
   }, primaLabel);
 
-  // ETICHETTE A FASCE DI ZOOM: regolo la visibilità delle etichette dello stile dark
-  // nazioni: compaiono da zoom ~2.3; capitali (settlement) da zoom ~3.8
+  // ETICHETTE: pulizia totale. Spengo TUTTO (mari, oceani, città secondarie,
+  // quartieri...) e tengo solo 3 fasce nette dalle etichette dello stile:
+  //   - nazioni (zoom medio)
+  //   - capitali (zoom ravvicinato) — SOLO capitali, non città secondarie
+  //   - regioni/stati (zoom forte)
+  // I continenti li gestiamo a parte con le nostre etichette HTML.
   for (const l of map.getStyle().layers) {
     if (l.type !== "symbol") continue;
     const id = l.id.toLowerCase();
     try {
-      if (id.includes("country")) {
-        // nomi nazioni: visibili in fascia media
-        map.setLayerZoomRange(l.id, 2.3, 22);
-      } else if (id.includes("settlement") || id.includes("place") || id.includes("city") || id.includes("capital")) {
-        // nomi città/capitali: solo da vicino
-        map.setLayerZoomRange(l.id, 3.8, 22);
+      if (id.includes("country") && id.includes("label")) {
+        // NAZIONI: fascia media (2.2 - 4.2)
+        map.setLayerZoomRange(l.id, 2.2, 4.4);
+        map.setLayoutProperty(l.id, "visibility", "visible");
+      } else if (id.includes("state") && id.includes("label")) {
+        // REGIONI/STATI: fascia forte (5+)
+        map.setLayerZoomRange(l.id, 5, 22);
+        map.setLayoutProperty(l.id, "visibility", "visible");
+      } else if ((id.includes("settlement-major") || id.includes("capital")) && id.includes("label")) {
+        // CAPITALI / città maggiori: fascia ravvicinata (4 - 6)
+        map.setLayerZoomRange(l.id, 4, 6.5);
+        map.setLayoutProperty(l.id, "visibility", "visible");
+      } else {
+        // TUTTO il resto (mari, oceani, città minori, quartieri, POI...) SPENTO
+        map.setLayoutProperty(l.id, "visibility", "none");
       }
     } catch (e) {}
   }
@@ -219,7 +232,7 @@ function costruisciEtichetteContinenti() {
 }
 function aggiornaEtichetteContinenti() {
   const z = map.getZoom();
-  const visibili = z < 2.6;  // i continenti si vedono solo da lontano
+  const visibili = z < 2.2;  // i continenti solo da molto lontano, poi lasciano spazio alle nazioni
   labelEls.forEach(o => {
     const p = map.project([o.lng, o.lat]);
     o.el.style.left = p.x + "px";
