@@ -799,7 +799,7 @@ PERSONE | <numero>
 (una riga per tappa)
 GIORNO <n> | <titolo> | <tipo> | <ora> | <luogo>
   Esempi:
-  GIORNO 1 | Visita alla Torre | attivita | 10:00 | Torre di Pisa, Pisa, Italia
+  GIORNO 1 | Visita alla torre pendente | attivita | 10:00 | Leaning Tower of Pisa, Pisa, Italia
   GIORNO 1 | Cena in un ristorante vista mare | ristorante | 20:00 | —
   (nel secondo, "ristorante vista mare" è una descrizione generica: campo luogo a trattino —, niente punto sulla mappa. La descrizione sta nel titolo.)
 - tipo = una parola tra: attivita / ristorante / hotel / volo / treno (se incerto: attivita)
@@ -807,6 +807,7 @@ GIORNO <n> | <titolo> | <tipo> | <ora> | <luogo>
 - luogo: QUESTA È UNA REGOLA MOLTO IMPORTANTE, leggila con attenzione. Il campo luogo va compilato SOLO con il NOME PROPRIO di un posto realmente esistente e cercabile su una mappa: un monumento ("Torre di Pisa"), un museo ("Museo del Louvre"), una spiaggia con nome proprio ("Spiaggia di Elafonissi"), un locale con il suo nome vero ("Ristorante Da Mario"), un indirizzo. In quel caso scrivi: nome proprio + città + nazione (es. "Torre di Pisa, Pisa, Italia").
   ATTENZIONE alle DESCRIZIONI GENERICHE: frasi come "ristorante vista mare", "una trattoria tipica", "un bar sulla spiaggia", "ristorante in centro", "dove fare colazione" NON sono nomi propri: sono descrizioni di un tipo di posto, e una mappa NON può trovarle (rischia di piazzarle nella città sbagliata). In questi casi lascia SEMPRE il campo luogo con un trattino —. Puoi mettere la descrizione nel TITOLO della tappa (es. "Cena in un ristorante vista mare"), ma il campo luogo resta —.
   Regola pratica: se il nome che scriveresti potrebbe esistere identico in tante città diverse, allora è generico → trattino —. Solo un nome che identifica UN posto preciso al mondo va geolocalizzato. Nel dubbio, sempre il trattino. NON mettere mai coordinate: le trova la app dal nome.
+  LINGUA DEL NOME (importantissimo per la mappa): nel campo luogo scrivi il nome proprio del posto nella LINGUA LOCALE o in INGLESE, NON tradotto in italiano. Le mappe riconoscono i nomi ufficiali, non le traduzioni. Esempi: scrivi "Statue of Liberty, New York, USA" e NON "Statua della Libertà"; scrivi "Eiffel Tower, Paris, France" o "Tour Eiffel" e NON "Torre Eiffel"; scrivi "Sagrada Familia, Barcelona, Spain" e NON "Sacra Famiglia"; scrivi "Big Ben, London, UK" (che è già il nome originale). La città e la nazione invece scrivile pure come preferisci. Questa regola vale SOLO per il campo luogo: nel TITOLO della tappa puoi tranquillamente usare l'italiano (es. titolo "Visita alla Statua della Libertà", luogo "Statue of Liberty, New York, USA").
 
 ### IMPERDIBILI ###
 (solo i bonus accettati dal viaggiatore, una riga ciascuno)
@@ -1610,7 +1611,10 @@ async function cercaLuoghi(testo, limite, assoluto) {
       const nodi = nodiRotta();
       if (nodi.length) prossimita = "&proximity=" + nodi[0].coord.join(",");
     }
-    const r = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(testo)}.json?access_token=${MAPBOX_TOKEN}&limit=${limite || 5}${prossimita}`);
+    // chiedo più risultati (così posso scegliere il migliore) e do priorità ai
+    // punti d'interesse famosi (poi) prima degli indirizzi generici.
+    const quanti = assoluto ? 5 : (limite || 5);
+    const r = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(testo)}.json?access_token=${MAPBOX_TOKEN}&limit=${quanti}&types=poi,place,locality,address,region${prossimita}`);
     const j = await r.json();
     return j.features || [];
   } catch { return []; }
@@ -2476,17 +2480,37 @@ function risultatoAffidabile(query, feature) {
   return riferimenti.some((rif) => trovato.includes(rif));
 }
 
+// Tra i risultati di Mapbox sceglie il migliore: quello che è davvero coerente
+// con la città cercata. Se cerco "Central Park, New York" e tra i risultati c'è
+// sia un Central Park a Yonkers sia quello di Manhattan, prendo quello che cade
+// nella città giusta, non il primo che capita.
+function miglioreRisultato(query, features) {
+  if (!features || !features.length) return null;
+  // tengo solo i risultati coerenti con la città cercata
+  const validi = features.filter((f) => risultatoAffidabile(query, f));
+  if (!validi.length) return null; // nessuno coerente: meglio nessun punto che uno sbagliato
+  // tra i validi, do un punteggio: i punti d'interesse veri (poi) valgono di più,
+  // e premio chi ha relevance alto. Così il monumento famoso batte il doppione minore.
+  const punteggio = (f) => {
+    let p = (typeof f.relevance === "number" ? f.relevance : 0.5);
+    const tipi = (f.place_type || []).join(",");
+    if (tipi.includes("poi")) p += 0.5;          // è un punto d'interesse vero
+    if (tipi.includes("address")) p -= 0.1;       // un indirizzo generico vale meno
+    return p;
+  };
+  validi.sort((a, b) => punteggio(b) - punteggio(a));
+  return validi[0];
+}
+
 async function geocodificaViaggio(v) {
   if (!tokenValido()) return;
   let cambiato = false;
   for (const g of v.giorni) for (const t of g.tappe) {
     if (t.luogo && !t.coord) {
       // assoluto=true: ogni luogo cercato in modo indipendente, niente cascata di errori
-      const r = await cercaLuoghi(t.luogo, 1, true);
-      // metto il punto SOLO se il risultato è davvero coerente con il luogo cercato
-      if (r && r[0] && risultatoAffidabile(t.luogo, r[0])) {
-        t.coord = r[0].center; cambiato = true;
-      }
+      const r = await cercaLuoghi(t.luogo, 5, true);
+      const scelto = miglioreRisultato(t.luogo, r);
+      if (scelto) { t.coord = scelto.center; cambiato = true; }
     }
   }
   if (cambiato) { salva(); if (corrente && corrente.id === v.id) renderMappa(); }
