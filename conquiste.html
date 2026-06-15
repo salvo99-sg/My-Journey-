@@ -3,239 +3,246 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-<title>Mappa delle conquiste — prototipo</title>
+<title>Le mie conquiste — prototipo premium</title>
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet" />
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; background: #0a1228; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; overflow: hidden; }
+  html, body { height: 100%; background: #ececec; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; overflow: hidden; }
+  #mappa { position: absolute; inset: 0; background: #ececec; }
 
-  #mappa { position: absolute; inset: 0; }
+  /* nasconde il logo/attribuzione per un look più pulito (nel prodotto vero si gestisce diversamente) */
+  .mapboxgl-ctrl-logo, .mapboxgl-ctrl-attrib { opacity: 0.25; }
 
-  /* Intestazione con titolo e contatori */
   #testa { position: absolute; top: 0; left: 0; right: 0; z-index: 5;
-    padding: calc(14px + env(safe-area-inset-top, 0px)) 16px 16px;
-    background: linear-gradient(to bottom, rgba(10,18,40,.92) 0%, rgba(10,18,40,.7) 70%, rgba(10,18,40,0) 100%);
+    padding: calc(16px + env(safe-area-inset-top, 0px)) 18px 18px;
+    background: linear-gradient(to bottom, rgba(236,236,236,.96), rgba(236,236,236,0));
     pointer-events: none; }
-  #titolo { color: #fff; font-size: 20px; font-weight: 800; letter-spacing: .3px; display: flex; align-items: center; gap: 8px; }
-  #sottotitolo { color: #9db2d8; font-size: 13px; margin-top: 3px; }
+  #titolo { color: #2a2a2a; font-size: 21px; font-weight: 800; letter-spacing: .2px; }
+  #sottotitolo { color: #8a8a8a; font-size: 13px; margin-top: 2px; }
 
-  /* Pannello contatori in basso */
-  #contatori { position: absolute; left: 12px; right: 12px; bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-    z-index: 5; background: rgba(16,26,48,.92); backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 14px 10px;
-    display: flex; justify-content: space-around; box-shadow: 0 8px 30px rgba(0,0,0,.4); }
-  .conta { text-align: center; flex: 1; }
-  .conta .num { color: #fff; font-size: 24px; font-weight: 800; line-height: 1; }
-  .conta .et { color: #8aa0c8; font-size: 11px; margin-top: 5px; text-transform: uppercase; letter-spacing: .5px; }
-  .conta + .conta { border-left: 1px solid rgba(255,255,255,.08); }
+  #legenda { position: absolute; top: calc(78px + env(safe-area-inset-top, 0px)); right: 14px; z-index: 5;
+    background: rgba(255,255,255,.9); border-radius: 12px; padding: 10px 12px; font-size: 11px; color: #555;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+  .voce-leg { display: flex; align-items: center; gap: 7px; margin: 4px 0; }
+  .pallino { width: 13px; height: 13px; border-radius: 3px; flex: none; }
 
-  /* Barra percentuale dentro il pannello */
-  #barraMondo { position: absolute; left: 12px; right: 12px; bottom: calc(108px + env(safe-area-inset-bottom, 0px));
-    z-index: 5; }
-  #barraSfondo { height: 8px; background: rgba(255,255,255,.1); border-radius: 99px; overflow: hidden; }
+  #pannello { position: absolute; left: 12px; right: 12px; bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    z-index: 5; background: rgba(255,255,255,.96); backdrop-filter: blur(8px);
+    border-radius: 18px; padding: 16px 12px; box-shadow: 0 6px 26px rgba(0,0,0,.14); }
+  #barraSfondo { height: 9px; background: #e0e0e0; border-radius: 99px; overflow: hidden; margin-bottom: 4px; }
   #barraPieno { height: 100%; width: 0%; border-radius: 99px;
-    background: linear-gradient(90deg, #E9A03B, #E4572E); transition: width 1.2s cubic-bezier(.2,.8,.2,1); }
-  #barraTesto { color: #9db2d8; font-size: 11px; margin-top: 6px; text-align: center; }
+    background: linear-gradient(90deg, #E8A33D, #D2691E); transition: width 1.3s cubic-bezier(.2,.8,.2,1); }
+  #barraTesto { color: #999; font-size: 11px; text-align: center; margin-bottom: 14px; }
+  #contatori { display: flex; justify-content: space-around; }
+  .conta { text-align: center; flex: 1; }
+  .conta .num { color: #2a2a2a; font-size: 25px; font-weight: 800; line-height: 1; }
+  .conta .et { color: #999; font-size: 10.5px; margin-top: 5px; text-transform: uppercase; letter-spacing: .5px; }
+  .conta + .conta { border-left: 1px solid #ececec; }
 
-  /* Legenda degli stati (in alto a destra) */
-  #legenda { position: absolute; top: calc(74px + env(safe-area-inset-top, 0px)); right: 12px; z-index: 5;
-    background: rgba(16,26,48,.85); border-radius: 12px; padding: 9px 11px; font-size: 11px; color: #c9d6ef; }
-  .voce-leg { display: flex; align-items: center; gap: 7px; margin: 3px 0; }
-  .pallino { width: 12px; height: 12px; border-radius: 3px; }
-
-  /* Pannello "tocca un paese" che appare in basso quando selezioni */
-  #info { position: absolute; left: 12px; right: 12px; bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-    z-index: 6; background: rgba(16,26,48,.96); backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 16px;
-    transform: translateY(150%); transition: transform .35s cubic-bezier(.2,.8,.2,1);
-    box-shadow: 0 8px 30px rgba(0,0,0,.5); }
+  #info { position: absolute; left: 12px; right: 12px; bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    z-index: 6; background: #fff; border-radius: 18px; padding: 18px 16px;
+    transform: translateY(160%); transition: transform .35s cubic-bezier(.2,.8,.2,1);
+    box-shadow: 0 8px 30px rgba(0,0,0,.2); }
   #info.su { transform: translateY(0); }
-  #infoNome { color: #fff; font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+  #infoNome { color: #2a2a2a; font-size: 19px; font-weight: 800; margin-bottom: 3px; display: flex; align-items: center; gap: 8px; }
+  #infoStato { color: #999; font-size: 13px; margin-bottom: 14px; }
   #infoAzioni { display: flex; gap: 8px; }
-  #infoAzioni button { flex: 1; border: none; border-radius: 11px; padding: 12px; font-size: 14px; font-weight: 600; }
-  #btnVisitato { background: #E4572E; color: #fff; }
-  #btnNonVisitato { background: rgba(255,255,255,.1); color: #fff; }
-  #infoChiudi { position: absolute; top: 12px; right: 14px; background: none; border: none; color: #7e92b8; font-size: 18px; }
+  #infoAzioni button { flex: 1; border: none; border-radius: 12px; padding: 13px; font-size: 14px; font-weight: 700; }
+  #btnVisitato { background: #D2691E; color: #fff; }
+  #btnRimuovi { background: #f0f0f0; color: #555; }
+  #infoChiudi { position: absolute; top: 14px; right: 16px; background: none; border: none; color: #bbb; font-size: 18px; }
 </style>
 </head>
 <body>
 <div id="mappa"></div>
 
 <div id="testa">
-  <div id="titolo">🌍 Le mie conquiste</div>
-  <div id="sottotitolo">Il mondo che hai esplorato</div>
+  <div id="titolo">Le mie conquiste</div>
+  <div id="sottotitolo">Il mondo che hai sbloccato</div>
 </div>
 
 <div id="legenda">
-  <div class="voce-leg"><span class="pallino" style="background:#E4572E"></span> Visitato</div>
-  <div class="voce-leg"><span class="pallino" style="background:#E9A03B"></span> In viaggio ora</div>
-  <div class="voce-leg"><span class="pallino" style="background:rgba(255,255,255,.15)"></span> Da scoprire</div>
+  <div class="voce-leg"><span class="pallino" style="background:#D2691E"></span> Visitato</div>
+  <div class="voce-leg"><span class="pallino" style="background:#E8A33D"></span> In viaggio ora</div>
+  <div class="voce-leg"><span class="pallino" style="background:#b0b0b0"></span> Da scoprire</div>
+  <div class="voce-leg"><span class="pallino" style="background:#3a6ea5"></span> Continente completo</div>
 </div>
 
-<div id="barraMondo">
+<div id="pannello">
   <div id="barraSfondo"><div id="barraPieno"></div></div>
   <div id="barraTesto"></div>
-</div>
-
-<div id="contatori">
-  <div class="conta"><div class="num" id="numPaesi">0</div><div class="et">Paesi</div></div>
-  <div class="conta"><div class="num" id="numContinenti">0</div><div class="et">Continenti</div></div>
-  <div class="conta"><div class="num" id="numPerc">0%</div><div class="et">del mondo</div></div>
+  <div id="contatori">
+    <div class="conta"><div class="num" id="numPaesi">0</div><div class="et">Paesi</div></div>
+    <div class="conta"><div class="num" id="numContinenti">0</div><div class="et">Continenti</div></div>
+    <div class="conta"><div class="num" id="numPerc">0%</div><div class="et">del mondo</div></div>
+  </div>
 </div>
 
 <div id="info">
   <button id="infoChiudi">✕</button>
   <div id="infoNome">—</div>
+  <div id="infoStato">—</div>
   <div id="infoAzioni">
-    <button id="btnVisitato">✓ Segna come visitato</button>
-    <button id="btnNonVisitato">Rimuovi</button>
+    <button id="btnVisitato">✓ Segna visitato</button>
+    <button id="btnRimuovi">Rimuovi</button>
   </div>
 </div>
 
 <script>
 const MAPBOX_TOKEN = "pk.eyJ1IjoieGNvc21veCIsImEiOiJjbXFjd2pzZHYwZjB0MnFyOG03cTA4ZXZzIn0.I8FKfkbsa_1A5bZbz4PUEw";
 
-// === DATI DI ESEMPIO (nel prodotto verranno dai viaggi) ===
-// codici ISO 3166-1 alpha-2 dei paesi. Stato: "visitato" o "incorso".
-const paesiVisitati = {
-  "IT": "visitato",  // Italia
-  "FR": "visitato",  // Francia
-  "ES": "visitato",  // Spagna
-  "GR": "visitato",  // Grecia
-  "PT": "visitato",  // Portogallo
-  "US": "visitato",  // Stati Uniti
-  "JP": "visitato",  // Giappone
-  "TH": "visitato",  // Thailandia
-  "MA": "visitato",  // Marocco
-  "GB": "visitato",  // Regno Unito
-  "DE": "visitato",  // Germania
-  "HR": "incorso",   // Croazia — viaggio in corso ORA (pulsa)
+// === STATO (di esempio; nel prodotto verrà dai viaggi) ===
+let paesi = {
+  IT:"visitato", FR:"visitato", ES:"visitato", GR:"visitato", PT:"visitato",
+  DE:"visitato", GB:"visitato", NL:"visitato", BE:"visitato", CH:"visitato",
+  US:"visitato", JP:"visitato", TH:"visitato",
+  HR:"incorso",
 };
 
-// continenti per ogni paese (per il contatore) — sottoinsieme di esempio
-const continenteDi = {
-  IT:"EU", FR:"EU", ES:"EU", GR:"EU", PT:"EU", GB:"EU", DE:"EU", HR:"EU",
-  US:"NA", JP:"AS", TH:"AS", MA:"AF",
+// continenti -> per il premio "continente completo" servono le nazioni principali
+const NAZIONI_CONTINENTE = {
+  EU: ["IT","FR","ES","GR","PT","DE","GB","NL","BE","CH","AT","IE","DK","SE","NO","FI","PL","CZ"],
+  AS: ["JP","TH","CN","IN","VN","KR","ID","MY","PH"],
+  NA: ["US","CA","MX"],
+  SA: ["BR","AR","CL","PE","CO"],
+  AF: ["MA","EG","ZA","KE","TN"],
+  OC: ["AU","NZ"],
 };
+const continenteDi = {};
+for (const c in NAZIONI_CONTINENTE) for (const n of NAZIONI_CONTINENTE[c]) continenteDi[n] = c;
 const TOTALE_PAESI_MONDO = 195;
+
+// colori
+const COL_VISITATO = "#D2691E";   // terracotta/ambra - il trofeo
+const COL_INCORSO  = "#E8A33D";   // più chiaro/caldo - pulsa
+const COL_SPENTO   = "#b0b0b0";   // grigio scuro - mistero
+const COL_CONTINENTE = "#3a6ea5"; // blu profondo - premio continente completo
+const COL_MARE = "#ececec";
 
 mapboxgl.accessToken = MAPBOX_TOKEN;
 const map = new mapboxgl.Map({
   container: "mappa",
-  style: "mapbox://styles/mapbox/standard",
-  projection: "mercator",     // planisfero disteso
-  center: [10, 30], zoom: 1.4,
-  config: { basemap: { lightPreset: "night", showPlaceLabels: false, showRoadLabels: false, showPointOfInterestLabels: false, showTransitLabels: false } },
+  style: "mapbox://styles/mapbox/light-v11",  // stile chiaro e neutro
+  projection: "mercator",
+  center: [12, 30], zoom: 1.3,
+  minZoom: 1, maxZoom: 4,        // niente zoom dentro città: resta a livello mondo/nazioni
+  renderWorldCopies: true,
 });
 
+// quali continenti sono "completi" (tutte le nazioni principali visitate)
+function continentiCompleti() {
+  const out = [];
+  for (const c in NAZIONI_CONTINENTE) {
+    const tutte = NAZIONI_CONTINENTE[c];
+    const fatte = tutte.filter(n => paesi[n] === "visitato" || paesi[n] === "incorso");
+    if (fatte.length === tutte.length) out.push(c);
+  }
+  return out;
+}
+
+// costruisce l'espressione colore per il fill dei paesi
+function espressioneColore(oIncorso) {
+  const visitati = Object.keys(paesi).filter(k => paesi[k] === "visitato");
+  const incorso  = Object.keys(paesi).filter(k => paesi[k] === "incorso");
+  const completi = continentiCompleti();
+  // nazioni dei continenti completi -> colore premio
+  const nazioniComplete = [];
+  for (const c of completi) nazioniComplete.push(...NAZIONI_CONTINENTE[c]);
+
+  return [
+    "case",
+    // continente completo: il colore premio vince su tutto
+    ["in", ["get", "iso_3166_1"], ["literal", nazioniComplete]], COL_CONTINENTE,
+    // in corso (con opacità che pulserà a parte)
+    ["in", ["get", "iso_3166_1"], ["literal", incorso]], COL_INCORSO,
+    // visitato
+    ["in", ["get", "iso_3166_1"], ["literal", visitati]], COL_VISITATO,
+    // mai visto
+    COL_SPENTO
+  ];
+}
+
 map.on("style.load", () => {
-  // sorgente ufficiale Mapbox coi confini di tutti i paesi
-  map.addSource("paesi", {
-    type: "vector",
-    url: "mapbox://mapbox.country-boundaries-v1",
-  });
+  // sfondo e mare grigi
+  if (map.getLayer("background")) map.setPaintProperty("background", "background-color", COL_MARE);
+  if (map.getLayer("water")) map.setPaintProperty("water", "fill-color", COL_MARE);
+  if (map.getLayer("land")) map.setPaintProperty("land", "background-color", COL_MARE);
 
-  // costruisco le espressioni per colorare in base allo stato del paese
-  const elencoVisitati = Object.keys(paesiVisitati).filter(k => paesiVisitati[k] === "visitato");
-  const elencoIncorso  = Object.keys(paesiVisitati).filter(k => paesiVisitati[k] === "incorso");
+  map.addSource("paesi", { type: "vector", url: "mapbox://mapbox.country-boundaries-v1" });
 
-  // colore: arancio acceso se visitato, oro se in corso, quasi trasparente se mai visitato
-  const coloreFill = [
-    "case",
-    ["in", ["get", "iso_3166_1"], ["literal", elencoIncorso]], "#E9A03B",
-    ["in", ["get", "iso_3166_1"], ["literal", elencoVisitati]], "#E4572E",
-    "rgba(255,255,255,0.04)"
-  ];
-  const opacitaFill = [
-    "case",
-    ["in", ["get", "iso_3166_1"], ["literal", elencoIncorso]], 0.75,
-    ["in", ["get", "iso_3166_1"], ["literal", elencoVisitati]], 0.6,
-    0.04
-  ];
-
-  // strato di riempimento dei paesi
+  // riempimento paesi
   map.addLayer({
-    id: "paesi-fill",
-    type: "fill",
-    source: "paesi",
-    "source-layer": "country_boundaries",
-    paint: {
-      "fill-color": coloreFill,
-      "fill-opacity": opacitaFill,
-      "fill-emissive-strength": 1,   // li fa "brillare" nel preset notte
-    },
+    id: "paesi-fill", type: "fill", source: "paesi", "source-layer": "country_boundaries",
+    paint: { "fill-color": espressioneColore(), "fill-opacity": 1 },
   });
-
-  // contorno sottile per i paesi visitati (rende il "tassello" più definito)
+  // bordo nazioni (perimetro pulito)
   map.addLayer({
-    id: "paesi-bordo",
-    type: "line",
-    source: "paesi",
-    "source-layer": "country_boundaries",
-    paint: {
-      "line-color": [
-        "case",
-        ["in", ["get", "iso_3166_1"], ["literal", elencoIncorso]], "#ffd27a",
-        ["in", ["get", "iso_3166_1"], ["literal", elencoVisitati]], "#ff8a5c",
-        "rgba(0,0,0,0)"
-      ],
-      "line-width": 1.2,
-    },
+    id: "paesi-bordo", type: "line", source: "paesi", "source-layer": "country_boundaries",
+    paint: { "line-color": "#ffffff", "line-width": 0.6 },
   });
 
-  avviaPulsazione(elencoIncorso);
+  avviaPulsazione();
   aggiornaContatori();
 });
 
-// === PULSAZIONE dei paesi "in corso" ===
-// faccio oscillare l'opacità del fill dei paesi in corso per dare l'effetto "respiro"
-function avviaPulsazione(elencoIncorso) {
-  if (!elencoIncorso.length) return;
+// pulsazione delle nazioni "in corso" (effetto caricamento/sblocco)
+function avviaPulsazione() {
   let t = 0;
   setInterval(() => {
-    t += 0.08;
-    const o = 0.55 + Math.sin(t) * 0.22; // oscilla tra ~0.33 e ~0.77
     if (!map.getLayer("paesi-fill")) return;
+    const incorso = Object.keys(paesi).filter(k => paesi[k] === "incorso");
+    if (!incorso.length) return;
+    t += 0.09;
+    const o = 0.5 + Math.sin(t) * 0.45; // pulsa marcato
     map.setPaintProperty("paesi-fill", "fill-opacity", [
       "case",
-      ["in", ["get", "iso_3166_1"], ["literal", elencoIncorso]], o,
-      ["in", ["get", "iso_3166_1"], ["literal", Object.keys(paesiVisitati).filter(k=>paesiVisitati[k]==="visitato")]], 0.6,
-      0.04
+      ["in", ["get", "iso_3166_1"], ["literal", incorso]], o,
+      1
     ]);
-  }, 60);
+  }, 55);
 }
 
-// === CONTATORI ===
+function ricolora() {
+  if (map.getLayer("paesi-fill")) map.setPaintProperty("paesi-fill", "fill-color", espressioneColore());
+  aggiornaContatori();
+}
+
 function aggiornaContatori() {
-  const tot = Object.keys(paesiVisitati).length;
-  const continenti = new Set(Object.keys(paesiVisitati).map(k => continenteDi[k]).filter(Boolean));
+  const visitatiTot = Object.keys(paesi).filter(k => paesi[k] === "visitato" || paesi[k] === "incorso");
+  const tot = visitatiTot.length;
+  const continenti = new Set(visitatiTot.map(k => continenteDi[k]).filter(Boolean));
   const perc = Math.round((tot / TOTALE_PAESI_MONDO) * 100);
   document.getElementById("numPaesi").textContent = tot;
   document.getElementById("numContinenti").textContent = continenti.size;
   document.getElementById("numPerc").textContent = perc + "%";
-  document.getElementById("barraTesto").textContent = `${tot} paesi su ${TOTALE_PAESI_MONDO} nel mondo`;
+  document.getElementById("barraTesto").textContent = `${tot} paesi su ${TOTALE_PAESI_MONDO} · ${continentiCompleti().length} continenti completati`;
   setTimeout(() => { document.getElementById("barraPieno").style.width = Math.max(2, perc) + "%"; }, 300);
 }
 
-// === TOCCO SU UN PAESE (per segnarlo a mano) ===
-let paeseSelez = null;
+// tocco su un paese
+let selez = null;
 map.on("click", "paesi-fill", (e) => {
   const f = e.features[0];
-  const nome = f.properties.name_it || f.properties.name_en || f.properties.name || "Paese";
   const iso = f.properties.iso_3166_1;
-  paeseSelez = iso;
-  document.getElementById("infoNome").textContent = nome;
+  const nome = f.properties.name_it || f.properties.name_en || f.properties.name || "Paese";
+  selez = iso;
+  const stato = paesi[iso];
+  const elNome = document.getElementById("infoNome");
+  const elStato = document.getElementById("infoStato");
+  if (stato === "visitato") { elNome.textContent = "🏆 " + nome; elStato.textContent = "Conquistato"; }
+  else if (stato === "incorso") { elNome.textContent = "⏳ " + nome; elStato.textContent = "Lo stai visitando ora"; }
+  else { elNome.textContent = "❓ " + nome; elStato.textContent = "Ancora da scoprire"; }
+  document.getElementById("btnVisitato").textContent = stato === "visitato" ? "✓ Già visitato" : "✓ Segna visitato";
   document.getElementById("info").classList.add("su");
 });
-document.getElementById("infoChiudi").addEventListener("click", () => {
-  document.getElementById("info").classList.remove("su");
-});
-// (nel prototipo i bottoni mostrano solo come sarebbe: la logica vera la mettiamo nell'app)
+document.getElementById("infoChiudi").addEventListener("click", () => document.getElementById("info").classList.remove("su"));
 document.getElementById("btnVisitato").addEventListener("click", () => {
+  if (selez) { paesi[selez] = "visitato"; ricolora(); }
   document.getElementById("info").classList.remove("su");
 });
-document.getElementById("btnNonVisitato").addEventListener("click", () => {
+document.getElementById("btnRimuovi").addEventListener("click", () => {
+  if (selez) { delete paesi[selez]; ricolora(); }
   document.getElementById("info").classList.remove("su");
 });
 </script>
