@@ -3,59 +3,61 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-<title>Le mie conquiste — prototipo premium</title>
+<title>Le mie conquiste</title>
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet" />
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; background: #ececec; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; overflow: hidden; }
-  #mappa { position: absolute; inset: 0; background: #ececec; }
+  html, body { height: 100%; background: #0f1b2e; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; overflow: hidden; }
+  #mappa { position: absolute; inset: 0; background: #0f1b2e; }
+  .mapboxgl-ctrl-logo, .mapboxgl-ctrl-attrib { opacity: 0.2; }
 
-  /* nasconde il logo/attribuzione per un look più pulito (nel prodotto vero si gestisce diversamente) */
-  .mapboxgl-ctrl-logo, .mapboxgl-ctrl-attrib { opacity: 0.25; }
+  /* etichette continenti (sovrapposte da noi) */
+  .cont-label { position: absolute; transform: translate(-50%,-50%); z-index: 4; pointer-events: none;
+    color: rgba(232,184,75,.45); font-weight: 800; letter-spacing: 3px; font-size: 14px;
+    text-transform: uppercase; white-space: nowrap; transition: opacity .4s; text-shadow: 0 2px 8px rgba(0,0,0,.5); }
 
   #testa { position: absolute; top: 0; left: 0; right: 0; z-index: 5;
-    padding: calc(16px + env(safe-area-inset-top, 0px)) 18px 18px;
-    background: linear-gradient(to bottom, rgba(236,236,236,.96), rgba(236,236,236,0));
-    pointer-events: none; }
-  #titolo { color: #2a2a2a; font-size: 21px; font-weight: 800; letter-spacing: .2px; }
-  #sottotitolo { color: #8a8a8a; font-size: 13px; margin-top: 2px; }
+    padding: calc(16px + env(safe-area-inset-top, 0px)) 18px 22px;
+    background: linear-gradient(to bottom, rgba(15,27,46,.95), rgba(15,27,46,0)); pointer-events: none; }
+  #titolo { color: #fff; font-size: 21px; font-weight: 800; }
+  #sottotitolo { color: #7e8ba5; font-size: 13px; margin-top: 2px; }
 
-  #legenda { position: absolute; top: calc(78px + env(safe-area-inset-top, 0px)); right: 14px; z-index: 5;
-    background: rgba(255,255,255,.9); border-radius: 12px; padding: 10px 12px; font-size: 11px; color: #555;
-    box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+  #legenda { position: absolute; top: calc(80px + env(safe-area-inset-top, 0px)); right: 14px; z-index: 5;
+    background: rgba(20,32,54,.8); border-radius: 12px; padding: 10px 12px; font-size: 11px; color: #b8c4da;
+    backdrop-filter: blur(6px); }
   .voce-leg { display: flex; align-items: center; gap: 7px; margin: 4px 0; }
   .pallino { width: 13px; height: 13px; border-radius: 3px; flex: none; }
 
   #pannello { position: absolute; left: 12px; right: 12px; bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-    z-index: 5; background: rgba(255,255,255,.96); backdrop-filter: blur(8px);
-    border-radius: 18px; padding: 16px 12px; box-shadow: 0 6px 26px rgba(0,0,0,.14); }
-  #barraSfondo { height: 9px; background: #e0e0e0; border-radius: 99px; overflow: hidden; margin-bottom: 4px; }
+    z-index: 5; background: rgba(20,32,54,.94); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,.06); border-radius: 18px; padding: 16px 12px; box-shadow: 0 6px 26px rgba(0,0,0,.4); }
+  #barraSfondo { height: 9px; background: rgba(255,255,255,.08); border-radius: 99px; overflow: hidden; margin-bottom: 5px; }
   #barraPieno { height: 100%; width: 0%; border-radius: 99px;
-    background: linear-gradient(90deg, #E8A33D, #D2691E); transition: width 1.3s cubic-bezier(.2,.8,.2,1); }
-  #barraTesto { color: #999; font-size: 11px; text-align: center; margin-bottom: 14px; }
+    background: linear-gradient(90deg, #E8B84B, #e63946); transition: width 1.3s cubic-bezier(.2,.8,.2,1); }
+  #barraTesto { color: #7e8ba5; font-size: 11px; text-align: center; margin-bottom: 14px; }
   #contatori { display: flex; justify-content: space-around; }
   .conta { text-align: center; flex: 1; }
-  .conta .num { color: #2a2a2a; font-size: 25px; font-weight: 800; line-height: 1; }
-  .conta .et { color: #999; font-size: 10.5px; margin-top: 5px; text-transform: uppercase; letter-spacing: .5px; }
-  .conta + .conta { border-left: 1px solid #ececec; }
+  .conta .num { color: #fff; font-size: 25px; font-weight: 800; line-height: 1; }
+  .conta .et { color: #7e8ba5; font-size: 10.5px; margin-top: 5px; text-transform: uppercase; letter-spacing: .5px; }
+  .conta + .conta { border-left: 1px solid rgba(255,255,255,.07); }
 
   #info { position: absolute; left: 12px; right: 12px; bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-    z-index: 6; background: #fff; border-radius: 18px; padding: 18px 16px;
-    transform: translateY(160%); transition: transform .35s cubic-bezier(.2,.8,.2,1);
-    box-shadow: 0 8px 30px rgba(0,0,0,.2); }
+    z-index: 6; background: #14233a; border: 1px solid rgba(255,255,255,.08); border-radius: 18px; padding: 18px 16px;
+    transform: translateY(170%); transition: transform .35s cubic-bezier(.2,.8,.2,1); box-shadow: 0 8px 30px rgba(0,0,0,.5); }
   #info.su { transform: translateY(0); }
-  #infoNome { color: #2a2a2a; font-size: 19px; font-weight: 800; margin-bottom: 3px; display: flex; align-items: center; gap: 8px; }
-  #infoStato { color: #999; font-size: 13px; margin-bottom: 14px; }
+  #infoNome { color: #fff; font-size: 19px; font-weight: 800; margin-bottom: 3px; }
+  #infoStato { color: #7e8ba5; font-size: 13px; margin-bottom: 14px; }
   #infoAzioni { display: flex; gap: 8px; }
   #infoAzioni button { flex: 1; border: none; border-radius: 12px; padding: 13px; font-size: 14px; font-weight: 700; }
-  #btnVisitato { background: #D2691E; color: #fff; }
-  #btnRimuovi { background: #f0f0f0; color: #555; }
-  #infoChiudi { position: absolute; top: 14px; right: 16px; background: none; border: none; color: #bbb; font-size: 18px; }
+  #btnVisitato { background: #E8B84B; color: #3a2c00; }
+  #btnRimuovi { background: rgba(255,255,255,.08); color: #c8d2e6; }
+  #infoChiudi { position: absolute; top: 14px; right: 16px; background: none; border: none; color: #5a6a86; font-size: 18px; }
 </style>
 </head>
 <body>
 <div id="mappa"></div>
+<div id="continenti-labels"></div>
 
 <div id="testa">
   <div id="titolo">Le mie conquiste</div>
@@ -63,10 +65,10 @@
 </div>
 
 <div id="legenda">
-  <div class="voce-leg"><span class="pallino" style="background:#D2691E"></span> Visitato</div>
-  <div class="voce-leg"><span class="pallino" style="background:#E8A33D"></span> In viaggio ora</div>
-  <div class="voce-leg"><span class="pallino" style="background:#b0b0b0"></span> Da scoprire</div>
-  <div class="voce-leg"><span class="pallino" style="background:#3a6ea5"></span> Continente completo</div>
+  <div class="voce-leg"><span class="pallino" style="background:#E8B84B"></span> Visitato</div>
+  <div class="voce-leg"><span class="pallino" style="background:#f5d889"></span> In viaggio ora</div>
+  <div class="voce-leg"><span class="pallino" style="background:#2a3a52"></span> Da scoprire</div>
+  <div class="voce-leg"><span class="pallino" style="background:#e63946"></span> Continente completo</div>
 </div>
 
 <div id="pannello">
@@ -92,15 +94,15 @@
 <script>
 const MAPBOX_TOKEN = "pk.eyJ1IjoieGNvc21veCIsImEiOiJjbXFjd2pzZHYwZjB0MnFyOG03cTA4ZXZzIn0.I8FKfkbsa_1A5bZbz4PUEw";
 
-// === STATO (di esempio; nel prodotto verrà dai viaggi) ===
 let paesi = {
   IT:"visitato", FR:"visitato", ES:"visitato", GR:"visitato", PT:"visitato",
   DE:"visitato", GB:"visitato", NL:"visitato", BE:"visitato", CH:"visitato",
+  AT:"visitato", IE:"visitato", DK:"visitato", SE:"visitato", NO:"visitato",
+  FI:"visitato", PL:"visitato", CZ:"visitato",
   US:"visitato", JP:"visitato", TH:"visitato",
   HR:"incorso",
 };
 
-// continenti -> per il premio "continente completo" servono le nazioni principali
 const NAZIONI_CONTINENTE = {
   EU: ["IT","FR","ES","GR","PT","DE","GB","NL","BE","CH","AT","IE","DK","SE","NO","FI","PL","CZ"],
   AS: ["JP","TH","CN","IN","VN","KR","ID","MY","PH"],
@@ -113,24 +115,28 @@ const continenteDi = {};
 for (const c in NAZIONI_CONTINENTE) for (const n of NAZIONI_CONTINENTE[c]) continenteDi[n] = c;
 const TOTALE_PAESI_MONDO = 195;
 
-// colori
-const COL_VISITATO = "#D2691E";   // terracotta/ambra - il trofeo
-const COL_INCORSO  = "#E8A33D";   // più chiaro/caldo - pulsa
-const COL_SPENTO   = "#b0b0b0";   // grigio scuro - mistero
-const COL_CONTINENTE = "#3a6ea5"; // blu profondo - premio continente completo
-const COL_MARE = "#ececec";
+// posizioni delle etichette dei continenti [lng, lat, nome]
+const ETICHETTE_CONTINENTI = [
+  [-100, 45, "Nord America"],
+  [-60, -15, "Sud America"],
+  [16, 50, "Europa"],
+  [20, 5, "Africa"],
+  [90, 45, "Asia"],
+  [134, -25, "Oceania"],
+];
+
+const COL_VISITATO = "#E8B84B", COL_INCORSO = "#f5d889", COL_SPENTO = "#2a3a52", COL_RUBINO = "#e63946", COL_MARE = "#0f1b2e";
 
 mapboxgl.accessToken = MAPBOX_TOKEN;
 const map = new mapboxgl.Map({
   container: "mappa",
-  style: "mapbox://styles/mapbox/light-v11",  // stile chiaro e neutro
+  style: "mapbox://styles/mapbox/dark-v11",
   projection: "mercator",
-  center: [12, 30], zoom: 1.3,
-  minZoom: 1, maxZoom: 4,        // niente zoom dentro città: resta a livello mondo/nazioni
+  center: [12, 30], zoom: 1.4,
+  minZoom: 1, maxZoom: 6,
   renderWorldCopies: true,
 });
 
-// quali continenti sono "completi" (tutte le nazioni principali visitate)
 function continentiCompleti() {
   const out = [];
   for (const c in NAZIONI_CONTINENTE) {
@@ -141,52 +147,89 @@ function continentiCompleti() {
   return out;
 }
 
-// costruisce l'espressione colore per il fill dei paesi
-function espressioneColore(oIncorso) {
+function espressioneColore() {
   const visitati = Object.keys(paesi).filter(k => paesi[k] === "visitato");
   const incorso  = Object.keys(paesi).filter(k => paesi[k] === "incorso");
   const completi = continentiCompleti();
-  // nazioni dei continenti completi -> colore premio
   const nazioniComplete = [];
   for (const c of completi) nazioniComplete.push(...NAZIONI_CONTINENTE[c]);
-
   return [
     "case",
-    // continente completo: il colore premio vince su tutto
-    ["in", ["get", "iso_3166_1"], ["literal", nazioniComplete]], COL_CONTINENTE,
-    // in corso (con opacità che pulserà a parte)
+    ["in", ["get", "iso_3166_1"], ["literal", nazioniComplete]], COL_RUBINO,
     ["in", ["get", "iso_3166_1"], ["literal", incorso]], COL_INCORSO,
-    // visitato
     ["in", ["get", "iso_3166_1"], ["literal", visitati]], COL_VISITATO,
-    // mai visto
     COL_SPENTO
   ];
 }
 
 map.on("style.load", () => {
-  // sfondo e mare grigi
+  // sfondo/mare blu notte
   if (map.getLayer("background")) map.setPaintProperty("background", "background-color", COL_MARE);
   if (map.getLayer("water")) map.setPaintProperty("water", "fill-color", COL_MARE);
-  if (map.getLayer("land")) map.setPaintProperty("land", "background-color", COL_MARE);
 
   map.addSource("paesi", { type: "vector", url: "mapbox://mapbox.country-boundaries-v1" });
 
-  // riempimento paesi
+  // riempimento paesi - lo inserisco SOTTO le etichette di nazioni/capitali dello stile
+  let primaLabel;
+  for (const l of map.getStyle().layers) {
+    if (l.type === "symbol") { primaLabel = l.id; break; }
+  }
   map.addLayer({
     id: "paesi-fill", type: "fill", source: "paesi", "source-layer": "country_boundaries",
-    paint: { "fill-color": espressioneColore(), "fill-opacity": 1 },
-  });
-  // bordo nazioni (perimetro pulito)
+    paint: { "fill-color": espressioneColore(), "fill-opacity": 0.92 },
+  }, primaLabel);
   map.addLayer({
     id: "paesi-bordo", type: "line", source: "paesi", "source-layer": "country_boundaries",
-    paint: { "line-color": "#ffffff", "line-width": 0.6 },
-  });
+    paint: { "line-color": "rgba(15,27,46,.8)", "line-width": 0.7 },
+  }, primaLabel);
 
+  // ETICHETTE A FASCE DI ZOOM: regolo la visibilità delle etichette dello stile dark
+  // nazioni: compaiono da zoom ~2.3; capitali (settlement) da zoom ~3.8
+  for (const l of map.getStyle().layers) {
+    if (l.type !== "symbol") continue;
+    const id = l.id.toLowerCase();
+    try {
+      if (id.includes("country")) {
+        // nomi nazioni: visibili in fascia media
+        map.setLayerZoomRange(l.id, 2.3, 22);
+      } else if (id.includes("settlement") || id.includes("place") || id.includes("city") || id.includes("capital")) {
+        // nomi città/capitali: solo da vicino
+        map.setLayerZoomRange(l.id, 3.8, 22);
+      }
+    } catch (e) {}
+  }
+
+  costruisciEtichetteContinenti();
   avviaPulsazione();
   aggiornaContatori();
+  aggiornaEtichetteContinenti();
 });
 
-// pulsazione delle nazioni "in corso" (effetto caricamento/sblocco)
+// === etichette continenti (HTML sovrapposto, visibili solo da lontano) ===
+const labelEls = [];
+function costruisciEtichetteContinenti() {
+  const cont = document.getElementById("continenti-labels");
+  ETICHETTE_CONTINENTI.forEach(([lng, lat, nome]) => {
+    const el = document.createElement("div");
+    el.className = "cont-label";
+    el.textContent = nome;
+    cont.appendChild(el);
+    labelEls.push({ el, lng, lat });
+  });
+}
+function aggiornaEtichetteContinenti() {
+  const z = map.getZoom();
+  const visibili = z < 2.6;  // i continenti si vedono solo da lontano
+  labelEls.forEach(o => {
+    const p = map.project([o.lng, o.lat]);
+    o.el.style.left = p.x + "px";
+    o.el.style.top = p.y + "px";
+    o.el.style.opacity = visibili ? "1" : "0";
+  });
+}
+map.on("move", aggiornaEtichetteContinenti);
+map.on("zoom", aggiornaEtichetteContinenti);
+
 function avviaPulsazione() {
   let t = 0;
   setInterval(() => {
@@ -194,11 +237,9 @@ function avviaPulsazione() {
     const incorso = Object.keys(paesi).filter(k => paesi[k] === "incorso");
     if (!incorso.length) return;
     t += 0.09;
-    const o = 0.5 + Math.sin(t) * 0.45; // pulsa marcato
+    const o = 0.5 + Math.sin(t) * 0.42;
     map.setPaintProperty("paesi-fill", "fill-opacity", [
-      "case",
-      ["in", ["get", "iso_3166_1"], ["literal", incorso]], o,
-      1
+      "case", ["in", ["get", "iso_3166_1"], ["literal", incorso]], o, 0.92
     ]);
   }, 55);
 }
@@ -209,9 +250,9 @@ function ricolora() {
 }
 
 function aggiornaContatori() {
-  const visitatiTot = Object.keys(paesi).filter(k => paesi[k] === "visitato" || paesi[k] === "incorso");
-  const tot = visitatiTot.length;
-  const continenti = new Set(visitatiTot.map(k => continenteDi[k]).filter(Boolean));
+  const tutti = Object.keys(paesi).filter(k => paesi[k] === "visitato" || paesi[k] === "incorso");
+  const tot = tutti.length;
+  const continenti = new Set(tutti.map(k => continenteDi[k]).filter(Boolean));
   const perc = Math.round((tot / TOTALE_PAESI_MONDO) * 100);
   document.getElementById("numPaesi").textContent = tot;
   document.getElementById("numContinenti").textContent = continenti.size;
@@ -220,7 +261,6 @@ function aggiornaContatori() {
   setTimeout(() => { document.getElementById("barraPieno").style.width = Math.max(2, perc) + "%"; }, 300);
 }
 
-// tocco su un paese
 let selez = null;
 map.on("click", "paesi-fill", (e) => {
   const f = e.features[0];
