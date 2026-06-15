@@ -23,24 +23,23 @@
   #titolo { color: #fff; font-size: 21px; font-weight: 800; }
   #sottotitolo { color: #7e8ba5; font-size: 13px; margin-top: 2px; }
 
-  #legenda { position: absolute; top: calc(80px + env(safe-area-inset-top, 0px)); right: 14px; z-index: 5;
-    background: rgba(20,32,54,.8); border-radius: 12px; padding: 10px 12px; font-size: 11px; color: #b8c4da;
-    backdrop-filter: blur(6px); }
-  .voce-leg { display: flex; align-items: center; gap: 7px; margin: 4px 0; }
-  .pallino { width: 13px; height: 13px; border-radius: 3px; flex: none; }
 
-  #pannello { position: absolute; left: 12px; right: 12px; bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-    z-index: 5; background: rgba(20,32,54,.94); backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,.06); border-radius: 18px; padding: 16px 12px; box-shadow: 0 6px 26px rgba(0,0,0,.4); }
-  #barraSfondo { height: 9px; background: rgba(255,255,255,.08); border-radius: 99px; overflow: hidden; margin-bottom: 5px; }
+
+  /* striscia contatori minimal sotto il titolo, non invade la mappa */
+  #pannello { position: absolute; left: 18px; right: 18px; top: calc(70px + env(safe-area-inset-top, 0px));
+    z-index: 5; pointer-events: none; }
+  #contatori { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .conta { display: flex; align-items: baseline; gap: 5px; }
+  .conta .num { color: #fff; font-size: 18px; font-weight: 800; line-height: 1;
+    text-shadow: 0 1px 6px rgba(0,0,0,.6); }
+  .conta .et { color: #aeb9cf; font-size: 11px; font-weight: 500; text-shadow: 0 1px 4px rgba(0,0,0,.6); }
+  .conta .et::before { content: "·"; margin-right: 6px; color: rgba(255,255,255,.3); }
+  .conta:first-child .et::before { content: ""; margin: 0; }
+  #barraSfondo { height: 4px; background: rgba(255,255,255,.12); border-radius: 99px; overflow: hidden;
+    max-width: 220px; }
   #barraPieno { height: 100%; width: 0%; border-radius: 99px;
     background: linear-gradient(90deg, #E8B84B, #e63946); transition: width 1.3s cubic-bezier(.2,.8,.2,1); }
-  #barraTesto { color: #7e8ba5; font-size: 11px; text-align: center; margin-bottom: 14px; }
-  #contatori { display: flex; justify-content: space-around; }
-  .conta { text-align: center; flex: 1; }
-  .conta .num { color: #fff; font-size: 25px; font-weight: 800; line-height: 1; }
-  .conta .et { color: #7e8ba5; font-size: 10.5px; margin-top: 5px; text-transform: uppercase; letter-spacing: .5px; }
-  .conta + .conta { border-left: 1px solid rgba(255,255,255,.07); }
+  #barraTesto { display: none; }
 
   #info { position: absolute; left: 12px; right: 12px; bottom: calc(14px + env(safe-area-inset-bottom, 0px));
     z-index: 6; background: #14233a; border: 1px solid rgba(255,255,255,.08); border-radius: 18px; padding: 18px 16px;
@@ -60,25 +59,20 @@
 <div id="continenti-labels"></div>
 
 <div id="testa">
-  <div id="titolo">Le mie conquiste</div>
-  <div id="sottotitolo">Il mondo che hai sbloccato</div>
+  <div id="titolo">I miei passi nel mondo</div>
+  <div id="sottotitolo">Ogni passo, una storia</div>
 </div>
 
-<div id="legenda">
-  <div class="voce-leg"><span class="pallino" style="background:#E8B84B"></span> Visitato</div>
-  <div class="voce-leg"><span class="pallino" style="background:#f5d889"></span> In viaggio ora</div>
-  <div class="voce-leg"><span class="pallino" style="background:#2a3a52"></span> Da scoprire</div>
-  <div class="voce-leg"><span class="pallino" style="background:#e63946"></span> Continente completo</div>
-</div>
+
 
 <div id="pannello">
+  <div id="contatori">
+    <div class="conta"><span class="num" id="numPaesi">0</span><span class="et">paesi</span></div>
+    <div class="conta"><span class="num" id="numContinenti">0</span><span class="et">continenti</span></div>
+    <div class="conta"><span class="num" id="numPerc">0%</span><span class="et">del mondo</span></div>
+  </div>
   <div id="barraSfondo"><div id="barraPieno"></div></div>
   <div id="barraTesto"></div>
-  <div id="contatori">
-    <div class="conta"><div class="num" id="numPaesi">0</div><div class="et">Paesi</div></div>
-    <div class="conta"><div class="num" id="numContinenti">0</div><div class="et">Continenti</div></div>
-    <div class="conta"><div class="num" id="numPerc">0%</div><div class="et">del mondo</div></div>
-  </div>
 </div>
 
 <div id="info">
@@ -113,7 +107,9 @@ const NAZIONI_CONTINENTE = {
 }
 const continenteDi = {};
 for (const c in NAZIONI_CONTINENTE) for (const n of NAZIONI_CONTINENTE[c]) continenteDi[n] = c;
-const TOTALE_PAESI_MONDO = 195;
+// il totale del mondo = somma di tutte le nazioni nelle liste dei continenti
+// (così il 100% è sempre coerente: include anche territori come Taiwan, Kosovo)
+const TOTALE_PAESI_MONDO = Object.values(NAZIONI_CONTINENTE).reduce((s, arr) => s + arr.length, 0);
 
 // posizioni delle etichette dei continenti [lng, lat, nome]
 const ETICHETTE_CONTINENTI = [
@@ -135,7 +131,19 @@ const map = new mapboxgl.Map({
   center: [12, 30], zoom: 1.4,
   minZoom: 1, maxZoom: 6,
   renderWorldCopies: true,
+  pitchWithRotate: false,   // niente inclinazione
+  dragRotate: false,        // niente rotazione col trascinamento
+  bearing: 0, pitch: 0,     // sempre dritta, nord in alto
+  maxPitch: 0, minPitch: 0, // inclinazione bloccata a zero (vista dall'alto fissa)
 });
+// disabilito esplicitamente OGNI gesto di rotazione e inclinazione
+map.dragRotate.disable();
+map.touchZoomRotate.disableRotation();
+map.touchPitch.disable();
+if (map.keyboard && map.keyboard.disableRotation) map.keyboard.disableRotation();
+// guardiano: se per qualsiasi motivo la mappa si inclina o ruota, la raddrizzo subito
+map.on("rotate", () => { if (map.getBearing() !== 0) map.setBearing(0); });
+map.on("pitch", () => { if (map.getPitch() !== 0) map.setPitch(0); });
 
 function continentiCompleti() {
   const out = [];
