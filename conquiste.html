@@ -52,6 +52,11 @@
   #btnVisitato { background: #E8B84B; color: #3a2c00; }
   #btnRimuovi { background: rgba(255,255,255,.08); color: #c8d2e6; }
   #infoChiudi { position: absolute; top: 14px; right: 16px; background: none; border: none; color: #5a6a86; font-size: 18px; }
+  #btnTest, #btnTestOff { position: absolute; z-index: 7; bottom: calc(20px + env(safe-area-inset-bottom,0px));
+    border: none; border-radius: 11px; padding: 11px 14px; font-size: 13px; font-weight: 700;
+    box-shadow: 0 4px 14px rgba(0,0,0,.4); }
+  #btnTest { left: 14px; background: #e63946; color: #fff; }
+  #btnTestOff { left: 190px; background: rgba(255,255,255,.14); color: #c8d2e6; }
 </style>
 </head>
 <body>
@@ -74,6 +79,10 @@
   <div id="barraSfondo"><div id="barraPieno"></div></div>
   <div id="barraTesto"></div>
 </div>
+
+<!-- PULSANTE DI TEST: solo nel prototipo, sparirà nell'app vera -->
+<button id="btnTest">🧪 Accendi tutto (test)</button>
+<button id="btnTestOff">Spegni tutto</button>
 
 <div id="info">
   <button id="infoChiudi">✕</button>
@@ -221,7 +230,8 @@ map.on("style.load", () => {
   }
 
   costruisciEtichetteContinenti();
-  avviaPulsazione();
+  applicaStile();          // rendering iniziale coerente
+  avviaPulsazione();       // avvia il respiro dei paesi in corso (usa applicaStile)
   aggiornaContatori();
   aggiornaEtichetteContinenti();
 });
@@ -254,19 +264,44 @@ map.on("zoom", aggiornaEtichetteContinenti);
 function avviaPulsazione() {
   let t = 0;
   setInterval(() => {
-    if (!map.getLayer("paesi-fill")) return;
-    const incorso = Object.keys(paesi).filter(k => paesi[k] === "incorso");
-    if (!incorso.length) return;
     t += 0.09;
-    const o = 0.5 + Math.sin(t) * 0.42;
-    map.setPaintProperty("paesi-fill", "fill-opacity", [
-      "case", ["in", ["get", "iso_3166_1"], ["literal", incorso]], o, 0.92
-    ]);
+    pulseOpacity = 0.5 + Math.sin(t) * 0.42; // opacità del "respiro" per i paesi in corso
+    applicaStile();                          // un solo punto che aggiorna tutto
   }, 55);
 }
 
+// === UNICA fonte di verità per il rendering del layer paesi ===
+// imposta colore E opacità insieme, sempre coerenti. Niente più conflitti.
+let pulseOpacity = 0.92;
+function applicaStile() {
+  if (!map.getLayer("paesi-fill")) return;
+
+  const visitati = Object.keys(paesi).filter(k => paesi[k] === "visitato");
+  const incorso  = Object.keys(paesi).filter(k => paesi[k] === "incorso");
+  const completi = continentiCompleti();
+  const nazioniComplete = [];
+  for (const c of completi) nazioniComplete.push(...NAZIONI_CONTINENTE[c]);
+
+  // COLORE: continente completo (rubino) > in corso (oro chiaro) > visitato (oro) > spento
+  map.setPaintProperty("paesi-fill", "fill-color", [
+    "case",
+    ["in", ["get", "iso_3166_1"], ["literal", nazioniComplete]], COL_RUBINO,
+    ["in", ["get", "iso_3166_1"], ["literal", incorso]], COL_INCORSO,
+    ["in", ["get", "iso_3166_1"], ["literal", visitati]], COL_VISITATO,
+    COL_SPENTO
+  ]);
+
+  // OPACITÀ: solo i paesi in corso "respirano"; tutti gli altri pieni e stabili
+  map.setPaintProperty("paesi-fill", "fill-opacity", [
+    "case",
+    ["in", ["get", "iso_3166_1"], ["literal", incorso]], pulseOpacity,
+    0.92
+  ]);
+}
+
+// ricolora ora chiama semplicemente l'unica funzione di rendering
 function ricolora() {
-  if (map.getLayer("paesi-fill")) map.setPaintProperty("paesi-fill", "fill-color", espressioneColore());
+  applicaStile();
   aggiornaContatori();
 }
 
@@ -305,6 +340,17 @@ document.getElementById("btnVisitato").addEventListener("click", () => {
 document.getElementById("btnRimuovi").addEventListener("click", () => {
   if (selez) { delete paesi[selez]; ricolora(); }
   document.getElementById("info").classList.remove("su");
+});
+
+// === PULSANTI DI TEST (solo prototipo) ===
+document.getElementById("btnTest").addEventListener("click", () => {
+  // accende TUTTI i paesi di tutte le liste -> deve dare 197, 100%, tutti i continenti rubino
+  for (const c in NAZIONI_CONTINENTE) for (const n of NAZIONI_CONTINENTE[c]) paesi[n] = "visitato";
+  ricolora();
+});
+document.getElementById("btnTestOff").addEventListener("click", () => {
+  for (const k in paesi) delete paesi[k];
+  ricolora();
 });
 </script>
 </body>
