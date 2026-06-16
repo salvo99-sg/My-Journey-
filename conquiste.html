@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-<title>Le mie conquiste</title>
+<title>I miei passi nel mondo</title>
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet" />
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
 <style>
@@ -12,7 +12,7 @@
   #mappa { position: absolute; inset: 0; background: #0f1b2e; }
   .mapboxgl-ctrl-logo, .mapboxgl-ctrl-attrib { opacity: 0.2; }
 
-  /* etichette continenti (sovrapposte da noi) */
+  /* etichette continenti (solo decorative, da lontano) */
   .cont-label { position: absolute; transform: translate(-50%,-50%); z-index: 4; pointer-events: none;
     color: rgba(232,184,75,.45); font-weight: 800; letter-spacing: 3px; font-size: 14px;
     text-transform: uppercase; white-space: nowrap; transition: opacity .4s; text-shadow: 0 2px 8px rgba(0,0,0,.5); }
@@ -23,23 +23,18 @@
   #titolo { color: #fff; font-size: 21px; font-weight: 800; }
   #sottotitolo { color: #7e8ba5; font-size: 13px; margin-top: 2px; }
 
-
-
-  /* striscia contatori minimal sotto il titolo, non invade la mappa */
+  /* striscia contatori minimal sotto il titolo */
   #pannello { position: absolute; left: 18px; right: 18px; top: calc(70px + env(safe-area-inset-top, 0px));
     z-index: 5; pointer-events: none; }
   #contatori { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
   .conta { display: flex; align-items: baseline; gap: 5px; }
-  .conta .num { color: #fff; font-size: 18px; font-weight: 800; line-height: 1;
-    text-shadow: 0 1px 6px rgba(0,0,0,.6); }
+  .conta .num { color: #fff; font-size: 18px; font-weight: 800; line-height: 1; text-shadow: 0 1px 6px rgba(0,0,0,.6); }
   .conta .et { color: #aeb9cf; font-size: 11px; font-weight: 500; text-shadow: 0 1px 4px rgba(0,0,0,.6); }
   .conta .et::before { content: "·"; margin-right: 6px; color: rgba(255,255,255,.3); }
   .conta:first-child .et::before { content: ""; margin: 0; }
-  #barraSfondo { height: 4px; background: rgba(255,255,255,.12); border-radius: 99px; overflow: hidden;
-    max-width: 220px; }
+  #barraSfondo { height: 4px; background: rgba(255,255,255,.12); border-radius: 99px; overflow: hidden; max-width: 220px; }
   #barraPieno { height: 100%; width: 0%; border-radius: 99px;
-    background: linear-gradient(90deg, #E8B84B, #e63946); transition: width 1.3s cubic-bezier(.2,.8,.2,1); }
-  #barraTesto { display: none; }
+    background: linear-gradient(90deg, #E8B84B, #f0c869); transition: width 1.1s cubic-bezier(.2,.8,.2,1); }
 
   #info { position: absolute; left: 12px; right: 12px; bottom: calc(14px + env(safe-area-inset-bottom, 0px));
     z-index: 6; background: #14233a; border: 1px solid rgba(255,255,255,.08); border-radius: 18px; padding: 18px 16px;
@@ -52,9 +47,9 @@
   #btnVisitato { background: #E8B84B; color: #3a2c00; }
   #btnRimuovi { background: rgba(255,255,255,.08); color: #c8d2e6; }
   #infoChiudi { position: absolute; top: 14px; right: 16px; background: none; border: none; color: #5a6a86; font-size: 18px; }
+
   #btnTest, #btnTestOff { position: absolute; z-index: 7; bottom: calc(20px + env(safe-area-inset-bottom,0px));
-    border: none; border-radius: 11px; padding: 11px 14px; font-size: 13px; font-weight: 700;
-    box-shadow: 0 4px 14px rgba(0,0,0,.4); }
+    border: none; border-radius: 11px; padding: 11px 14px; font-size: 13px; font-weight: 700; box-shadow: 0 4px 14px rgba(0,0,0,.4); }
   #btnTest { left: 14px; background: #e63946; color: #fff; }
   #btnTestOff { left: 190px; background: rgba(255,255,255,.14); color: #c8d2e6; }
 </style>
@@ -68,19 +63,15 @@
   <div id="sottotitolo">Ogni passo, una storia</div>
 </div>
 
-
-
 <div id="pannello">
   <div id="contatori">
     <div class="conta"><span class="num" id="numPaesi">0</span><span class="et">paesi</span></div>
-    <div class="conta"><span class="num" id="numContinenti">0</span><span class="et">continenti</span></div>
     <div class="conta"><span class="num" id="numPerc">0%</span><span class="et">del mondo</span></div>
   </div>
   <div id="barraSfondo"><div id="barraPieno"></div></div>
-  <div id="barraTesto"></div>
 </div>
 
-<!-- PULSANTE DI TEST: solo nel prototipo, sparirà nell'app vera -->
+<!-- PULSANTI DI TEST: solo nel prototipo -->
 <button id="btnTest">🧪 Accendi tutto (test)</button>
 <button id="btnTestOff">Spegni tutto</button>
 
@@ -97,30 +88,34 @@
 <script>
 const MAPBOX_TOKEN = "pk.eyJ1IjoieGNvc21veCIsImEiOiJjbXFjd2pzZHYwZjB0MnFyOG03cTA4ZXZzIn0.I8FKfkbsa_1A5bZbz4PUEw";
 
-let paesi = {
-  IT:"visitato", FR:"visitato", ES:"visitato", GR:"visitato", PT:"visitato",
-  DE:"visitato", GB:"visitato", NL:"visitato", BE:"visitato", CH:"visitato",
-  AT:"visitato", IE:"visitato", DK:"visitato", SE:"visitato", NO:"visitato",
-  FI:"visitato", PL:"visitato", CZ:"visitato",
-  US:"visitato", JP:"visitato", TH:"visitato",
-  HR:"incorso",
-};
+// === UNICO STATO: i paesi visitati ===
+let visitati = new Set([
+  "IT","FR","ES","GR","PT","DE","GB","NL","BE","CH",
+  "AT","IE","DK","SE","NO","FI","PL","CZ","HR",
+  "US","JP","TH",
+]);
 
-const NAZIONI_CONTINENTE = {
-  EU: ["AL","AD","AT","BY","BE","BA","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IE","IT","XK","LV","LI","LT","LU","MT","MD","MC","ME","NL","MK","NO","PL","PT","RO","RU","SM","RS","SK","SI","ES","SE","CH","UA","GB","VA"],
-  AS: ["AF","AM","AZ","BH","BD","BT","BN","KH","CN","GE","IN","ID","IR","IQ","IL","JP","JO","KZ","KW","KG","LA","LB","MY","MV","MN","MM","NP","KP","OM","PK","PS","PH","QA","SA","SG","KR","LK","SY","TW","TJ","TH","TL","TR","TM","AE","UZ","VN","YE"],
-  AF: ["DZ","AO","BJ","BW","BF","BI","CV","CM","CF","TD","KM","CG","CD","CI","DJ","EG","GQ","ER","SZ","ET","GA","GM","GH","GN","GW","KE","LS","LR","LY","MG","MW","ML","MR","MU","MA","MZ","NA","NE","NG","RW","ST","SN","SC","SL","SO","ZA","SS","SD","TZ","TG","TN","UG","ZM","ZW"],
-  NA: ["AG","BS","BB","BZ","CA","CR","CU","DM","DO","SV","GD","GT","HT","HN","JM","MX","NI","PA","KN","LC","VC","TT","US"],
-  SA: ["AR","BO","BR","CL","CO","EC","GY","PY","PE","SR","UY","VE"],
-  OC: ["AU","FJ","KI","MH","FM","NR","NZ","PW","PG","WS","SB","TO","TV","VU"],
-}
-const continenteDi = {};
-for (const c in NAZIONI_CONTINENTE) for (const n of NAZIONI_CONTINENTE[c]) continenteDi[n] = c;
-// il totale del mondo = somma di tutte le nazioni nelle liste dei continenti
-// (così il 100% è sempre coerente: include anche territori come Taiwan, Kosovo)
-const TOTALE_PAESI_MONDO = Object.values(NAZIONI_CONTINENTE).reduce((s, arr) => s + arr.length, 0);
+// Elenco dei paesi del mondo, usato SOLO per:
+//  - il pulsante di test "Accendi tutto"
+//  - il denominatore della percentuale
+// (niente più logica di "continente completato": era la fonte dei bug)
+const TUTTI_I_PAESI = [
+  // Europa
+  "AL","AD","AT","BY","BE","BA","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IE","IT","XK","LV","LI","LT","LU","MT","MD","MC","ME","NL","MK","NO","PL","PT","RO","RU","SM","RS","SK","SI","ES","SE","CH","UA","GB","VA",
+  // Asia
+  "AF","AM","AZ","BH","BD","BT","BN","KH","CN","GE","IN","ID","IR","IQ","IL","JP","JO","KZ","KW","KG","LA","LB","MY","MV","MN","MM","NP","KP","OM","PK","PS","PH","QA","SA","SG","KR","LK","SY","TW","TJ","TH","TL","TR","TM","AE","UZ","VN","YE",
+  // Africa
+  "DZ","AO","BJ","BW","BF","BI","CV","CM","CF","TD","KM","CG","CD","CI","DJ","EG","GQ","ER","SZ","ET","GA","GM","GH","GN","GW","KE","LS","LR","LY","MG","MW","ML","MR","MU","MA","MZ","NA","NE","NG","RW","ST","SN","SC","SL","SO","ZA","SS","SD","TZ","TG","TN","UG","ZM","ZW",
+  // Nord America
+  "AG","BS","BB","BZ","CA","CR","CU","DM","DO","SV","GD","GT","HT","HN","JM","MX","NI","PA","KN","LC","VC","TT","US",
+  // Sud America
+  "AR","BO","BR","CL","CO","EC","GY","PY","PE","SR","UY","VE",
+  // Oceania
+  "AU","FJ","KI","MH","FM","NR","NZ","PW","PG","WS","SB","TO","TV","VU",
+];
+const TOTALE_PAESI_MONDO = TUTTI_I_PAESI.length; // = 197
 
-// posizioni delle etichette dei continenti [lng, lat, nome]
+// posizioni delle etichette dei continenti [lng, lat, nome] — solo decorative
 const ETICHETTE_CONTINENTI = [
   [-100, 45, "Nord America"],
   [-60, -15, "Sud America"],
@@ -130,7 +125,7 @@ const ETICHETTE_CONTINENTI = [
   [134, -25, "Oceania"],
 ];
 
-const COL_VISITATO = "#E8B84B", COL_INCORSO = "#f5d889", COL_SPENTO = "#2a3a52", COL_RUBINO = "#e63946", COL_MARE = "#0f1b2e";
+const COL_VISITATO = "#E8B84B", COL_SPENTO = "#2a3a52", COL_MARE = "#0f1b2e";
 
 mapboxgl.accessToken = MAPBOX_TOKEN;
 const map = new mapboxgl.Map({
@@ -140,53 +135,22 @@ const map = new mapboxgl.Map({
   center: [12, 30], zoom: 1.4,
   minZoom: 1, maxZoom: 6,
   renderWorldCopies: true,
-  pitchWithRotate: false,   // niente inclinazione
-  dragRotate: false,        // niente rotazione col trascinamento
-  bearing: 0, pitch: 0,     // sempre dritta, nord in alto
-  maxPitch: 0, minPitch: 0, // inclinazione bloccata a zero (vista dall'alto fissa)
+  pitchWithRotate: false, dragRotate: false,
+  bearing: 0, pitch: 0, maxPitch: 0, minPitch: 0,
 });
-// disabilito esplicitamente OGNI gesto di rotazione e inclinazione
 map.dragRotate.disable();
 map.touchZoomRotate.disableRotation();
 map.touchPitch.disable();
 if (map.keyboard && map.keyboard.disableRotation) map.keyboard.disableRotation();
-// guardiano: se per qualsiasi motivo la mappa si inclina o ruota, la raddrizzo subito
 map.on("rotate", () => { if (map.getBearing() !== 0) map.setBearing(0); });
 map.on("pitch", () => { if (map.getPitch() !== 0) map.setPitch(0); });
 
-function continentiCompleti() {
-  const out = [];
-  for (const c in NAZIONI_CONTINENTE) {
-    const tutte = NAZIONI_CONTINENTE[c];
-    const fatte = tutte.filter(n => paesi[n] === "visitato" || paesi[n] === "incorso");
-    if (fatte.length === tutte.length) out.push(c);
-  }
-  return out;
-}
-
-function espressioneColore() {
-  const visitati = Object.keys(paesi).filter(k => paesi[k] === "visitato");
-  const incorso  = Object.keys(paesi).filter(k => paesi[k] === "incorso");
-  const completi = continentiCompleti();
-  const nazioniComplete = [];
-  for (const c of completi) nazioniComplete.push(...NAZIONI_CONTINENTE[c]);
-  return [
-    "case",
-    ["in", ["get", "iso_3166_1"], ["literal", nazioniComplete]], COL_RUBINO,
-    ["in", ["get", "iso_3166_1"], ["literal", incorso]], COL_INCORSO,
-    ["in", ["get", "iso_3166_1"], ["literal", visitati]], COL_VISITATO,
-    COL_SPENTO
-  ];
-}
-
 map.on("style.load", () => {
-  // sfondo/mare blu notte
   if (map.getLayer("background")) map.setPaintProperty("background", "background-color", COL_MARE);
   if (map.getLayer("water")) map.setPaintProperty("water", "fill-color", COL_MARE);
 
   map.addSource("paesi", { type: "vector", url: "mapbox://mapbox.country-boundaries-v1" });
 
-  // riempimento paesi - lo inserisco SOTTO le etichette di nazioni/capitali dello stile
   let primaLabel;
   for (const l of map.getStyle().layers) {
     if (l.type === "symbol") { primaLabel = l.id; break; }
@@ -200,43 +164,46 @@ map.on("style.load", () => {
     paint: { "line-color": "rgba(15,27,46,.8)", "line-width": 0.7 },
   }, primaLabel);
 
-  // ETICHETTE: pulizia totale. Spengo TUTTO (mari, oceani, città secondarie,
-  // quartieri...) e tengo solo 3 fasce nette dalle etichette dello stile:
-  //   - nazioni (zoom medio)
-  //   - capitali (zoom ravvicinato) — SOLO capitali, non città secondarie
-  //   - regioni/stati (zoom forte)
-  // I continenti li gestiamo a parte con le nostre etichette HTML.
+  // pulizia etichette: tengo solo nazioni / capitali / regioni
   for (const l of map.getStyle().layers) {
     if (l.type !== "symbol") continue;
     const id = l.id.toLowerCase();
     try {
       if (id.includes("country") && id.includes("label")) {
-        // NAZIONI: fascia media (2.2 - 4.2)
         map.setLayerZoomRange(l.id, 2.2, 4.4);
         map.setLayoutProperty(l.id, "visibility", "visible");
       } else if (id.includes("state") && id.includes("label")) {
-        // REGIONI/STATI: fascia forte (5+)
         map.setLayerZoomRange(l.id, 5, 22);
         map.setLayoutProperty(l.id, "visibility", "visible");
       } else if ((id.includes("settlement-major") || id.includes("capital")) && id.includes("label")) {
-        // CAPITALI / città maggiori: fascia ravvicinata (4 - 6)
         map.setLayerZoomRange(l.id, 4, 6.5);
         map.setLayoutProperty(l.id, "visibility", "visible");
       } else {
-        // TUTTO il resto (mari, oceani, città minori, quartieri, POI...) SPENTO
         map.setLayoutProperty(l.id, "visibility", "none");
       }
     } catch (e) {}
   }
 
   costruisciEtichetteContinenti();
-  applicaStile();          // rendering iniziale coerente
-  avviaPulsazione();       // avvia il respiro dei paesi in corso (usa applicaStile)
+  applicaStile();
   aggiornaContatori();
   aggiornaEtichetteContinenti();
 });
 
-// === etichette continenti (HTML sovrapposto, visibili solo da lontano) ===
+// === colore del layer: visitato = oro, resto = spento ===
+function espressioneColore() {
+  return [
+    "case",
+    ["in", ["get", "iso_3166_1"], ["literal", Array.from(visitati)]], COL_VISITATO,
+    COL_SPENTO
+  ];
+}
+function applicaStile() {
+  if (!map.getLayer("paesi-fill")) return;
+  map.setPaintProperty("paesi-fill", "fill-color", espressioneColore());
+}
+
+// === etichette continenti decorative ===
 const labelEls = [];
 function costruisciEtichetteContinenti() {
   const cont = document.getElementById("continenti-labels");
@@ -249,8 +216,7 @@ function costruisciEtichetteContinenti() {
   });
 }
 function aggiornaEtichetteContinenti() {
-  const z = map.getZoom();
-  const visibili = z < 2.2;  // i continenti solo da molto lontano, poi lasciano spazio alle nazioni
+  const visibili = map.getZoom() < 2.2;
   labelEls.forEach(o => {
     const p = map.project([o.lng, o.lat]);
     o.el.style.left = p.x + "px";
@@ -261,95 +227,50 @@ function aggiornaEtichetteContinenti() {
 map.on("move", aggiornaEtichetteContinenti);
 map.on("zoom", aggiornaEtichetteContinenti);
 
-function avviaPulsazione() {
-  let t = 0;
-  setInterval(() => {
-    t += 0.09;
-    pulseOpacity = 0.5 + Math.sin(t) * 0.42; // opacità del "respiro" per i paesi in corso
-    applicaStile();                          // un solo punto che aggiorna tutto
-  }, 55);
+// === contatori: paesi + percentuale (mai oltre il 100%) ===
+function aggiornaContatori() {
+  const tot = visitati.size;
+  const perc = Math.min(100, Math.round((tot / TOTALE_PAESI_MONDO) * 100));
+  document.getElementById("numPaesi").textContent = tot;
+  document.getElementById("numPerc").textContent = perc + "%";
+  setTimeout(() => { document.getElementById("barraPieno").style.width = Math.max(2, perc) + "%"; }, 200);
 }
 
-// === UNICA fonte di verità per il rendering del layer paesi ===
-// imposta colore E opacità insieme, sempre coerenti. Niente più conflitti.
-let pulseOpacity = 0.92;
-function applicaStile() {
-  if (!map.getLayer("paesi-fill")) return;
-
-  const visitati = Object.keys(paesi).filter(k => paesi[k] === "visitato");
-  const incorso  = Object.keys(paesi).filter(k => paesi[k] === "incorso");
-  const completi = continentiCompleti();
-  const nazioniComplete = [];
-  for (const c of completi) nazioniComplete.push(...NAZIONI_CONTINENTE[c]);
-
-  // COLORE: continente completo (rubino) > in corso (oro chiaro) > visitato (oro) > spento
-  map.setPaintProperty("paesi-fill", "fill-color", [
-    "case",
-    ["in", ["get", "iso_3166_1"], ["literal", nazioniComplete]], COL_RUBINO,
-    ["in", ["get", "iso_3166_1"], ["literal", incorso]], COL_INCORSO,
-    ["in", ["get", "iso_3166_1"], ["literal", visitati]], COL_VISITATO,
-    COL_SPENTO
-  ]);
-
-  // OPACITÀ: solo i paesi in corso "respirano"; tutti gli altri pieni e stabili
-  map.setPaintProperty("paesi-fill", "fill-opacity", [
-    "case",
-    ["in", ["get", "iso_3166_1"], ["literal", incorso]], pulseOpacity,
-    0.92
-  ]);
-}
-
-// ricolora ora chiama semplicemente l'unica funzione di rendering
 function ricolora() {
   applicaStile();
   aggiornaContatori();
 }
 
-function aggiornaContatori() {
-  const tutti = Object.keys(paesi).filter(k => paesi[k] === "visitato" || paesi[k] === "incorso");
-  const tot = tutti.length;
-  const continenti = new Set(tutti.map(k => continenteDi[k]).filter(Boolean));
-  const perc = Math.round((tot / TOTALE_PAESI_MONDO) * 100);
-  document.getElementById("numPaesi").textContent = tot;
-  document.getElementById("numContinenti").textContent = continenti.size;
-  document.getElementById("numPerc").textContent = perc + "%";
-  document.getElementById("barraTesto").textContent = `${tot} paesi su ${TOTALE_PAESI_MONDO} · ${continentiCompleti().length} continenti completati`;
-  setTimeout(() => { document.getElementById("barraPieno").style.width = Math.max(2, perc) + "%"; }, 300);
-}
-
+// === interazione ===
 let selez = null;
 map.on("click", "paesi-fill", (e) => {
   const f = e.features[0];
   const iso = f.properties.iso_3166_1;
   const nome = f.properties.name_it || f.properties.name_en || f.properties.name || "Paese";
   selez = iso;
-  const stato = paesi[iso];
-  const elNome = document.getElementById("infoNome");
-  const elStato = document.getElementById("infoStato");
-  if (stato === "visitato") { elNome.textContent = "🏆 " + nome; elStato.textContent = "Conquistato"; }
-  else if (stato === "incorso") { elNome.textContent = "⏳ " + nome; elStato.textContent = "Lo stai visitando ora"; }
-  else { elNome.textContent = "❓ " + nome; elStato.textContent = "Ancora da scoprire"; }
-  document.getElementById("btnVisitato").textContent = stato === "visitato" ? "✓ Già visitato" : "✓ Segna visitato";
+  const visitato = visitati.has(iso);
+  document.getElementById("infoNome").textContent = (visitato ? "🏆 " : "📍 ") + nome;
+  document.getElementById("infoStato").textContent = visitato ? "Visitato" : "Ancora da scoprire";
+  document.getElementById("btnVisitato").textContent = visitato ? "✓ Già visitato" : "✓ Segna visitato";
   document.getElementById("info").classList.add("su");
 });
 document.getElementById("infoChiudi").addEventListener("click", () => document.getElementById("info").classList.remove("su"));
 document.getElementById("btnVisitato").addEventListener("click", () => {
-  if (selez) { paesi[selez] = "visitato"; ricolora(); }
+  if (selez) { visitati.add(selez); ricolora(); }
   document.getElementById("info").classList.remove("su");
 });
 document.getElementById("btnRimuovi").addEventListener("click", () => {
-  if (selez) { delete paesi[selez]; ricolora(); }
+  if (selez) { visitati.delete(selez); ricolora(); }
   document.getElementById("info").classList.remove("su");
 });
 
-// === PULSANTI DI TEST (solo prototipo) ===
+// === pulsanti di test ===
 document.getElementById("btnTest").addEventListener("click", () => {
-  // accende TUTTI i paesi di tutte le liste -> deve dare 197, 100%, tutti i continenti rubino
-  for (const c in NAZIONI_CONTINENTE) for (const n of NAZIONI_CONTINENTE[c]) paesi[n] = "visitato";
+  TUTTI_I_PAESI.forEach(n => visitati.add(n)); // deve dare 197 paesi, 100%
   ricolora();
 });
 document.getElementById("btnTestOff").addEventListener("click", () => {
-  for (const k in paesi) delete paesi[k];
+  visitati.clear();
   ricolora();
 });
 </script>
