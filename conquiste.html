@@ -193,7 +193,11 @@ map.on("style.load", () => {
 });
 
 // === colore del layer: visitato = oro, resto = spento ===
+// Quando accendiTutto e attivo (pulsante test), OGNI poligono diventa oro,
+// senza guardare il codice: cosi non puo restare nessuna sbavatura.
+let accendiTutto = false;
 function espressioneColore() {
+  if (accendiTutto) return COL_VISITATO;   // tutto oro, zero eccezioni
   return [
     "case",
     ["in", ["get", "iso_3166_1"], ["literal", Array.from(visitati)]], COL_VISITATO,
@@ -231,7 +235,8 @@ map.on("zoom", aggiornaEtichetteContinenti);
 
 // === contatori: paesi + percentuale (mai oltre il 100%) ===
 function aggiornaContatori() {
-  const tot = visitati.size;
+  // in modalita test "tutto acceso" mostriamo il pieno: tutta la terra = 100%
+  const tot = accendiTutto ? TOTALE_PAESI_MONDO : visitati.size;
   const perc = Math.min(100, Math.round((tot / TOTALE_PAESI_MONDO) * 100));
   document.getElementById("numPaesi").textContent = tot;
   document.getElementById("numPerc").textContent = perc + "%";
@@ -258,20 +263,23 @@ map.on("click", "paesi-fill", (e) => {
 });
 document.getElementById("infoChiudi").addEventListener("click", () => document.getElementById("info").classList.remove("su"));
 document.getElementById("btnVisitato").addEventListener("click", () => {
+  accendiTutto = false;            // si torna allo stato reale
   if (selez) { visitati.add(selez); ricolora(); }
   document.getElementById("info").classList.remove("su");
 });
 document.getElementById("btnRimuovi").addEventListener("click", () => {
+  accendiTutto = false;            // si torna allo stato reale
   if (selez) { visitati.delete(selez); ricolora(); }
   document.getElementById("info").classList.remove("su");
 });
 
 // === pulsanti di test ===
 document.getElementById("btnTest").addEventListener("click", () => {
-  TUTTI_I_PAESI.forEach(n => visitati.add(n)); // deve dare 197 paesi, 100%
+  accendiTutto = true;             // colora OGNI terra, nessuna lista, nessuna sbavatura
   ricolora();
 });
 document.getElementById("btnTestOff").addEventListener("click", () => {
+  accendiTutto = false;
   visitati.clear();
   ricolora();
 });
