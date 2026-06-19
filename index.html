@@ -135,6 +135,15 @@
   .tabs { display: flex; gap: 6px; padding: 14px 16px 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .tab { flex: 0 0 auto; padding: 9px 14px; border-radius: 999px; border: 1px solid #e7e5e4; background: #fff; color: #57534e; font-size: 14px; font-weight: 600; }
   .tab.attiva { background: #1c1917; color: #fff; border-color: #1c1917; }
+  #macroTabs { overflow-x: visible; }
+  #macroTabs .tab { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 3px; padding: 9px 4px; font-size: 11px; line-height: 1.1;
+    border-radius: 14px; white-space: nowrap; }
+  #macroTabs .tab .mt-ic { font-size: 20px; line-height: 1; }
+  .sottobar { display: flex; gap: 6px; padding: 12px 16px 0; }
+  .sottobar button { flex: 1; padding: 9px; border-radius: 10px; border: none; background: #ececeb;
+    color: #57534e; font-size: 13px; font-weight: 700; }
+  .sottobar button.attiva { background: #1c1917; color: #fff; }
 
   main { padding: 18px 16px; }
   .giorno { margin-bottom: 24px; }
@@ -151,6 +160,7 @@
   .tappa .luogo { font-size: 13px; color: #78716c; }
   .tappa .costo { width: 86px; display: flex; align-items: center; justify-content: center; }
   .tappa .costo b { font-family: ui-monospace, monospace; font-size: 14px; }
+  .tappa.senza-costo .corpo { border-right: none; } /* attività gratuite: niente costo né linea tratteggiata */
   .vuoto { font-size: 13px; color: #a8a29e; font-style: italic; }
   .suggerimento { font-size: 12px; color: #a8a29e; text-align: center; margin: -4px 0 14px; }
 
@@ -252,7 +262,9 @@
     background: #fff; font-size: 19px; cursor: pointer;
     box-shadow: 0 4px 14px rgba(0,0,0,.28);
   }
-  #barraLuce, #barra3d { display: flex; flex-direction: column; gap: 8px; }
+  #barraLuce, #barra3d { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  #luceOpzioni { display: none; flex-direction: column; gap: 8px; }
+  #barraLuce.aperto #luceOpzioni { display: flex; }
   #barraLuce button.scelto { background: #FFE9A8; box-shadow: 0 4px 14px rgba(0,0,0,.28), inset 0 0 0 2px #C9A227; }
   #colonnaMappa .sep { width: 26px; height: 2px; border-radius: 2px; background: #ffffff66; }
   #contenitoreMappa { position: absolute; inset: 0; }
@@ -263,6 +275,48 @@
     background: #E4572E; color: #fff; border: none; border-radius: 999px; padding: 12px 22px;
     font-size: 14px; font-weight: 700; box-shadow: 0 4px 14px rgba(0,0,0,.3); }
   .btn-viaggio:disabled { background: #4A5878; }
+  /* ===== Barra di avanzamento della riproduzione del viaggio ===== */
+  #barraViaggio {
+    position: absolute; left: 12px; right: 12px;
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+    z-index: 5;
+    background: rgba(10,18,40,.82); backdrop-filter: blur(6px);
+    border-radius: 16px; padding: 11px 15px 13px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  }
+  #barraViaggio .bv-testa {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; margin-bottom: 9px;
+  }
+  #barraViaggio .bv-dove {
+    flex: 1; min-width: 0; color: #fff; font-size: 13px; font-weight: 700;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  #barraViaggio .bv-dove .mezzo { margin-right: 6px; }
+  #barraViaggio .bv-dove .bv-num { font-family: ui-monospace, monospace; color: #FFC56B; font-weight: 700; margin-right: 4px; }
+  #barraViaggio .bv-perc {
+    flex: none; font-family: ui-monospace, monospace; font-size: 13px;
+    font-weight: 700; color: #FFC56B;
+  }
+  /* la barra è una linea con una "fermata" per ogni tappa, che si accende al passaggio */
+  #bvPista { position: relative; height: 16px; }
+  #bvPista::before { content: ""; position: absolute; left: 0; right: 0; top: 50%;
+    height: 3px; transform: translateY(-50%); border-radius: 999px; background: rgba(255,255,255,.18); }
+  #bvLinea { position: absolute; left: 0; top: 50%; height: 3px; width: 0%;
+    transform: translateY(-50%); border-radius: 999px;
+    background: linear-gradient(90deg, #E4572E, #FFB02E); transition: width .12s linear; }
+  .bv-fermata { position: absolute; top: 50%; width: 9px; height: 9px; border-radius: 50%;
+    transform: translate(-50%, -50%); z-index: 2; background: #46557a;
+    box-shadow: 0 0 0 2px rgba(10,18,40,.92); transition: background .2s ease; }
+  .bv-fermata.raggiunta { background: #FFC56B; }
+  #bvTesta { position: absolute; top: 50%; left: 0; width: 12px; height: 12px; border-radius: 50%;
+    transform: translate(-50%, -50%); z-index: 3; background: #fff;
+    box-shadow: 0 0 0 3px rgba(228,87,46,.95), 0 0 10px 2px rgba(255,176,46,.6);
+    transition: left .12s linear; }
+  #bvTesta.in-pausa { animation: bvLampeggia 1.1s ease-in-out infinite; }
+  @keyframes bvLampeggia { 50% { box-shadow: 0 0 0 3px rgba(228,87,46,.35), 0 0 10px 2px rgba(255,176,46,.25); } }
+  /* mentre la barra è visibile sollevo il pulsante così non si sovrappongono */
+  #vistaMappa.con-barra .btn-viaggio { bottom: calc(104px + env(safe-area-inset-bottom, 0px)); }
   /* Cursore veicolo stile Google Maps */
   .veicolo-google { width: 42px; height: 42px; border-radius: 50%; background: #fff;
     border: 3px solid #1c1917; display: flex; align-items: center; justify-content: center;
@@ -427,14 +481,13 @@
     <div class="date" id="dateViaggio"></div>
     <div class="countdown" id="countdown"></div>
   </header>
-  <div class="tabs">
-    <button class="tab attiva" data-vista="itinerario">🗓️ Itinerario</button>
-    <button class="tab" data-vista="dafare">✨ Imperdibili</button>
-    <button class="tab" data-vista="budget">💰 Budget</button>
-    <button class="tab" data-vista="foto">📷 Foto</button>
-    <button class="tab" data-vista="biglietti">🎫 Biglietti</button>
-    <button class="tab" data-vista="valigia">🎒 Valigia</button>
+  <div class="tabs" id="macroTabs">
+    <button class="tab attiva" data-macro="viaggio"><span class="mt-ic">🗓️</span>Viaggio</button>
+    <button class="tab" data-macro="budget"><span class="mt-ic">💰</span>Budget</button>
+    <button class="tab" data-macro="preparativi"><span class="mt-ic">🎒</span>Preparativi</button>
+    <button class="tab" data-macro="ricordi"><span class="mt-ic">📷</span>Ricordi</button>
   </div>
+  <div class="sottobar nascosto" id="sottoBar"></div>
   <main id="vistaItinerario"></main>
   <main id="vistaBudget" class="nascosto"></main>
   <main id="vistaMappa" class="nascosto">
@@ -448,10 +501,13 @@
     <button id="btnCasa" title="Torna al viaggio">🏠</button>
     <div id="colonnaMappa">
       <div id="barraLuce">
-        <button data-luce="dawn" title="Alba">🌅</button>
-        <button data-luce="day" title="Giorno">☀️</button>
-        <button data-luce="dusk" title="Tramonto">🌇</button>
-        <button data-luce="night" title="Notte">🌙</button>
+        <button id="btnLuce" title="Luce">☀️</button>
+        <div id="luceOpzioni">
+          <button data-luce="dawn" title="Alba">🌅</button>
+          <button data-luce="day" title="Giorno">☀️</button>
+          <button data-luce="dusk" title="Tramonto">🌇</button>
+          <button data-luce="night" title="Notte">🌙</button>
+        </div>
       </div>
       <div class="sep"></div>
       <div id="barra3d">
@@ -460,6 +516,13 @@
       </div>
     </div>
     <button class="btn-viaggio nascosto" id="btnViaggio">▶ Riproduci viaggio</button>
+    <div id="barraViaggio" class="nascosto">
+      <div class="bv-testa">
+        <div class="bv-dove" id="bvDove"></div>
+        <div class="bv-perc" id="bvPerc">0%</div>
+      </div>
+      <div id="bvPista"></div>
+    </div>
   </main>
   <main id="vistaFoto" class="nascosto">
     <div class="barra-azioni">
@@ -807,6 +870,7 @@ GIORNO <n> | <titolo> | <tipo> | <ora> | <luogo>
 - luogo: QUESTA È UNA REGOLA MOLTO IMPORTANTE, leggila con attenzione. Il campo luogo va compilato SOLO con il NOME PROPRIO di un posto realmente esistente e cercabile su una mappa: un monumento ("Torre di Pisa"), un museo ("Museo del Louvre"), una spiaggia con nome proprio ("Spiaggia di Elafonissi"), un locale con il suo nome vero ("Ristorante Da Mario"), un indirizzo. In quel caso scrivi: nome proprio + città + nazione (es. "Torre di Pisa, Pisa, Italia").
   ATTENZIONE alle DESCRIZIONI GENERICHE: frasi come "ristorante vista mare", "una trattoria tipica", "un bar sulla spiaggia", "ristorante in centro", "dove fare colazione" NON sono nomi propri: sono descrizioni di un tipo di posto, e una mappa NON può trovarle (rischia di piazzarle nella città sbagliata). In questi casi lascia SEMPRE il campo luogo con un trattino —. Puoi mettere la descrizione nel TITOLO della tappa (es. "Cena in un ristorante vista mare"), ma il campo luogo resta —.
   Regola pratica: se il nome che scriveresti potrebbe esistere identico in tante città diverse, allora è generico → trattino —. Solo un nome che identifica UN posto preciso al mondo va geolocalizzato. Nel dubbio, sempre il trattino. NON mettere mai coordinate: le trova la app dal nome.
+  RISTORANTI, BAR e HOTEL (regola pratica): i nomi dei locali piccoli spesso non sono sulle mappe e a volte confondono (un ristorante chiamato come una città manda la mappa nel posto sbagliato). Per questi puoi mettere il nome del locale nel TITOLO della tappa, e nel campo luogo indicare semplicemente la CITTÀ dove si trova (es. titolo "Cena da Ouzeri To Kyma", luogo "Siviri, Greece"). Va benissimo anche scrivere il nome completo del locale + città: l'app è in grado di posizionarlo sulla città. L'importante è che la CITTÀ sia sempre indicata e scritta correttamente.
   LINGUA DEL NOME (importantissimo per la mappa): nel campo luogo scrivi il nome proprio del posto nella LINGUA LOCALE o in INGLESE, NON tradotto in italiano. Le mappe riconoscono i nomi ufficiali, non le traduzioni. Esempi: scrivi "Statue of Liberty, New York, USA" e NON "Statua della Libertà"; scrivi "Eiffel Tower, Paris, France" o "Tour Eiffel" e NON "Torre Eiffel"; scrivi "Sagrada Familia, Barcelona, Spain" e NON "Sacra Famiglia"; scrivi "Big Ben, London, UK" (che è già il nome originale). La città e la nazione invece scrivile pure come preferisci. Questa regola vale SOLO per il campo luogo: nel TITOLO della tappa puoi tranquillamente usare l'italiano (es. titolo "Visita alla Statua della Libertà", luogo "Statue of Liberty, New York, USA").
 
 ### IMPERDIBILI ###
@@ -1041,7 +1105,8 @@ function apriViaggio(id) {
   $("schermataHome").classList.add("nascosto");
   $("schermataViaggio").classList.remove("nascosto");
   $("fab").textContent = "+ Aggiungi tappa";
-  mostraVista("itinerario");
+  macroSub.viaggio = "itinerario"; macroSub.preparativi = "valigia"; // ogni apertura riparte da Itinerario
+  mostraMacro("viaggio");
   renderViaggio();
   if ((corrente.persone || 1) > 1 && !corrente.nomi) apriModaleViaggio(true); // prima volta: chiedo i nomi
 }
@@ -1133,7 +1198,7 @@ function renderItinerario() {
         }
         const tp = TIPI[t.tipo];
         const orario = isTrasporto(t.tipo) && t.oraArrivo ? `${t.ora} → ${t.oraArrivo}` : t.ora;
-        const div = document.createElement("div"); div.className = "tappa";
+        const div = document.createElement("div"); div.className = "tappa" + (t.costo ? "" : " senza-costo");
         div.innerHTML = `
           <div class="barra" style="background:${tp.colore}"></div>
           <div class="corpo">
@@ -1141,7 +1206,7 @@ function renderItinerario() {
             <div class="titolo">${t.titolo}</div>
             <div class="luogo">${t.luogo ? "📍 " + t.luogo : ""}</div>
           </div>
-          <div class="costo"><b style="color:${t.costo === 0 ? "#2A9D8F" : "#1c1917"}">${eur(t.costo)}</b></div>`;
+          ${t.costo ? `<div class="costo"><b>${eur(t.costo)}</b></div>` : ""}`;
         div.addEventListener("click", () => apriModaleTappa({ giorno: g, tappa: t }));
         corpo.appendChild(div);
       }
@@ -1404,11 +1469,12 @@ const mapboxDisponibile = () => typeof mapboxgl !== "undefined";
 // Sequenza cronologica di punti: i trasporti contribuiscono con partenza e arrivo
 function nodiRotta() {
   const out = [];
+  const breve = (s) => String(s || "").split(",")[0].trim();
   for (const g of corrente.giorni) for (const t of ordina(g.tappe)) {
     if (isTrasporto(t.tipo)) {
-      if (t.coordDa) out.push({ coord: t.coordDa, mezzo: null });
-      if (t.coordA) out.push({ coord: t.coordA, mezzo: t.tipo });
-    } else if (t.coord) out.push({ coord: t.coord, mezzo: null });
+      if (t.coordDa) out.push({ coord: t.coordDa, mezzo: null, nome: breve(t.luogoDa) || t.titolo });
+      if (t.coordA) out.push({ coord: t.coordA, mezzo: t.tipo, nome: breve(t.luogoA) || t.titolo });
+    } else if (t.coord) out.push({ coord: t.coord, mezzo: null, nome: breve(t.luogo) || t.titolo });
   }
   return out;
 }
@@ -1432,6 +1498,12 @@ function lucePerOra() {
   return "night";
 }
 
+// icona unica delle luci: mostra l'emoji della luce attualmente attiva
+const EMOJI_LUCE = { dawn: "🌅", day: "☀️", dusk: "🌇", night: "🌙" };
+function aggiornaIconaLuce(preset) {
+  const b = $("btnLuce");
+  if (b) b.textContent = EMOJI_LUCE[preset] || "☀️";
+}
 // La luce della mappa segue l'orologio: ogni minuto controllo se è cambiata la fascia
 let luceCorrente = lucePerOra();
 setInterval(() => {
@@ -1440,7 +1512,8 @@ setInterval(() => {
   if (l === luceCorrente) return;
   luceCorrente = l;
   try { mappa.setConfigProperty("basemap", "lightPreset", l); } catch {}
-  document.querySelectorAll("#barraLuce button").forEach((b) => b.classList.toggle("scelto", b.dataset.luce === l));
+  document.querySelectorAll("#luceOpzioni button").forEach((b) => b.classList.toggle("scelto", b.dataset.luce === l));
+  aggiornaIconaLuce(l);
 }, 60000);
 
 // ===== Tour 3D: gli edifici 3D di Mapbox Standard compaiono solo a zoom alto (15+) =====
@@ -1510,15 +1583,23 @@ function renderMappa() {
       pitch: 45, // inclinazione per apprezzare il 3D
     });
     mappa.on("load", () => { mappaPronta = true; aggiornaRotte(); });
-    // Selettore luce: 🌅 alba · ☀️ giorno · 🌇 tramonto · 🌙 notte
-    document.querySelectorAll("#barraLuce button").forEach((b) => {
+    // Selettore luce: una sola icona che al tocco apre le altre (🌅 alba · ☀️ giorno · 🌇 tramonto · 🌙 notte)
+    $("btnLuce").addEventListener("click", (e) => {
+      e.stopPropagation();
+      $("barraLuce").classList.toggle("aperto");
+    });
+    document.querySelectorAll("#luceOpzioni button").forEach((b) => {
       b.addEventListener("click", () => {
         luceCorrente = b.dataset.luce;
         try { mappa.setConfigProperty("basemap", "lightPreset", b.dataset.luce); } catch {}
-        document.querySelectorAll("#barraLuce button").forEach((x) => x.classList.toggle("scelto", x === b));
+        aggiornaIconaLuce(b.dataset.luce);
+        document.querySelectorAll("#luceOpzioni button").forEach((x) => x.classList.toggle("scelto", x === b));
+        $("barraLuce").classList.remove("aperto"); // scelta fatta: richiudo il menu
       });
       b.classList.toggle("scelto", b.dataset.luce === lucePerOra());
     });
+    aggiornaIconaLuce(lucePerOra());                                  // l'icona parte sulla luce attuale
+    $("contenitoreMappa").addEventListener("click", () => $("barraLuce").classList.remove("aperto")); // tocco sulla mappa: chiude il menu
   }
   marcatori.forEach((m) => m.remove()); marcatori = [];
   const punti = [];
@@ -1555,15 +1636,16 @@ function creaVeicolo(tipo) {
 }
 const easeInOut = (t) => (t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
 const attesa = (ms) => new Promise((r) => setTimeout(r, ms));
-function animaSegmento(a, b, tipo, durata) {
+function animaSegmento(a, b, tipo, durata, onProgress) {
   return new Promise((fine) => {
     const el = creaVeicolo(tipo);
     const svg = el.querySelector("svg");
     const veicolo = new mapboxgl.Marker({ element: el }).setLngLat(a).addTo(mappa);
-    const t0 = performance.now();
-    let prec = a;
+    let trascorso = 0, ultimo = performance.now(), prec = a;
     (function passo(ora) {
-      const t = Math.min((ora - t0) / durata, 1);
+      if (!viaggioInPausa) trascorso += ora - ultimo; // in pausa il tempo non avanza: il mezzo resta fermo
+      ultimo = ora;
+      const t = Math.min(trascorso / durata, 1);
       const p = puntoArco(a, b, easeInOut(t));
       veicolo.setLngLat(p);
       if (tipo === "volo") { // l'aereo punta nella direzione di marcia
@@ -1571,32 +1653,136 @@ function animaSegmento(a, b, tipo, durata) {
         if (p[0] !== prec[0] || p[1] !== prec[1]) svg.style.transform = `rotate(${ang}deg)`;
       }
       prec = p;
+      if (onProgress) onProgress(t); // riporto l'avanzamento (0→1) per la barra
       if (t < 1) requestAnimationFrame(passo);
       else { veicolo.remove(); fine(); }
     })(performance.now());
   });
 }
-$("btnViaggio").addEventListener("click", async () => {
-  if (animazioneInCorso) return;
+// ===== Barra di avanzamento: linea con una "fermata" per ogni tappa =====
+const EMOJI_MEZZO = { volo: "✈️", treno: "🚄", auto: "🚗" };
+let viaggioInPausa = false, riproduzioneFinita = false;
+let bvFermate = [];        // i pallini-fermata, uno per ogni nodo del tragitto
+let bvFrazCorrente = 0;    // avanzamento globale attuale (0→1), per ridipingere in pausa
+
+// mostra/nasconde la barra e solleva il pulsante "Riproduci" così non si sovrappongono
+function mostraBarraViaggio(visibile) {
+  $("vistaMappa").classList.toggle("con-barra", visibile);
+  $("barraViaggio").classList.toggle("nascosto", !visibile);
+}
+// costruisce la linea: una fermata per ogni tappa, posizionata in base alla durata cumulata
+function costruisciFermate(nodi, durate) {
+  const pista = $("bvPista");
+  pista.innerHTML = "";
+  bvFermate = [];
+  const totale = durate.reduce((s, d) => s + d, 0) || 1;
+  const linea = document.createElement("div"); linea.id = "bvLinea"; pista.appendChild(linea);
+  let acc = 0;
+  for (let i = 0; i < nodi.length; i++) {
+    const pos = (acc / totale) * 100;            // 0% alla partenza, 100% all'arrivo
+    const f = document.createElement("div");
+    f.className = "bv-fermata";
+    f.style.left = pos + "%";
+    f.dataset.pos = pos;
+    f.title = nodi[i].nome || "";
+    pista.appendChild(f);
+    bvFermate.push(f);
+    if (i < durate.length) acc += durate[i];
+  }
+  const testa = document.createElement("div"); testa.id = "bvTesta"; pista.appendChild(testa);
+}
+// aggiorna linea, puntino-tu, fermate accese, percentuale ed etichetta
+function aggiornaBarraViaggio(frazione, dove) {
+  bvFrazCorrente = frazione;
+  const perc = Math.max(0, Math.min(100, frazione * 100));
+  $("bvPerc").textContent = Math.round(perc) + "%";
+  if (dove != null) $("bvDove").innerHTML = dove;
+  const linea = document.getElementById("bvLinea");
+  const testa = document.getElementById("bvTesta");
+  if (linea) linea.style.width = perc + "%";
+  if (testa) { testa.style.left = perc + "%"; testa.classList.toggle("in-pausa", viaggioInPausa); }
+  bvFermate.forEach((f) => f.classList.toggle("raggiunta", perc >= parseFloat(f.dataset.pos) - 0.5));
+}
+// aggiorna il pulsante in base allo stato: riproduci / pausa / riprendi / rivedi
+function aggiornaPulsanteViaggio() {
+  const btn = $("btnViaggio");
+  if (!animazioneInCorso) btn.textContent = riproduzioneFinita ? "↺ Rivedi viaggio" : "▶ Riproduci viaggio";
+  else btn.textContent = viaggioInPausa ? "▶ Riprendi" : "⏸ Pausa";
+  if (animazioneInCorso) aggiornaBarraViaggio(bvFrazCorrente, null); // riapplica il lampeggio della pausa sul puntino
+}
+// attesa che rispetta la pausa (per le pause tra una tratta e l'altra)
+function attesaPausabile(ms) {
+  return new Promise((res) => {
+    let trascorso = 0, ultimo = performance.now();
+    (function tick(ora) {
+      if (!viaggioInPausa) trascorso += ora - ultimo;
+      ultimo = ora;
+      if (trascorso >= ms) res();
+      else requestAnimationFrame(tick);
+    })(performance.now());
+  });
+}
+function pausaViaggio() { viaggioInPausa = true; aggiornaPulsanteViaggio(); }
+function riprendiViaggio() { viaggioInPausa = false; aggiornaPulsanteViaggio(); }
+
+// il pulsante fa da play / pausa / riprendi / rivedi a seconda dello stato
+$("btnViaggio").addEventListener("click", () => {
+  if (!animazioneInCorso) avviaRiproduzione();
+  else if (viaggioInPausa) riprendiViaggio();
+  else pausaViaggio();
+});
+
+async function avviaRiproduzione() {
   const nodi = nodiRotta();
   if (nodi.length < 2) return;
   animazioneInCorso = true;
-  const btn = $("btnViaggio");
-  btn.disabled = true; btn.textContent = "In viaggio…";
+  viaggioInPausa = false;
+  riproduzioneFinita = false;
+  aggiornaPulsanteViaggio();
+
+  // ogni tratta "pesa" quanto la sua animazione: fermate e puntino vanno di pari
+  // passo col mezzo (le tratte lunghe distano di più sulla linea)
+  const durate = [];
   for (let i = 0; i < nodi.length - 1; i++) {
     const a = nodi[i].coord, b = nodi[i + 1].coord;
-    mappa.fitBounds(new mapboxgl.LngLatBounds(a, a).extend(b), { padding: 90, maxZoom: 12, duration: 1100 });
-    await attesa(1200);
     const dist = Math.hypot(b[0] - a[0], b[1] - a[1]);
-    await animaSegmento(a, b, nodi[i + 1].mezzo || "auto", Math.min(2200 + dist * 60, 5500));
-    await attesa(350);
+    durate.push(Math.min(2200 + dist * 60, 5500));
   }
+  const totale = durate.reduce((s, d) => s + d, 0) || 1;
+  let trascorso = 0;
+
+  mostraBarraViaggio(true);
+  costruisciFermate(nodi, durate);
+  aggiornaBarraViaggio(0, `📍 ${nodi[0].nome || "Partenza"}`);
+
+  for (let i = 0; i < nodi.length - 1; i++) {
+    const a = nodi[i].coord, b = nodi[i + 1].coord;
+    const mezzo = nodi[i + 1].mezzo || "auto";
+    const conta = `<span class="bv-num">${i + 1}/${nodi.length - 1}</span>`;
+    const dove = `${conta}<span class="mezzo">${EMOJI_MEZZO[mezzo] || "🚗"}</span>${nodi[i].nome || ""} → ${nodi[i + 1].nome || ""}`;
+
+    mappa.fitBounds(new mapboxgl.LngLatBounds(a, a).extend(b), { padding: 90, maxZoom: 12, duration: 1100 });
+    aggiornaBarraViaggio(trascorso / totale, dove); // mostro la tratta in arrivo mentre la camera si sposta
+    await attesaPausabile(1200);
+
+    const durata = durate[i];
+    await animaSegmento(a, b, mezzo, durata, (t) => {
+      aggiornaBarraViaggio((trascorso + t * durata) / totale, dove);
+    });
+    trascorso += durata;
+    aggiornaBarraViaggio(trascorso / totale, dove);
+    await attesaPausabile(350);
+  }
+
+  aggiornaBarraViaggio(1, "🏁 Arrivo");
   const punti = nodi.map((x) => x.coord);
   const bounds = punti.reduce((b, c) => b.extend(c), new mapboxgl.LngLatBounds(punti[0], punti[0]));
   mappa.fitBounds(bounds, { padding: 60, maxZoom: 13, duration: 1400 });
-  btn.disabled = false; btn.textContent = "↺ Rivedi viaggio";
   animazioneInCorso = false;
-});
+  viaggioInPausa = false;
+  riproduzioneFinita = true;
+  aggiornaPulsanteViaggio();
+}
 
 // ===== Ricerca luoghi (geocoding Mapbox) =====
 async function cercaLuoghi(testo, limite, assoluto) {
@@ -2502,16 +2688,43 @@ function miglioreRisultato(query, features) {
   return validi[0];
 }
 
+// Estrae la parte "città" da un luogo completo "Nome, Città, Nazione".
+// Per i ristoranti/hotel cerchiamo questa, non il nome del locale (più affidabile).
+function soloCitta(luogo) {
+  const parti = String(luogo).split(",").map((x) => x.trim()).filter(Boolean);
+  if (parti.length <= 1) return luogo;            // solo un pezzo: è già la città
+  if (parti.length === 2) return parti.join(", "); // "Città, Nazione"
+  // "Nome, Città, Nazione" (o più): scarto il primo pezzo (il nome del locale)
+  return parti.slice(1).join(", ");
+}
+
 async function geocodificaViaggio(v) {
   if (!tokenValido()) return;
   let cambiato = false;
   for (const g of v.giorni) for (const t of g.tappe) {
-    if (t.luogo && !t.coord) {
-      // assoluto=true: ogni luogo cercato in modo indipendente, niente cascata di errori
+    if (!t.luogo || t.coord) continue;
+    let scelto = null;
+    // RISTORANTI e HOTEL: il nome del locale spesso non è mappato o inganna la mappa
+    // (es. "Ouzeri To Kyma" -> Mapbox aggancia "Kymi"). Cerchiamo direttamente la CITTÀ,
+    // che esiste sempre nel database. Per il ricordo basta sapere in che città eri.
+    if (t.tipo === "ristorante" || t.tipo === "hotel") {
+      const citta = soloCitta(t.luogo);
+      const r = await cercaLuoghi(citta, 5, true);
+      scelto = miglioreRisultato(citta, r);
+    } else {
+      // ATTIVITÀ (monumenti, spiagge, parchi): il nome è affidabile, cerco il luogo preciso.
       const r = await cercaLuoghi(t.luogo, 5, true);
-      const scelto = miglioreRisultato(t.luogo, r);
-      if (scelto) { t.coord = scelto.center; cambiato = true; }
+      scelto = miglioreRisultato(t.luogo, r);
+      // rete di sicurezza: se il luogo preciso non si trova, ripiego sulla città
+      if (!scelto) {
+        const citta = soloCitta(t.luogo);
+        if (citta && citta !== t.luogo) {
+          const r2 = await cercaLuoghi(citta, 5, true);
+          scelto = miglioreRisultato(citta, r2);
+        }
+      }
     }
+    if (scelto) { t.coord = scelto.center; cambiato = true; }
   }
   if (cambiato) { salva(); if (corrente && corrente.id === v.id) renderMappa(); }
 }
@@ -2548,21 +2761,56 @@ $("importaCrea").addEventListener("click", async () => {
 
 // ============ NAVIGAZIONE ============
 let vistaAttuale = "itinerario";
-$("btnGlobo").addEventListener("click", () => mostraVista(vistaAttuale === "mappa" ? "itinerario" : "mappa"));
-$("btnCasa").addEventListener("click", () => mostraVista("itinerario"));
+$("btnGlobo").addEventListener("click", () => mostraVista(vistaAttuale === "mappa" ? vistaDiMacro(macroAttiva) : "mappa"));
+$("btnCasa").addEventListener("click", () => mostraVista(vistaDiMacro(macroAttiva)));
 function mostraVista(nome) {
   vistaAttuale = nome;
+  if (!animazioneInCorso) mostraBarraViaggio(false); // nasconde la barra cambiando scheda (non disturba una riproduzione in corso)
   $("btnGlobo").classList.toggle("attivo", nome === "mappa");
   if (nome === "mappa") setTimeout(() => { if (mappa) try { mappa.resize(); } catch {} }, 80); // il contenitore è cambiato: avviso Mapbox
-  document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("attiva", x.dataset.vista === nome));
   for (const v of ["itinerario", "budget", "mappa", "foto", "biglietti", "valigia", "dafare"]) {
     $("vista" + v[0].toUpperCase() + v.slice(1)).classList.toggle("nascosto", v !== nome);
   }
   $("fab").classList.toggle("nascosto", nome !== "itinerario");
   if (nome === "mappa" && mappa) setTimeout(() => mappa.resize(), 50);
 }
-document.querySelectorAll(".tab").forEach((b) =>
-  b.addEventListener("click", () => mostraVista(b.dataset.vista)));
+// ===== Barra strumenti a macro-categorie =====
+// Itinerario+Imperdibili → "Viaggio"; Valigia+Biglietti → "Preparativi"; Budget e Ricordi sono singoli.
+const MACRO = {
+  viaggio:     { viste: [["itinerario", "🗓️ Itinerario"], ["dafare", "✨ Imperdibili"]] },
+  budget:      { viste: [["budget", "💰 Budget"]] },
+  preparativi: { viste: [["valigia", "🎒 Valigia"], ["biglietti", "🎫 Biglietti"]] },
+  ricordi:     { viste: [["foto", "📷 Foto"]] },
+};
+let macroAttiva = "viaggio";
+const macroSub = { viaggio: "itinerario", preparativi: "valigia" }; // sotto-vista corrente dei macro doppi
+function vistaDiMacro(macro) {
+  const m = MACRO[macro];
+  return m.viste.length === 1 ? m.viste[0][0] : (macroSub[macro] || m.viste[0][0]);
+}
+function renderSottoBar(macro) {
+  const bar = $("sottoBar");
+  const m = MACRO[macro];
+  if (!m || m.viste.length < 2) { bar.classList.add("nascosto"); bar.innerHTML = ""; return; }
+  const attuale = vistaDiMacro(macro);
+  bar.innerHTML = "";
+  for (const [vista, etichetta] of m.viste) {
+    const b = document.createElement("button");
+    b.textContent = etichetta;
+    b.classList.toggle("attiva", vista === attuale);
+    b.addEventListener("click", () => { macroSub[macro] = vista; mostraVista(vista); renderSottoBar(macro); });
+    bar.appendChild(b);
+  }
+  bar.classList.remove("nascosto");
+}
+function mostraMacro(macro) {
+  macroAttiva = macro;
+  document.querySelectorAll("#macroTabs .tab").forEach((t) => t.classList.toggle("attiva", t.dataset.macro === macro));
+  renderSottoBar(macro);
+  mostraVista(vistaDiMacro(macro));
+}
+document.querySelectorAll("#macroTabs .tab").forEach((t) =>
+  t.addEventListener("click", () => mostraMacro(t.dataset.macro)));
 $("indietro").addEventListener("click", () => { corrente = null; renderHome(); });
 $("modificaViaggio").addEventListener("click", () => apriModaleViaggio(true));
 $("fab").addEventListener("click", () => corrente ? apriModaleTappa(null) : apriModaleViaggio(false));
