@@ -429,7 +429,39 @@
   .visore img { max-width: 96vw; max-height: 72vh; border-radius: 10px; object-fit: contain; }
   .visore .dida { color: #fff; font-size: 15px; font-weight: 600; }
   .visore .visore-azioni { display: flex; gap: 10px; }
-  .visore .visore-azioni button { background: rgba(255,255,255,.14); color: #fff; border: none; border-radius: 999px; padding: 10px 18px; font-size: 14px; font-weight: 600; }
+  .visore .visore-azioni button { background: rgba(255,255,255,.14); color: #fff; border: none; border-radius: 999px; padding: 10px 18px; font-size: 14px; font-weight: 600; }  /* ===== ACHIEVEMENT: TERRE CONQUISTATE (dentro la sezione Mappa) ===== */
+  #btnConquiste { width: 44px; height: 44px; border-radius: 50%; border: none; background: #fff;
+    font-size: 19px; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,.28); }
+  #btnConquiste.attivo { background: #E8B84B; }
+  #conquisteOverlay { position: absolute; inset: 0; z-index: 8; background: #0a1228; display: flex;
+    flex-direction: column; padding: calc(14px + env(safe-area-inset-top, 0px)) 14px 14px;
+    animation: immersione .35s ease; }
+  #conquisteOverlay.nascosto { display: none; }
+  .cq-testa { display: flex; justify-content: space-between; align-items: flex-start; }
+  .cq-titolo { color: #fff; font-size: 21px; font-weight: 800; }
+  .cq-sotto { color: #7e8ba5; font-size: 13px; margin-top: 2px; }
+  .cq-chiudi { background: rgba(255,255,255,.12); color: #fff; border: none; width: 40px; height: 40px;
+    border-radius: 50%; font-size: 18px; flex: none; }
+  .cq-stat { display: flex; gap: 22px; align-items: baseline; margin-top: 14px; }
+  .cq-stat b { color: #fff; font-size: 26px; font-weight: 800; }
+  .cq-stat span { color: #aeb9cf; font-size: 12px; margin-left: 5px; }
+  .cq-barra { height: 5px; background: rgba(255,255,255,.12); border-radius: 99px; overflow: hidden;
+    margin-top: 10px; max-width: 280px; }
+  .cq-barra-pieno { height: 100%; width: 0%; border-radius: 99px;
+    background: linear-gradient(90deg, #E8B84B, #f0c869); transition: width 1s ease; }
+  #mondoMappa { position: relative; flex: 1; margin-top: 14px; border-radius: 16px; overflow: hidden; }
+  .cq-nota { color: #7e8ba5; font-size: 12px; margin-top: 10px; text-align: center; }
+  .cq-info { position: absolute; left: 14px; right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    z-index: 9; background: #14233a; border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 16px 14px;
+    transform: translateY(220%); transition: transform .32s cubic-bezier(.2,.8,.2,1); box-shadow: 0 8px 26px rgba(0,0,0,.5); }
+  .cq-info.su { transform: translateY(0); }
+  .cq-nome { color: #fff; font-size: 18px; font-weight: 800; margin-bottom: 2px; }
+  .cq-info-stato { color: #7e8ba5; font-size: 13px; margin-bottom: 12px; }
+  .cq-azioni { display: flex; gap: 8px; }
+  .cq-azioni button { flex: 1; border: none; border-radius: 11px; padding: 12px; font-size: 14px; font-weight: 700; }
+  #cqVisitato { background: #E8B84B; color: #3a2c00; }
+  #cqRimuovi { background: rgba(255,255,255,.08); color: #c8d2e6; }
+  .cq-info-chiudi { position: absolute; top: 12px; right: 14px; background: none; border: none; color: #5a6a86; font-size: 17px; }
 </style>
 </head>
 <body>
@@ -514,6 +546,8 @@
         <button id="btn3d" title="Tuffati nella prossima tappa in 3D">🏙️</button>
         <button id="btnPanorama" title="Torna alla panoramica">🌍</button>
       </div>
+      <div class="sep"></div>
+      <button id="btnConquiste" title="Le tue terre conquistate">🏆</button>
     </div>
     <button class="btn-viaggio nascosto" id="btnViaggio">▶ Riproduci viaggio</button>
     <div id="barraViaggio" class="nascosto">
@@ -522,6 +556,32 @@
         <div class="bv-perc" id="bvPerc">0%</div>
       </div>
       <div id="bvPista"></div>
+    </div>
+    <!-- ===== ACHIEVEMENT: TERRE CONQUISTATE ===== -->
+    <div id="conquisteOverlay" class="nascosto">
+      <div class="cq-testa">
+        <div>
+          <div class="cq-titolo">🏆 Terre conquistate</div>
+          <div class="cq-sotto">Ogni passo, una storia</div>
+        </div>
+        <button class="cq-chiudi" id="cqChiudi">✕</button>
+      </div>
+      <div class="cq-stat">
+        <div><b id="cqPaesi">0</b><span>paesi</span></div>
+        <div><b id="cqPerc">0%</b><span>del mondo</span></div>
+      </div>
+      <div class="cq-barra"><div class="cq-barra-pieno" id="cqBarra"></div></div>
+      <div id="mondoMappa"></div>
+      <div class="cq-nota" id="cqNota">I paesi dei tuoi viaggi si accendono da soli</div>
+      <div class="cq-info" id="cqInfo">
+        <button class="cq-info-chiudi" id="cqInfoChiudi">✕</button>
+        <div class="cq-nome" id="cqNome">—</div>
+        <div class="cq-info-stato" id="cqStato">—</div>
+        <div class="cq-azioni">
+          <button id="cqVisitato">✓ Segna conquistato</button>
+          <button id="cqRimuovi">Rimuovi</button>
+        </div>
+      </div>
     </div>
   </main>
   <main id="vistaFoto" class="nascosto">
@@ -2901,6 +2961,148 @@ function chiudiSplash() {
   }, 850);
 }
 $("btnInizia").addEventListener("click", chiudiSplash);
+
+// ============ ACHIEVEMENT: TERRE CONQUISTATE ============
+// Vive dentro la sezione Mappa. Riusa MAPBOX_TOKEN, viaggi, tokenValido, $.
+const CQ_TOT = 197;
+const CQ_ORO = "#E8B84B", CQ_SPENTO = "#2a3a52", CQ_MARE = "#0f1b2e";
+let cqMap = null, cqSelez = null, cqAperto = false;
+let cqManuali = new Set(), cqDerivati = new Set(), cqCache = {};
+try { cqManuali  = new Set(JSON.parse(localStorage.getItem("pm-manuali")  || "[]")); } catch {}
+try { cqDerivati = new Set(JSON.parse(localStorage.getItem("pm-derivati") || "[]")); } catch {}
+try { cqCache    = JSON.parse(localStorage.getItem("pm-coord-cache") || "{}"); } catch {}
+function cqSalva() {
+  try {
+    localStorage.setItem("pm-manuali",  JSON.stringify([...cqManuali]));
+    localStorage.setItem("pm-derivati", JSON.stringify([...cqDerivati]));
+    localStorage.setItem("pm-coord-cache", JSON.stringify(cqCache));
+  } catch {}
+}
+const cqVisitati = () => new Set([...cqDerivati, ...cqManuali]);
+function cqColore() {
+  return ["case", ["in", ["get", "iso_3166_1"], ["literal", [...cqVisitati()]]], CQ_ORO, CQ_SPENTO];
+}
+function cqApplica() {
+  if (cqMap && cqMap.getLayer("cq-fill")) cqMap.setPaintProperty("cq-fill", "fill-color", cqColore());
+}
+function cqConta() {
+  const tot = cqVisitati().size;
+  const perc = Math.min(100, Math.round((tot / CQ_TOT) * 100));
+  $("cqPaesi").textContent = tot;
+  $("cqPerc").textContent = perc + "%";
+  $("cqBarra").style.width = Math.max(2, perc) + "%";
+  $("cqNota").textContent = cqDerivati.size
+    ? `${cqDerivati.size} dai tuoi viaggi · ${cqManuali.size} aggiunti a mano`
+    : "I paesi dei tuoi viaggi si accendono da soli";
+}
+async function cqPaeseDaCoord(lng, lat) {
+  const k = lat.toFixed(2) + "," + lng.toFixed(2);
+  if (cqCache[k] !== undefined) return cqCache[k];
+  try {
+    const r = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?types=country&access_token=${MAPBOX_TOKEN}`);
+    const j = await r.json();
+    const f = j.features && j.features[0];
+    const code = f && f.properties && f.properties.short_code ? f.properties.short_code.toUpperCase() : "";
+    cqCache[k] = code; cqSalva();
+    return code;
+  } catch { return ""; }
+}
+function cqCoordDeiViaggi() {
+  const out = [];
+  for (const v of viaggi) for (const g of (v.giorni || [])) for (const t of (g.tappe || [])) {
+    if (t.coord) out.push(t.coord);
+    if (t.coordDa) out.push(t.coordDa);
+    if (t.coordA) out.push(t.coordA);
+  }
+  return out;
+}
+async function cqAggiornaDaViaggi() {
+  if (!tokenValido()) return;
+  let cambiato = false;
+  for (const c of cqCoordDeiViaggi()) {
+    if (!c || c.length !== 2) continue;
+    const code = await cqPaeseDaCoord(c[0], c[1]);
+    if (code && !cqDerivati.has(code)) {
+      cqDerivati.add(code); cambiato = true;
+      cqApplica(); cqConta();
+    }
+  }
+  if (cambiato) cqSalva();
+}
+function cqInit() {
+  if (cqMap || typeof mapboxgl === "undefined" || !tokenValido()) return;
+  mapboxgl.accessToken = MAPBOX_TOKEN;
+  cqMap = new mapboxgl.Map({
+    container: "mondoMappa",
+    style: "mapbox://styles/mapbox/dark-v11",
+    projection: "mercator",
+    center: [12, 25], zoom: 0.5,
+    minZoom: 0.2, maxZoom: 6,
+    renderWorldCopies: true,
+    dragRotate: false, pitchWithRotate: false,
+    bearing: 0, pitch: 0, maxPitch: 0, minPitch: 0,
+    attributionControl: false,
+  });
+  cqMap.dragRotate.disable();
+  cqMap.touchZoomRotate.disableRotation();
+  cqMap.touchPitch.disable();
+  cqMap.on("load", () => {
+    if (cqMap.getLayer("water")) cqMap.setPaintProperty("water", "fill-color", CQ_MARE);
+    if (cqMap.getLayer("background")) cqMap.setPaintProperty("background", "background-color", CQ_MARE);
+    cqMap.addSource("cq-paesi", { type: "vector", url: "mapbox://mapbox.country-boundaries-v1" });
+    let primaLabel;
+    for (const l of cqMap.getStyle().layers) { if (l.type === "symbol") { primaLabel = l.id; break; } }
+    cqMap.addLayer({ id: "cq-fill", type: "fill", source: "cq-paesi", "source-layer": "country_boundaries",
+      paint: { "fill-color": cqColore(), "fill-opacity": 0.9 } }, primaLabel);
+    cqMap.addLayer({ id: "cq-bordo", type: "line", source: "cq-paesi", "source-layer": "country_boundaries",
+      paint: { "line-color": "rgba(15,27,46,.8)", "line-width": 0.5 } }, primaLabel);
+    cqApplica(); cqConta();
+  });
+  cqMap.on("click", "cq-fill", (e) => {
+    const f = e.features[0];
+    const iso = f.properties.iso_3166_1;
+    const nome = f.properties.name_it || f.properties.name_en || f.properties.name || "Paese";
+    cqSelez = iso;
+    const daViaggio = cqDerivati.has(iso);
+    const manuale = cqManuali.has(iso);
+    $("cqNome").textContent = (daViaggio || manuale ? "🏆 " : "📍 ") + nome;
+    $("cqStato").textContent = daViaggio ? "Conquistato — risulta da un tuo viaggio"
+      : (manuale ? "Segnato come conquistato" : "Ancora da conquistare");
+    $("cqVisitato").textContent = manuale ? "✓ Già conquistato" : "✓ Segna conquistato";
+    $("cqVisitato").classList.toggle("nascosto", daViaggio);
+    $("cqRimuovi").classList.toggle("nascosto", daViaggio || !manuale);
+    $("cqInfo").classList.add("su");
+  });
+}
+function apriConquiste() {
+  cqAperto = true;
+  $("conquisteOverlay").classList.remove("nascosto");
+  $("btnConquiste").classList.add("attivo");
+  cqInit();
+  setTimeout(() => { if (cqMap) try { cqMap.resize(); } catch {} }, 90);
+  cqConta();
+  cqAggiornaDaViaggi();
+}
+function chiudiConquiste() {
+  cqAperto = false;
+  $("conquisteOverlay").classList.add("nascosto");
+  $("cqInfo").classList.remove("su");
+  $("btnConquiste").classList.remove("attivo");
+}
+$("btnConquiste").addEventListener("click", () => cqAperto ? chiudiConquiste() : apriConquiste());
+$("cqChiudi").addEventListener("click", chiudiConquiste);
+$("cqInfoChiudi").addEventListener("click", () => $("cqInfo").classList.remove("su"));
+$("cqVisitato").addEventListener("click", () => {
+  if (cqSelez) { cqManuali.add(cqSelez); cqSalva(); cqApplica(); cqConta(); }
+  $("cqInfo").classList.remove("su");
+});
+$("cqRimuovi").addEventListener("click", () => {
+  if (cqSelez) { cqManuali.delete(cqSelez); cqSalva(); cqApplica(); cqConta(); }
+  $("cqInfo").classList.remove("su");
+});
+// uscendo dalla mappa l'overlay si chiude, così la prossima volta riparte dalla mappa del viaggio
+$("btnCasa").addEventListener("click", chiudiConquiste);
+$("btnGlobo").addEventListener("click", chiudiConquiste);
 
 // ============ AVVIO ============
 apriDB().then(() => { renderHome(); avviaSplash(); });
