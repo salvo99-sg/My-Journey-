@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Agenda Viaggi — Temi premium + icone duotone</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#FBF6EF; --surface:#fff; --ink:#1c1917; --muted:#7d7167;
+    --border:#F0E7DC; --border2:#EEE3D7; --navy:#16264C;
+    --radius:20px;
+    --shadow-sm:0 1px 2px rgba(120,70,30,.06),0 1px 3px rgba(120,70,30,.05);
+    --shadow-md:0 6px 18px rgba(120,70,30,.10);
+    --shadow-lg:0 16px 40px rgba(120,70,30,.18);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);
+    background:radial-gradient(1100px 600px at 10% -10%,#F4E6D6,transparent 55%),
+               radial-gradient(1000px 600px at 112% 6%,#DCEFF4,transparent 50%),#F1EAE0;
+    padding:34px 20px 70px;}
+
+  /* ---- icone duotone (sprite + use, ereditano currentColor) ---- */
+  .ico{width:1.25em;height:1.25em;display:inline-block;vertical-align:-0.22em;}
+  .ico .fg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+  .ico .bg{fill:currentColor;opacity:.20;stroke:none;}
+
+  .doc-head{max-width:1200px;margin:0 auto 24px;}
+  .doc-eyebrow{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#C2410C;font-weight:700;}
+  .doc-title{font-family:'Calistoga',serif;font-size:38px;color:var(--navy);margin-top:6px;line-height:1.05;}
+  .doc-sub{color:var(--muted);font-size:15px;margin-top:10px;max-width:720px;line-height:1.55;}
+
+  /* showcase icone */
+  .showcase{max-width:1200px;margin:0 auto 22px;background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-md);}
+  .showcase h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+  .ico-grid{display:flex;flex-wrap:wrap;gap:18px;}
+  .ico-cell{display:flex;flex-direction:column;align-items:center;gap:6px;width:74px;color:var(--navy);}
+  .ico-cell .ico{font-size:30px;}
+  .ico-cell small{font-size:10.5px;color:var(--muted);font-weight:600;}
+
+  /* selettore tema */
+  .picker{max-width:1200px;margin:0 auto 30px;background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-md);}
+  .picker h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+  .picker .row{display:flex;gap:10px;flex-wrap:wrap;}
+  .tchip{display:flex;align-items:center;gap:9px;border:1.5px solid var(--border);border-radius:14px;
+    padding:9px 14px;font-size:13px;font-weight:600;color:var(--ink);background:#fff;}
+  .tchip .dot{width:22px;height:22px;border-radius:8px;}
+  .tchip.sel{border-color:var(--ink);box-shadow:var(--shadow-sm);}
+  .tchip .auto{font-size:10px;color:#C2410C;font-weight:700;}
+
+  .galleria{max-width:1200px;margin:0 auto;display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:34px;justify-items:center;}
+  .phone-wrap{width:320px;}
+  .phone-label{text-align:center;font-weight:700;color:var(--navy);margin-bottom:12px;font-size:15px;}
+  .phone-label span{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:2px;}
+  .phone{width:320px;height:652px;background:#0c0c0e;border-radius:44px;padding:11px;box-shadow:var(--shadow-lg);}
+  .screen{width:100%;height:100%;border-radius:34px;overflow:hidden;position:relative;display:flex;flex-direction:column;}
+  .screen::before{content:"";position:absolute;inset:0;z-index:0;opacity:.05;pointer-events:none;background-size:120px;}
+  .scroll{flex:1;overflow:hidden;position:relative;z-index:1;}
+  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:26px;background:#0c0c0e;border-radius:0 0 16px 16px;z-index:30;}
+
+  /* header palcoscenico */
+  .hdr{position:relative;overflow:hidden;color:#fff;padding:40px 20px 22px;border-radius:0 0 28px 28px;}
+  .hdr>*{position:relative;z-index:3;}
+  .motif{position:absolute;inset:0;z-index:1;pointer-events:none;will-change:transform;transition:transform .5s cubic-bezier(.2,.8,.2,1);}
+  .scrim{position:absolute;inset:0;z-index:2;pointer-events:none;}
+  .hdr .eyebrow{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;opacity:.82;font-weight:600;}
+  .hdr h1{font-family:'Calistoga',serif;font-size:25px;margin-top:5px;font-weight:400;}
+  .hdr .date{font-size:13px;opacity:.92;margin-top:3px;}
+  .testa-riga{display:flex;justify-content:space-between;align-items:center;}
+  .btn-ghost{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.16);color:#fff;border:none;border-radius:999px;padding:8px 13px;font-size:12px;font-weight:600;backdrop-filter:blur(4px);}
+  .badge{display:inline-flex;align-items:center;gap:7px;margin-top:14px;border-radius:999px;padding:7px 15px;font-size:12.5px;font-weight:700;color:#fff;}
+
+  .tabs{display:flex;gap:6px;padding:14px 14px 4px;}
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:16px;
+    border:1px solid var(--border);background:#fff;color:var(--muted);font-size:10.5px;font-weight:600;box-shadow:var(--shadow-sm);}
+  .tab .ico{font-size:20px;}
+  .tab.attiva{color:#fff;}
+
+  .suggerimento{font-size:11.5px;color:#b6a99b;text-align:center;margin:10px 0;}
+  .gcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin:0 14px 11px;box-shadow:var(--shadow-sm);overflow:hidden;}
+  .gcard-testa{display:flex;align-items:center;justify-content:space-between;padding:14px;}
+  .gcard-info b{font-family:'Calistoga',serif;font-size:16px;color:var(--ink);font-weight:400;display:block;}
+  .gcard-info small{color:var(--muted);font-size:12px;}
+  .chev{color:#d6c4b6;display:flex;}
+  .gcard-corpo{padding:0 12px 12px;}
+  .fascia{display:flex;align-items:center;gap:6px;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#b6a99b;margin:12px 4px 7px;font-weight:600;}
+  .tappa{display:flex;background:#FFFCF8;border:1px solid var(--border2);border-radius:15px;overflow:hidden;margin-bottom:8px;}
+  .tappa .barra{width:5px;flex:none;}
+  .tappa .ico-wrap{display:flex;align-items:center;padding-left:11px;}
+  .tappa .corpo{flex:1;padding:10px 11px;}
+  .tappa .meta{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;font-weight:600;}
+  .tappa .titolo{font-weight:600;color:var(--ink);margin-top:2px;font-size:14px;}
+  .tappa .luogo{font-size:12px;color:var(--muted);margin-top:1px;}
+  .tappa .costo{width:62px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;border-left:1px dashed var(--border);}
+  .aggiungi-qui{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;margin-top:8px;background:#FFFCF8;border:1.5px dashed #E7C9B5;border-radius:14px;padding:11px;font-weight:600;font-size:13.5px;}
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin:0 14px 13px;box-shadow:var(--shadow-sm);}
+  .card .eyebrow{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .totale{text-align:center;}
+  .totale .cifra{font-family:'Calistoga',serif;font-size:40px;margin:6px 0 2px;}
+  .totale .sub{font-size:12.5px;color:var(--muted);}
+  .card b.titoletto{display:flex;align-items:center;gap:7px;font-size:14px;color:var(--ink);margin-bottom:12px;}
+  .cat{margin-bottom:11px;}
+  .cat .riga{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:5px;color:var(--ink);}
+  .cat .riga .nome{display:flex;align-items:center;gap:7px;flex:1;}
+  .cat .riga b{font-weight:700;}
+  .pista{height:9px;background:#F3E9DD;border-radius:999px;overflow:hidden;}
+  .pieno{height:100%;border-radius:999px;}
+
+  /* =================== TEMA · ORIENTE / SOL LEVANTE =================== */
+  .t-or{--accent:#E0485C;--accent-d:#B23147;}
+  .t-or .screen{background:#FBF6EF;}
+  .t-or .screen::before{background-image:radial-gradient(circle at 50% 50%,#E0485C 1.5px,transparent 1.6px);}
+  .t-or .hdr{background:linear-gradient(160deg,#181C38,#3A2350 62%,#5C2746);}
+  .t-or .scrim{background:linear-gradient(180deg,transparent 42%,rgba(24,28,56,.34));}
+  .t-or .badge{background:var(--accent);box-shadow:0 6px 16px rgba(224,72,92,.42);}
+  .t-or .tab.attiva{background:var(--accent-d);border-color:var(--accent-d);}
+  .t-or .aggiungi-qui{color:var(--accent);border-color:#F0C7CF;}
+  .t-or .totale .cifra{color:#3A2350;}
+  .t-or .pieno.acc{background:linear-gradient(90deg,#E0485C,#FF8A9A);}
+
+  /* =================== TEMA · MEDITERRANEO =================== */
+  .t-me{--accent:#1E8FB5;--accent-d:#0E6E92;}
+  .t-me .screen{background:#F6FAFB;}
+  .t-me .screen::before{background-image:repeating-linear-gradient(115deg,transparent 0 22px,#1E8FB5 22px 23px);}
+  .t-me .hdr{background:linear-gradient(160deg,#0E5C8A,#1788B0 58%,#39A8CE);}
+  .t-me .scrim{background:linear-gradient(180deg,rgba(255,255,255,.10),transparent 48%);}
+  .t-me .badge{background:#fff;color:#0E6E92;box-shadow:0 6px 16px rgba(14,92,138,.38);}
+  .t-me .tab.attiva{background:var(--accent-d);border-color:var(--accent-d);}
+  .t-me .aggiungi-qui{color:var(--accent-d);border-color:#BBE2EF;}
+  .t-me .totale .cifra{color:#0E5C8A;}
+  .t-me .pieno.acc{background:linear-gradient(90deg,#1E8FB5,#7FD0E8);}
+
+  @media (prefers-reduced-motion: reduce){
+    .motif{transition:none!important;}
+  }
+
+  .nota{max-width:1200px;margin:40px auto 0;background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:22px 26px;box-shadow:var(--shadow-md);}
+  .nota h3{font-family:'Calistoga',serif;color:var(--navy);font-size:22px;font-weight:400;margin-bottom:12px;}
+  .nota ul{list-style:none;display:grid;gap:11px;}
+  .nota li{display:flex;gap:11px;font-size:14px;color:#44403c;line-height:1.5;}
+  .nota li b{color:var(--ink);}
+  .nota .dot{width:9px;height:9px;border-radius:50%;flex:none;margin-top:6px;}
+</style>
+</head>
+<body>
+
+<!-- ====== SPRITE ICONE DUOTONE ====== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect class="bg" x="3" y="5.5" width="18" height="15" rx="3"/><g class="fg"><rect x="3" y="5.5" width="18" height="15" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></g></symbol>
+  <symbol id="i-wallet" viewBox="0 0 24 24"><rect class="bg" x="3" y="6" width="18" height="13" rx="3"/><g class="fg"><path d="M3 8.5V17a2.5 2.5 0 0 0 2.5 2.5h13A2.5 2.5 0 0 0 21 17v-6a2.5 2.5 0 0 0-2.5-2.5H5"/><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6H16"/><path d="M21 11h-4a2 2 0 0 0 0 4h4"/></g></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><rect class="bg" x="5" y="7.5" width="14" height="13" rx="3.5"/><g class="fg"><rect x="5" y="7.5" width="14" height="13" rx="3.5"/><path d="M9 7.5V6a3 3 0 0 1 6 0v1.5M5 12.5h14"/></g></symbol>
+  <symbol id="i-cam" viewBox="0 0 24 24"><rect class="bg" x="3" y="8" width="18" height="12" rx="3.5"/><g class="fg"><rect x="3" y="8" width="18" height="12" rx="3.5"/><circle cx="12" cy="14" r="3.3"/><path d="M9 8l1.3-2.2h3.4L15 8"/></g></symbol>
+  <symbol id="i-chev-l" viewBox="0 0 24 24"><g class="fg"><path d="M14.5 6l-6 6 6 6"/></g></symbol>
+  <symbol id="i-chev-r" viewBox="0 0 24 24"><g class="fg"><path d="M9.5 6l6 6-6 6"/></g></symbol>
+  <symbol id="i-chev-d" viewBox="0 0 24 24"><g class="fg"><path d="M6 9.5l6 6 6-6"/></g></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path class="bg" d="M9 4 3.5 6v13.5L9 17.5l6 2 5.5-2V4l-5.5 2z"/><g class="fg"><path d="M9 4 3.5 6v13.5L9 17.5l6 2 5.5-2V4l-5.5 2-6-2zM9 4v13.5M15 6v13.5"/></g></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle class="bg" cx="12" cy="12" r="9"/><g class="fg"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></g></symbol>
+  <symbol id="i-plane" viewBox="0 0 24 24"><path class="bg" d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.6c-.2.4 0 .9.4 1.2L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.4c.3.4.8.5 1.2.3l.6-.3c.4-.2.6-.7.5-1.2z"/><g class="fg"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.6c-.2.4 0 .9.4 1.2L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.4c.3.4.8.5 1.2.3l.6-.3c.4-.2.6-.7.5-1.2z"/></g></symbol>
+  <symbol id="i-train" viewBox="0 0 24 24"><rect class="bg" x="5" y="4" width="14" height="13" rx="4"/><g class="fg"><rect x="5" y="4" width="14" height="13" rx="4"/><path d="M5 11h14M8.5 21l1.5-2.5M15.5 21 14 18.5"/><circle cx="9" cy="14" r=".6"/><circle cx="15" cy="14" r=".6"/></g></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24"><path class="bg" d="M4 8h16v3a1.6 1.6 0 0 0 0 3.2V18H4v-3.8A1.6 1.6 0 0 0 4 11z"/><g class="fg"><path d="M4 8h16v3a1.6 1.6 0 0 0 0 3.2V18H4v-3.8A1.6 1.6 0 0 0 4 11z"/><path d="M14 8.5v9" stroke-dasharray="1.5 2.5"/></g></symbol>
+  <symbol id="i-food" viewBox="0 0 24 24"><g class="fg"><path d="M7 3v8M5 3v4a2 2 0 0 0 4 0V3M7 11v10"/><path d="M16.5 3c-1.6 0-2.6 2.2-2.6 5s1 4 2.6 4M16.5 3c1.6 0 2.6 2.2 2.6 5s-1 4-2.6 4M16.5 12v9"/></g></symbol>
+  <symbol id="i-bed" viewBox="0 0 24 24"><path class="bg" d="M3 13h18a0 0 0 0 1 0 0v5H3z"/><g class="fg"><path d="M3 18V8M3 13h15a3 3 0 0 1 3 3v2M21 18v-2"/><path d="M6.5 13v-2a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 12.5 11v2"/></g></symbol>
+  <symbol id="i-anchor" viewBox="0 0 24 24"><circle class="bg" cx="12" cy="6" r="2.5"/><g class="fg"><circle cx="12" cy="6" r="2.5"/><path d="M12 8.5V21M8 12H5.5M16 12h2.5M5 14a7 7 0 0 0 14 0"/></g></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><circle class="bg" cx="12" cy="12" r="9"/><g class="fg"><path d="M12 7.5v9M7.5 12h9"/></g></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle class="bg" cx="9" cy="8" r="3.2"/><g class="fg"><circle cx="9" cy="8" r="3.2"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 5.2a3.2 3.2 0 0 1 0 6M21 20a6 6 0 0 0-4-5.6"/></g></symbol>
+  <symbol id="i-sunrise" viewBox="0 0 24 24"><path class="bg" d="M7.5 17a4.5 4.5 0 0 1 9 0z"/><g class="fg"><path d="M7.5 17a4.5 4.5 0 0 1 9 0M3 21h18M12 3v4M5.5 9 7 10.5M18.5 9 17 10.5M2.5 14H4M20 14h1.5"/></g></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle class="bg" cx="12" cy="12" r="4.2"/><g class="fg"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M2 12h2.2M19.8 12H22M5 5l1.6 1.6M17.4 17.4 19 19M19 5l-1.6 1.6M6.6 17.4 5 19"/></g></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path class="bg" d="M20 14.5A8 8 0 1 1 9.5 4 6.2 6.2 0 0 0 20 14.5z"/><g class="fg"><path d="M20 14.5A8 8 0 1 1 9.5 4 6.2 6.2 0 0 0 20 14.5z"/></g></symbol>
+</svg>
+
+<div class="doc-head">
+  <div class="doc-eyebrow">Proposta v2 · Premium — icone duotone + temi-mood</div>
+  <h1 class="doc-title">Cura nel dettaglio</h1>
+  <p class="doc-sub">Zero emoji nell'interfaccia: un'unica famiglia di icone <b>duotone</b> che si tinge col tema. Temi-mood ampi (un solo tema copre tante destinazioni), header "palcoscenico" con motivo trasparente che si muove al tocco, e una texture di sfondo discreta dietro le card. Forte personalità, leggibilità intatta.</p>
+</div>
+
+<div class="showcase">
+  <h4>Sistema icone · duotone, una sola famiglia (tinta = tema)</h4>
+  <div class="ico-grid">
+    <div class="ico-cell"><svg class="ico"><use href="#i-cal"/></svg><small>Viaggio</small></div>
+    <div class="ico-cell"><svg class="ico"><use href="#i-wallet"/></svg><small>Budget</small></div>
+    <div class="ico-cell"><svg class="ico"><use href="#i-bag"/></svg><small>Preparativi</small></div>
+    <div class="ico-cell"><svg class="ico"><use href="#i-cam"/></svg><small>Ricordi</small></div>
+    <div class="ico-cell"><svg class="ico"><use href="#i-plane"/></svg><small>Volo</small></div>
+    <div class="ico-cell"><svg class="ico"><use href="#i-train"/></svg><small>Treno</small></div>
+    <div class="ico-cell"><svg class="ico"><use href="#i-bed"/></svg><small>Hotel</small></div>
+    <div class="ico-cell"><svg class="ico"><use href="#i-ticket"/></svg><small>Attività</small></div>
+    <div class="ico-cell"><svg class="ico"><use href="#i-food"/></svg><small>Ristorante</small></div>
+    <div class="ico-cell"><svg class="ico"><use href="#i-anchor"/></svg><small>Traghetto</small></div>
+    <div class="ico-cell"><svg class="ico"><use href="#i-users"/></svg><small>Persone</small></div>
+    <div class="ico-cell"><svg class="ico"><use href="#i-map"/></svg><small>Mappa</small></div>
+    <div class="ico-cell"><svg class="ico"><use href="#i-clock"/></svg><small>Countdown</small></div>
+    <div class="ico-cell"><svg class="ico"><use href="#i-sunrise"/></svg><small>Mattina</small></div>
+    <div class="ico-cell"><svg class="ico"><use href="#i-sun"/></svg><small>Pomeriggio</small></div>
+    <div class="ico-cell"><svg class="ico"><use href="#i-moon"/></svg><small>Sera</small></div>
+  </div>
+</div>
+
+<div class="picker">
+  <h4>Selettore tema-mood · ampio (un tema = tante mete) · auto + override</h4>
+  <div class="row">
+    <div class="tchip sel"><span class="dot" style="background:linear-gradient(135deg,#3A2350,#E0364F)"></span>Oriente / Sol Levante <span class="auto">· suggerito</span></div>
+    <div class="tchip"><span class="dot" style="background:linear-gradient(135deg,#0E5C8A,#39A8CE)"></span>Mediterraneo</div>
+    <div class="tchip"><span class="dot" style="background:linear-gradient(135deg,#1c6b3a,#43c08a)"></span>Tropici</div>
+    <div class="tchip"><span class="dot" style="background:linear-gradient(135deg,#3a4a6b,#9fb4d8)"></span>Aurora / Nordico</div>
+    <div class="tchip"><span class="dot" style="background:linear-gradient(135deg,#8a4b1f,#e0a04b)"></span>Deserto</div>
+    <div class="tchip"><span class="dot" style="background:linear-gradient(135deg,#1a1a2e,#5b6bb0)"></span>Metropoli</div>
+    <div class="tchip"><span class="dot" style="background:linear-gradient(135deg,#3d5240,#8fb08a)"></span>Vette / Alpino</div>
+    <div class="tchip"><span class="dot" style="background:linear-gradient(135deg,#16264C,#EA580C)"></span>Avventura (default)</div>
+  </div>
+</div>
+
+<div class="galleria">
+
+  <!-- ORIENTE · ITINERARIO -->
+  <div class="phone-wrap">
+    <div class="phone-label">Oriente / Sol Levante <span>Itinerario</span></div>
+    <div class="phone t-or"><div class="screen"><div class="notch"></div><div class="scroll">
+      <div class="hdr">
+        <div class="motif" data-motif>
+          <svg width="100%" height="100%" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" style="opacity:.16">
+            <circle cx="250" cy="60" r="46" fill="#fff"/>
+            <g stroke="#fff" stroke-width="2" fill="none" opacity=".7">
+              <path d="M-20 150 a40 40 0 0 1 80 0 a40 40 0 0 1 80 0 a40 40 0 0 1 80 0 a40 40 0 0 1 80 0 a40 40 0 0 1 80 0"/>
+              <path d="M-20 175 a40 40 0 0 1 80 0 a40 40 0 0 1 80 0 a40 40 0 0 1 80 0 a40 40 0 0 1 80 0 a40 40 0 0 1 80 0"/>
+            </g>
+          </svg>
+        </div>
+        <div class="scrim"></div>
+        <div class="testa-riga">
+          <button class="btn-ghost"><svg class="ico"><use href="#i-chev-l"/></svg> Viaggi</button>
+          <button class="btn-ghost"><svg class="ico"><use href="#i-map"/></svg> Mappa</button>
+        </div>
+        <div class="eyebrow">Diario di bordo</div>
+        <h1>Tour del Giappone</h1>
+        <div class="date">3 ottobre → 17 ottobre</div>
+        <span class="badge"><svg class="ico"><use href="#i-clock"/></svg> Mancano 38 giorni</span>
+      </div>
+      <div class="tabs">
+        <div class="tab attiva"><svg class="ico"><use href="#i-cal"/></svg>Viaggio</div>
+        <div class="tab"><svg class="ico"><use href="#i-wallet"/></svg>Budget</div>
+        <div class="tab"><svg class="ico"><use href="#i-bag"/></svg>Preparativi</div>
+        <div class="tab"><svg class="ico"><use href="#i-cam"/></svg>Ricordi</div>
+      </div>
+      <div class="suggerimento">Tocca un giorno · scorri per le azioni</div>
+      <div class="gcard">
+        <div class="gcard-testa"><div class="gcard-info"><b>Giorno 1</b><small>gio 3 ott · 2 attività · € 18</small></div><div class="chev"><svg class="ico"><use href="#i-chev-d"/></svg></div></div>
+        <div class="gcard-corpo">
+          <div class="fascia"><svg class="ico"><use href="#i-sunrise"/></svg> Mattina</div>
+          <div class="tappa"><div class="barra" style="background:#5E548E"></div><div class="ico-wrap" style="color:#5E548E"><svg class="ico" style="font-size:18px"><use href="#i-ticket"/></svg></div><div class="corpo"><div class="meta">Attività · 09:30</div><div class="titolo">Tempio Senso-ji</div><div class="luogo">Asakusa, Tokyo</div></div><div class="costo">Gratis</div></div>
+          <div class="fascia"><svg class="ico"><use href="#i-moon"/></svg> Sera</div>
+          <div class="tappa"><div class="barra" style="background:#C9514C"></div><div class="ico-wrap" style="color:#C9514C"><svg class="ico" style="font-size:18px"><use href="#i-food"/></svg></div><div class="corpo"><div class="meta">Ristorante · 20:00</div><div class="titolo">Ramen a Shinjuku</div><div class="luogo">Tokyo</div></div><div class="costo">€ 18</div></div>
+          <button class="aggiungi-qui"><svg class="ico"><use href="#i-plus"/></svg> Attività in questo giorno</button>
+        </div>
+      </div>
+      <div class="gcard"><div class="gcard-testa"><div class="gcard-info"><b>Giorno 2</b><small>ven 4 ott · giornata libera</small></div><div class="chev"><svg class="ico"><use href="#i-chev-r"/></svg></div></div></div>
+    </div></div></div>
+  </div>
+
+  <!-- ORIENTE · BUDGET -->
+  <div class="phone-wrap">
+    <div class="phone-label">Oriente / Sol Levante <span>Budget</span></div>
+    <div class="phone t-or"><div class="screen"><div class="notch"></div><div class="scroll">
+      <div class="hdr">
+        <div class="motif" data-motif>
+          <svg width="100%" height="100%" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" style="opacity:.16">
+            <circle cx="250" cy="60" r="46" fill="#fff"/>
+            <g stroke="#fff" stroke-width="2" fill="none" opacity=".7">
+              <path d="M-20 150 a40 40 0 0 1 80 0 a40 40 0 0 1 80 0 a40 40 0 0 1 80 0 a40 40 0 0 1 80 0 a40 40 0 0 1 80 0"/>
+              <path d="M-20 175 a40 40 0 0 1 80 0 a40 40 0 0 1 80 0 a40 40 0 0 1 80 0 a40 40 0 0 1 80 0 a40 40 0 0 1 80 0"/>
+            </g>
+          </svg>
+        </div>
+        <div class="scrim"></div>
+        <div class="testa-riga">
+          <button class="btn-ghost"><svg class="ico"><use href="#i-chev-l"/></svg> Viaggi</button>
+          <button class="btn-ghost"><svg class="ico"><use href="#i-map"/></svg> Mappa</button>
+        </div>
+        <h1>Tour del Giappone</h1>
+        <div class="date">3 ottobre → 17 ottobre</div>
+      </div>
+      <div class="tabs">
+        <div class="tab"><svg class="ico"><use href="#i-cal"/></svg>Viaggio</div>
+        <div class="tab attiva"><svg class="ico"><use href="#i-wallet"/></svg>Budget</div>
+        <div class="tab"><svg class="ico"><use href="#i-bag"/></svg>Preparativi</div>
+        <div class="tab"><svg class="ico"><use href="#i-cam"/></svg>Ricordi</div>
+      </div>
+      <div style="height:14px"></div>
+      <div class="card totale"><div class="eyebrow">Totale viaggio</div><div class="cifra">€ 3.480</div><div class="sub">≈ ¥ 556.800 in valuta locale</div></div>
+      <div class="card">
+        <b class="titoletto"><svg class="ico" style="color:var(--accent-d)"><use href="#i-users"/></svg> Spese per viaggiatore</b>
+        <div class="cat"><div class="riga"><span class="nome">Sara</span><b>€ 1.160</b></div><div class="pista"><div class="pieno acc" style="width:100%"></div></div></div>
+        <div class="cat"><div class="riga"><span class="nome">Luca</span><b>€ 1.160</b></div><div class="pista"><div class="pieno acc" style="width:100%"></div></div></div>
+        <div class="cat"><div class="riga"><span class="nome">Mia</span><b>€ 1.160</b></div><div class="pista"><div class="pieno acc" style="width:100%"></div></div></div>
+      </div>
+      <div class="card">
+        <b class="titoletto">Spese per categoria</b>
+        <div class="cat"><div class="riga"><span class="nome"><svg class="ico" style="color:#3D5A80"><use href="#i-plane"/></svg>Volo</span><b>€ 1.900</b></div><div class="pista"><div class="pieno" style="width:100%;background:#3D5A80"></div></div></div>
+        <div class="cat"><div class="riga"><span class="nome"><svg class="ico" style="color:#0891B2"><use href="#i-bed"/></svg>Hotel</span><b>€ 1.100</b></div><div class="pista"><div class="pieno" style="width:58%;background:#0891B2"></div></div></div>
+      </div>
+    </div></div></div>
+  </div>
+
+  <!-- MEDITERRANEO · ITINERARIO -->
+  <div class="phone-wrap">
+    <div class="phone-label">Mediterraneo <span>Itinerario</span></div>
+    <div class="phone t-me"><div class="screen"><div class="notch"></div><div class="scroll">
+      <div class="hdr">
+        <div class="motif" data-motif>
+          <svg width="100%" height="100%" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" style="opacity:.18">
+            <g stroke="#fff" stroke-width="2.5" fill="none">
+              <path d="M-20 60 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0"/>
+              <path d="M-20 95 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0"/>
+              <path d="M-20 130 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0"/>
+              <path d="M-20 165 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0"/>
+            </g>
+          </svg>
+        </div>
+        <div class="scrim"></div>
+        <div class="testa-riga">
+          <button class="btn-ghost"><svg class="ico"><use href="#i-chev-l"/></svg> Viaggi</button>
+          <button class="btn-ghost"><svg class="ico"><use href="#i-map"/></svg> Mappa</button>
+        </div>
+        <div class="eyebrow">Diario di bordo</div>
+        <h1>Estate nelle Cicladi</h1>
+        <div class="date">10 luglio → 18 luglio</div>
+        <span class="badge"><svg class="ico"><use href="#i-plane"/></svg> Viaggio in corso!</span>
+      </div>
+      <div class="tabs">
+        <div class="tab attiva"><svg class="ico"><use href="#i-cal"/></svg>Viaggio</div>
+        <div class="tab"><svg class="ico"><use href="#i-wallet"/></svg>Budget</div>
+        <div class="tab"><svg class="ico"><use href="#i-bag"/></svg>Preparativi</div>
+        <div class="tab"><svg class="ico"><use href="#i-cam"/></svg>Ricordi</div>
+      </div>
+      <div class="suggerimento">Tocca un giorno · scorri per le azioni</div>
+      <div class="gcard">
+        <div class="gcard-testa"><div class="gcard-info"><b>Giorno 3</b><small>sab 12 lug · 2 attività · € 75</small></div><div class="chev"><svg class="ico"><use href="#i-chev-d"/></svg></div></div>
+        <div class="gcard-corpo">
+          <div class="fascia"><svg class="ico"><use href="#i-sun"/></svg> Pomeriggio</div>
+          <div class="tappa"><div class="barra" style="background:#5E548E"></div><div class="ico-wrap" style="color:#5E548E"><svg class="ico" style="font-size:18px"><use href="#i-ticket"/></svg></div><div class="corpo"><div class="meta">Attività · 16:00</div><div class="titolo">Tramonto a Oia</div><div class="luogo">Santorini</div></div><div class="costo">Gratis</div></div>
+          <div class="fascia"><svg class="ico"><use href="#i-moon"/></svg> Sera</div>
+          <div class="tappa"><div class="barra" style="background:#C9514C"></div><div class="ico-wrap" style="color:#C9514C"><svg class="ico" style="font-size:18px"><use href="#i-food"/></svg></div><div class="corpo"><div class="meta">Ristorante · 21:00</div><div class="titolo">Taverna sul mare</div><div class="luogo">Santorini</div></div><div class="costo">€ 75</div></div>
+          <button class="aggiungi-qui"><svg class="ico"><use href="#i-plus"/></svg> Attività in questo giorno</button>
+        </div>
+      </div>
+      <div class="gcard"><div class="gcard-testa"><div class="gcard-info"><b>Giorno 4</b><small>dom 13 lug · giornata libera</small></div><div class="chev"><svg class="ico"><use href="#i-chev-r"/></svg></div></div></div>
+    </div></div></div>
+  </div>
+
+  <!-- MEDITERRANEO · BUDGET -->
+  <div class="phone-wrap">
+    <div class="phone-label">Mediterraneo <span>Budget</span></div>
+    <div class="phone t-me"><div class="screen"><div class="notch"></div><div class="scroll">
+      <div class="hdr">
+        <div class="motif" data-motif>
+          <svg width="100%" height="100%" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" style="opacity:.18">
+            <g stroke="#fff" stroke-width="2.5" fill="none">
+              <path d="M-20 60 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0"/>
+              <path d="M-20 95 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0"/>
+              <path d="M-20 130 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0"/>
+              <path d="M-20 165 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0 a40 30 0 0 1 80 0"/>
+            </g>
+          </svg>
+        </div>
+        <div class="scrim"></div>
+        <div class="testa-riga">
+          <button class="btn-ghost"><svg class="ico"><use href="#i-chev-l"/></svg> Viaggi</button>
+          <button class="btn-ghost"><svg class="ico"><use href="#i-map"/></svg> Mappa</button>
+        </div>
+        <h1>Estate nelle Cicladi</h1>
+        <div class="date">10 luglio → 18 luglio</div>
+      </div>
+      <div class="tabs">
+        <div class="tab"><svg class="ico"><use href="#i-cal"/></svg>Viaggio</div>
+        <div class="tab attiva"><svg class="ico"><use href="#i-wallet"/></svg>Budget</div>
+        <div class="tab"><svg class="ico"><use href="#i-bag"/></svg>Preparativi</div>
+        <div class="tab"><svg class="ico"><use href="#i-cam"/></svg>Ricordi</div>
+      </div>
+      <div style="height:14px"></div>
+      <div class="card totale"><div class="eyebrow">Totale viaggio</div><div class="cifra">€ 1.940</div><div class="sub">Diviso tra 2 viaggiatori</div></div>
+      <div class="card">
+        <b class="titoletto"><svg class="ico" style="color:var(--accent-d)"><use href="#i-users"/></svg> Spese per viaggiatore</b>
+        <div class="cat"><div class="riga"><span class="nome">Anna</span><b>€ 970</b></div><div class="pista"><div class="pieno acc" style="width:100%"></div></div></div>
+        <div class="cat"><div class="riga"><span class="nome">Marco</span><b>€ 970</b></div><div class="pista"><div class="pieno acc" style="width:100%"></div></div></div>
+      </div>
+      <div class="card">
+        <b class="titoletto">Spese per categoria</b>
+        <div class="cat"><div class="riga"><span class="nome"><svg class="ico" style="color:#0891B2"><use href="#i-bed"/></svg>Hotel</span><b>€ 1.040</b></div><div class="pista"><div class="pieno" style="width:100%;background:#0891B2"></div></div></div>
+        <div class="cat"><div class="riga"><span class="nome"><svg class="ico" style="color:#C9514C"><use href="#i-food"/></svg>Ristorante</span><b>€ 560</b></div><div class="pista"><div class="pieno" style="width:54%;background:#C9514C"></div></div></div>
+        <div class="cat"><div class="riga"><span class="nome"><svg class="ico" style="color:#1E8FB5"><use href="#i-anchor"/></svg>Traghetti</span><b>€ 340</b></div><div class="pista"><div class="pieno" style="width:33%;background:#1E8FB5"></div></div></div>
+      </div>
+    </div></div></div>
+  </div>
+
+</div>
+
+<div class="nota">
+  <h3>Cosa dimostra questo render</h3>
+  <ul>
+    <li><span class="dot" style="background:#1c1917"></span><div><b>Zero emoji:</b> tab, tipi tappa, badge, pulsanti, fasce orarie e categorie budget ora usano <b>icone duotone</b> di un'unica famiglia (riempimento tenue + tratto fine). Coerenti, premium, e si <b>tingono</b> col tema dove serve.</div></li>
+    <li><span class="dot" style="background:#E0485C"></span><div><b>Header vivo:</b> il motivo a tema è in <b>trasparenza</b> dietro al nome, fermo di base. <b>Passa il mouse / tocca l'header</b> in queste anteprime → il motivo si sposta con un parallax morbido. Dal vivo su telefono reagisce al tocco/inclinazione.</div></li>
+    <li><span class="dot" style="background:#1E8FB5"></span><div><b>Temi-mood ampi:</b> "Oriente" non è solo Giappone, "Mediterraneo" copre Grecia/Italia/Spagna/Croazia… Pochi temi forti, ognuno per tante mete. Niente monotonia.</div></li>
+    <li><span class="dot" style="background:#16264C"></span><div><b>Sfondo a tema discreto:</b> texture leggerissima dietro le card (puntini per Oriente, onde per Mediterraneo). Identità anche scorrendo, ma mai dietro al testo.</div></li>
+    <li><span class="dot" style="background:#D97706"></span><div><b>Colori semantici intatti:</b> volo/treno/hotel/ristorante mantengono il loro colore-tipo per il riconoscimento immediato.</div></li>
+  </ul>
+</div>
+
+<script>
+  // parallax morbido del motivo header al tocco/movimento (demo)
+  document.querySelectorAll('.hdr').forEach(h=>{
+    const m=h.querySelector('[data-motif]'); if(!m) return;
+    function muovi(x,y){
+      const r=h.getBoundingClientRect();
+      const dx=((x-r.left)/r.width-.5);
+      const dy=((y-r.top)/r.height-.5);
+      m.style.transform=`translate(${dx*22}px,${dy*14}px) scale(1.06)`;
+    }
+    h.addEventListener('pointermove',e=>muovi(e.clientX,e.clientY));
+    h.addEventListener('touchmove',e=>{const t=e.touches[0];muovi(t.clientX,t.clientY);},{passive:true});
+    h.addEventListener('pointerleave',()=>m.style.transform='');
+    h.addEventListener('touchend',()=>m.style.transform='');
+  });
+</script>
+</body>
+</html>
