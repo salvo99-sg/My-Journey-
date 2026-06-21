@@ -6,7 +6,7 @@ export const RemotionRoot: React.FC = () => {
   return (
     <>
       <Composition
-        id="OrienteHeader"
+        id="GiapponeFuji"
         component={MyComposition}
         durationInFrames={150}
         fps={30}
