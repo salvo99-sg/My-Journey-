@@ -6,11 +6,14 @@
 <title>Agenda Viaggi</title>
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Calistoga&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Avenir Next', 'Segoe UI', system-ui, sans-serif; background: #f5f5f4; min-height: 100vh; }
+  body { font-family: 'Inter', 'Avenir Next', 'Segoe UI', system-ui, sans-serif; background: #FFF7ED; min-height: 100vh; }
+  /* Titoli editoriali: serif caldo "rivista di viaggi" (il quaderno resta Caveat) */
+  header h1, #nomeViaggio, .viaggio-card h2, .totale .cifra, .gcard-info b,
+  .modale h3, .visore .dida, .cq-titolo { font-family: 'Calistoga', Georgia, serif; font-weight: 400; }
   .app { max-width: 480px; margin: 0 auto; padding-bottom: 110px; }
 
   /* ===== SPLASH ===== */
@@ -60,7 +63,7 @@
   .fc { display: flex; gap: 9px; justify-content: center; margin-top: 12px; perspective: 500px; }
   .fc-unita { text-align: center; }
   .fc-card { position: relative; background: linear-gradient(#2c2c31 48%, #18181b 52%); border-radius: 12px;
-    min-width: 62px; padding: 9px 4px; font-size: 42px; font-weight: 800; color: #f5f5f4;
+    min-width: 62px; padding: 9px 4px; font-size: 42px; font-weight: 800; color: #FFF7ED;
     font-variant-numeric: tabular-nums; box-shadow: 0 8px 20px rgba(0,0,0,.55), inset 0 1px 0 #ffffff14;
     transform-style: preserve-3d; }
   .fc-card::after { content: ''; position: absolute; left: 4px; right: 4px; top: 50%; height: 2px; background: #000c; }
@@ -69,7 +72,7 @@
   .fc-eti { margin-top: 6px; font-size: 9px; letter-spacing: 2.5px; color: #C9A227; text-transform: uppercase; font-weight: 700; }
   .fc-incorso { margin-top: 14px; font-size: 30px; font-weight: 800; color: #fff; }
   .fc-incorso small { display: block; font-size: 13px; font-weight: 400; color: #C9A227; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
-  .btn-inizia { display: inline-flex; align-items: center; gap: 9px; margin: 20px auto 0; background: #E4572E; color: #fff; border: none; border-radius: 999px;
+  .btn-inizia { display: inline-flex; align-items: center; gap: 9px; margin: 20px auto 0; background: #EA580C; color: #fff; border: none; border-radius: 999px;
     padding: 15px 40px; font-size: 17px; font-weight: 700; box-shadow: 0 8px 26px rgba(228,87,46,.45); }
   .btn-inizia svg { width: 20px; height: 20px; fill: #fff; }
   @media (prefers-reduced-motion: reduce) {
@@ -122,18 +125,20 @@
   #espVotoTxt { text-align: center; color: #78716c; font-size: 14px; margin-bottom: 6px; min-height: 18px; }
   #espFoto { width: 100%; border-radius: 12px; margin: 8px 0; display: block; }
 
-  header { background: linear-gradient(135deg, #16264C, #2C3E6B); color: #fff; padding: 26px 20px 18px; border-radius: 0 0 24px 24px; }
+  header { background: linear-gradient(150deg, #16264C, #233a6b 70%, #2d4a86); color: #fff; padding: 26px 20px 18px; border-radius: 0 0 28px 28px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(22,38,76,.22); }
+  header::after { content:""; position:absolute; right:-30px; top:-34px; width:150px; height:150px; border-radius:50%; pointer-events:none; background: radial-gradient(circle, rgba(234,88,12,.32), transparent 70%); }
+  header h1 { position: relative; }
   .eyebrow { font-family: ui-monospace, monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: .7; }
   header h1 { font-size: 25px; margin-top: 4px; }
   header .date { font-size: 14px; opacity: .85; margin-top: 2px; }
   .testa-riga { display: flex; justify-content: space-between; align-items: center; }
   .btn-ghost { background: rgba(255,255,255,.15); color: #fff; border: none; border-radius: 999px; padding: 8px 14px; font-size: 13px; font-weight: 600; }
-  .countdown { display: inline-block; margin-top: 10px; background: #E4572E; color: #fff; border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 700; }
-  .countdown.corso { background: #2A9D8F; }
+  .countdown { display: inline-block; margin-top: 10px; background: #EA580C; color: #fff; border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 700; }
+  .countdown.corso { background: #0891B2; }
   .countdown.fine { background: rgba(255,255,255,.2); }
 
   .tabs { display: flex; gap: 6px; padding: 14px 16px 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .tab { flex: 0 0 auto; padding: 9px 14px; border-radius: 999px; border: 1px solid #e7e5e4; background: #fff; color: #57534e; font-size: 14px; font-weight: 600; }
+  .tab { flex: 0 0 auto; padding: 9px 14px; border-radius: 999px; border: 1px solid #FCEAE1; background: #fff; color: #57534e; font-size: 14px; font-weight: 600; }
   .tab.attiva { background: #1c1917; color: #fff; border-color: #1c1917; }
   #macroTabs { overflow-x: visible; }
   #macroTabs .tab { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center;
@@ -152,7 +157,7 @@
   .giorno-testa h2 small { font-weight: 400; color: #a8a29e; font-size: 12px; }
   .giorno-testa span { font-family: ui-monospace, monospace; font-size: 11px; color: #78716c; }
   .fascia { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #a8a29e; margin: 10px 2px 6px; }
-  .tappa { display: flex; background: #fff; border: 1px solid #e7e5e4; border-radius: 14px; overflow: hidden; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+  .tappa { display: flex; background: #fff; border: 1px solid #FCEAE1; border-radius: 14px; overflow: hidden; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(120,70,30,.06); }
   .tappa .barra { width: 6px; flex-shrink: 0; }
   .tappa .corpo { flex: 1; padding: 10px 12px; border-right: 1px dashed #d6d3d1; }
   .tappa .meta { font-family: ui-monospace, monospace; font-size: 11px; color: #78716c; text-transform: uppercase; letter-spacing: .5px; }
@@ -164,22 +169,24 @@
   .vuoto { font-size: 13px; color: #a8a29e; font-style: italic; }
   .suggerimento { font-size: 12px; color: #a8a29e; text-align: center; margin: -4px 0 14px; }
 
-  .card { background: #fff; border: 1px solid #e7e5e4; border-radius: 18px; padding: 20px; margin-bottom: 14px; }
+  .card { background: #fff; border: 1px solid #FCEAE1; border-radius: 20px; padding: 20px; margin-bottom: 14px; box-shadow: 0 1px 2px rgba(120,70,30,.06), 0 1px 3px rgba(120,70,30,.05); }
   .totale { text-align: center; }
-  .totale .cifra { font-size: 38px; font-weight: 700; color: #1c1917; margin: 4px 0; }
+  .totale .cifra { font-size: 40px; font-weight: 700; color: #16264C; margin: 4px 0; }
   .totale .sub { font-size: 13px; color: #78716c; }
   .cat { margin-top: 12px; }
   .cat .riga { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 4px; }
   .cat .riga b { font-family: ui-monospace, monospace; }
-  .cat .pista { height: 8px; background: #f5f5f4; border-radius: 999px; overflow: hidden; }
+  .cat .pista { height: 8px; background: #FFF7ED; border-radius: 999px; overflow: hidden; }
   .cat .pieno { height: 100%; border-radius: 999px; }
 
-  .viaggio-card { background: #fff; border: 1px solid #e7e5e4; border-radius: 18px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .viaggio-card { background: #fff; border: 1px solid #FCEAE1; border-radius: 20px; padding: 16px; margin-bottom: 13px; display: flex; justify-content: space-between; align-items: center; gap: 10px; box-shadow: 0 1px 2px rgba(120,70,30,.06), 0 1px 3px rgba(120,70,30,.05); transition: transform .2s cubic-bezier(.2,.8,.2,1), box-shadow .2s cubic-bezier(.2,.8,.2,1); }
+  .viaggio-card:active { transform: scale(.985); box-shadow: 0 6px 18px rgba(120,70,30,.12); }
+  @media (hover: hover) { .viaggio-card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(120,70,30,.12); } }
   .viaggio-card .info { flex: 1; }
   .viaggio-card h2 { font-size: 18px; color: #1c1917; }
   .viaggio-card .quando { font-size: 13px; color: #78716c; margin-top: 2px; }
-  .viaggio-card .stato { font-size: 12px; font-weight: 700; margin-top: 6px; color: #E4572E; }
-  .viaggio-card .stato.corso { color: #2A9D8F; }
+  .viaggio-card .stato { font-size: 12px; font-weight: 700; margin-top: 6px; color: #EA580C; }
+  .viaggio-card .stato.corso { color: #0891B2; }
   .viaggio-card .stato.fine { color: #a8a29e; }
   .viaggio-card .x { background: none; border: none; color: #d6d3d1; font-size: 17px; padding: 6px; }
 
@@ -194,19 +201,19 @@
   .ga-rinomina { background: #4264FB; }
   .ga-svuota { background: #dc2626; }
   .gcard { position: relative; background: #fff; border-radius: 16px;
-    box-shadow: 0 1px 4px rgba(0,0,0,.06); will-change: transform; z-index: 1; }
+    box-shadow: 0 1px 4px rgba(120,70,30,.07); will-change: transform; z-index: 1; }
   .gcard-testa { display: flex; align-items: center; justify-content: space-between; padding: 14px; gap: 8px; }
   .gcard-info b { font-size: 16px; color: #1c1917; display: block; }
   .gcard-info small { color: #78716c; }
   .chevron { color: #a8a29e; font-size: 17px; flex: none; }
   .gcard-corpo { padding: 0 10px 12px; }
-  .aggiungi-qui { width: 100%; margin-top: 10px; background: #fafaf9; border: 1.5px dashed #d6d3d1;
-    border-radius: 12px; padding: 11px; color: #57534e; font-weight: 600; font-size: 14px; }
+  .aggiungi-qui { width: 100%; margin-top: 10px; background: #FFFBF6; border: 1.5px dashed #E7C9B5;
+    border-radius: 12px; padding: 11px; color: #EA580C; font-weight: 600; font-size: 14px; }
   #vNomi input, .v-nome { margin-top: 8px; }
   .mini-btn { background: #1c1917; color: #fff; border: none; border-radius: 999px;
     padding: 7px 13px; font-size: 13px; font-weight: 600; }
   .spesa-riga { display: flex; justify-content: space-between; align-items: center; gap: 8px;
-    padding: 9px 0; border-bottom: 1px solid #f5f5f4; font-size: 14.5px; color: #1c1917; }
+    padding: 9px 0; border-bottom: 1px solid #FFF7ED; font-size: 14.5px; color: #1c1917; }
   .spesa-riga small { color: #78716c; display: block; }
   .spesa-riga .x { background: none; border: none; color: #d6d3d1; font-size: 17px; }
   .btn-cambio { position: absolute; top: 12px; right: 12px; width: 42px; height: 42px;
@@ -216,18 +223,18 @@
   .calc-display { background: #1c1917; border-radius: 16px; padding: 14px 12px; margin-top: 10px; position: relative; }
   .calc-riga { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 6px; padding-right: 52px; }
   .calc-riga span { font-size: 13px; font-weight: 800; color: #a8a29e; letter-spacing: .5px; }
-  .calc-riga b { font-size: 31px; color: #f5f5f4; font-variant-numeric: tabular-nums;
+  .calc-riga b { font-size: 31px; color: #FFF7ED; font-variant-numeric: tabular-nums;
     max-width: 62%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .calc-riga.attiva b { color: #E9B824; }
   .calc-swap { position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-    width: 42px; height: 42px; border-radius: 50%; border: none; background: #E4572E; color: #fff;
+    width: 42px; height: 42px; border-radius: 50%; border: none; background: #EA580C; color: #fff;
     font-size: 19px; box-shadow: 0 3px 10px rgba(0,0,0,.35); }
   .calc-c { position: absolute; left: 10px; top: 6px; background: none; border: none;
     color: #78716c; font-size: 12px; font-weight: 800; padding: 4px; }
   .calc-tasti { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
-  .calc-tasti button { background: #f5f5f4; border: none; border-radius: 12px; padding: 14px 0;
+  .calc-tasti button { background: #FFF7ED; border: none; border-radius: 12px; padding: 14px 0;
     font-size: 22px; font-weight: 700; color: #1c1917; }
-  .calc-tasti button:active { background: #e7e5e4; }
+  .calc-tasti button:active { background: #FCEAE1; }
   #toast { position: fixed; left: 50%; bottom: 92px; transform: translateX(-50%) translateY(8px);
     background: #1c1917; color: #fff; padding: 11px 18px; border-radius: 999px; font-size: 14px;
     z-index: 400; box-shadow: 0 8px 24px rgba(0,0,0,.3); opacity: 0; pointer-events: none;
@@ -270,9 +277,9 @@
   #contenitoreMappa { position: absolute; inset: 0; }
   .mappa-avviso { position: relative; z-index: 5; margin: calc(72px + env(safe-area-inset-top, 0px)) 16px 0;
     background: #fff; border-radius: 14px; padding: 18px; font-size: 14px; color: #57534e; line-height: 1.55; }
-  .mappa-avviso code { background: #e7e5e4; border-radius: 6px; padding: 2px 6px; font-size: 12px; }
+  .mappa-avviso code { background: #FCEAE1; border-radius: 6px; padding: 2px 6px; font-size: 12px; }
   .btn-viaggio { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 5;
-    background: #E4572E; color: #fff; border: none; border-radius: 999px; padding: 12px 22px;
+    background: #EA580C; color: #fff; border: none; border-radius: 999px; padding: 12px 22px;
     font-size: 14px; font-weight: 700; box-shadow: 0 4px 14px rgba(0,0,0,.3); }
   .btn-viaggio:disabled { background: #4A5878; }
   /* ===== Barra di avanzamento della riproduzione del viaggio ===== */
@@ -304,7 +311,7 @@
     height: 3px; transform: translateY(-50%); border-radius: 999px; background: rgba(255,255,255,.18); }
   #bvLinea { position: absolute; left: 0; top: 50%; height: 3px; width: 0%;
     transform: translateY(-50%); border-radius: 999px;
-    background: linear-gradient(90deg, #E4572E, #FFB02E); transition: width .12s linear; }
+    background: linear-gradient(90deg, #EA580C, #FFB02E); transition: width .12s linear; }
   .bv-fermata { position: absolute; top: 50%; width: 9px; height: 9px; border-radius: 50%;
     transform: translate(-50%, -50%); z-index: 2; background: #46557a;
     box-shadow: 0 0 0 2px rgba(10,18,40,.92); transition: background .2s ease; }
@@ -329,7 +336,7 @@
   .modale h3 { margin-bottom: 12px; }
   .modale label { display: block; font-size: 12px; font-weight: 600; color: #78716c; margin: 0 0 4px 2px; }
   .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
-  .chip { border: 1px solid #e7e5e4; background: #f5f5f4; color: #57534e; border-radius: 999px; padding: 7px 13px; font-size: 13px; }
+  .chip { border: 1px solid #FCEAE1; background: #FFF7ED; color: #57534e; border-radius: 999px; padding: 7px 13px; font-size: 13px; }
   .chip.scelto { color: #fff; }
   .modale input, .modale select { width: 100%; border: 1px solid #d6d3d1; border-radius: 10px; padding: 11px; font-size: 15px; margin-bottom: 10px; background: #fff; -webkit-appearance: none; }
   .riga-doppia { display: flex; gap: 8px; }
@@ -360,7 +367,7 @@
     z-index: 7; background: rgba(28,25,23,.92); color: #fff; border-radius: 12px; padding: 11px 14px;
     font-size: 14px; text-align: center; min-height: 20px; backdrop-filter: blur(4px); }
   #selConferma { position: absolute; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-    transform: translateX(-50%); z-index: 7; background: #E4572E; color: #fff; border: none;
+    transform: translateX(-50%); z-index: 7; background: #EA580C; color: #fff; border: none;
     border-radius: 999px; padding: 15px 40px; font-size: 16px; font-weight: 700;
     box-shadow: 0 6px 20px rgba(228,87,46,.45); }
   .btn-scegli-mappa { width: 100%; margin: -4px 0 10px; background: #fff; color: #4264FB;
@@ -372,21 +379,21 @@
     background: #fff; border: 1px solid #d6d3d1; border-radius: 12px; overflow: hidden;
     box-shadow: 0 8px 22px rgba(0,0,0,.14); }
   .lista-sugg button { display: block; width: 100%; text-align: left; background: none; border: none;
-    padding: 11px 13px; font-size: 14px; color: #1c1917; border-bottom: 1px solid #f5f5f4; }
+    padding: 11px 13px; font-size: 14px; color: #1c1917; border-bottom: 1px solid #FFF7ED; }
   .lista-sugg button small { display: block; color: #a8a29e; font-size: 12px; margin-top: 1px; }
   .lista-sugg button:last-child { border-bottom: none; }
-  .luogo-ok { font-size: 12px; color: #2A9D8F; font-weight: 600; margin: -6px 2px 10px; }
+  .luogo-ok { font-size: 12px; color: #0891B2; font-weight: 600; margin: -6px 2px 10px; }
 
   /* Foto */
   .barra-azioni { display: flex; gap: 8px; margin-bottom: 16px; }
-  .barra-azioni button { flex: 1; padding: 12px; border-radius: 12px; border: 1px solid #e7e5e4; background: #fff; font-size: 14px; font-weight: 600; color: #1c1917; }
+  .barra-azioni button { flex: 1; padding: 12px; border-radius: 12px; border: 1px solid #FCEAE1; background: #fff; font-size: 14px; font-weight: 600; color: #1c1917; }
   .barra-azioni .primario { background: #1c1917; color: #fff; border-color: #1c1917; }
   .gruppo-foto h2 { font-size: 15px; color: #1c1917; margin: 14px 2px 8px; }
   .griglia { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
   .griglia img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; }
 
   /* Biglietti */
-  .biglietto { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid #e7e5e4; border-radius: 14px; padding: 13px; margin-bottom: 8px; }
+  .biglietto { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid #FCEAE1; border-radius: 14px; padding: 13px; margin-bottom: 8px; }
   .biglietto .ico { font-size: 24px; }
   .biglietto .info { flex: 1; }
   .biglietto .info b { display: block; color: #1c1917; font-size: 15px; }
@@ -396,11 +403,11 @@
   /* Scheda Valigia / Da non dimenticare */
   .valigia-sez { margin-bottom: 18px; }
   .valigia-sez h2 { font-size: 15px; color: #1c1917; margin: 4px 2px 10px; display: flex; align-items: center; gap: 7px; }
-  .check-riga { display: flex; align-items: center; gap: 11px; background: #fff; border: 1px solid #e7e5e4;
+  .check-riga { display: flex; align-items: center; gap: 11px; background: #fff; border: 1px solid #FCEAE1;
     border-radius: 12px; padding: 12px 13px; margin-bottom: 7px; }
-  .check-riga .spunta { background: none; border: 2px solid #2A9D8F; border-radius: 6px; width: 23px; height: 23px;
-    font-size: 14px; line-height: 1; color: #2A9D8F; padding: 0; flex: none; }
-  .check-riga.fatta .spunta { background: #2A9D8F; color: #fff; }
+  .check-riga .spunta { background: none; border: 2px solid #0891B2; border-radius: 6px; width: 23px; height: 23px;
+    font-size: 14px; line-height: 1; color: #0891B2; padding: 0; flex: none; }
+  .check-riga.fatta .spunta { background: #0891B2; color: #fff; }
   .check-riga .testo { flex: 1; font-size: 14.5px; color: #1c1917; }
   .check-riga.fatta .testo { text-decoration: line-through; color: #a8a29e; }
   .check-riga .x { background: none; border: none; color: #d6d3d1; font-size: 17px; padding: 0 2px; flex: none; }
@@ -412,15 +419,15 @@
   .importa-passi { counter-reset: passo; margin: 8px 0 14px; }
   .importa-passo { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
   .importa-passo::before { counter-increment: passo; content: counter(passo);
-    flex: none; width: 27px; height: 27px; border-radius: 50%; background: #E4572E; color: #fff;
+    flex: none; width: 27px; height: 27px; border-radius: 50%; background: #EA580C; color: #fff;
     font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; }
   .importa-passo div { font-size: 14px; color: #44403c; line-height: 1.45; padding-top: 3px; }
   .importa-passo b { color: #1c1917; }
   #importaTesto { width: 100%; min-height: 130px; border: 1.5px solid #d6d3d1; border-radius: 12px;
     padding: 12px; font-size: 13px; font-family: ui-monospace, monospace; resize: vertical; -webkit-appearance: none; }
-  .copia-prompt { width: 100%; background: #2A9D8F; color: #fff; border: none; border-radius: 12px;
+  .copia-prompt { width: 100%; background: #0891B2; color: #fff; border: none; border-radius: 12px;
     padding: 13px; font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-  .btn-importa-home { background: #fff; color: #E4572E; border: 1.5px solid #E4572E; border-radius: 999px;
+  .btn-importa-home { background: #fff; color: #EA580C; border: 1.5px solid #EA580C; border-radius: 999px;
     padding: 14px 22px; font-size: 15px; font-weight: 700; }
 
   /* Visore foto / album */
@@ -950,7 +957,7 @@ REGOLE PER NON SBAGLIARE: una voce per riga; mai andare a capo dentro una voce; 
 const TIPI = {
   volo:       { label: "Volo",       icona: "✈️", colore: "#3D5A80" },
   treno:      { label: "Treno",      icona: "🚄", colore: "#5E548E" },
-  hotel:      { label: "Hotel/B&B",  icona: "🛏️", colore: "#2A9D8F" },
+  hotel:      { label: "Hotel/B&B",  icona: "🛏️", colore: "#0891B2" },
   attivita:   { label: "Attività",   icona: "🎟️", colore: "#E9A03B" },
   ristorante: { label: "Ristorante", icona: "🍝", colore: "#C9514C" },
 };
@@ -1323,7 +1330,7 @@ function renderBudget() {
       ${nomi.map((n, i) => `
         <div class="cat">
           <div class="riga"><span>${n}</span><b>${eur(Math.round(perPersona[i]))}</b></div>
-          <div class="pista"><div class="pieno" style="width:${(perPersona[i] / maxP) * 100}%;background:#2A9D8F"></div></div>
+          <div class="pista"><div class="pieno" style="width:${(perPersona[i] / maxP) * 100}%;background:#0891B2"></div></div>
         </div>`).join("")}
     </div>
     <div class="card">
@@ -1612,7 +1619,7 @@ function aggiornaRotte() {
   else {
     mappa.addSource("rotte", { type: "geojson", data: dati });
     mappa.addLayer({ id: "rotte", type: "line", source: "rotte", slot: "top",
-      paint: { "line-color": "#E4572E", "line-width": 2.5, "line-dasharray": [2, 2.5], "line-opacity": .85, "line-emissive-strength": 1 } });
+      paint: { "line-color": "#EA580C", "line-width": 2.5, "line-dasharray": [2, 2.5], "line-opacity": .85, "line-emissive-strength": 1 } });
   }
   $("btnViaggio").classList.toggle("nascosto", nodi.length < 2);
 }
@@ -1973,7 +1980,7 @@ function chipsPagatori(boxId, sel) {
     const c = document.createElement("button");
     c.type = "button";
     c.className = "chip" + (sel.includes(i) ? " scelto" : "");
-    if (sel.includes(i)) { c.style.background = "#2A9D8F"; c.style.borderColor = "#2A9D8F"; c.style.color = "#fff"; }
+    if (sel.includes(i)) { c.style.background = "#0891B2"; c.style.borderColor = "#0891B2"; c.style.color = "#fff"; }
     c.textContent = nome;
     c.addEventListener("click", () => {
       const k = sel.indexOf(i);
