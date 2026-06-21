@@ -56,11 +56,6 @@ export const ArtGiappone: React.FC = () => {
   const p = (frame % durationInFrames) / durationInFrames;
   const TAU = Math.PI * 2;
 
-  // respiro/ken-burns lieve (seamless)
-  const scale = 1.05 + 0.03 * Math.sin(p * TAU);
-  const panX = Math.sin(p * TAU) * 10;
-  const panY = Math.cos(p * TAU) * 6;
-
   // bagliore del sole che pulsa (sole ~22% x, ~34% y)
   const sunOp = 0.35 + 0.18 * (0.5 + 0.5 * Math.sin(p * TAU));
   // light-leak caldo che attraversa
@@ -71,17 +66,17 @@ export const ArtGiappone: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ overflow: "hidden", backgroundColor: "#2a1830" }}>
-      {/* base illustrata animata */}
-      <AbsoluteFill
+      {/* base illustrata FISSA (niente zoom): animano solo gli overlay */}
+      <Img
+        src={staticFile("art/giappone.png")}
         style={{
-          transform: `scale(${scale}) translate(${panX}px, ${panY}px)`,
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
         }}
-      >
-        <Img
-          src={staticFile("art/giappone.png")}
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-        />
-      </AbsoluteFill>
+      />
 
       {/* bagliore del sole */}
       <AbsoluteFill
