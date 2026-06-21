@@ -469,6 +469,34 @@
   #cqVisitato { background: #E8B84B; color: #3a2c00; }
   #cqRimuovi { background: rgba(255,255,255,.08); color: #c8d2e6; }
   .cq-info-chiudi { position: absolute; top: 12px; right: 14px; background: none; border: none; color: #5a6a86; font-size: 17px; }
+
+  /* ===================== TEMI DESTINAZIONE ===================== */
+  /* --- card-gateway nella home --- */
+  .viaggio-card.tema { position: relative; overflow: hidden; min-height: 184px; padding: 0; border: none; color: #fff; display: block; }
+  .viaggio-card.tema .tema-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  .viaggio-card.tema .tema-veil { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(20,12,28,.12) 0%, rgba(20,12,28,0) 30%, rgba(14,8,22,.76) 100%); }
+  .viaggio-card.tema .tema-accent { position: absolute; left: 0; bottom: 0; height: 4px; width: 100%; z-index: 2; background: linear-gradient(90deg, var(--t-accent,#E0566A), #FFB48A, var(--t-accent,#E0566A)); }
+  .viaggio-card.tema .info { position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; min-height: 184px; padding: 16px 18px; }
+  .viaggio-card.tema h2 { color: #fff; font-style: italic; font-size: 25px; margin: 2px 0 6px; text-shadow: 0 2px 14px rgba(0,0,0,.45); }
+  .viaggio-card.tema .quando { color: rgba(255,255,255,.94); font-size: 13px; }
+  .viaggio-card.tema .tema-row { display: flex; justify-content: flex-start; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
+  .viaggio-card.tema .stato { display: none; }
+  .tema-chip { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.18); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,.24); border-radius: 999px; padding: 6px 11px; font-size: 11.5px; font-weight: 700; white-space: nowrap; }
+  .viaggio-card.tema .tema-row { gap: 8px; }
+  .tema-chip.warm { background: var(--t-accent,#E0566A); border: none; box-shadow: 0 6px 16px rgba(0,0,0,.18); }
+  .tema-eye { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; opacity: .9; font-weight: 600; }
+  .viaggio-card.tema .x { position: absolute; top: 10px; right: 10px; z-index: 3; color: #fff; background: rgba(0,0,0,.28); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; }
+
+  /* --- header del viaggio a tema --- */
+  #schermataViaggio header.tema { background: #1B1E4D; }
+  #schermataViaggio header.tema::after { display: none; }
+  #schermataViaggio header.tema .tema-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 24%; z-index: 0; }
+  #schermataViaggio header.tema .tema-scrim { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(20,8,26,.34) 0%, rgba(20,8,26,0) 44%, rgba(18,8,24,.58) 100%); }
+  #schermataViaggio header.tema > *:not(.tema-bg):not(.tema-scrim) { position: relative; z-index: 2; }
+  #schermataViaggio header.tema #nomeViaggio { font-style: italic; text-shadow: 0 2px 14px rgba(0,0,0,.45); }
+  #schermataViaggio.temato .countdown { background: var(--t-accent,#E0566A); }
+  #schermataViaggio.temato #macroTabs .tab.attiva { background: var(--t-accent-d,#C23A55); border-color: var(--t-accent-d,#C23A55); }
+  @media (prefers-reduced-motion: reduce) { .tema-bg { display: none; } .viaggio-card.tema, #schermataViaggio header.tema { background-size: cover; background-position: center; } }
 </style>
 </head>
 <body>
@@ -1132,6 +1160,42 @@ const ordina = (tappe) => [...tappe].sort((a, b) =>
   (a.ora === "—" ? "99" : a.ora) > (b.ora === "—" ? "99" : b.ora) ? 1 : -1);
 
 // ============ HOME ============
+// ===================== TEMI DESTINAZIONE =====================
+const TEMI = {
+  giappone: { paese: "Giappone", video: "themes/giappone.mp4", poster: "themes/giappone.png", accent: "#E0566A", accentDark: "#C23A55" }
+};
+function temaViaggio(v) {
+  if (!v) return null;
+  if (v.tema && TEMI[v.tema]) return TEMI[v.tema];
+  const t = ((v.nome || "") + " " + (v.destinazione || "") + " " + (v.paese || "")).toLowerCase();
+  if (/giappon|japan|tokyo|kyoto|osaka|fuji/.test(t)) return TEMI.giappone;
+  return null;
+}
+function applicaTema(tema) {
+  const screen = $("schermataViaggio");
+  const header = screen.querySelector("header");
+  let v = header.querySelector(".tema-bg");
+  let sc = header.querySelector(".tema-scrim");
+  if (tema) {
+    screen.classList.add("temato");
+    screen.style.setProperty("--t-accent", tema.accent);
+    screen.style.setProperty("--t-accent-d", tema.accentDark);
+    header.classList.add("tema");
+    header.style.backgroundImage = 'url("' + tema.poster + '")';
+    header.style.backgroundSize = "cover";
+    header.style.backgroundPosition = "center 24%";
+    if (!v) { v = document.createElement("video"); v.className = "tema-bg"; v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true; v.setAttribute("playsinline", ""); header.insertBefore(v, header.firstChild); }
+    if (!sc) { sc = document.createElement("div"); sc.className = "tema-scrim"; header.insertBefore(sc, v.nextSibling); }
+    v.poster = tema.poster; v.src = tema.video; v.play().catch(function () {});
+  } else {
+    screen.classList.remove("temato");
+    screen.style.removeProperty("--t-accent"); screen.style.removeProperty("--t-accent-d");
+    header.classList.remove("tema");
+    header.style.backgroundImage = "";
+    if (v) v.remove(); if (sc) sc.remove();
+  }
+}
+
 function renderHome() {
   $("schermataHome").classList.remove("nascosto");
   $("schermataViaggio").classList.add("nascosto");
@@ -1144,14 +1208,37 @@ function renderHome() {
   }
   for (const v of viaggi) {
     const s = statoViaggio(v);
-    const card = document.createElement("div"); card.className = "viaggio-card";
-    card.innerHTML = `
+    const tema = temaViaggio(v);
+    const card = document.createElement("div"); card.className = "viaggio-card" + (tema ? " tema" : "");
+    if (tema) {
+      card.style.setProperty("--t-accent", tema.accent);
+      card.style.backgroundImage = 'url("' + tema.poster + '")';
+      card.style.backgroundSize = "cover"; card.style.backgroundPosition = "center";
+      card.innerHTML = `
+        <video class="tema-bg" autoplay loop muted playsinline poster="${tema.poster}"><source src="${tema.video}" type="video/mp4"></video>
+        <div class="tema-veil"></div><div class="tema-accent"></div>
+        <div class="info">
+          <div class="tema-row">
+            <span class="tema-chip">${tema.paese}</span>
+            <span class="tema-chip warm">${s.testo.replace(/^\S+\s+/, "").replace(/^Mancano\s+/i, "")}</span>
+          </div>
+          <div>
+            <div class="tema-eye">Il prossimo viaggio</div>
+            <h2>${v.nome}</h2>
+            <div class="quando">${fmtData(v.inizio, true)} → ${fmtData(v.fine, true)} · ${v.persone} 👤</div>
+          </div>
+        </div>
+        <button class="x">✕</button>`;
+    } else {
+      card.innerHTML = `
       <div class="info">
         <h2>${v.nome}</h2>
         <div class="quando">${fmtData(v.inizio, true)} → ${fmtData(v.fine, true)} · ${v.persone} 👤</div>
         <div class="stato ${s.classe}">${s.testo}</div>
       </div>
       <button class="x">✕</button>`;
+    }
+    const _vbg = card.querySelector(".tema-bg"); if (_vbg) _vbg.play().catch(function () {});
     card.querySelector(".info").addEventListener("click", () => apriViaggio(v.id));
     card.querySelector(".x").addEventListener("click", async () => {
       if (!(await chiediConferma("Eliminare il viaggio?", '"' + v.nome + '" — verranno eliminati anche foto e biglietti.', "Elimina", true))) return;
@@ -1183,6 +1270,7 @@ function renderViaggio() {
   const s = statoViaggio(corrente);
   $("countdown").textContent = s.testo;
   $("countdown").className = "countdown " + s.classe;
+  applicaTema(temaViaggio(corrente));
   renderItinerario(); renderBudget(); renderMappa(); renderFoto(); renderBiglietti(); renderValigia(); renderDafare();
 }
 let giornoAperto = null;
