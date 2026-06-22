@@ -509,6 +509,7 @@
       background-attachment: fixed;
     }
     .app {
+      max-width: 720px;
       background: #FFF7ED;
       min-height: 100vh;
       box-shadow: 0 0 0 1px rgba(70,40,20,.05), 0 24px 70px rgba(50,30,15,.16);
@@ -517,9 +518,20 @@
     .velo { align-items: center; }
     .velo .modale { border-radius: 20px; max-height: 86vh; }
   }
-  /* schermi molto larghi: un filo più ariosa, resta leggibile come app mobile */
-  @media (min-width: 1100px) {
-    .app { max-width: 500px; }
+  /* Schermi larghi: l'app si allarga e le liste passano a due colonne */
+  @media (min-width: 1024px) {
+    .app { max-width: 1060px; }
+    #listaViaggi, #vistaItinerario, #vistaBudget {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      align-items: start;
+    }
+    #listaViaggi > *, #vistaItinerario > *, #vistaBudget > * { margin: 0 !important; }
+    #vistaItinerario .suggerimento,
+    #listaViaggi .vuoto,
+    #vistaBudget .card.totale,
+    .viaggio-card.tema { grid-column: 1 / -1; }
   }
 </style>
 </head>
