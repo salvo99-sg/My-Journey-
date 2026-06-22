@@ -472,11 +472,11 @@
 
   /* ===================== TEMI DESTINAZIONE ===================== */
   /* --- card-gateway nella home --- */
-  .viaggio-card.tema { position: relative; overflow: hidden; min-height: 184px; padding: 0; border: none; color: #fff; display: block; }
+  .viaggio-card.tema { position: relative; overflow: hidden; aspect-ratio: 16 / 9; padding: 0; border: none; color: #fff; display: block; }
   .viaggio-card.tema .tema-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
   .viaggio-card.tema .tema-veil { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(20,12,28,.12) 0%, rgba(20,12,28,0) 30%, rgba(14,8,22,.76) 100%); }
   .viaggio-card.tema .tema-accent { position: absolute; left: 0; bottom: 0; height: 4px; width: 100%; z-index: 2; background: linear-gradient(90deg, var(--t-accent,#E0566A), #FFB48A, var(--t-accent,#E0566A)); }
-  .viaggio-card.tema .info { position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; min-height: 184px; padding: 16px 18px; }
+  .viaggio-card.tema .info { position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 16px 18px; }
   .viaggio-card.tema h2 { color: #fff; font-style: italic; font-size: 25px; margin: 2px 0 6px; text-shadow: 0 2px 14px rgba(0,0,0,.45); }
   .viaggio-card.tema .quando { color: rgba(255,255,255,.94); font-size: 13px; }
   .viaggio-card.tema .tema-row { display: flex; justify-content: flex-start; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
@@ -490,7 +490,7 @@
   /* --- header del viaggio a tema --- */
   #schermataViaggio header.tema { background: #1B1E4D; }
   #schermataViaggio header.tema::after { display: none; }
-  #schermataViaggio header.tema .tema-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 24%; z-index: 0; }
+  #schermataViaggio header.tema .tema-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 50%; z-index: 0; }
   #schermataViaggio header.tema .tema-scrim { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(20,8,26,.34) 0%, rgba(20,8,26,0) 44%, rgba(18,8,24,.58) 100%); }
   #schermataViaggio header.tema > *:not(.tema-bg):not(.tema-scrim) { position: relative; z-index: 2; }
   #schermataViaggio header.tema #nomeViaggio { font-style: italic; text-shadow: 0 2px 14px rgba(0,0,0,.45); }
@@ -1219,7 +1219,7 @@ function applicaTema(tema) {
     header.classList.add("tema");
     header.style.backgroundImage = 'url("' + tema.poster + '")';
     header.style.backgroundSize = "cover";
-    header.style.backgroundPosition = "center 24%";
+    header.style.backgroundPosition = "center 50%";
     if (!v) { v = document.createElement("video"); v.className = "tema-bg"; v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true; v.setAttribute("playsinline", ""); header.insertBefore(v, header.firstChild); }
     if (!sc) { sc = document.createElement("div"); sc.className = "tema-scrim"; header.insertBefore(sc, v.nextSibling); }
     v.poster = tema.poster; v.src = tema.video; v.play().catch(function () {});
