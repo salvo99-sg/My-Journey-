@@ -12,7 +12,7 @@ Legenda stato: ✅ fatto · 🟡 in lavorazione · ⬜ da fare
 | 1 | `Giappone` | ✅ | illustrato sognante / ukiyo-e | tramonto | `#E0566A` | Monte Fuji, torii, sakura |
 | 2 | `Italia` | ⬜ | — | — | — | — |
 | 3 | `Francia` | ✅ | foto realistica | giorno | `#3E6DA8` | Tour Eiffel, giardini (bolle + particelle) |
-| 4 | `Grecia` | ✅ | illustrato | tramonto | `#E0904C` | Santorini, cupole blu, mare (rondini + barche) |
+| 4 | `Grecia` | ✅ | illustrato (statica) | tramonto | `#E0904C` | Santorini, cupole blu, mare (no animazione, watermark rimosso) |
 | 5 | `Regno Unito` | ⬜ | — | — | — | — |
 | 6 | `USA` | ⬜ | — | — | — | — |
 | 7 | `Spagna` | ⬜ | — | — | — | — |

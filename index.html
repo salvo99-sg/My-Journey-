@@ -1364,7 +1364,7 @@ function avviaTemaAnim(canvas, tipo, accent) {
 const TEMI = {
   giappone: { paese: "Giappone", video: "themes/giappone.mp4", poster: "themes/giappone.jpg", accent: "#E0566A", accentDark: "#C23A55" },
   francia:  { paese: "Francia",  anim: "francia", poster: "themes/francia.jpg", accent: "#3E6DA8", accentDark: "#2C5285" },
-  grecia:   { paese: "Grecia",   anim: "grecia",  poster: "themes/grecia.jpg",  accent: "#E0904C", accentDark: "#C06C30" }
+  grecia:   { paese: "Grecia",   poster: "themes/grecia.jpg",  accent: "#E0904C", accentDark: "#C06C30" }
 };
 function temaViaggio(v) {
   if (!v) return null;
@@ -1398,12 +1398,17 @@ function applicaTema(tema) {
       header.insertBefore(v, header.firstChild);
       header.insertBefore(sc, v.nextSibling);
       v.poster = tema.poster; v.src = tema.video; v.play().catch(function () {});
-    } else {
+    } else if (tema.anim) {
       if (v) { v.remove(); v = null; }
       if (!cv) { cv = document.createElement("canvas"); cv.className = "tema-anim"; }
       header.insertBefore(cv, header.firstChild);
       header.insertBefore(sc, cv.nextSibling);
       temaAnimStop = avviaTemaAnim(cv, tema.anim, tema.accent);
+    } else {
+      // cartolina statica: solo immagine + scrim, nessuna animazione
+      if (v) { v.remove(); v = null; }
+      if (cv) { cv.remove(); cv = null; }
+      header.insertBefore(sc, header.firstChild);
     }
   } else {
     screen.classList.remove("temato");
@@ -1434,7 +1439,7 @@ function renderHome() {
       card.style.backgroundSize = "cover"; card.style.backgroundPosition = "center";
       const media = tema.video
         ? `<video class="tema-bg" autoplay loop muted playsinline poster="${tema.poster}"><source src="${tema.video}" type="video/mp4"></video>`
-        : `<canvas class="tema-anim"></canvas>`;
+        : tema.anim ? `<canvas class="tema-anim"></canvas>` : "";
       card.innerHTML = `
         ${media}
         <div class="tema-veil"></div><div class="tema-accent"></div>
@@ -1471,7 +1476,7 @@ function renderHome() {
       renderHome();
     });
     m.appendChild(card);
-    const _cv = card.querySelector(".tema-anim"); if (_cv && tema) avviaTemaAnim(_cv, tema.anim, tema.accent);
+    const _cv = card.querySelector(".tema-anim"); if (_cv && tema.anim) avviaTemaAnim(_cv, tema.anim, tema.accent);
   }
 }
 
