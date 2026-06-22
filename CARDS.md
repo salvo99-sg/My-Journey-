@@ -11,8 +11,8 @@ Legenda stato: ✅ fatto · 🟡 in lavorazione · ⬜ da fare
 |---|-------|-------|-------|-----|---------|----------|
 | 1 | `Giappone` | ✅ | illustrato sognante / ukiyo-e | tramonto | `#E0566A` | Monte Fuji, torii, sakura |
 | 2 | `Italia` | ⬜ | — | — | — | — |
-| 3 | `Francia` | ⬜ | — | — | — | — |
-| 4 | `Grecia` | ⬜ | — | — | — | — |
+| 3 | `Francia` | ✅ | foto realistica | giorno | `#3E6DA8` | Tour Eiffel, giardini (bolle + particelle) |
+| 4 | `Grecia` | ✅ | illustrato | tramonto | `#E0904C` | Santorini, cupole blu, mare (rondini + barche) |
 | 5 | `Regno Unito` | ⬜ | — | — | — | — |
 | 6 | `USA` | ⬜ | — | — | — | — |
 | 7 | `Spagna` | ⬜ | — | — | — | — |
@@ -41,7 +41,7 @@ Legenda stato: ✅ fatto · 🟡 in lavorazione · ⬜ da fare
 
 ---
 
-**Avanzamento: 1 / 19**
+**Avanzamento: 3 / 19**
 
 ### Come si aggiunge una card
 1. Genera l'immagine col prompt-madre (input = una voce qui sopra).

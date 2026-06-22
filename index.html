@@ -477,6 +477,7 @@
   .viaggio-card.tema { position: relative; overflow: hidden; aspect-ratio: 16 / 9; padding: 0; border: none; color: #fff; display: block; }
   .viaggio-card.tema .tema-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
   .viaggio-card.tema .tema-veil { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(20,12,28,.12) 0%, rgba(20,12,28,0) 30%, rgba(14,8,22,.76) 100%); }
+  .viaggio-card.tema .tema-anim { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
   .viaggio-card.tema .tema-accent { position: absolute; left: 0; bottom: 0; height: 4px; width: 100%; z-index: 2; background: linear-gradient(90deg, var(--t-accent,#E0566A), #FFB48A, var(--t-accent,#E0566A)); }
   .viaggio-card.tema .info { position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 16px 18px; }
   .viaggio-card.tema h2 { color: #fff; font-style: italic; font-size: 25px; margin: 2px 0 6px; text-shadow: 0 2px 14px rgba(0,0,0,.45); }
@@ -494,7 +495,8 @@
   #schermataViaggio header.tema::after { display: none; }
   #schermataViaggio header.tema .tema-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 50%; z-index: 0; }
   #schermataViaggio header.tema .tema-scrim { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(20,8,26,.34) 0%, rgba(20,8,26,0) 44%, rgba(18,8,24,.58) 100%); }
-  #schermataViaggio header.tema > *:not(.tema-bg):not(.tema-scrim) { position: relative; z-index: 2; }
+  #schermataViaggio header.tema .tema-anim { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+  #schermataViaggio header.tema > *:not(.tema-bg):not(.tema-scrim):not(.tema-anim) { position: relative; z-index: 2; }
   #schermataViaggio header.tema #nomeViaggio { font-style: italic; text-shadow: 0 2px 14px rgba(0,0,0,.45); }
   #schermataViaggio.temato .countdown { background: var(--t-accent,#E0566A); }
   #schermataViaggio.temato #macroTabs .tab.attiva { background: var(--t-accent-d,#C23A55); border-color: var(--t-accent-d,#C23A55); }
@@ -1255,21 +1257,141 @@ const ordina = (tappe) => [...tappe].sort((a, b) =>
 
 // ============ HOME ============
 // ===================== TEMI DESTINAZIONE =====================
+// ===================== ANIMAZIONE TEMI (canvas sopra la cartolina) =====================
+const _reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function avviaTemaAnim(canvas, tipo, accent) {
+  if (_reducedMotion || !canvas || !canvas.getContext) return function () {};
+  const ctx = canvas.getContext("2d");
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  let raf = 0, w = 0, h = 0, dpr = 1, stopped = false, last = 0;
+  function resize() {
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    w = canvas.clientWidth || (canvas.parentNode && canvas.parentNode.clientWidth) || 320;
+    h = canvas.clientHeight || Math.round(w * 9 / 16);
+    canvas.width = Math.max(1, Math.round(w * dpr));
+    canvas.height = Math.max(1, Math.round(h * dpr));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  // --- FRANCIA: bolle di sapone che salgono + pulviscolo luminoso ---
+  let bolle = [], polvere = [];
+  function initFrancia() {
+    bolle = []; polvere = [];
+    const nB = Math.max(7, Math.round(w / 70));
+    for (let i = 0; i < nB; i++) bolle.push({ x: rnd(0, w), y: rnd(0, h), r: rnd(6, 19), sp: rnd(7, 20), ph: rnd(0, 6.28), sw: rnd(8, 22), a: rnd(.4, .75) });
+    const nP = Math.max(16, Math.round(w / 26));
+    for (let i = 0; i < nP; i++) polvere.push({ x: rnd(0, w), y: rnd(0, h), r: rnd(.5, 1.7), sp: rnd(4, 11), ph: rnd(0, 6.28), a: rnd(.2, .55), tw: rnd(1, 3) });
+  }
+  function drawFrancia(dt, time) {
+    for (const p of polvere) {
+      p.y -= p.sp * dt; p.x += Math.sin(time / 700 + p.ph) * 0.15;
+      if (p.y < -2) { p.y = h + 2; p.x = rnd(0, w); }
+      const tw = (Math.sin(time / 1000 * p.tw + p.ph) + 1) / 2;
+      ctx.fillStyle = "rgba(255,249,233," + (p.a * (.35 + .65 * tw)) + ")";
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.2832); ctx.fill();
+    }
+    for (const p of bolle) {
+      p.y -= p.sp * dt; p.x += Math.sin(time / 1000 * (p.sw / 10) + p.ph) * 0.35;
+      if (p.y < -p.r - 2) { p.y = h + p.r; p.x = rnd(0, w); }
+      const g = ctx.createRadialGradient(p.x - p.r * .3, p.y - p.r * .3, p.r * .1, p.x, p.y, p.r);
+      g.addColorStop(0, "rgba(255,255,255," + (p.a * .10) + ")");
+      g.addColorStop(.74, "rgba(255,255,255," + (p.a * .05) + ")");
+      g.addColorStop(.9, "rgba(255,255,255," + (p.a * .5) + ")");
+      g.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.2832); ctx.fill();
+      ctx.strokeStyle = "rgba(255,255,255," + (p.a * .3) + ")"; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r * .97, 0, 6.2832); ctx.stroke();
+      ctx.fillStyle = "rgba(255,255,255," + (p.a * .85) + ")";
+      ctx.beginPath(); ctx.arc(p.x - p.r * .36, p.y - p.r * .38, p.r * .14, 0, 6.2832); ctx.fill();
+    }
+  }
+
+  // --- GRECIA: rondini verso l'orizzonte + barche a vela ---
+  let rondini = [], barche = [];
+  function vanish() { return { vx: w * 0.52, vy: h * 0.40 }; }
+  function newRondine() {
+    const x0 = rnd(0.05, 0.95) * w, y0 = rnd(0.55, 1.0) * h;
+    return { x0, y0, x: x0, y: y0, p: rnd(0, .25), sp: rnd(.05, .1), size: rnd(7, 12), ph: rnd(0, 6.28) };
+  }
+  function initGrecia() {
+    rondini = []; barche = [];
+    for (let i = 0; i < 6; i++) rondini.push(newRondine());
+    for (let i = 0; i < 2; i++) barche.push({ x: rnd(.55, .95) * w, y: rnd(.43, .48) * h, sp: rnd(2.5, 5) * (Math.random() < .5 ? 1 : -1), s: rnd(.8, 1.15), bob: rnd(0, 6.28) });
+  }
+  function drawGrecia(dt, time) {
+    const { vx, vy } = vanish();
+    const L = w * 0.5, Rr = w * 0.97;
+    for (const b of barche) {
+      b.x += b.sp * dt;
+      if (b.x < L) b.x = Rr; if (b.x > Rr) b.x = L;
+      const by = b.y + Math.sin(time / 1200 + b.bob) * 1.1, sc = b.s;
+      ctx.fillStyle = "rgba(255,255,255,.92)";
+      ctx.beginPath(); ctx.moveTo(b.x, by - 9 * sc); ctx.lineTo(b.x + 6 * sc, by + 1 * sc); ctx.lineTo(b.x, by + 1 * sc); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,.68)";
+      ctx.beginPath(); ctx.moveTo(b.x - .5, by - 9 * sc); ctx.lineTo(b.x - 5 * sc, by + 1 * sc); ctx.lineTo(b.x - .5, by + 1 * sc); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = "rgba(38,36,52,.5)";
+      ctx.beginPath(); ctx.moveTo(b.x - 5 * sc, by + 1 * sc); ctx.lineTo(b.x + 6 * sc, by + 1 * sc); ctx.lineTo(b.x + 3 * sc, by + 4 * sc); ctx.lineTo(b.x - 3 * sc, by + 4 * sc); ctx.closePath(); ctx.fill();
+    }
+    ctx.lineCap = "round";
+    for (const bd of rondini) {
+      bd.p += bd.sp * dt;
+      if (bd.p >= 1) { Object.assign(bd, newRondine()); bd.p = 0; continue; }
+      const e = bd.p * (2 - bd.p);
+      bd.x = bd.x0 + (vx - bd.x0) * e;
+      bd.y = bd.y0 + (vy - bd.y0) * e;
+      const sz = bd.size * (1 - bd.p * 0.85);
+      const flap = Math.sin(time / 120 + bd.ph) * 0.5 + 0.5;
+      const wing = sz * (0.45 + flap * 0.75);
+      const al = bd.p < .12 ? bd.p / .12 : (bd.p > .82 ? (1 - bd.p) / .18 : 1);
+      ctx.strokeStyle = "rgba(28,26,38," + (0.55 * al) + ")";
+      ctx.lineWidth = Math.max(0.8, sz * 0.18);
+      ctx.beginPath();
+      ctx.moveTo(bd.x - sz, bd.y);
+      ctx.quadraticCurveTo(bd.x - sz * 0.3, bd.y - wing, bd.x, bd.y);
+      ctx.quadraticCurveTo(bd.x + sz * 0.3, bd.y - wing, bd.x + sz, bd.y);
+      ctx.stroke();
+    }
+  }
+
+  function frame(ts) {
+    if (stopped) return;
+    if (!canvas.isConnected) { stopped = true; return; }
+    raf = requestAnimationFrame(frame);
+    if (canvas.offsetParent === null) { last = ts; return; } // nascosto: non disegno
+    const dt = last ? Math.min(0.05, (ts - last) / 1000) : 0.016; last = ts;
+    ctx.clearRect(0, 0, w, h);
+    if (tipo === "francia") drawFrancia(dt, ts); else drawGrecia(dt, ts);
+  }
+  resize();
+  if (tipo === "francia") initFrancia(); else initGrecia();
+  const onResize = () => { resize(); if (tipo === "francia") initFrancia(); else initGrecia(); };
+  window.addEventListener("resize", onResize);
+  raf = requestAnimationFrame(frame);
+  return function stop() { stopped = true; cancelAnimationFrame(raf); window.removeEventListener("resize", onResize); };
+}
+
 const TEMI = {
-  giappone: { paese: "Giappone", video: "themes/giappone.mp4", poster: "themes/giappone.jpg", accent: "#E0566A", accentDark: "#C23A55" }
+  giappone: { paese: "Giappone", video: "themes/giappone.mp4", poster: "themes/giappone.jpg", accent: "#E0566A", accentDark: "#C23A55" },
+  francia:  { paese: "Francia",  anim: "francia", poster: "themes/francia.jpg", accent: "#3E6DA8", accentDark: "#2C5285" },
+  grecia:   { paese: "Grecia",   anim: "grecia",  poster: "themes/grecia.jpg",  accent: "#E0904C", accentDark: "#C06C30" }
 };
 function temaViaggio(v) {
   if (!v) return null;
   if (v.tema && TEMI[v.tema]) return TEMI[v.tema];
   const t = ((v.nome || "") + " " + (v.destinazione || "") + " " + (v.paese || "")).toLowerCase();
   if (/giappon|japan|tokyo|kyoto|osaka|fuji/.test(t)) return TEMI.giappone;
+  if (/franc|parig|paris/.test(t)) return TEMI.francia;
+  if (/greci|greece|atene|athen|santorin|mykon|cicladi|creta|crete/.test(t)) return TEMI.grecia;
   return null;
 }
+let temaAnimStop = null;
 function applicaTema(tema) {
   const screen = $("schermataViaggio");
   const header = screen.querySelector("header");
+  if (temaAnimStop) { temaAnimStop(); temaAnimStop = null; }
   let v = header.querySelector(".tema-bg");
   let sc = header.querySelector(".tema-scrim");
+  let cv = header.querySelector(".tema-anim");
   if (tema) {
     screen.classList.add("temato");
     screen.style.setProperty("--t-accent", tema.accent);
@@ -1278,15 +1400,26 @@ function applicaTema(tema) {
     header.style.backgroundImage = 'url("' + tema.poster + '")';
     header.style.backgroundSize = "cover";
     header.style.backgroundPosition = "center 50%";
-    if (!v) { v = document.createElement("video"); v.className = "tema-bg"; v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true; v.setAttribute("playsinline", ""); header.insertBefore(v, header.firstChild); }
-    if (!sc) { sc = document.createElement("div"); sc.className = "tema-scrim"; header.insertBefore(sc, v.nextSibling); }
-    v.poster = tema.poster; v.src = tema.video; v.play().catch(function () {});
+    if (!sc) { sc = document.createElement("div"); sc.className = "tema-scrim"; }
+    if (tema.video) {
+      if (cv) { cv.remove(); cv = null; }
+      if (!v) { v = document.createElement("video"); v.className = "tema-bg"; v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true; v.setAttribute("playsinline", ""); }
+      header.insertBefore(v, header.firstChild);
+      header.insertBefore(sc, v.nextSibling);
+      v.poster = tema.poster; v.src = tema.video; v.play().catch(function () {});
+    } else {
+      if (v) { v.remove(); v = null; }
+      if (!cv) { cv = document.createElement("canvas"); cv.className = "tema-anim"; }
+      header.insertBefore(cv, header.firstChild);
+      header.insertBefore(sc, cv.nextSibling);
+      temaAnimStop = avviaTemaAnim(cv, tema.anim, tema.accent);
+    }
   } else {
     screen.classList.remove("temato");
     screen.style.removeProperty("--t-accent"); screen.style.removeProperty("--t-accent-d");
     header.classList.remove("tema");
     header.style.backgroundImage = "";
-    if (v) v.remove(); if (sc) sc.remove();
+    if (v) v.remove(); if (sc) sc.remove(); if (cv) cv.remove();
   }
 }
 
@@ -1308,8 +1441,11 @@ function renderHome() {
       card.style.setProperty("--t-accent", tema.accent);
       card.style.backgroundImage = 'url("' + tema.poster + '")';
       card.style.backgroundSize = "cover"; card.style.backgroundPosition = "center";
+      const media = tema.video
+        ? `<video class="tema-bg" autoplay loop muted playsinline poster="${tema.poster}"><source src="${tema.video}" type="video/mp4"></video>`
+        : `<canvas class="tema-anim"></canvas>`;
       card.innerHTML = `
-        <video class="tema-bg" autoplay loop muted playsinline poster="${tema.poster}"><source src="${tema.video}" type="video/mp4"></video>
+        ${media}
         <div class="tema-veil"></div><div class="tema-accent"></div>
         <div class="info">
           <div class="tema-row">
@@ -1344,6 +1480,7 @@ function renderHome() {
       renderHome();
     });
     m.appendChild(card);
+    const _cv = card.querySelector(".tema-anim"); if (_cv && tema) avviaTemaAnim(_cv, tema.anim, tema.accent);
   }
 }
 
