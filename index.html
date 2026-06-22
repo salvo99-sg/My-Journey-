@@ -347,6 +347,8 @@
   .azioni .salva:disabled { background: #d6d3d1; border-color: #d6d3d1; }
   .azioni .pericolo { color: #C9514C; border-color: #f0d4d2; }
   .nascosto { display: none !important; }
+  .ic { display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; flex: none; line-height: 0; vertical-align: -0.14em; }
+  .ic svg { width: 100%; height: 100%; display: block; }
 
   /* Selettore posizione su mappa (puntina) */
   #selettoreMappa { position: fixed; inset: 0; z-index: 300; background: #0a1228; display: none; }
@@ -566,7 +568,7 @@
   </header>
   <main id="listaViaggi"></main>
   <div style="padding: 0 16px 16px; text-align:center">
-    <button class="btn-importa-home" id="btnImportaHome">✨ Importa viaggio da AI</button>
+    <button class="btn-importa-home" id="btnImportaHome"><span class="ic" data-ic="sparkle"></span> Importa viaggio da AI</button>
   </div>
 </div>
 
@@ -574,10 +576,10 @@
 <div class="app nascosto" id="schermataViaggio">
   <header>
     <div class="testa-riga">
-      <button class="btn-ghost" id="indietro">← Viaggi</button>
+      <button class="btn-ghost" id="indietro"><span class="ic" data-ic="cl"></span> Viaggi</button>
       <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn-globo" id="btnGlobo" title="Mappa del viaggio">🌍</button>
-        <button class="btn-ghost" id="modificaViaggio">✎ Modifica</button>
+        <button class="btn-globo" id="btnGlobo" title="Mappa del viaggio"><span class="ic" data-ic="globe"></span></button>
+        <button class="btn-ghost" id="modificaViaggio"><span class="ic" data-ic="edit"></span> Modifica</button>
       </div>
     </div>
     <h1 id="nomeViaggio"></h1>
@@ -585,42 +587,42 @@
     <div class="countdown" id="countdown"></div>
   </header>
   <div class="tabs" id="macroTabs">
-    <button class="tab attiva" data-macro="viaggio"><span class="mt-ic">🗓️</span>Viaggio</button>
-    <button class="tab" data-macro="budget"><span class="mt-ic">💰</span>Budget</button>
-    <button class="tab" data-macro="preparativi"><span class="mt-ic">🎒</span>Preparativi</button>
-    <button class="tab" data-macro="ricordi"><span class="mt-ic">📷</span>Ricordi</button>
+    <button class="tab attiva" data-macro="viaggio"><span class="mt-ic ic" data-ic="cal"></span>Viaggio</button>
+    <button class="tab" data-macro="budget"><span class="mt-ic ic" data-ic="money"></span>Budget</button>
+    <button class="tab" data-macro="preparativi"><span class="mt-ic ic" data-ic="backpack"></span>Preparativi</button>
+    <button class="tab" data-macro="ricordi"><span class="mt-ic ic" data-ic="cam"></span>Ricordi</button>
   </div>
   <div class="sottobar nascosto" id="sottoBar"></div>
   <main id="vistaItinerario"></main>
   <main id="vistaBudget" class="nascosto"></main>
   <main id="vistaMappa" class="nascosto">
     <div class="mappa-avviso nascosto" id="mappaAvviso">
-      🗺️ <b>Per attivare la mappa serve il token Mapbox</b> (vedi le istruzioni nello script).
+      <span class="ic" data-ic="map"></span> <b>Per attivare la mappa serve il token Mapbox</b> (vedi le istruzioni nello script).
     </div>
     <div class="mappa-avviso nascosto" id="mappaOffline">
-      🗺️ <b>La mappa non può caricarsi in questa anteprima</b> perché le risorse esterne di Mapbox sono bloccate qui in chat. Sul tuo sito pubblicato funzionerà normalmente.
+      <span class="ic" data-ic="map"></span> <b>La mappa non può caricarsi in questa anteprima</b> perché le risorse esterne di Mapbox sono bloccate qui in chat. Sul tuo sito pubblicato funzionerà normalmente.
     </div>
     <div id="contenitoreMappa"></div>
-    <button id="btnCasa" title="Torna al viaggio">🏠</button>
+    <button id="btnCasa" title="Torna al viaggio"><span class="ic" data-ic="home"></span></button>
     <div id="colonnaMappa">
       <div id="barraLuce">
-        <button id="btnLuce" title="Luce">☀️</button>
+        <button id="btnLuce" title="Luce"><span class="ic" data-ic="sun"></span></button>
         <div id="luceOpzioni">
-          <button data-luce="dawn" title="Alba">🌅</button>
-          <button data-luce="day" title="Giorno">☀️</button>
-          <button data-luce="dusk" title="Tramonto">🌇</button>
-          <button data-luce="night" title="Notte">🌙</button>
+          <button data-luce="dawn" title="Alba"><span class="ic" data-ic="sunrise"></span></button>
+          <button data-luce="day" title="Giorno"><span class="ic" data-ic="sun"></span></button>
+          <button data-luce="dusk" title="Tramonto"><span class="ic" data-ic="sunrise"></span></button>
+          <button data-luce="night" title="Notte"><span class="ic" data-ic="moon"></span></button>
         </div>
       </div>
       <div class="sep"></div>
       <div id="barra3d">
-        <button id="btn3d" title="Tuffati nella prossima tappa in 3D">🏙️</button>
-        <button id="btnPanorama" title="Torna alla panoramica">🌍</button>
+        <button id="btn3d" title="Tuffati nella prossima tappa in 3D"><span class="ic" data-ic="city"></span></button>
+        <button id="btnPanorama" title="Torna alla panoramica"><span class="ic" data-ic="globe"></span></button>
       </div>
       <div class="sep"></div>
-      <button id="btnConquiste" title="Le tue terre conquistate">🏆</button>
+      <button id="btnConquiste" title="Le tue terre conquistate"><span class="ic" data-ic="trophy"></span></button>
     </div>
-    <button class="btn-viaggio nascosto" id="btnViaggio">▶ Riproduci viaggio</button>
+    <button class="btn-viaggio nascosto" id="btnViaggio"><span class="ic" data-ic="play"></span> Riproduci viaggio</button>
     <div id="barraViaggio" class="nascosto">
       <div class="bv-testa">
         <div class="bv-dove" id="bvDove"></div>
@@ -632,10 +634,10 @@
     <div id="conquisteOverlay" class="nascosto">
       <div class="cq-testa">
         <div>
-          <div class="cq-titolo">🏆 Terre conquistate</div>
+          <div class="cq-titolo"><span class="ic" data-ic="trophy"></span> Terre conquistate</div>
           <div class="cq-sotto">Ogni passo, una storia</div>
         </div>
-        <button class="cq-chiudi" id="cqChiudi">✕</button>
+        <button class="cq-chiudi" id="cqChiudi"><span class="ic" data-ic="x"></span></button>
       </div>
       <div class="cq-stat">
         <div><b id="cqPaesi">0</b><span>paesi</span></div>
@@ -645,11 +647,11 @@
       <div id="mondoMappa"></div>
       <div class="cq-nota" id="cqNota">I paesi dei tuoi viaggi si accendono da soli</div>
       <div class="cq-info" id="cqInfo">
-        <button class="cq-info-chiudi" id="cqInfoChiudi">✕</button>
+        <button class="cq-info-chiudi" id="cqInfoChiudi"><span class="ic" data-ic="x"></span></button>
         <div class="cq-nome" id="cqNome">—</div>
         <div class="cq-info-stato" id="cqStato">—</div>
         <div class="cq-azioni">
-          <button id="cqVisitato">✓ Segna conquistato</button>
+          <button id="cqVisitato"><span class="ic" data-ic="check"></span> Segna conquistato</button>
           <button id="cqRimuovi">Rimuovi</button>
         </div>
       </div>
@@ -657,20 +659,20 @@
   </main>
   <main id="vistaFoto" class="nascosto">
     <div class="barra-azioni">
-      <button class="primario" id="btnAggiungiFoto">📷 Aggiungi foto</button>
-      <button id="btnAlbum">🎞️ Album del viaggio</button>
+      <button class="primario" id="btnAggiungiFoto"><span class="ic" data-ic="cam"></span> Aggiungi foto</button>
+      <button id="btnAlbum"><span class="ic" data-ic="film"></span> Album del viaggio</button>
     </div>
     <div id="grigliaFoto"></div>
   </main>
   <main id="vistaBiglietti" class="nascosto">
     <div class="barra-azioni">
-      <button class="primario" id="btnAggiungiBiglietto">🎫 Aggiungi biglietto</button>
+      <button class="primario" id="btnAggiungiBiglietto"><span class="ic" data-ic="ticket"></span> Aggiungi biglietto</button>
     </div>
     <div id="listaBiglietti"></div>
   </main>
   <main id="vistaValigia" class="nascosto">
     <div class="valigia-sez">
-      <h2>🎒 In valigia</h2>
+      <h2><span class="ic" data-ic="backpack"></span> In valigia</h2>
       <div id="listaValigia"></div>
       <div class="valigia-aggiungi">
         <input id="valigiaTesto" placeholder="Aggiungi una cosa da portare..." enterkeyhint="done" />
@@ -678,7 +680,7 @@
       </div>
     </div>
     <div class="valigia-sez">
-      <h2>📋 Da non dimenticare</h2>
+      <h2><span class="ic" data-ic="list"></span> Da non dimenticare</h2>
       <div id="listaPromemoria"></div>
       <div class="valigia-aggiungi">
         <input id="promemoriaTesto" placeholder="Aggiungi un promemoria..." enterkeyhint="done" />
@@ -688,14 +690,14 @@
   </main>
   <main id="vistaDafare" class="nascosto">
     <div id="quaderno">
-      <div class="q-titolo">Le mie imperdibili ✨</div>
+      <div class="q-titolo">Le mie imperdibili <span class="ic" data-ic="sparkle"></span></div>
       <div class="q-sotto" id="impContatore">Le cose per cui vale il viaggio</div>
       <div class="q-inserisci">
         <input id="dfTesto" placeholder="Scrivi cosa non vuoi perderti..." enterkeyhint="done" />
-        <button id="dfAggiungi" title="Aggiungi">✎</button>
+        <button id="dfAggiungi" title="Aggiungi"><span class="ic" data-ic="edit"></span></button>
       </div>
       <div id="dfLista"></div>
-      <button id="dfIdee">💡 Suggeriscimi qualche idea</button>
+      <button id="dfIdee"><span class="ic" data-ic="idea"></span> Suggeriscimi qualche idea</button>
     </div>
   </main>
 </div>
@@ -705,26 +707,26 @@
 <!-- ===== SELETTORE POSIZIONE SU MAPPA (puntina) ===== -->
 <div id="selettoreMappa">
   <div id="selMappaCanvas"></div>
-  <div id="selPuntina">📌</div>
+  <div id="selPuntina"><span class="ic" data-ic="pin"></span></div>
   <div id="selBarra">
-    <button id="selChiudi" title="Annulla">✕</button>
+    <button id="selChiudi" title="Annulla"><span class="ic" data-ic="x"></span></button>
     <input id="selCerca" placeholder="Cerca un indirizzo o un luogo..." autocomplete="off" />
   </div>
   <div id="selNome">Sposta la mappa per posizionare la puntina</div>
-  <button id="selConferma">📌 Conferma posizione</button>
+  <button id="selConferma"><span class="ic" data-ic="pin"></span> Conferma posizione</button>
 </div>
 
 <!-- ===== MODALE IMPORTA DA AI ===== -->
 <div class="velo" id="veloImporta">
   <div class="modale">
-    <h3>✨ Crea un viaggio con l'AI</h3>
+    <h3><span class="ic" data-ic="sparkle"></span> Crea un viaggio con l'AI</h3>
     <div class="importa-passi">
       <div class="importa-passo"><div>Copia il prompt qui sotto col pulsante verde.</div></div>
       <div class="importa-passo"><div>Incollalo nella <b>tua app di AI</b> preferita (ChatGPT, Gemini, Claude…).</div></div>
       <div class="importa-passo"><div>Rispondi alle domande e <b>accetta</b> il pacchetto viaggio.</div></div>
       <div class="importa-passo"><div>Incolla qui sotto il <b>pacchetto</b> che ti consegna e premi Crea.</div></div>
     </div>
-    <button class="copia-prompt" id="copiaPrompt">📋 Copia il prompt per l'AI</button>
+    <button class="copia-prompt" id="copiaPrompt"><span class="ic" data-ic="copy"></span> Copia il prompt per l'AI</button>
     <div class="sub" style="text-align:center;margin-bottom:12px;font-size:12px">Poi incolla qui il pacchetto ricevuto:</div>
     <textarea id="importaTesto" placeholder="Incolla qui il pacchetto viaggio che ti ha dato l'AI..."></textarea>
     <div class="azioni">
@@ -773,8 +775,8 @@
         <input id="tLuogo" placeholder="Es. Torre Eiffel, Parigi" autocomplete="off" />
         <div class="lista-sugg nascosto" id="tSuggerimenti"></div>
       </div>
-      <div class="luogo-ok nascosto" id="tLuogoOk">✓ Posizione trovata sulla mappa</div>
-      <button type="button" class="btn-scegli-mappa" id="tScegliMappa">📌 Scegli la posizione sulla mappa</button>
+      <div class="luogo-ok nascosto" id="tLuogoOk"><span class="ic" data-ic="check"></span> Posizione trovata sulla mappa</div>
+      <button type="button" class="btn-scegli-mappa" id="tScegliMappa"><span class="ic" data-ic="pin"></span> Scegli la posizione sulla mappa</button>
     </div>
 
     <!-- Campi per trasporti (volo/treno): DA → A con orari -->
@@ -784,13 +786,13 @@
         <input id="tDa" placeholder="Es. Aeroporto di Fiumicino, Roma" autocomplete="off" />
         <div class="lista-sugg nascosto" id="tDaSugg"></div>
       </div>
-      <div class="luogo-ok nascosto" id="tDaOk">✓ Partenza trovata sulla mappa</div>
+      <div class="luogo-ok nascosto" id="tDaOk"><span class="ic" data-ic="check"></span> Partenza trovata sulla mappa</div>
       <label>A (arrivo)</label>
       <div class="campo-luogo">
         <input id="tA" placeholder="Es. Aeroporto Haneda, Tokyo" autocomplete="off" />
         <div class="lista-sugg nascosto" id="tASugg"></div>
       </div>
-      <div class="luogo-ok nascosto" id="tAOk">✓ Arrivo trovato sulla mappa</div>
+      <div class="luogo-ok nascosto" id="tAOk"><span class="ic" data-ic="check"></span> Arrivo trovato sulla mappa</div>
       <div class="riga-doppia">
         <div><label>Orario partenza</label><input id="tOraDa" type="time" /></div>
         <div><label>Orario arrivo</label><input id="tOraA" type="time" /></div>
@@ -812,7 +814,7 @@
 <!-- ===== MODALE SPESA CONDIVISA ===== -->
 <div class="velo" id="veloSpesa">
   <div class="modale">
-    <h3>🤝 Spesa condivisa</h3>
+    <h3><span class="ic" data-ic="handshake"></span> Spesa condivisa</h3>
     <label>Descrizione</label>
     <input id="sNome" placeholder="Es. Benzina, spesa al market, taxi" />
     <label>Importo €</label>
@@ -842,19 +844,19 @@
 <!-- ===== MODALE CAMBIO VALUTA ===== -->
 <div class="velo" id="veloCambio">
   <div class="modale">
-    <h3>💱 Cambio valuta</h3>
+    <h3><span class="ic" data-ic="currency"></span> Cambio valuta</h3>
     <label>Valuta della destinazione</label>
     <select id="cvValuta"></select>
     <div class="sub" id="cvInfo" style="margin-top:6px"></div>
     <div class="calc-display">
       <button class="calc-c" id="cvAzzera">AC</button>
       <div class="calc-riga attiva"><span id="calcSuEt">€ EUR</span><b id="calcSu">0</b></div>
-      <button class="calc-swap" id="cvSwap" title="Inverti">⇅</button>
+      <button class="calc-swap" id="cvSwap" title="Inverti"><span class="ic" data-ic="swap"></span></button>
       <div class="calc-riga"><span id="calcGiuEt">—</span><b id="calcGiu">—</b></div>
     </div>
     <div class="calc-tasti" id="cvTastiera"></div>
     <div class="azioni">
-      <button id="cvAggiorna">🔄 Aggiorna tasso</button>
+      <button id="cvAggiorna"><span class="ic" data-ic="refresh"></span> Aggiorna tasso</button>
       <button class="salva" id="cvChiudi">Fatto</button>
     </div>
   </div>
@@ -869,7 +871,7 @@
     <datalist id="elencoLocalita"></datalist>
     <div class="azioni">
       <button id="fAnnulla">Annulla</button>
-      <label class="bottone-file" for="fileFoto">Scegli foto 📁</label>
+      <label class="bottone-file" for="fileFoto">Scegli foto <span class="ic" data-ic="folder"></span></label>
     </div>
   </div>
 </div>
@@ -884,7 +886,7 @@
     <img id="espFoto" class="nascosto" alt="" />
     <div class="azioni">
       <button id="espChiudi">Chiudi</button>
-      <label class="bottone-file" for="fileEsperienza">📷 Foto ricordo</label>
+      <label class="bottone-file" for="fileEsperienza"><span class="ic" data-ic="cam"></span> Foto ricordo</label>
     </div>
   </div>
 </div>
@@ -899,16 +901,16 @@
     <input id="bNome" placeholder="Es. Volo Roma → Tokyo, andata" />
     <label>Tipo</label>
     <select id="bTipo">
-      <option value="volo">✈️ Volo</option>
-      <option value="treno">🚄 Treno</option>
-      <option value="hotel">🛏️ Hotel/B&B</option>
-      <option value="attivita">🎟️ Attività</option>
-      <option value="qr">🔳 QR / Codice d'ingresso</option>
-      <option value="altro">📎 Altro</option>
+      <option value="volo">Volo</option>
+      <option value="treno">Treno</option>
+      <option value="hotel">Hotel/B&B</option>
+      <option value="attivita">Attività</option>
+      <option value="qr">QR / Codice d'ingresso</option>
+      <option value="altro">Altro</option>
     </select>
     <div class="azioni">
       <button id="bAnnulla">Annulla</button>
-      <label class="bottone-file" for="fileBiglietto">Scegli file 📁</label>
+      <label class="bottone-file" for="fileBiglietto">Scegli file <span class="ic" data-ic="folder"></span></label>
     </div>
   </div>
 </div>
@@ -919,30 +921,30 @@
   <img id="visoreImg" alt="" />
   <div class="dida" id="visoreDida"></div>
   <div class="visore-azioni">
-    <button id="visoreElimina">🗑️ Elimina</button>
-    <button id="visoreChiudi">✕ Chiudi</button>
+    <button id="visoreElimina"><span class="ic" data-ic="trash"></span> Elimina</button>
+    <button id="visoreChiudi"><span class="ic" data-ic="x"></span> Chiudi</button>
   </div>
 </div>
 <div class="visore nascosto" id="visoreQr" style="background:#fff">
   <img id="qrImg" alt="" style="max-width:88vw;max-height:62vh;border-radius:10px" />
   <div class="dida" id="qrDida" style="color:#1c1917"></div>
   <div class="visore-azioni">
-    <button id="qrChiudi" style="background:#1c1917;color:#fff">✕ Chiudi</button>
+    <button id="qrChiudi" style="background:#1c1917;color:#fff"><span class="ic" data-ic="x"></span> Chiudi</button>
   </div>
 </div>
 <div class="visore nascosto" id="album">
   <img id="albumImg" alt="" />
   <div class="dida" id="albumDida"></div>
   <div class="visore-azioni">
-    <button id="albumAvanti">Avanti ▸</button>
-    <button id="albumChiudi">✕ Chiudi</button>
+    <button id="albumAvanti">Avanti <span class="ic" data-ic="cr"></span></button>
+    <button id="albumChiudi"><span class="ic" data-ic="x"></span> Chiudi</button>
   </div>
 </div>
 
 <script>
-// ⬇️⬇️ TOKEN MAPBOX ⬇️⬇️
+// ⬇⬇ TOKEN MAPBOX ⬇⬇
 const MAPBOX_TOKEN = "pk.eyJ1IjoieGNvc21veCIsImEiOiJjbXFjd2pzZHYwZjB0MnFyOG03cTA4ZXZzIn0.I8FKfkbsa_1A5bZbz4PUEw";
-// ⬆️⬆️ ============== ⬆️⬆️
+// ⬆⬆ ============== ⬆⬆
 const PROMPT_AI = `Sei un travel planner d'élite: l'equivalente del miglior agente di viaggi su piazza, di quelli che con poche domande capiscono chi hai davanti e ti costruiscono il viaggio perfetto. Da questo momento reciti questo ruolo per l'intera conversazione.
 
 Parli alla persona dandole del "tu", ma mantieni sempre un assetto professionale: sei cordiale come un concierge di un grande albergo, mai sciatto, mai eccessivamente confidenziale.
@@ -1017,13 +1019,69 @@ PROMEMORIA | <cosa fare prima di partire>
 REGOLE PER NON SBAGLIARE: una voce per riga; mai andare a capo dentro una voce; usa sempre |; dentro il pacchetto NON scrivere altro (commenti, spiegazioni); valigia e promemoria su misura del viaggio; se una sezione è vuota, omettila. Le date in formato AAAA-MM-GG.`;
 
 
+const ICONE = {
+  cr: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M176,128,96,208V48Z" opacity="0.2"/><path d="M181.66,122.34l-80-80A8,8,0,0,0,88,48V208a8,8,0,0,0,13.66,5.66l80-80A8,8,0,0,0,181.66,122.34ZM104,188.69V67.31L164.69,128Z"/></svg>`,
+  cl: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M160,48V208L80,128Z" opacity="0.2"/><path d="M163.06,40.61a8,8,0,0,0-8.72,1.73l-80,80a8,8,0,0,0,0,11.32l80,80A8,8,0,0,0,168,208V48A8,8,0,0,0,163.06,40.61ZM152,188.69,91.31,128,152,67.31Z"/></svg>`,
+  clock: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a96,96,0,1,1-96-96A96,96,0,0,1,224,128Z" opacity="0.2"/><path d="M232,136.66A104.12,104.12,0,1,1,119.34,24,8,8,0,0,1,120.66,40,88.12,88.12,0,1,0,216,135.34,8,8,0,0,1,232,136.66ZM120,72v56a8,8,0,0,0,8,8h56a8,8,0,0,0,0-16H136V72a8,8,0,0,0-16,0Zm40-24a12,12,0,1,0-12-12A12,12,0,0,0,160,48Zm36,24a12,12,0,1,0-12-12A12,12,0,0,0,196,72Zm24,36a12,12,0,1,0-12-12A12,12,0,0,0,220,108Z"/></svg>`,
+  plane: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M209,81l-33,31,32,88-24,24-48-72-24,24v24L88,224,72,184,32,168l24-24H80l24-24L32,72,56,48l88,32,31-33A24,24,0,0,1,209,81Z" opacity="0.2"/><path d="M185.33,114.21l29.14-27.43.17-.16a32,32,0,0,0-45.26-45.26l-.16.17L141.79,70.67l-83-30.2a8,8,0,0,0-8.39,1.86l-24,24a8,8,0,0,0,1.22,12.31l63.89,42.59L76.69,136H56a8,8,0,0,0-5.65,2.34l-24,24A8,8,0,0,0,29,175.42l36.82,14.73,14.7,36.75.06.16a8,8,0,0,0,13.18,2.47l23.87-23.88A8,8,0,0,0,120,200V179.31l14.76-14.76,42.59,63.89a8,8,0,0,0,12.31,1.22l24-24a8,8,0,0,0,1.86-8.39Zm-.07,97.23-42.59-63.89A8,8,0,0,0,136.8,144a7.09,7.09,0,0,0-.79,0,8,8,0,0,0-5.66,2.34l-24,24A8,8,0,0,0,104,176v20.69L90.93,209.76,79.43,181A8,8,0,0,0,75,176.57l-28.74-11.5L59.32,152H80a8,8,0,0,0,5.66-2.34l24-24a8,8,0,0,0-1.22-12.32L44.56,70.74l13.5-13.49,83.22,30.26a8,8,0,0,0,8.56-2l30.94-32.88A16,16,0,0,1,203.4,75.22l-32.87,30.94a8,8,0,0,0-2,8.56l30.26,83.22Z"/></svg>`,
+  cal: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,48V88H40V48a8,8,0,0,1,8-8H208A8,8,0,0,1,216,48Z" opacity="0.2"/><path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-68-76a12,12,0,1,1-12-12A12,12,0,0,1,140,132Zm44,0a12,12,0,1,1-12-12A12,12,0,0,1,184,132ZM96,172a12,12,0,1,1-12-12A12,12,0,0,1,96,172Zm44,0a12,12,0,1,1-12-12A12,12,0,0,1,140,172Zm44,0a12,12,0,1,1-12-12A12,12,0,0,1,184,172Z"/></svg>`,
+  money: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M160,128a32,32,0,1,1-32-32A32,32,0,0,1,160,128Zm40-64a48.85,48.85,0,0,0,40,40V64Zm0,128h40V152A48.85,48.85,0,0,0,200,192ZM16,152v40H56A48.85,48.85,0,0,0,16,152Zm0-48A48.85,48.85,0,0,0,56,64H16Z" opacity="0.2"/><path d="M128,88a40,40,0,1,0,40,40A40,40,0,0,0,128,88Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,152ZM240,56H16a8,8,0,0,0-8,8V192a8,8,0,0,0,8,8H240a8,8,0,0,0,8-8V64A8,8,0,0,0,240,56ZM24,72H45.37A40.81,40.81,0,0,1,24,93.37Zm0,112V162.63A40.81,40.81,0,0,1,45.37,184Zm208,0H210.63A40.81,40.81,0,0,1,232,162.63Zm0-38.35A56.78,56.78,0,0,0,193.65,184H62.35A56.78,56.78,0,0,0,24,145.65v-35.3A56.78,56.78,0,0,0,62.35,72h131.3A56.78,56.78,0,0,0,232,110.35Zm0-52.28A40.81,40.81,0,0,1,210.63,72H232Z"/></svg>`,
+  backpack: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,96V216a8,8,0,0,1-8,8H176V152a16,16,0,0,0-16-16H96a16,16,0,0,0-16,16v72H56a8,8,0,0,1-8-8V96A48,48,0,0,1,96,48h64A48,48,0,0,1,208,96Z" opacity="0.2"/><path d="M168,40.58V32A24,24,0,0,0,144,8H112A24,24,0,0,0,88,32v8.58A56.09,56.09,0,0,0,40,96V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V96A56.09,56.09,0,0,0,168,40.58ZM112,24h32a8,8,0,0,1,8,8v8H104V32A8,8,0,0,1,112,24Zm56,136H88v-8a8,8,0,0,1,8-8h64a8,8,0,0,1,8,8ZM88,176h48v8a8,8,0,0,0,16,0v-8h16v40H88Zm112,40H184V152a24,24,0,0,0-24-24H96a24,24,0,0,0-24,24v64H56V96A40,40,0,0,1,96,56h64a40,40,0,0,1,40,40V216ZM152,88a8,8,0,0,1-8,8H112a8,8,0,0,1,0-16h32A8,8,0,0,1,152,88Z"/></svg>`,
+  cam: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,64H176L160,40H96L80,64H48A16,16,0,0,0,32,80V192a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V80A16,16,0,0,0,208,64ZM128,168a36,36,0,1,1,36-36A36,36,0,0,1,128,168Z" opacity="0.2"/><path d="M208,56H180.28L166.65,35.56A8,8,0,0,0,160,32H96a8,8,0,0,0-6.65,3.56L75.71,56H48A24,24,0,0,0,24,80V192a24,24,0,0,0,24,24H208a24,24,0,0,0,24-24V80A24,24,0,0,0,208,56Zm8,136a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8H80a8,8,0,0,0,6.66-3.56L100.28,48h55.43l13.63,20.44A8,8,0,0,0,176,72h32a8,8,0,0,1,8,8ZM128,88a44,44,0,1,0,44,44A44.05,44.05,0,0,0,128,88Zm0,72a28,28,0,1,1,28-28A28,28,0,0,1,128,160Z"/></svg>`,
+  users: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M136,108A52,52,0,1,1,84,56,52,52,0,0,1,136,108Z" opacity="0.2"/><path d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z"/></svg>`,
+  bed: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M248,112v56H112V80H216A32,32,0,0,1,248,112Z" opacity="0.2"/><path d="M216,72H32V48a8,8,0,0,0-16,0V208a8,8,0,0,0,16,0V176H240v32a8,8,0,0,0,16,0V112A40,40,0,0,0,216,72ZM32,88h72v72H32Zm88,72V88h96a24,24,0,0,1,24,24v48Z"/></svg>`,
+  food: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,40V168H152S152,64,208,40Z" opacity="0.2"/><path d="M72,88V40a8,8,0,0,1,16,0V88a8,8,0,0,1-16,0ZM216,40V224a8,8,0,0,1-16,0V176H152a8,8,0,0,1-8-8,268.75,268.75,0,0,1,7.22-56.88c9.78-40.49,28.32-67.63,53.63-78.47A8,8,0,0,1,216,40ZM200,53.9c-32.17,24.57-38.47,84.42-39.7,106.1H200ZM119.89,38.69a8,8,0,1,0-15.78,2.63L112,88.63a32,32,0,0,1-64,0l7.88-47.31a8,8,0,1,0-15.78-2.63l-8,48A8.17,8.17,0,0,0,32,88a48.07,48.07,0,0,0,40,47.32V224a8,8,0,0,0,16,0V135.32A48.07,48.07,0,0,0,128,88a8.17,8.17,0,0,0-.11-1.31Z"/></svg>`,
+  ticket: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M200,128a32,32,0,0,0,32,32v32a8,8,0,0,1-8,8H96V56H224a8,8,0,0,1,8,8V96A32,32,0,0,0,200,128Z" opacity="0.2"/><path d="M232,104a8,8,0,0,0,8-8V64a16,16,0,0,0-16-16H32A16,16,0,0,0,16,64V96a8,8,0,0,0,8,8,24,24,0,0,1,0,48,8,8,0,0,0-8,8v32a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V160a8,8,0,0,0-8-8,24,24,0,0,1,0-48ZM32,167.2a40,40,0,0,0,0-78.4V64H88V192H32Zm192,0V192H104V64H224V88.8a40,40,0,0,0,0,78.4Z"/></svg>`,
+  sunrise: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M192,144a64.33,64.33,0,0,1-2,16H66a64,64,0,1,1,126-16Z" opacity="0.2"/><path d="M240,152H199.55a73.54,73.54,0,0,0,.45-8,72,72,0,0,0-144,0,73.54,73.54,0,0,0,.45,8H16a8,8,0,0,0,0,16H240a8,8,0,0,0,0-16ZM72,144a56,56,0,1,1,111.41,8H72.59A56.13,56.13,0,0,1,72,144Zm144,56a8,8,0,0,1-8,8H48a8,8,0,0,1,0-16H208A8,8,0,0,1,216,200ZM72.84,43.58a8,8,0,0,1,14.32-7.16l8,16a8,8,0,0,1-14.32,7.16Zm-56,48.84a8,8,0,0,1,10.74-3.57l16,8a8,8,0,0,1-7.16,14.31l-16-8A8,8,0,0,1,16.84,92.42Zm192,15.16a8,8,0,0,1,3.58-10.73l16-8a8,8,0,1,1,7.16,14.31l-16,8a8,8,0,0,1-10.74-3.58Zm-48-55.16,8-16a8,8,0,0,1,14.32,7.16l-8,16a8,8,0,1,1-14.32-7.16Z"/></svg>`,
+  moon: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M210.69,158.18A88,88,0,1,1,97.82,45.31,96.08,96.08,0,0,0,192,160,96.78,96.78,0,0,0,210.69,158.18Z" opacity="0.2"/><path d="M240,96a8,8,0,0,1-8,8H216v16a8,8,0,0,1-16,0V104H184a8,8,0,0,1,0-16h16V72a8,8,0,0,1,16,0V88h16A8,8,0,0,1,240,96ZM144,56h8v8a8,8,0,0,0,16,0V56h8a8,8,0,0,0,0-16h-8V32a8,8,0,0,0-16,0v8h-8a8,8,0,0,0,0,16Zm72.77,97a8,8,0,0,1,1.43,8A96,96,0,1,1,95.07,37.8a8,8,0,0,1,10.6,9.06A88.07,88.07,0,0,0,209.14,150.33,8,8,0,0,1,216.77,153Zm-19.39,14.88c-1.79.09-3.59.14-5.38.14A104.11,104.11,0,0,1,88,64c0-1.79,0-3.59.14-5.38A80,80,0,1,0,197.38,167.86Z"/></svg>`,
+  plus: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a96,96,0,1,1-96-96A96,96,0,0,1,224,128Z" opacity="0.2"/><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm48-88a8,8,0,0,1-8,8H136v32a8,8,0,0,1-16,0V136H88a8,8,0,0,1,0-16h32V88a8,8,0,0,1,16,0v32h32A8,8,0,0,1,176,128Z"/></svg>`,
+  check: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a96,96,0,1,1-96-96A96,96,0,0,1,224,128Z" opacity="0.2"/><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>`,
+  circle: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a96,96,0,1,1-96-96A96,96,0,0,1,224,128Z" opacity="0.2"/><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Z"/></svg>`,
+  map: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M160,72V216L96,184V40Z" opacity="0.2"/><path d="M228.92,49.69a8,8,0,0,0-6.86-1.45L160.93,63.52,99.58,32.84a8,8,0,0,0-5.52-.6l-64,16A8,8,0,0,0,24,56V200a8,8,0,0,0,9.94,7.76l61.13-15.28,61.35,30.68A8.15,8.15,0,0,0,160,224a8,8,0,0,0,1.94-.24l64-16A8,8,0,0,0,232,200V56A8,8,0,0,0,228.92,49.69ZM104,52.94l48,24V203.06l-48-24ZM40,62.25l48-12v127.5l-48,12Zm176,131.5-48,12V78.25l48-12Z"/></svg>`,
+  train: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,56v72H48V56A24,24,0,0,1,72,32H184A24,24,0,0,1,208,56Z" opacity="0.2"/><path d="M184,24H72A32,32,0,0,0,40,56V184a32,32,0,0,0,32,32h8L65.6,235.2a8,8,0,1,0,12.8,9.6L100,216h56l21.6,28.8a8,8,0,1,0,12.8-9.6L176,216h8a32,32,0,0,0,32-32V56A32,32,0,0,0,184,24ZM72,40H184a16,16,0,0,1,16,16v64H56V56A16,16,0,0,1,72,40ZM184,200H72a16,16,0,0,1-16-16V136H200v48A16,16,0,0,1,184,200ZM96,172a12,12,0,1,1-12-12A12,12,0,0,1,96,172Zm88,0a12,12,0,1,1-12-12A12,12,0,0,1,184,172Z"/></svg>`,
+  boat: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,125.77V152c0,56-96,80-96,80s-96-24-96-80V125.77a8,8,0,0,1,5.47-7.59L128,88l90.53,30.18A8,8,0,0,1,224,125.77Z" opacity="0.2"/><path d="M221.06,110.59,208,106.23V56a16,16,0,0,0-16-16H136V24a8,8,0,0,0-16,0V40H64A16,16,0,0,0,48,56v50.23l-13.06,4.36A16,16,0,0,0,24,125.77V152c0,61.54,97.89,86.72,102.06,87.76a8,8,0,0,0,3.88,0C134.11,238.72,232,213.54,232,152V125.77A16,16,0,0,0,221.06,110.59ZM64,56H192v44.9L130.53,80.41a8,8,0,0,0-5.06,0L64,100.9Zm152,96c0,24.91-23.68,43-43.55,53.83A228.13,228.13,0,0,1,128,223.72,226.85,226.85,0,0,1,83.81,206C47.6,186.35,40,165.79,40,152V125.77L120,99.1V168a8,8,0,0,0,16,0V99.1l80,26.67Z"/></svg>`,
+  sun: `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M184,128a56,56,0,1,1-56-56A56,56,0,0,1,184,128Z" opacity="0.2"/><path d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"/></svg>`,
+  sparkle: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M194.82,151.43l-55.09,20.3-20.3,55.09a7.92,7.92,0,0,1-14.86,0l-20.3-55.09-55.09-20.3a7.92,7.92,0,0,1,0-14.86l55.09-20.3,20.3-55.09a7.92,7.92,0,0,1,14.86,0l20.3,55.09,55.09,20.3A7.92,7.92,0,0,1,194.82,151.43Z" opacity="0.2"/><path d="M197.58,129.06,146,110l-19-51.62a15.92,15.92,0,0,0-29.88,0L78,110l-51.62,19a15.92,15.92,0,0,0,0,29.88L78,178l19,51.62a15.92,15.92,0,0,0,29.88,0L146,178l51.62-19a15.92,15.92,0,0,0,0-29.88ZM137,164.22a8,8,0,0,0-4.74,4.74L112,223.85,91.78,169A8,8,0,0,0,87,164.22L32.15,144,87,123.78A8,8,0,0,0,91.78,119L112,64.15,132.22,119a8,8,0,0,0,4.74,4.74L191.85,144ZM144,40a8,8,0,0,1,8-8h16V16a8,8,0,0,1,16,0V32h16a8,8,0,0,1,0,16H184V64a8,8,0,0,1-16,0V48H152A8,8,0,0,1,144,40ZM248,88a8,8,0,0,1-8,8h-8v8a8,8,0,0,1-16,0V96h-8a8,8,0,0,1,0-16h8V72a8,8,0,0,1,16,0v8h8A8,8,0,0,1,248,88Z"/></svg>`,
+  globe: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M213.09,172.48a96,96,0,0,1-80.41,51.41l3.17-16.44a8,8,0,0,0-2-6.95l-19.74-20.33a8,8,0,0,1-1.44-8.69l13.7-30.74a8,8,0,0,1,8.38-4.67l22.82,3.08a8.11,8.11,0,0,1,3.12,1.11ZM116.71,95,129,88.24a7.46,7.46,0,0,0,1.5-1.07l26.91-24.33A8,8,0,0,0,159,53l-10.5-18.81A96.62,96.62,0,0,0,128,32,95.61,95.61,0,0,0,67.78,53.23L56,81.08A8,8,0,0,0,55.88,87l11.5,30.67a8,8,0,0,0,5.81,5l2.69.58L89.2,100a8,8,0,0,1,6.94-4h16.71A7.9,7.9,0,0,0,116.71,95Z" opacity="0.2"/><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm88,104a87.62,87.62,0,0,1-6.4,32.94l-44.7-27.49a15.92,15.92,0,0,0-6.24-2.23l-22.82-3.08a16.11,16.11,0,0,0-16,7.86h-8.72l-3.8-7.86a15.91,15.91,0,0,0-11-8.67l-8-1.73L96.14,104h16.71a16.06,16.06,0,0,0,7.73-2l12.25-6.76a16.62,16.62,0,0,0,3-2.14l26.91-24.34A15.93,15.93,0,0,0,166,49.1l-.36-.65A88.11,88.11,0,0,1,216,128ZM143.31,41.34,152,56.9,125.09,81.24,112.85,88H96.14a16,16,0,0,0-13.88,8l-8.73,15.23L63.38,84.19,74.32,58.32a87.87,87.87,0,0,1,69-17ZM40,128a87.53,87.53,0,0,1,8.54-37.8l11.34,30.27a16,16,0,0,0,11.62,10l21.43,4.61L96.74,143a16.09,16.09,0,0,0,14.4,9h1.48l-7.23,16.23a16,16,0,0,0,2.86,17.37l.14.14L128,205.94l-1.94,10A88.11,88.11,0,0,1,40,128Zm102.58,86.78,1.13-5.81a16.09,16.09,0,0,0-4-13.9,1.85,1.85,0,0,1-.14-.14L120,174.74,133.7,144l22.82,3.08,45.72,28.12A88.18,88.18,0,0,1,142.58,214.78Z"/></svg>`,
+  edit: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M221.66,90.34,192,120,136,64l29.66-29.66a8,8,0,0,1,11.31,0L221.66,79A8,8,0,0,1,221.66,90.34Z" opacity="0.2"/><path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.68,147.31,64l24-24L216,84.68Z"/></svg>`,
+  home: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,120v96H152V152H104v64H40V120a8,8,0,0,1,2.34-5.66l80-80a8,8,0,0,1,11.32,0l80,80A8,8,0,0,1,216,120Z" opacity="0.2"/><path d="M219.31,108.68l-80-80a16,16,0,0,0-22.62,0l-80,80A15.87,15.87,0,0,0,32,120v96a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V160h32v56a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V120A15.87,15.87,0,0,0,219.31,108.68ZM208,208H160V152a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8v56H48V120l80-80,80,80Z"/></svg>`,
+  trophy: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M200,48v63.1c0,39.7-31.75,72.6-71.45,72.9A72,72,0,0,1,56,112V48Z" opacity="0.2"/><path d="M232,64H208V48a8,8,0,0,0-8-8H56a8,8,0,0,0-8,8V64H24A16,16,0,0,0,8,80V96a40,40,0,0,0,40,40h3.65A80.13,80.13,0,0,0,120,191.61V216H96a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16H136V191.58c31.94-3.23,58.44-25.64,68.08-55.58H208a40,40,0,0,0,40-40V80A16,16,0,0,0,232,64ZM48,120A24,24,0,0,1,24,96V80H48v32q0,4,.39,8Zm144-8.9c0,35.52-29,64.64-64,64.9a64,64,0,0,1-64-64V56H192ZM232,96a24,24,0,0,1-24,24h-.5a81.81,81.81,0,0,0,.5-8.9V80h24Z"/></svg>`,
+  pin: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M128,24a80,80,0,0,0-80,80c0,72,80,128,80,128s80-56,80-128A80,80,0,0,0,128,24Zm0,112a32,32,0,1,1,32-32A32,32,0,0,1,128,136Z" opacity="0.2"/><path d="M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z"/></svg>`,
+  trash: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M200,56V208a8,8,0,0,1-8,8H64a8,8,0,0,1-8-8V56Z" opacity="0.2"/><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"/></svg>`,
+  x: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,56V200a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V56A16,16,0,0,1,56,40H200A16,16,0,0,1,216,56Z" opacity="0.2"/><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>`,
+  star: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M229.06,108.79l-48.7,42,14.88,62.79a8.4,8.4,0,0,1-12.52,9.17L128,189.09,73.28,222.74a8.4,8.4,0,0,1-12.52-9.17l14.88-62.79-48.7-42A8.46,8.46,0,0,1,31.73,94L95.64,88.8l24.62-59.6a8.36,8.36,0,0,1,15.48,0l24.62,59.6L224.27,94A8.46,8.46,0,0,1,229.06,108.79Z" opacity="0.2"/><path d="M239.18,97.26A16.38,16.38,0,0,0,224.92,86l-59-4.76L143.14,26.15a16.36,16.36,0,0,0-30.27,0L90.11,81.23,31.08,86a16.46,16.46,0,0,0-9.37,28.86l45,38.83L53,211.75a16.38,16.38,0,0,0,24.5,17.82L128,198.49l50.53,31.08A16.4,16.4,0,0,0,203,211.75l-13.76-58.07,45-38.83A16.43,16.43,0,0,0,239.18,97.26Zm-15.34,5.47-48.7,42a8,8,0,0,0-2.56,7.91l14.88,62.8a.37.37,0,0,1-.17.48c-.18.14-.23.11-.38,0l-54.72-33.65a8,8,0,0,0-8.38,0L69.09,215.94c-.15.09-.19.12-.38,0a.37.37,0,0,1-.17-.48l14.88-62.8a8,8,0,0,0-2.56-7.91l-48.7-42c-.12-.1-.23-.19-.13-.5s.18-.27.33-.29l63.92-5.16A8,8,0,0,0,103,91.86l24.62-59.61c.08-.17.11-.25.35-.25s.27.08.35.25L153,91.86a8,8,0,0,0,6.75,4.92l63.92,5.16c.15,0,.24,0,.33.29S224,102.63,223.84,102.73Z"/></svg>`,
+  pushpin: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M229.66,98.34,172.39,155.8c11.46,22.93-1.72,45.86-10.11,57a8,8,0,0,1-12,.83L42.34,105.76A8,8,0,0,1,43,93.85c29.65-23.92,57.4-10,57.4-10l57.27-57.46a8,8,0,0,1,11.31,0L229.66,87A8,8,0,0,1,229.66,98.34Z" opacity="0.2"/><path d="M235.32,81.37,174.63,20.69a16,16,0,0,0-22.63,0L98.37,74.49c-10.66-3.34-35-7.37-60.4,13.14a16,16,0,0,0-1.29,23.78L85,159.71,42.34,202.34a8,8,0,0,0,11.32,11.32L96.29,171l48.29,48.29A16,16,0,0,0,155.9,224c.38,0,.75,0,1.13,0a15.93,15.93,0,0,0,11.64-6.33c19.64-26.1,17.75-47.32,13.19-60L235.33,104A16,16,0,0,0,235.32,81.37ZM224,92.69h0l-57.27,57.46a8,8,0,0,0-1.49,9.22c9.46,18.93-1.8,38.59-9.34,48.62L48,100.08c12.08-9.74,23.64-12.31,32.48-12.31A40.13,40.13,0,0,1,96.81,91a8,8,0,0,0,9.25-1.51L163.32,32,224,92.68Z"/></svg>`,
+  idea: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,104a79.86,79.86,0,0,1-30.59,62.92A24.29,24.29,0,0,0,168,186v6a8,8,0,0,1-8,8H96a8,8,0,0,1-8-8v-6a24.11,24.11,0,0,0-9.3-19A79.87,79.87,0,0,1,48,104.45C47.76,61.09,82.72,25,126.07,24A80,80,0,0,1,208,104Z" opacity="0.2"/><path d="M176,232a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h80A8,8,0,0,1,176,232Zm40-128a87.55,87.55,0,0,1-33.64,69.21A16.24,16.24,0,0,0,176,186v6a16,16,0,0,1-16,16H96a16,16,0,0,1-16-16v-6a16,16,0,0,0-6.23-12.66A87.59,87.59,0,0,1,40,104.49C39.74,56.83,78.26,17.14,125.88,16A88,88,0,0,1,216,104Zm-16,0a72,72,0,0,0-73.74-72c-39,.92-70.47,33.39-70.26,72.39a71.65,71.65,0,0,0,27.64,56.3A32,32,0,0,1,96,186v6h64v-6a32.15,32.15,0,0,1,12.47-25.35A71.65,71.65,0,0,0,200,104Zm-16.11-9.34a57.6,57.6,0,0,0-46.56-46.55,8,8,0,0,0-2.66,15.78c16.57,2.79,30.63,16.85,33.44,33.45A8,8,0,0,0,176,104a9,9,0,0,0,1.35-.11A8,8,0,0,0,183.89,94.66Z"/></svg>`,
+  handshake: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M200,152l-40,40L96,176,40,136,72.68,70.63,128,56l55.32,14.63L183.6,72H144L98.34,116.29a8,8,0,0,0,1.38,12.42C117.23,139.9,141,139.13,160,120Z" opacity="0.2"/><path d="M254.3,107.91,228.78,56.85a16,16,0,0,0-21.47-7.15L182.44,62.13,130.05,48.27a8.14,8.14,0,0,0-4.1,0L73.56,62.13,48.69,49.7a16,16,0,0,0-21.47,7.15L1.7,107.9a16,16,0,0,0,7.15,21.47l27,13.51,55.49,39.63a8.06,8.06,0,0,0,2.71,1.25l64,16a8,8,0,0,0,7.6-2.1l55.07-55.08,26.42-13.21a16,16,0,0,0,7.15-21.46Zm-54.89,33.37L165,113.72a8,8,0,0,0-10.68.61C136.51,132.27,116.66,130,104,122L147.24,80h31.81l27.21,54.41ZM41.53,64,62,74.22,36.43,125.27,16,115.06Zm116,119.13L99.42,168.61l-49.2-35.14,28-56L128,64.28l9.8,2.59-45,43.68-.08.09a16,16,0,0,0,2.72,24.81c20.56,13.13,45.37,11,64.91-5L188,152.66Zm62-57.87-25.52-51L214.47,64,240,115.06Zm-87.75,92.67a8,8,0,0,1-7.75,6.06,8.13,8.13,0,0,1-1.95-.24L80.41,213.33a7.89,7.89,0,0,1-2.71-1.25L51.35,193.26a8,8,0,0,1,9.3-13l25.11,17.94L126,208.24A8,8,0,0,1,131.82,217.94Z"/></svg>`,
+  currency: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M192,168a40,40,0,0,1-40,40H128V128h24A40,40,0,0,1,192,168ZM112,48a40,40,0,0,0,0,80h16V48Z" opacity="0.2"/><path d="M152,120H136V56h8a32,32,0,0,1,32,32,8,8,0,0,0,16,0,48.05,48.05,0,0,0-48-48h-8V24a8,8,0,0,0-16,0V40h-8a48,48,0,0,0,0,96h8v64H104a32,32,0,0,1-32-32,8,8,0,0,0-16,0,48.05,48.05,0,0,0,48,48h16v16a8,8,0,0,0,16,0V216h16a48,48,0,0,0,0-96Zm-40,0a32,32,0,0,1,0-64h8v64Zm40,80H136V136h16a32,32,0,0,1,0,64Z"/></svg>`,
+  refresh: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,128a88,88,0,1,1-88-88A88,88,0,0,1,216,128Z" opacity="0.2"/><path d="M224,48V96a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h28.69L182.06,73.37a79.56,79.56,0,0,0-56.13-23.43h-.45A79.52,79.52,0,0,0,69.59,72.71,8,8,0,0,1,58.41,61.27a96,96,0,0,1,135,.79L208,76.69V48a8,8,0,0,1,16,0ZM186.41,183.29a80,80,0,0,1-112.47-.66L59.31,168H88a8,8,0,0,0,0-16H40a8,8,0,0,0-8,8v48a8,8,0,0,0,16,0V179.31l14.63,14.63A95.43,95.43,0,0,0,130,222.06h.53a95.36,95.36,0,0,0,67.07-27.33,8,8,0,0,0-11.18-11.44Z"/></svg>`,
+  folder: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M128,80H32V56a8,8,0,0,1,8-8H92.69a8,8,0,0,1,5.65,2.34Z" opacity="0.2"/><path d="M216,72H131.31L104,44.69A15.86,15.86,0,0,0,92.69,40H40A16,16,0,0,0,24,56V200.62A15.4,15.4,0,0,0,39.38,216H216.89A15.13,15.13,0,0,0,232,200.89V88A16,16,0,0,0,216,72ZM92.69,56l16,16H40V56ZM216,200H40V88H216Z"/></svg>`,
+  clip: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M180.75,104.75,204,128l-82.06,81.94a48,48,0,0,1-67.88-67.88L153.37,41.37a32,32,0,0,1,45.26,45.26Z" opacity="0.2"/><path d="M209.66,122.34a8,8,0,0,1,0,11.32l-82.05,82a56,56,0,0,1-79.2-79.21L147.67,35.73a40,40,0,1,1,56.61,56.55L105,193A24,24,0,1,1,71,159L154.3,74.38A8,8,0,1,1,165.7,85.6L82.39,170.31a8,8,0,1,0,11.27,11.36L192.93,81A24,24,0,1,0,159,47L59.76,147.68a40,40,0,1,0,56.53,56.62l82.06-82A8,8,0,0,1,209.66,122.34Z"/></svg>`,
+  qr: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M112,56v48a8,8,0,0,1-8,8H56a8,8,0,0,1-8-8V56a8,8,0,0,1,8-8h48A8,8,0,0,1,112,56Zm-8,88H56a8,8,0,0,0-8,8v48a8,8,0,0,0,8,8h48a8,8,0,0,0,8-8V152A8,8,0,0,0,104,144Zm96-96H152a8,8,0,0,0-8,8v48a8,8,0,0,0,8,8h48a8,8,0,0,0,8-8V56A8,8,0,0,0,200,48Z" opacity="0.2"/><path d="M104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48v48Zm0,32H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm0,64H56V152h48v48ZM200,40H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48v48Zm-64,72V144a8,8,0,0,1,16,0v32a8,8,0,0,1-16,0Zm80-16a8,8,0,0,1-8,8H184v40a8,8,0,0,1-8,8H144a8,8,0,0,1,0-16h24V144a8,8,0,0,1,16,0v8h24A8,8,0,0,1,216,160Zm0,32v16a8,8,0,0,1-16,0V192a8,8,0,0,1,16,0Z"/></svg>`,
+  list: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,64V192H128V64Z" opacity="0.2"/><path d="M224,128a8,8,0,0,1-8,8H128a8,8,0,0,1,0-16h88A8,8,0,0,1,224,128ZM128,72h88a8,8,0,0,0,0-16H128a8,8,0,0,0,0,16Zm88,112H128a8,8,0,0,0,0,16h88a8,8,0,0,0,0-16ZM82.34,42.34,56,68.69,45.66,58.34A8,8,0,0,0,34.34,69.66l16,16a8,8,0,0,0,11.32,0l32-32A8,8,0,0,0,82.34,42.34Zm0,64L56,132.69,45.66,122.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32,0l32-32a8,8,0,0,0-11.32-11.32Zm0,64L56,196.69,45.66,186.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32,0l32-32a8,8,0,0,0-11.32-11.32Z"/></svg>`,
+  copy: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,40V168H168V88H88V40Z" opacity="0.2"/><path d="M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z"/></svg>`,
+  film: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M32,176H224v24a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8ZM216,48H40a8,8,0,0,0-8,8V80H224V56A8,8,0,0,0,216,48Z" opacity="0.2"/><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,88h80v80H40Zm96-16V56h32V72Zm-16,0H88V56h32Zm0,112v16H88V184Zm16,0h32v16H136Zm0-16V88h80v80Zm80-96H184V56h32ZM72,56V72H40V56ZM40,184H72v16H40Zm176,16H184V184h32v16Z"/></svg>`,
+  party: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M58.89,154.89l42.22,42.22-50.63,18.4a7.79,7.79,0,0,1-10-10Zm138.82-4.72L105.83,58.29A7.79,7.79,0,0,0,93,61.14l-14.9,41,75.82,75.82,41-14.9A7.79,7.79,0,0,0,197.71,150.17Z" opacity="0.2"/><path d="M111.49,52.63a15.8,15.8,0,0,0-26,5.77L33,202.78A15.83,15.83,0,0,0,47.76,224a16,16,0,0,0,5.46-1l144.37-52.5a15.8,15.8,0,0,0,5.78-26Zm-8.33,135.21-35-35,13.16-36.21,58.05,58.05Zm-55,20,14-38.41,24.45,24.45ZM156,168.64,87.36,100l13-35.87,91.43,91.43ZM160,72a37.8,37.8,0,0,1,3.84-15.58C169.14,45.83,179.14,40,192,40c6.7,0,11-2.29,13.65-7.21A22,22,0,0,0,208,23.94,8,8,0,0,1,224,24c0,12.86-8.52,32-32,32-6.7,0-11,2.29-13.65,7.21A22,22,0,0,0,176,72.06,8,8,0,0,1,160,72ZM136,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm101.66,82.34a8,8,0,1,1-11.32,11.31l-16-16a8,8,0,0,1,11.32-11.32Zm4.87-42.75-24,8a8,8,0,0,1-5.06-15.18l24-8a8,8,0,0,1,5.06,15.18Z"/></svg>`,
+  car: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M184,176h40v24a8,8,0,0,1-8,8H192a8,8,0,0,1-8-8ZM32,200a8,8,0,0,0,8,8H64a8,8,0,0,0,8-8V176H32ZM194.11,44.75A8,8,0,0,0,186.8,40H69.2a8,8,0,0,0-7.31,4.75L32,112H224Z" opacity="0.2"/><path d="M240,104H229.2L201.42,41.5A16,16,0,0,0,186.8,32H69.2a16,16,0,0,0-14.62,9.5L26.8,104H16a8,8,0,0,0,0,16h8v80a16,16,0,0,0,16,16H64a16,16,0,0,0,16-16V184h96v16a16,16,0,0,0,16,16h24a16,16,0,0,0,16-16V120h8a8,8,0,0,0,0-16ZM69.2,48H186.8l24.89,56H44.31ZM64,200H40V184H64Zm128,0V184h24v16Zm24-32H40V120H216ZM56,144a8,8,0,0,1,8-8H80a8,8,0,0,1,0,16H64A8,8,0,0,1,56,144Zm112,0a8,8,0,0,1,8-8h16a8,8,0,0,1,0,16H176A8,8,0,0,1,168,144Z"/></svg>`,
+  flag: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,56v60c-19.89,17.23-38.23,18.39-56,13.48v-60C185.76,74.39,204.11,73.23,224,56ZM104,102.52v-60C86.24,37.61,67.89,38.77,48,56v60c19.89-17.22,38.23-18.39,56-13.48v60c21.62,6,42.38,21,64,27v-60c-21.62-6-42.38-21-64-27Z" opacity="0.2"/><path d="M227.32,48.75A8,8,0,0,0,218.76,50c-28,24.22-51.72,12.48-79.21-1.13C111.07,34.76,78.78,18.79,42.76,50A8,8,0,0,0,40,56V224a8,8,0,0,0,16,0V179.77c26.79-21.16,49.87-9.75,76.45,3.41,28.49,14.09,60.77,30.06,96.79-1.13a8,8,0,0,0,2.76-6V56A8,8,0,0,0,227.32,48.75ZM216,71.6v40.65c-14,11.06-27,13.22-40,10.88V79.34A60.05,60.05,0,0,0,216,71.6Zm-56,3.76v43c-6.66-2.67-13.43-6-20.45-9.48-8.82-4.37-18-8.91-27.55-12.18v-43c6.66,2.66,13.43,6,20.45,9.48C141.27,67.55,150.46,72.09,160,75.36ZM96,48.91V92.69a60.06,60.06,0,0,0-40,7.75V59.78C70,48.72,83,46.57,96,48.91ZM86.58,152A60.06,60.06,0,0,0,56,160.43V119.78c14-11.06,27-13.22,40-10.88v43.8A65.61,65.61,0,0,0,86.58,152ZM112,156.67v-43c6.66,2.66,13.43,6,20.45,9.48,8.82,4.37,18,8.9,27.55,12.17v43c-6.66-2.67-13.43-6-20.45-9.48C130.73,164.47,121.54,159.94,112,156.67Zm64,26.45v-43.8a65.61,65.61,0,0,0,9.42.72A60.11,60.11,0,0,0,216,131.57v40.68C202,183.31,189,185.46,176,183.12Z"/></svg>`,
+  user: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M192,96a64,64,0,1,1-64-64A64,64,0,0,1,192,96Z" opacity="0.2"/><path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"/></svg>`,
+  city: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M136,32V216H40V85.35a8,8,0,0,1,3.56-6.66l80-53.33A8,8,0,0,1,136,32Z" opacity="0.2"/><path d="M240,208H224V96a16,16,0,0,0-16-16H144V32a16,16,0,0,0-24.88-13.32L39.12,72A16,16,0,0,0,32,85.34V208H16a8,8,0,0,0,0,16H240a8,8,0,0,0,0-16ZM208,96V208H144V96ZM48,85.34,128,32V208H48ZM112,112v16a8,8,0,0,1-16,0V112a8,8,0,1,1,16,0Zm-32,0v16a8,8,0,0,1-16,0V112a8,8,0,1,1,16,0Zm0,56v16a8,8,0,0,1-16,0V168a8,8,0,0,1,16,0Zm32,0v16a8,8,0,0,1-16,0V168a8,8,0,0,1,16,0Z"/></svg>`,
+  swap: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M176,48V208H80V48Z" opacity="0.2"/><path d="M117.66,170.34a8,8,0,0,1,0,11.32l-32,32a8,8,0,0,1-11.32,0l-32-32a8,8,0,0,1,11.32-11.32L72,188.69V48a8,8,0,0,1,16,0V188.69l18.34-18.35A8,8,0,0,1,117.66,170.34Zm96-96-32-32a8,8,0,0,0-11.32,0l-32,32a8,8,0,0,0,11.32,11.32L168,67.31V208a8,8,0,0,0,16,0V67.31l18.34,18.35a8,8,0,0,0,11.32-11.32Z"/></svg>`,
+  play: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M228.23,134.69,84.15,222.81A8,8,0,0,1,72,216.12V39.88a8,8,0,0,1,12.15-6.69l144.08,88.12A7.82,7.82,0,0,1,228.23,134.69Z" opacity="0.2"/><path d="M232.4,114.49,88.32,26.35a16,16,0,0,0-16.2-.3A15.86,15.86,0,0,0,64,39.87V216.13A15.94,15.94,0,0,0,80,232a16.07,16.07,0,0,0,8.36-2.35L232.4,141.51a15.81,15.81,0,0,0,0-27ZM80,215.94V40l143.83,88Z"/></svg>`,
+  replay: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,128a88,88,0,1,1-88-88A88,88,0,0,1,216,128Z" opacity="0.2"/><path d="M224,128a96,96,0,0,1-94.71,96H128A95.38,95.38,0,0,1,62.1,197.8a8,8,0,0,1,11-11.63A80,80,0,1,0,71.43,71.39a3.07,3.07,0,0,1-.26.25L44.59,96H72a8,8,0,0,1,0,16H24a8,8,0,0,1-8-8V56a8,8,0,0,1,16,0V85.8L60.25,60A96,96,0,0,1,224,128Z"/></svg>`,
+  pause: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,48V208a8,8,0,0,1-8,8H160a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8h40A8,8,0,0,1,208,48ZM96,40H56a8,8,0,0,0-8,8V208a8,8,0,0,0,8,8H96a8,8,0,0,0,8-8V48A8,8,0,0,0,96,40Z" opacity="0.2"/><path d="M200,32H160a16,16,0,0,0-16,16V208a16,16,0,0,0,16,16h40a16,16,0,0,0,16-16V48A16,16,0,0,0,200,32Zm0,176H160V48h40ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Zm0,176H56V48H96Z"/></svg>`,
+};
+function ico(n){ return '<span class="ic">' + (ICONE[n] || '') + '</span>'; }
+function idratoIcone(root){ (root||document).querySelectorAll('[data-ic]').forEach(function(e){ e.innerHTML = ICONE[e.getAttribute('data-ic')] || ''; e.classList.add('ic'); }); }
+idratoIcone();
+
 // ============ COSTANTI E STATO ============
 const TIPI = {
-  volo:       { label: "Volo",       icona: "✈️", colore: "#3D5A80" },
-  treno:      { label: "Treno",      icona: "🚄", colore: "#5E548E" },
-  hotel:      { label: "Hotel/B&B",  icona: "🛏️", colore: "#0891B2" },
-  attivita:   { label: "Attività",   icona: "🎟️", colore: "#E9A03B" },
-  ristorante: { label: "Ristorante", icona: "🍝", colore: "#C9514C" },
+  volo:       { label: "Volo",       icona: "plane", colore: "#3D5A80" },
+  treno:      { label: "Treno",      icona: "train", colore: "#5E548E" },
+  hotel:      { label: "Hotel/B&B",  icona: "bed",   colore: "#0891B2" },
+  attivita:   { label: "Attività",   icona: "ticket", colore: "#E9A03B" },
+  ristorante: { label: "Ristorante", icona: "food",  colore: "#C9514C" },
 };
 const ICONE_SVG = {
   volo: '<path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>',
@@ -1039,7 +1097,7 @@ const $ = (id) => document.getElementById(id);
 function toast(msg) {
   let t = document.getElementById("toast");
   if (!t) { t = document.createElement("div"); t.id = "toast"; document.body.appendChild(t); }
-  t.textContent = msg;
+  t.innerHTML = msg;
   t.classList.add("visibile");
   clearTimeout(t._timer);
   t._timer = setTimeout(() => t.classList.remove("visibile"), 2400);
@@ -1179,12 +1237,12 @@ function statoViaggio(v) {
   const oggi = oggiISO();
   if (oggi < v.inizio) {
     const diff = Math.round((new Date(v.inizio) - new Date(oggi)) / 86400000);
-    return { classe: "", testo: diff === 1 ? "🕐 Si parte domani!" : "🕐 Mancano " + diff + " giorni" };
+    return { classe: "", icona: "clock", testo: diff === 1 ? "Si parte domani!" : "Mancano " + diff + " giorni" };
   }
-  if (oggi <= v.fine) return { classe: "corso", testo: "✈️ Viaggio in corso!" };
-  return { classe: "fine", testo: "✔️ Viaggio concluso" };
+  if (oggi <= v.fine) return { classe: "corso", icona: "plane", testo: "Viaggio in corso!" };
+  return { classe: "fine", icona: "check", testo: "Viaggio concluso" };
 }
-const FASCE = ["🌅 Mattina", "☀️ Pomeriggio", "🌙 Sera", "🕐 Da pianificare"];
+const FASCE = [["sunrise","Mattina"],["sun","Pomeriggio"],["moon","Sera"],["clock","Da pianificare"]];
 function fasciaDi(t) {
   if (!t.ora || t.ora === "—") return 3;
   const h = Number(t.ora.split(":")[0]);
@@ -1239,7 +1297,7 @@ function renderHome() {
   $("fab").textContent = "+ Nuovo viaggio";
   const m = $("listaViaggi"); m.innerHTML = "";
   if (viaggi.length === 0) {
-    m.innerHTML = '<div class="vuoto" style="text-align:center;padding:30px 10px">Nessun viaggio ancora.<br>Crea il primo con il pulsante qui sotto! 🌍</div>';
+    m.innerHTML = '<div class="vuoto" style="text-align:center;padding:30px 10px">Nessun viaggio ancora.<br>Crea il primo con il pulsante qui sotto! ' + ico('globe') + '</div>';
     return;
   }
   for (const v of viaggi) {
@@ -1256,23 +1314,23 @@ function renderHome() {
         <div class="info">
           <div class="tema-row">
             <span class="tema-chip">${tema.paese}</span>
-            <span class="tema-chip warm">${s.testo.replace(/^\S+\s+/, "").replace(/^Mancano\s+/i, "")}</span>
+            <span class="tema-chip warm">${s.testo.replace(/^Mancano\s+/i, "")}</span>
           </div>
           <div>
             <div class="tema-eye">Il prossimo viaggio</div>
             <h2>${v.nome}</h2>
-            <div class="quando">${fmtData(v.inizio, true)} → ${fmtData(v.fine, true)} · ${v.persone} 👤</div>
+            <div class="quando">${fmtData(v.inizio, true)} → ${fmtData(v.fine, true)} · ${v.persone} ${ico('user')}</div>
           </div>
         </div>
-        <button class="x">✕</button>`;
+        <button class="x">${ico('x')}</button>`;
     } else {
       card.innerHTML = `
       <div class="info">
         <h2>${v.nome}</h2>
-        <div class="quando">${fmtData(v.inizio, true)} → ${fmtData(v.fine, true)} · ${v.persone} 👤</div>
-        <div class="stato ${s.classe}">${s.testo}</div>
+        <div class="quando">${fmtData(v.inizio, true)} → ${fmtData(v.fine, true)} · ${v.persone} ${ico('user')}</div>
+        <div class="stato ${s.classe}">${ico(s.icona)} ${s.testo}</div>
       </div>
-      <button class="x">✕</button>`;
+      <button class="x">${ico('x')}</button>`;
     }
     const _vbg = card.querySelector(".tema-bg"); if (_vbg) _vbg.play().catch(function () {});
     card.querySelector(".info").addEventListener("click", () => apriViaggio(v.id));
@@ -1304,7 +1362,7 @@ function renderViaggio() {
   $("nomeViaggio").textContent = corrente.nome;
   $("dateViaggio").textContent = fmtData(corrente.inizio, true) + " → " + fmtData(corrente.fine, true);
   const s = statoViaggio(corrente);
-  $("countdown").textContent = s.testo;
+  $("countdown").innerHTML = ico(s.icona) + " " + s.testo;
   $("countdown").className = "countdown " + s.classe;
   applicaTema(temaViaggio(corrente));
   renderItinerario(); renderBudget(); renderMappa(); renderFoto(); renderBiglietti(); renderValigia(); renderDafare();
@@ -1312,15 +1370,15 @@ function renderViaggio() {
 let giornoAperto = null;
 function renderItinerario() {
   const m = $("vistaItinerario"); m.innerHTML =
-    '<div class="suggerimento">Tocca un giorno per aprirlo · scorri ⬅️ per rinominare o svuotare</div>';
+    '<div class="suggerimento">Tocca un giorno per aprirlo · scorri ' + ico('cl') + ' per rinominare o svuotare</div>';
   for (const g of corrente.giorni) {
     const costoG = g.tappe.reduce((s, t) => s + t.costo, 0);
     const aperto = giornoAperto === g.id;
     const wrap = document.createElement("div"); wrap.className = "gcard-wrap";
     wrap.innerHTML = `
       <div class="gcard-azioni">
-        <button class="ga-rinomina">✏️<small>Rinomina</small></button>
-        <button class="ga-svuota">🗑<small>Svuota</small></button>
+        <button class="ga-rinomina">${ico('edit')}<small>Rinomina</small></button>
+        <button class="ga-svuota">${ico('trash')}<small>Svuota</small></button>
       </div>
       <div class="gcard">
         <div class="gcard-testa">
@@ -1385,7 +1443,7 @@ function renderItinerario() {
         if (f !== fasciaCorrente) {
           fasciaCorrente = f;
           const et = document.createElement("div"); et.className = "fascia";
-          et.textContent = FASCE[f]; corpo.appendChild(et);
+          et.innerHTML = ico(FASCE[f][0]) + " " + FASCE[f][1]; corpo.appendChild(et);
         }
         const tp = TIPI[t.tipo];
         const orario = isTrasporto(t.tipo) && t.oraArrivo ? `${t.ora} → ${t.oraArrivo}` : t.ora;
@@ -1393,9 +1451,9 @@ function renderItinerario() {
         div.innerHTML = `
           <div class="barra" style="background:${tp.colore}"></div>
           <div class="corpo">
-            <div class="meta">${tp.icona} ${tp.label} · ${orario}</div>
+            <div class="meta">${ico(tp.icona)} ${tp.label} · ${orario}</div>
             <div class="titolo">${t.titolo}</div>
-            <div class="luogo">${t.luogo ? "📍 " + t.luogo : ""}</div>
+            <div class="luogo">${t.luogo ? ico('pin') + " " + t.luogo : ""}</div>
           </div>
           ${t.costo ? `<div class="costo"><b>${eur(t.costo)}</b></div>` : ""}`;
         div.addEventListener("click", () => apriModaleTappa({ giorno: g, tappa: t }));
@@ -1450,7 +1508,7 @@ function renderBudget() {
         </svg>
       </button>
     </div>
-    <div class="card"><b>👥 Spese per viaggiatore</b>
+    <div class="card"><b>${ico('users')} Spese per viaggiatore</b>
       ${nomi.map((n, i) => `
         <div class="cat">
           <div class="riga"><span>${n}</span><b>${eur(Math.round(perPersona[i]))}</b></div>
@@ -1459,13 +1517,13 @@ function renderBudget() {
     </div>
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-        <b>🤝 Spese condivise</b>
+        <b>${ico('handshake')} Spese condivise</b>
         <button class="mini-btn" id="btnSpesa">+ Aggiungi</button>
       </div>
       ${spese.length ? spese.map((sp) => `
         <div class="spesa-riga" data-id="${sp.id}">
           <div><span>${sp.titolo}</span><small>${(sp.pagatori || []).map((i) => nomi[i]).filter(Boolean).join(", ") || "tutti"}</small></div>
-          <div style="display:flex;align-items:center;gap:6px"><b>${eur(sp.costo)}</b><button class="x">✕</button></div>
+          <div style="display:flex;align-items:center;gap:6px"><b>${eur(sp.costo)}</b><button class="x">${ico('x')}</button></div>
         </div>`).join("") : '<div class="vuoto" style="padding:10px 0">Benzina, market, taxi… le spese fuori itinerario.</div>'}
     </div>
       <div class="riga-doppia nascosto" id="cvConv" style="margin-top:8px">
@@ -1476,7 +1534,7 @@ function renderBudget() {
     ${perTipo.length ? `<div class="card"><b>Spese per categoria</b>
       ${perTipo.map(({ k, somma }) => `
         <div class="cat">
-          <div class="riga"><span>${TIPI[k].icona} ${TIPI[k].label}</span><b>${eur(somma)}</b></div>
+          <div class="riga"><span>${ico(TIPI[k].icona)} ${TIPI[k].label}</span><b>${eur(somma)}</b></div>
           <div class="pista"><div class="pieno" style="width:${(somma / max) * 100}%;background:${TIPI[k].colore}"></div></div>
         </div>`).join("")}</div>` : ""}`;
   $("btnSpesa").addEventListener("click", apriModaleSpesa);
@@ -1602,7 +1660,7 @@ function mostraTasso(t, origine) {
   tassoAttuale = t;
   const info = document.getElementById("cvInfo");
   if (info) {
-    info.innerHTML = `1 € = <b>${fmtValuta(t)}</b> · ${origine} · <u id="cvMan" style="cursor:pointer">✎ manuale</u>`;
+    info.innerHTML = `1 € = <b>${fmtValuta(t)}</b> · ${origine} · <u id="cvMan" style="cursor:pointer">${ico('edit')} manuale</u>`;
     const man = document.getElementById("cvMan");
     if (man) man.addEventListener("click", async () => {
       const v = await chiediTesto("Quanto vale 1 € in " + corrente.valuta + "?", tassoAttuale || "");
@@ -1690,10 +1748,10 @@ function lucePerOra() {
 }
 
 // icona unica delle luci: mostra l'emoji della luce attualmente attiva
-const EMOJI_LUCE = { dawn: "🌅", day: "☀️", dusk: "🌇", night: "🌙" };
+const ICONA_LUCE = { dawn: "sunrise", day: "sun", dusk: "sunrise", night: "moon" };
 function aggiornaIconaLuce(preset) {
   const b = $("btnLuce");
-  if (b) b.textContent = EMOJI_LUCE[preset] || "☀️";
+  if (b) b.innerHTML = ico(ICONA_LUCE[preset] || "sun");
 }
 // La luce della mappa segue l'orologio: ogni minuto controllo se è cambiata la fascia
 let luceCorrente = lucePerOra();
@@ -1774,7 +1832,7 @@ function renderMappa() {
       pitch: 45, // inclinazione per apprezzare il 3D
     });
     mappa.on("load", () => { mappaPronta = true; aggiornaRotte(); });
-    // Selettore luce: una sola icona che al tocco apre le altre (🌅 alba · ☀️ giorno · 🌇 tramonto · 🌙 notte)
+    // Selettore luce: una sola icona che al tocco apre le altre (🌅 alba · ☀ giorno · 🌇 tramonto · 🌙 notte)
     $("btnLuce").addEventListener("click", (e) => {
       e.stopPropagation();
       $("barraLuce").classList.toggle("aperto");
@@ -1802,10 +1860,10 @@ function renderMappa() {
   for (const g of corrente.giorni) for (const t of g.tappe) {
     const tp = TIPI[t.tipo];
     if (isTrasporto(t.tipo)) {
-      if (t.coordDa) aggiungi(t.coordDa, tp.colore, `<b>${tp.icona} ${t.titolo}</b><br>Partenza ${t.ora}<br>📍 ${t.luogoDa || ""}`);
-      if (t.coordA) aggiungi(t.coordA, tp.colore, `<b>${tp.icona} ${t.titolo}</b><br>Arrivo ${t.oraArrivo || ""}<br>📍 ${t.luogoA || ""}`);
+      if (t.coordDa) aggiungi(t.coordDa, tp.colore, `<b>${ico(tp.icona)} ${t.titolo}</b><br>Partenza ${t.ora}<br>${ico('pin')} ${t.luogoDa || ""}`);
+      if (t.coordA) aggiungi(t.coordA, tp.colore, `<b>${ico(tp.icona)} ${t.titolo}</b><br>Arrivo ${t.oraArrivo || ""}<br>${ico('pin')} ${t.luogoA || ""}`);
     } else if (t.coord) {
-      aggiungi(t.coord, tp.colore, `<b>${tp.icona} ${t.titolo}</b><br>${g.titolo} · ${t.ora}<br>📍 ${t.luogo}`);
+      aggiungi(t.coord, tp.colore, `<b>${ico(tp.icona)} ${t.titolo}</b><br>${g.titolo} · ${t.ora}<br>${ico('pin')} ${t.luogo}`);
     }
   }
   if (punti.length && !animazioneInCorso) {
@@ -1851,7 +1909,7 @@ function animaSegmento(a, b, tipo, durata, onProgress) {
   });
 }
 // ===== Barra di avanzamento: linea con una "fermata" per ogni tappa =====
-const EMOJI_MEZZO = { volo: "✈️", treno: "🚄", auto: "🚗" };
+const ICONA_MEZZO = { volo: "plane", treno: "train", auto: "car" };
 let viaggioInPausa = false, riproduzioneFinita = false;
 let bvFermate = [];        // i pallini-fermata, uno per ogni nodo del tragitto
 let bvFrazCorrente = 0;    // avanzamento globale attuale (0→1), per ridipingere in pausa
@@ -1897,8 +1955,8 @@ function aggiornaBarraViaggio(frazione, dove) {
 // aggiorna il pulsante in base allo stato: riproduci / pausa / riprendi / rivedi
 function aggiornaPulsanteViaggio() {
   const btn = $("btnViaggio");
-  if (!animazioneInCorso) btn.textContent = riproduzioneFinita ? "↺ Rivedi viaggio" : "▶ Riproduci viaggio";
-  else btn.textContent = viaggioInPausa ? "▶ Riprendi" : "⏸ Pausa";
+  if (!animazioneInCorso) btn.innerHTML = riproduzioneFinita ? ico('replay') + " Rivedi viaggio" : ico('play') + " Riproduci viaggio";
+  else btn.innerHTML = viaggioInPausa ? ico('play') + " Riprendi" : ico('pause') + " Pausa";
   if (animazioneInCorso) aggiornaBarraViaggio(bvFrazCorrente, null); // riapplica il lampeggio della pausa sul puntino
 }
 // attesa che rispetta la pausa (per le pause tra una tratta e l'altra)
@@ -1944,13 +2002,13 @@ async function avviaRiproduzione() {
 
   mostraBarraViaggio(true);
   costruisciFermate(nodi, durate);
-  aggiornaBarraViaggio(0, `📍 ${nodi[0].nome || "Partenza"}`);
+  aggiornaBarraViaggio(0, `${ico('pin')} ${nodi[0].nome || "Partenza"}`);
 
   for (let i = 0; i < nodi.length - 1; i++) {
     const a = nodi[i].coord, b = nodi[i + 1].coord;
     const mezzo = nodi[i + 1].mezzo || "auto";
     const conta = `<span class="bv-num">${i + 1}/${nodi.length - 1}</span>`;
-    const dove = `${conta}<span class="mezzo">${EMOJI_MEZZO[mezzo] || "🚗"}</span>${nodi[i].nome || ""} → ${nodi[i + 1].nome || ""}`;
+    const dove = `${conta}<span class="mezzo">${ico(ICONA_MEZZO[mezzo] || "car")}</span>${nodi[i].nome || ""} → ${nodi[i + 1].nome || ""}`;
 
     mappa.fitBounds(new mapboxgl.LngLatBounds(a, a).extend(b), { padding: 90, maxZoom: 12, duration: 1100 });
     aggiornaBarraViaggio(trascorso / totale, dove); // mostro la tratta in arrivo mentre la camera si sposta
@@ -1965,7 +2023,7 @@ async function avviaRiproduzione() {
     await attesaPausabile(350);
   }
 
-  aggiornaBarraViaggio(1, "🏁 Arrivo");
+  aggiornaBarraViaggio(1, ico('flag') + " Arrivo");
   const punti = nodi.map((x) => x.coord);
   const bounds = punti.reduce((b, c) => b.extend(c), new mapboxgl.LngLatBounds(punti[0], punti[0]));
   mappa.fitBounds(bounds, { padding: 60, maxZoom: 13, duration: 1400 });
@@ -2013,7 +2071,7 @@ function attivaSuggerimenti(inputId, boxId, okId, assegna) {
         const b = document.createElement("button");
         const nome = f.text || f.place_name;
         const resto = f.place_name && f.place_name !== nome ? f.place_name.replace(nome + ", ", "") : "";
-        b.innerHTML = `📍 ${nome}${resto ? `<small>${resto}</small>` : ""}`;
+        b.innerHTML = `${ico('pin')} ${nome}${resto ? `<small>${resto}</small>` : ""}`;
         b.addEventListener("click", () => {
           $(inputId).value = f.place_name;
           assegna(f.center);
@@ -2128,7 +2186,7 @@ function renderChips() {
     const c = document.createElement("button");
     c.className = "chip" + (k === tipoScelto ? " scelto" : "");
     if (k === tipoScelto) { c.style.background = t.colore; c.style.borderColor = t.colore; }
-    c.textContent = t.icona + " " + t.label;
+    c.innerHTML = ico(t.icona) + " " + t.label;
     c.addEventListener("click", () => { tipoScelto = k; renderChips(); aggiornaBlocchi(); });
     $("sceltaTipo").appendChild(c);
   }
@@ -2334,11 +2392,11 @@ $("selConferma").addEventListener("click", async () => {
     coordScelta = selCoord.slice();
     if (nome) $("tLuogo").value = nome;
     $("tLuogoOk").classList.remove("nascosto");
-    $("tLuogoOk").textContent = "✓ Posizione scelta sulla mappa";
+    $("tLuogoOk").innerHTML = ico('check') + " Posizione scelta sulla mappa";
   }
   $("selettoreMappa").classList.remove("aperto");
   $("selCerca").value = "";
-  toast("Posizione impostata 📌");
+  toast("Posizione impostata " + ico('pin'));
 });
 
 // ============ FOTO ============
@@ -2379,14 +2437,14 @@ async function renderFoto() {
   fotoCorrenti = tutte;
   const cont = $("grigliaFoto"); cont.innerHTML = "";
   if (!tutte.length) {
-    cont.innerHTML = '<div class="vuoto" style="text-align:center;padding:20px">Nessuna foto ancora. Aggiungi le prime! 📸</div>';
+    cont.innerHTML = '<div class="vuoto" style="text-align:center;padding:20px">Nessuna foto ancora. Aggiungi le prime! ' + ico('cam') + '</div>';
     return;
   }
   const gruppi = {};
   for (const f of tutte) (gruppi[f.localita] = gruppi[f.localita] || []).push(f);
   for (const [loc, foto] of Object.entries(gruppi)) {
     const sez = document.createElement("div"); sez.className = "gruppo-foto";
-    sez.innerHTML = `<h2>📍 ${loc} <small style="color:#a8a29e">(${foto.length})</small></h2>`;
+    sez.innerHTML = `<h2>${ico('pin')} ${loc} <small style="color:#a8a29e">(${foto.length})</small></h2>`;
     const griglia = document.createElement("div"); griglia.className = "griglia";
     for (const f of foto) {
       const img = document.createElement("img");
@@ -2401,7 +2459,7 @@ let fotoAperta = null;
 function apriVisore(f) {
   fotoAperta = f;
   $("visoreImg").src = srcFoto(f);
-  $("visoreDida").textContent = "📍 " + f.localita;
+  $("visoreDida").innerHTML = ico('pin') + " " + f.localita;
   $("visore").classList.remove("nascosto");
 }
 $("visoreChiudi").addEventListener("click", () => $("visore").classList.add("nascosto"));
@@ -2426,7 +2484,7 @@ $("btnAlbum").addEventListener("click", () => {
 function mostraFotoAlbum() {
   const f = fotoCorrenti[albumIndice];
   $("albumImg").src = srcFoto(f);
-  $("albumDida").textContent = `📍 ${f.localita} · ${albumIndice + 1}/${fotoCorrenti.length}`;
+  $("albumDida").innerHTML = `${ico('pin')} ${f.localita} · ${albumIndice + 1}/${fotoCorrenti.length}`;
 }
 function avantiAlbum() {
   albumIndice = (albumIndice + 1) % fotoCorrenti.length;
@@ -2437,7 +2495,7 @@ $("albumChiudi").addEventListener("click", () => {
   clearInterval(albumTimer);
   $("album").classList.add("nascosto");
 });
-// Swipe sull'album: ⬅️ avanti, ➡️ indietro (e lo scorrimento automatico si ferma)
+// Swipe sull'album: ⬅ avanti, ➡ indietro (e lo scorrimento automatico si ferma)
 let albX0 = null;
 $("album").addEventListener("touchstart", (e) => { albX0 = e.touches[0].clientX; }, { passive: true });
 $("album").addEventListener("touchend", (e) => {
@@ -2480,25 +2538,25 @@ async function renderBiglietti() {
   const tutti = (await dbTutti("biglietti")).filter((b) => b.viaggioId === corrente.id);
   const cont = $("listaBiglietti"); cont.innerHTML = "";
   if (!tutti.length) {
-    cont.innerHTML = '<div class="vuoto" style="text-align:center;padding:20px">Nessun biglietto salvato.<br>Carica qui PDF e foto di voli, treni e prenotazioni 🎫</div>';
+    cont.innerHTML = '<div class="vuoto" style="text-align:center;padding:20px">Nessun biglietto salvato.<br>Carica qui PDF e foto di voli, treni e prenotazioni ' + ico('ticket') + '</div>';
     return;
   }
-  const icone = { volo: "✈️", treno: "🚄", hotel: "🛏️", attivita: "🎟️", qr: "🔳", altro: "📎" };
+  const icone = { volo: "plane", treno: "train", hotel: "bed", attivita: "ticket", qr: "qr", altro: "clip" };
   for (const b of tutti) {
     const wrap = document.createElement("div"); wrap.className = "bwrap";
     wrap.innerHTML = `
       <div class="b-azioni">
-        <button class="ba-mod">✏️</button>
-        <button class="ba-del">🗑</button>
+        <button class="ba-mod">${ico('edit')}</button>
+        <button class="ba-del">${ico('trash')}</button>
       </div>`;
     const div = document.createElement("div"); div.className = "biglietto";
     div.innerHTML = `
-      <div class="ico">${icone[b.tipo] || "📎"}</div>
+      <div class="ico">${ico(icone[b.tipo] || "clip")}</div>
       <div class="info"><b>${b.nome}</b><span>${b.mime.includes("pdf") ? "Documento PDF" : (b.tipo === "qr" ? "QR / codice d'ingresso" : "Immagine")}</span></div>
       <button class="apri-pill">Apri</button>`;
     wrap.appendChild(div);
 
-    // ----- swipe a sinistra: ✏️ rinomina, 🗑 elimina -----
+    // ----- swipe a sinistra: ✏ rinomina, 🗑 elimina -----
     let x0 = null, y0 = null, dx = 0, rivelata = false, orizzontale = null;
     div.addEventListener("touchstart", (e) => {
       x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
@@ -2542,7 +2600,7 @@ async function renderBiglietti() {
       } else {
         fotoAperta = null;
         $("visoreImg").src = srcFoto(b);
-        $("visoreDida").textContent = "🎫 " + b.nome;
+        $("visoreDida").innerHTML = ico('ticket') + " " + b.nome;
         $("visore").classList.remove("nascosto");
       }
     });
@@ -2570,25 +2628,25 @@ function renderDafare() {
   const lista = $("dfLista"); lista.innerHTML = "";
   const tot = corrente.daFare.length;
   const fatte = corrente.daFare.filter((x) => x.fatto).length;
-  $("impContatore").textContent = tot
-    ? `Vissute ${fatte} di ${tot}${fatte === tot ? " — tutte! 🎉" : ""}`
+  $("impContatore").innerHTML = tot
+    ? `Vissute ${fatte} di ${tot}${fatte === tot ? " — tutte! " + ico('party') : ""}`
     : "Le cose per cui vale il viaggio";
   const ordinate = [...corrente.daFare].sort((a, b) => (a.fatto === b.fatto ? 0 : a.fatto ? 1 : -1));
   for (const x of ordinate) {
     const wrap = document.createElement("div"); wrap.className = "imp-wrap";
     wrap.innerHTML = `
       <div class="imp-azioni">
-        <button class="ia-mod">✏️</button>
-        <button class="ia-del">🗑</button>
+        <button class="ia-mod">${ico('edit')}</button>
+        <button class="ia-del">${ico('trash')}</button>
       </div>`;
     const div = document.createElement("div");
     div.className = "imp-riga" + (x.fatto ? " vissuta" : "");
     const stelle = x.fatto && x.voto ? `<span class="mini">★ ${String(x.voto).replace(".", ",")}</span>` : "";
-    const foto = x.fatto && x.fotoId ? `<span class="mini">📷</span>` : "";
-    div.innerHTML = `<button class="spunta">${x.fatto ? "✓" : ""}</button><div class="testo">${x.testo}</div>${stelle}${foto}`;
+    const foto = x.fatto && x.fotoId ? `<span class="mini">${ico('cam')}</span>` : "";
+    div.innerHTML = `<button class="spunta">${x.fatto ? ico('check') : ""}</button><div class="testo">${x.testo}</div>${stelle}${foto}`;
     wrap.appendChild(div);
 
-    // ----- swipe a sinistra: rivela ✏️ e 🗑 -----
+    // ----- swipe a sinistra: rivela ✏ e 🗑 -----
     let x0 = null, y0 = null, dx = 0, rivelata = false, orizzontale = null;
     div.addEventListener("touchstart", (e) => {
       x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
@@ -2673,7 +2731,7 @@ function disegnaStelle() {
 }
 async function apriEsperienza(x) {
   espCorrente = x;
-  $("espTitolo").textContent = "✨ " + x.testo;
+  $("espTitolo").innerHTML = ico('sparkle') + " " + x.testo;
   disegnaStelle();
   const img = $("espFoto");
   img.classList.add("nascosto"); img.src = "";
@@ -2733,7 +2791,7 @@ function renderChecklist(contId, lista) {
   for (const v of ordinata) {
     const riga = document.createElement("div");
     riga.className = "check-riga" + (v.fatto ? " fatta" : "");
-    riga.innerHTML = `<button class="spunta">${v.fatto ? "✓" : ""}</button><div class="testo">${v.testo}</div><button class="x">✕</button>`;
+    riga.innerHTML = `<button class="spunta">${v.fatto ? ico('check') : ""}</button><div class="testo">${v.testo}</div><button class="x">${ico('x')}</button>`;
     riga.querySelector(".spunta").addEventListener("click", () => { v.fatto = !v.fatto; salva(); renderValigia(); });
     riga.querySelector(".x").addEventListener("click", () => {
       const arr = contId === "listaValigia" ? corrente.valigia : corrente.promemoria;
@@ -2945,7 +3003,7 @@ $("importaCrea").addEventListener("click", async () => {
   viaggi.push(v); salva();
   $("veloImporta").classList.remove("aperto");
   const n = out.itinerario.length + out.imperdibili.length + out.valigia.length + out.promemoria.length;
-  toast(scartate.length ? `Viaggio creato! (${n} voci, ${scartate.length} righe ignorate)` : `Viaggio creato con ${n} voci! ✨`);
+  toast(scartate.length ? `Viaggio creato! (${n} voci, ${scartate.length} righe ignorate)` : `Viaggio creato con ${n} voci! ${ico('sparkle')}`);
   apriViaggio(v.id);
   geocodificaViaggio(v); // in sottofondo: trova le posizioni sulla mappa
 });
@@ -2968,10 +3026,10 @@ function mostraVista(nome) {
 // ===== Barra strumenti a macro-categorie =====
 // Itinerario+Imperdibili → "Viaggio"; Valigia+Biglietti → "Preparativi"; Budget e Ricordi sono singoli.
 const MACRO = {
-  viaggio:     { viste: [["itinerario", "🗓️ Itinerario"], ["dafare", "✨ Imperdibili"]] },
-  budget:      { viste: [["budget", "💰 Budget"]] },
-  preparativi: { viste: [["valigia", "🎒 Valigia"], ["biglietti", "🎫 Biglietti"]] },
-  ricordi:     { viste: [["foto", "📷 Foto"]] },
+  viaggio:     { viste: [["itinerario", ico('cal') + " Itinerario"], ["dafare", ico('sparkle') + " Imperdibili"]] },
+  budget:      { viste: [["budget", ico('money') + " Budget"]] },
+  preparativi: { viste: [["valigia", ico('backpack') + " Valigia"], ["biglietti", ico('ticket') + " Biglietti"]] },
+  ricordi:     { viste: [["foto", ico('cam') + " Foto"]] },
 };
 let macroAttiva = "viaggio";
 const macroSub = { viaggio: "itinerario", preparativi: "valigia" }; // sotto-vista corrente dei macro doppi
@@ -2987,7 +3045,7 @@ function renderSottoBar(macro) {
   bar.innerHTML = "";
   for (const [vista, etichetta] of m.viste) {
     const b = document.createElement("button");
-    b.textContent = etichetta;
+    b.innerHTML = etichetta;
     b.classList.toggle("attiva", vista === attuale);
     b.addEventListener("click", () => { macroSub[macro] = vista; mostraVista(vista); renderSottoBar(macro); });
     bar.appendChild(b);
@@ -3078,7 +3136,7 @@ function aggiornaCountdown() {
     setCifra("cardS", Math.floor(diff / 1000) % 60);
     oro.classList.remove("nascosto"); ic.classList.add("nascosto");
   } else {
-    nome.textContent = "Il mondo ti aspetta 🌍";
+    nome.innerHTML = "Il mondo ti aspetta " + ico('globe');
     ic.innerHTML = `Crea il tuo primo viaggio<small>Il diario è pronto</small>`;
     oro.classList.add("nascosto"); ic.classList.remove("nascosto");
   }
@@ -3196,10 +3254,10 @@ function cqInit() {
     cqSelez = iso;
     const daViaggio = cqDerivati.has(iso);
     const manuale = cqManuali.has(iso);
-    $("cqNome").textContent = (daViaggio || manuale ? "🏆 " : "📍 ") + nome;
+    $("cqNome").innerHTML = (daViaggio || manuale ? ico('trophy') : ico('pin')) + " " + nome;
     $("cqStato").textContent = daViaggio ? "Conquistato — risulta da un tuo viaggio"
       : (manuale ? "Segnato come conquistato" : "Ancora da conquistare");
-    $("cqVisitato").textContent = manuale ? "✓ Già conquistato" : "✓ Segna conquistato";
+    $("cqVisitato").innerHTML = ico('check') + (manuale ? " Già conquistato" : " Segna conquistato");
     $("cqVisitato").classList.toggle("nascosto", daViaggio);
     $("cqRimuovi").classList.toggle("nascosto", daViaggio || !manuale);
     $("cqInfo").classList.add("su");
