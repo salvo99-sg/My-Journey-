@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Agenda Viaggi — Proposta temi per-viaggio</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Calistoga&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#FFF7ED; --surface:#fff; --ink:#1c1917; --muted:#78716c;
+    --border:#FCEAE1; --border2:#F1E4DA; --navy:#16264C;
+    --radius:20px; --ease:cubic-bezier(.2,.8,.2,1);
+    --shadow-sm:0 1px 2px rgba(120,70,30,.06),0 1px 3px rgba(120,70,30,.05);
+    --shadow-md:0 6px 18px rgba(120,70,30,.10);
+    --shadow-lg:0 14px 36px rgba(120,70,30,.16);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);
+    background:radial-gradient(1200px 600px at 12% -10%,#FFE9D6,transparent 55%),
+               radial-gradient(1000px 600px at 110% 8%,#E0F3F8,transparent 50%),#F4EDE3;
+    padding:34px 20px 70px;}
+
+  .doc-head{max-width:1180px;margin:0 auto 26px;}
+  .doc-eyebrow{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#EA580C;font-weight:700;}
+  .doc-title{font-family:'Calistoga',serif;font-size:38px;color:var(--navy);margin-top:6px;line-height:1.05;}
+  .doc-sub{color:var(--muted);font-size:15px;margin-top:10px;max-width:680px;line-height:1.5;}
+
+  /* selettore di tema (mock) */
+  .picker{max-width:1180px;margin:0 auto 30px;background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-md);}
+  .picker h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+  .picker .row{display:flex;gap:10px;flex-wrap:wrap;}
+  .tchip{display:flex;align-items:center;gap:8px;border:1.5px solid var(--border);border-radius:14px;
+    padding:9px 14px;font-size:13px;font-weight:600;color:var(--ink);background:#fff;}
+  .tchip .dot{width:22px;height:22px;border-radius:8px;}
+  .tchip.sel{border-color:var(--ink);box-shadow:var(--shadow-sm);}
+  .tchip .auto{font-size:10px;color:#EA580C;font-weight:700;margin-left:2px;}
+
+  .galleria{max-width:1180px;margin:0 auto;display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:34px;justify-items:center;}
+  .phone-wrap{width:320px;}
+  .phone-label{text-align:center;font-weight:700;color:var(--navy);margin-bottom:12px;font-size:15px;}
+  .phone-label span{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:2px;}
+  .phone{width:320px;height:650px;background:#0c0c0e;border-radius:44px;padding:11px;box-shadow:var(--shadow-lg);}
+  .screen{width:100%;height:100%;background:var(--bg);border-radius:34px;overflow:hidden;position:relative;display:flex;flex-direction:column;}
+  .scroll{flex:1;overflow:hidden;}
+  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:26px;background:#0c0c0e;border-radius:0 0 16px 16px;z-index:30;}
+
+  /* ===== header "palcoscenico" — di base, poi i temi lo vestono ===== */
+  .hdr{position:relative;overflow:hidden;color:#fff;padding:40px 20px 22px;border-radius:0 0 28px 28px;}
+  .hdr .eyebrow{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;opacity:.8;font-weight:600;position:relative;z-index:3;}
+  .hdr h1{font-family:'Calistoga',serif;font-size:25px;margin-top:5px;font-weight:400;position:relative;z-index:3;}
+  .hdr .date{font-size:13px;opacity:.9;margin-top:3px;position:relative;z-index:3;}
+  .testa-riga{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:3;}
+  .btn-ghost{background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:999px;padding:8px 13px;font-size:12px;font-weight:600;backdrop-filter:blur(4px);}
+  .badge{display:inline-flex;align-items:center;gap:6px;margin-top:14px;border-radius:999px;padding:7px 15px;font-size:12.5px;font-weight:700;position:relative;z-index:3;color:#fff;}
+  .motif{position:absolute;inset:0;z-index:1;pointer-events:none;}
+  .scrim{position:absolute;inset:0;z-index:2;pointer-events:none;}
+
+  /* tabs */
+  .tabs{display:flex;gap:6px;padding:14px 14px 4px;}
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px;border-radius:16px;
+    border:1px solid var(--border);background:#fff;color:var(--muted);font-size:10.5px;font-weight:600;box-shadow:var(--shadow-sm);}
+  .tab .ic{font-size:19px;}
+  .tab.attiva{color:#fff;}  /* il colore attivo lo dà il tema */
+
+  .suggerimento{font-size:11.5px;color:#b6a99b;text-align:center;margin:10px 0;}
+  .gcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin:0 14px 11px;box-shadow:var(--shadow-sm);overflow:hidden;}
+  .gcard-testa{display:flex;align-items:center;justify-content:space-between;padding:14px;}
+  .gcard-info b{font-family:'Calistoga',serif;font-size:16px;color:var(--ink);font-weight:400;display:block;}
+  .gcard-info small{color:var(--muted);font-size:12px;}
+  .gcard-corpo{padding:0 12px 12px;}
+  .fascia{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#b6a99b;margin:12px 4px 7px;font-weight:600;}
+  .tappa{display:flex;background:#FFFBF6;border:1px solid var(--border2);border-radius:15px;overflow:hidden;margin-bottom:8px;}
+  .tappa .barra{width:5px;flex:none;}
+  .tappa .corpo{flex:1;padding:10px 12px;}
+  .tappa .meta{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;font-weight:600;}
+  .tappa .titolo{font-weight:600;color:var(--ink);margin-top:2px;font-size:14px;}
+  .tappa .luogo{font-size:12px;color:var(--muted);margin-top:1px;}
+  .tappa .costo{width:64px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;border-left:1px dashed var(--border);}
+  .aggiungi-qui{width:100%;margin-top:8px;background:#FFFBF6;border:1.5px dashed #E7C9B5;border-radius:14px;padding:11px;font-weight:600;font-size:13.5px;}
+
+  /* budget */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin:0 14px 13px;box-shadow:var(--shadow-sm);}
+  .card .eyebrow{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .totale{text-align:center;}
+  .totale .cifra{font-family:'Calistoga',serif;font-size:40px;margin:6px 0 2px;}
+  .totale .sub{font-size:12.5px;color:var(--muted);}
+  .card b.titoletto{font-size:14px;color:var(--ink);display:block;margin-bottom:10px;}
+  .cat{margin-bottom:11px;}
+  .cat .riga{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;color:var(--ink);}
+  .cat .riga b{font-weight:700;}
+  .pista{height:9px;background:#F4EADF;border-radius:999px;overflow:hidden;}
+  .pieno{height:100%;border-radius:999px;}
+
+  /* =====================================================================
+     TEMA 🌸 GIAPPONE — indaco notturno + sole rosso + petali di sakura
+     ===================================================================== */
+  .t-jp{--accent:#E0485C;--accent-d:#B23147;}
+  .t-jp .hdr{background:linear-gradient(160deg,#1A1E3A,#3A2350 65%,#5A2746);}
+  .t-jp .sun{position:absolute;right:24px;top:26px;width:74px;height:74px;border-radius:50%;
+    background:radial-gradient(circle at 50% 50%,#FF6B6B,#E0364F 60%,#B0273E);
+    box-shadow:0 0 40px 6px rgba(224,54,79,.45);z-index:1;}
+  .t-jp .scrim{background:linear-gradient(180deg,transparent 40%,rgba(26,30,58,.35));}
+  .t-jp .badge{background:var(--accent);box-shadow:0 6px 16px rgba(224,72,92,.45);}
+  .t-jp .tab.attiva{background:var(--accent-d);border-color:var(--accent-d);}
+  .t-jp .barra-acc{background:var(--accent);}
+  .t-jp .aggiungi-qui{color:var(--accent);border-color:#F0C7CF;}
+  .t-jp .totale .cifra{color:#3A2350;}
+  .t-jp .pieno.acc{background:linear-gradient(90deg,#E0485C,#FF8A9A);}
+  .petalo{position:absolute;top:-12px;width:11px;height:11px;background:#F9CAD8;z-index:2;
+    border-radius:12px 1px 12px 1px;opacity:.9;animation:cadiPetalo linear infinite;}
+  @keyframes cadiPetalo{
+    0%{transform:translateY(-12px) rotate(0);opacity:0;}
+    12%{opacity:.95;}
+    100%{transform:translateY(150px) translateX(34px) rotate(220deg);opacity:0;}
+  }
+
+  /* =====================================================================
+     TEMA 🏛️ EGEO — azzurro mare + bianco cicladico + luccichio d'onda
+     ===================================================================== */
+  .t-eg{--accent:#1E8FB5;--accent-d:#0E6E92;}
+  .t-eg .hdr{background:linear-gradient(160deg,#0E5C8A,#1788B0 60%,#39A8CE);}
+  .t-eg .scrim{background:linear-gradient(180deg,rgba(255,255,255,.10),transparent 50%);}
+  .t-eg .badge{background:#fff;color:#0E6E92;box-shadow:0 6px 16px rgba(14,92,138,.4);}
+  .t-eg .tab.attiva{background:var(--accent-d);border-color:var(--accent-d);}
+  .t-eg .barra-acc{background:var(--accent);}
+  .t-eg .aggiungi-qui{color:var(--accent-d);border-color:#BBE2EF;}
+  .t-eg .totale .cifra{color:#0E5C8A;}
+  .t-eg .pieno.acc{background:linear-gradient(90deg,#1E8FB5,#7FD0E8);}
+  .onde{position:absolute;left:0;right:0;bottom:0;height:70px;z-index:1;opacity:.5;
+    background:repeating-linear-gradient(115deg,transparent 0 14px,rgba(255,255,255,.18) 14px 16px);
+    animation:scorriOnde 7s linear infinite;}
+  @keyframes scorriOnde{from{background-position:0 0;}to{background-position:120px 0;}}
+
+  @media (prefers-reduced-motion: reduce){
+    .petalo,.onde{animation:none!important;}
+    .petalo{display:none;}
+  }
+
+  .nota{max-width:1180px;margin:40px auto 0;background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow-md);}
+  .nota h3{font-family:'Calistoga',serif;color:var(--navy);font-size:22px;font-weight:400;margin-bottom:12px;}
+  .nota ul{list-style:none;display:grid;gap:10px;}
+  .nota li{display:flex;gap:10px;font-size:14px;color:#44403c;line-height:1.45;}
+  .nota li b{color:var(--ink);}
+  .nota .dot{width:9px;height:9px;border-radius:50%;flex:none;margin-top:6px;}
+</style>
+</head>
+<body>
+
+<div class="doc-head">
+  <div class="doc-eyebrow">Proposta · Temi per-viaggio (Fase 1)</div>
+  <h1 class="doc-title">Ogni viaggio, la sua anima</h1>
+  <p class="doc-sub">L'header diventa il "palcoscenico" della destinazione (colori, motivo, un tocco animato), e gli accenti si tingono in tutte le schermate. Le card restano sulla carta pulita: l'identità è forte ma il testo resta perfettamente leggibile. Stesso viaggio, due temi, due schermate ciascuno.</p>
+</div>
+
+<div class="picker">
+  <h4>Selettore tema · nel modale del viaggio (auto + override manuale)</h4>
+  <div class="row">
+    <div class="tchip sel"><span class="dot" style="background:linear-gradient(135deg,#3A2350,#E0364F)"></span>🌸 Giappone <span class="auto">· suggerito</span></div>
+    <div class="tchip"><span class="dot" style="background:linear-gradient(135deg,#0E5C8A,#39A8CE)"></span>🏛️ Egeo / Mare</div>
+    <div class="tchip"><span class="dot" style="background:linear-gradient(135deg,#1c6b3a,#43c08a)"></span>🌴 Tropici</div>
+    <div class="tchip"><span class="dot" style="background:linear-gradient(135deg,#3a4a6b,#9fb4d8)"></span>❄️ Nordico</div>
+    <div class="tchip"><span class="dot" style="background:linear-gradient(135deg,#16264C,#EA580C)"></span>🧭 Adventure (default)</div>
+  </div>
+</div>
+
+<div class="galleria">
+
+  <!-- ===== GIAPPONE · ITINERARIO ===== -->
+  <div class="phone-wrap">
+    <div class="phone-label">🌸 Giappone <span>Itinerario</span></div>
+    <div class="phone t-jp"><div class="screen"><div class="notch"></div><div class="scroll">
+      <div class="hdr">
+        <div class="sun"></div>
+        <div class="motif" id="jpPetali1"></div>
+        <div class="scrim"></div>
+        <div class="testa-riga"><button class="btn-ghost">← Viaggi</button><button class="btn-ghost">🌍 Mappa</button></div>
+        <div class="eyebrow">Diario di bordo</div>
+        <h1>Tour del Giappone</h1>
+        <div class="date">3 ottobre → 17 ottobre</div>
+        <span class="badge">🕐 Mancano 38 giorni</span>
+      </div>
+      <div class="tabs">
+        <div class="tab attiva"><span class="ic">🗓️</span>Viaggio</div>
+        <div class="tab"><span class="ic">💰</span>Budget</div>
+        <div class="tab"><span class="ic">🎒</span>Preparativi</div>
+        <div class="tab"><span class="ic">📷</span>Ricordi</div>
+      </div>
+      <div class="suggerimento">Tocca un giorno · scorri ⬅️ per le azioni</div>
+      <div class="gcard">
+        <div class="gcard-testa"><div class="gcard-info"><b>Giorno 1</b><small>gio 3 ott · 2 attività · € 64</small></div><div style="color:#d6c4b6;font-size:20px">▾</div></div>
+        <div class="gcard-corpo">
+          <div class="fascia">🌅 Mattina</div>
+          <div class="tappa"><div class="barra barra-acc"></div><div class="corpo"><div class="meta">🎟️ Attività · 09:30</div><div class="titolo">Senso-ji, Asakusa</div><div class="luogo">📍 Tokyo</div></div><div class="costo">Gratis</div></div>
+          <div class="fascia">🌙 Sera</div>
+          <div class="tappa"><div class="barra" style="background:#C9514C"></div><div class="corpo"><div class="meta">🍝 Ristorante · 20:00</div><div class="titolo">Ramen a Shinjuku</div><div class="luogo">📍 Tokyo</div></div><div class="costo">€ 18</div></div>
+          <button class="aggiungi-qui">+ Attività in questo giorno</button>
+        </div>
+      </div>
+      <div class="gcard"><div class="gcard-testa"><div class="gcard-info"><b>Giorno 2</b><small>ven 4 ott · giornata libera</small></div><div style="color:#d6c4b6;font-size:20px">›</div></div></div>
+    </div></div></div>
+  </div>
+
+  <!-- ===== GIAPPONE · BUDGET ===== -->
+  <div class="phone-wrap">
+    <div class="phone-label">🌸 Giappone <span>Budget</span></div>
+    <div class="phone t-jp"><div class="screen"><div class="notch"></div><div class="scroll">
+      <div class="hdr">
+        <div class="sun"></div>
+        <div class="motif" id="jpPetali2"></div>
+        <div class="scrim"></div>
+        <div class="testa-riga"><button class="btn-ghost">← Viaggi</button><button class="btn-ghost">🌍 Mappa</button></div>
+        <h1>Tour del Giappone</h1>
+        <div class="date">3 ottobre → 17 ottobre</div>
+      </div>
+      <div class="tabs">
+        <div class="tab"><span class="ic">🗓️</span>Viaggio</div>
+        <div class="tab attiva"><span class="ic">💰</span>Budget</div>
+        <div class="tab"><span class="ic">🎒</span>Preparativi</div>
+        <div class="tab"><span class="ic">📷</span>Ricordi</div>
+      </div>
+      <div style="height:14px"></div>
+      <div class="card totale"><div class="eyebrow">Totale viaggio</div><div class="cifra">€ 3.480</div><div class="sub">≈ ¥ 556.800 in valuta locale</div></div>
+      <div class="card">
+        <b class="titoletto">👥 Spese per viaggiatore</b>
+        <div class="cat"><div class="riga"><span>Sara</span><b>€ 870</b></div><div class="pista"><div class="pieno acc" style="width:100%"></div></div></div>
+        <div class="cat"><div class="riga"><span>Luca</span><b>€ 870</b></div><div class="pista"><div class="pieno acc" style="width:100%"></div></div></div>
+        <div class="cat"><div class="riga"><span>Mia</span><b>€ 870</b></div><div class="pista"><div class="pieno acc" style="width:100%"></div></div></div>
+      </div>
+      <div class="card">
+        <b class="titoletto">Spese per categoria</b>
+        <div class="cat"><div class="riga"><span>✈️ Volo</span><b>€ 1.900</b></div><div class="pista"><div class="pieno" style="width:100%;background:#3D5A80"></div></div></div>
+        <div class="cat"><div class="riga"><span>🛏️ Hotel</span><b>€ 1.100</b></div><div class="pista"><div class="pieno" style="width:58%;background:#0891B2"></div></div></div>
+      </div>
+    </div></div></div>
+  </div>
+
+  <!-- ===== EGEO · ITINERARIO ===== -->
+  <div class="phone-wrap">
+    <div class="phone-label">🏛️ Egeo / Mare <span>Itinerario</span></div>
+    <div class="phone t-eg"><div class="screen"><div class="notch"></div><div class="scroll">
+      <div class="hdr">
+        <div class="onde"></div>
+        <div class="scrim"></div>
+        <div class="testa-riga"><button class="btn-ghost">← Viaggi</button><button class="btn-ghost">🌍 Mappa</button></div>
+        <div class="eyebrow">Diario di bordo</div>
+        <h1>Estate nelle Cicladi</h1>
+        <div class="date">10 luglio → 18 luglio</div>
+        <span class="badge">✈️ Viaggio in corso!</span>
+      </div>
+      <div class="tabs">
+        <div class="tab attiva"><span class="ic">🗓️</span>Viaggio</div>
+        <div class="tab"><span class="ic">💰</span>Budget</div>
+        <div class="tab"><span class="ic">🎒</span>Preparativi</div>
+        <div class="tab"><span class="ic">📷</span>Ricordi</div>
+      </div>
+      <div class="suggerimento">Tocca un giorno · scorri ⬅️ per le azioni</div>
+      <div class="gcard">
+        <div class="gcard-testa"><div class="gcard-info"><b>Giorno 3</b><small>sab 12 lug · 2 attività · € 75</small></div><div style="color:#d6c4b6;font-size:20px">▾</div></div>
+        <div class="gcard-corpo">
+          <div class="fascia">☀️ Pomeriggio</div>
+          <div class="tappa"><div class="barra barra-acc"></div><div class="corpo"><div class="meta">🎟️ Attività · 16:00</div><div class="titolo">Tramonto a Oia</div><div class="luogo">📍 Santorini</div></div><div class="costo">Gratis</div></div>
+          <div class="fascia">🌙 Sera</div>
+          <div class="tappa"><div class="barra" style="background:#C9514C"></div><div class="corpo"><div class="meta">🍝 Ristorante · 21:00</div><div class="titolo">Taverna sul mare</div><div class="luogo">📍 Santorini</div></div><div class="costo">€ 75</div></div>
+          <button class="aggiungi-qui">+ Attività in questo giorno</button>
+        </div>
+      </div>
+      <div class="gcard"><div class="gcard-testa"><div class="gcard-info"><b>Giorno 4</b><small>dom 13 lug · giornata libera</small></div><div style="color:#d6c4b6;font-size:20px">›</div></div></div>
+    </div></div></div>
+  </div>
+
+  <!-- ===== EGEO · BUDGET ===== -->
+  <div class="phone-wrap">
+    <div class="phone-label">🏛️ Egeo / Mare <span>Budget</span></div>
+    <div class="phone t-eg"><div class="screen"><div class="notch"></div><div class="scroll">
+      <div class="hdr">
+        <div class="onde"></div>
+        <div class="scrim"></div>
+        <div class="testa-riga"><button class="btn-ghost">← Viaggi</button><button class="btn-ghost">🌍 Mappa</button></div>
+        <h1>Estate nelle Cicladi</h1>
+        <div class="date">10 luglio → 18 luglio</div>
+      </div>
+      <div class="tabs">
+        <div class="tab"><span class="ic">🗓️</span>Viaggio</div>
+        <div class="tab attiva"><span class="ic">💰</span>Budget</div>
+        <div class="tab"><span class="ic">🎒</span>Preparativi</div>
+        <div class="tab"><span class="ic">📷</span>Ricordi</div>
+      </div>
+      <div style="height:14px"></div>
+      <div class="card totale"><div class="eyebrow">Totale viaggio</div><div class="cifra">€ 1.940</div><div class="sub">Diviso tra 2 viaggiatori</div></div>
+      <div class="card">
+        <b class="titoletto">👥 Spese per viaggiatore</b>
+        <div class="cat"><div class="riga"><span>Anna</span><b>€ 970</b></div><div class="pista"><div class="pieno acc" style="width:100%"></div></div></div>
+        <div class="cat"><div class="riga"><span>Marco</span><b>€ 970</b></div><div class="pista"><div class="pieno acc" style="width:100%"></div></div></div>
+      </div>
+      <div class="card">
+        <b class="titoletto">Spese per categoria</b>
+        <div class="cat"><div class="riga"><span>🛏️ Hotel</span><b>€ 1.040</b></div><div class="pista"><div class="pieno" style="width:100%;background:#0891B2"></div></div></div>
+        <div class="cat"><div class="riga"><span>🍝 Ristorante</span><b>€ 560</b></div><div class="pista"><div class="pieno" style="width:54%;background:#C9514C"></div></div></div>
+        <div class="cat"><div class="riga"><span>⛴️ Traghetti</span><b>€ 340</b></div><div class="pista"><div class="pieno" style="width:33%;background:#5E548E"></div></div></div>
+      </div>
+    </div></div></div>
+  </div>
+
+</div>
+
+<div class="nota">
+  <h3>Come funziona (Fase 1)</h3>
+  <ul>
+    <li><span class="dot" style="background:#E0485C"></span><div><b>Header = palcoscenico:</b> ogni tema veste l'header con i suoi colori + un motivo (sole rosso, onde) + un tocco animato leggero (petali, luccichio). Titolo e dati restano sopra uno <b>scrim</b> → sempre leggibili.</div></li>
+    <li><span class="dot" style="background:#1E8FB5"></span><div><b>Accenti tinti ovunque:</b> tab attiva, badge, pulsante "+ Attività", barre del budget per-persona, spunte. Le card e i testi restano sulla carta pulita.</div></li>
+    <li><span class="dot" style="background:#16264C"></span><div><b>Colori "semantici" intatti:</b> le barrette dei tipi tappa (volo/treno/hotel/ristorante) restano i loro colori — servono a riconoscere il tipo a colpo d'occhio.</div></li>
+    <li><span class="dot" style="background:#D97706"></span><div><b>Scelta:</b> l'app suggerisce il tema dalla destinazione, ma lo cambi a mano dal selettore nel modale del viaggio. Viaggi senza tema → "Adventure" di default.</div></li>
+    <li><span class="dot" style="background:#0891B2"></span><div><b>Leggero & rispettoso:</b> animazioni GPU, poche particelle, spente con <i>"riduci movimento"</i>. Zero impatto sui dati salvati.</div></li>
+  </ul>
+</div>
+
+<script>
+  // petali di sakura per gli header Giappone (mock dell'animazione)
+  function semina(id,n){
+    const c=document.getElementById(id); if(!c) return;
+    for(let i=0;i<n;i++){
+      const p=document.createElement('span'); p.className='petalo';
+      p.style.left=(Math.random()*100)+'%';
+      p.style.animationDuration=(4+Math.random()*3).toFixed(1)+'s';
+      p.style.animationDelay=(Math.random()*5).toFixed(1)+'s';
+      p.style.transform='scale('+(0.7+Math.random()*0.7).toFixed(2)+')';
+      c.appendChild(p);
+    }
+  }
+  semina('jpPetali1',9); semina('jpPetali2',9);
+</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+node_modules/
+.agents/
+.claude/skills/
+remotion-headers/node_modules/
