@@ -1183,8 +1183,8 @@ function dbElimina(store, id) {
     tx.oncomplete = () => res(); tx.onerror = () => res();
   });
 }
-// Comprime una foto (max 1280px) in base64; con "timbro" imprime il nome dell'esperienza
-function comprimi(file, timbro) {
+// Comprime una foto (max 1280px) in base64
+function comprimi(file) {
   return new Promise((res, rej) => {
     const img = new Image();
     img.onload = () => {
@@ -1194,15 +1194,6 @@ function comprimi(file, timbro) {
         c.width = Math.round(img.width * sc); c.height = Math.round(img.height * sc);
         const ctx = c.getContext("2d");
         ctx.drawImage(img, 0, 0, c.width, c.height);
-        if (timbro) {
-          // stile "data impressa" delle vecchie foto: corsivo bianco con ombra, in basso a sinistra
-          const fs = Math.max(20, Math.round(c.width * 0.045));
-          ctx.font = "italic 700 " + fs + "px Georgia, 'Times New Roman', serif";
-          ctx.textBaseline = "bottom";
-          ctx.shadowColor = "rgba(0,0,0,.55)"; ctx.shadowBlur = 7; ctx.shadowOffsetY = 2;
-          ctx.fillStyle = "#fff";
-          ctx.fillText(timbro, Math.round(fs * 0.8), c.height - Math.round(fs * 0.6), c.width - fs * 1.6);
-        }
         res(c.toDataURL("image/jpeg", .82));
       } catch (e) { rej(e); }
     };
@@ -2898,7 +2889,7 @@ $("fileEsperienza").addEventListener("change", async (e) => {
   try {
     const f = e.target.files[0];
     if (!f || !espCorrente) return;
-    const dati = await comprimi(f, "✨ " + espCorrente.testo); // nome impresso nella foto
+    const dati = await comprimi(f);
     const id = Date.now();
     await dbPut("foto", { id, viaggioId: corrente.id, localita: "✨ " + espCorrente.testo, quando: Date.now(), dati, esperienzaId: espCorrente.id });
     espCorrente.fotoId = id;
