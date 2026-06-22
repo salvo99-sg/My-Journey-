@@ -497,6 +497,30 @@
   #schermataViaggio.temato .countdown { background: var(--t-accent,#E0566A); }
   #schermataViaggio.temato #macroTabs .tab.attiva { background: var(--t-accent-d,#C23A55); border-color: var(--t-accent-d,#C23A55); }
   @media (prefers-reduced-motion: reduce) { .tema-bg { display: none; } .viaggio-card.tema, #schermataViaggio header.tema { background-size: cover; background-position: center; } }
+
+  /* ===================== ADATTAMENTO TABLET / DESKTOP ===================== */
+  @media (min-width: 740px) {
+    body {
+      background:
+        radial-gradient(1000px 720px at 50% -12%, #F6E4D4, transparent 60%),
+        radial-gradient(900px 600px at 112% 8%, #E3D6E0, transparent 55%),
+        radial-gradient(900px 600px at -10% 20%, #DCE7EC, transparent 55%),
+        #EAE1D4;
+      background-attachment: fixed;
+    }
+    .app {
+      background: #FFF7ED;
+      min-height: 100vh;
+      box-shadow: 0 0 0 1px rgba(70,40,20,.05), 0 24px 70px rgba(50,30,15,.16);
+    }
+    /* le modali diventano finestre centrate invece che fogli dal basso */
+    .velo { align-items: center; }
+    .velo .modale { border-radius: 20px; max-height: 86vh; }
+  }
+  /* schermi molto larghi: un filo più ariosa, resta leggibile come app mobile */
+  @media (min-width: 1100px) {
+    .app { max-width: 500px; }
+  }
 </style>
 </head>
 <body>
