@@ -5,7 +5,7 @@ Aggiorniamo Stato e metadati man mano che le creiamo.
 
 Legenda stato: ✅ fatto · 🟡 in lavorazione · ⬜ da fare
 
-## Nazioni iconiche (8)
+## Nazioni iconiche (9)
 
 | # | Input | Stato | Stile | Ora | Accento | Elementi |
 |---|-------|-------|-------|-----|---------|----------|
@@ -17,6 +17,7 @@ Legenda stato: ✅ fatto · 🟡 in lavorazione · ⬜ da fare
 | 6 | `USA` | ⬜ | — | — | — | — |
 | 7 | `Spagna` | ⬜ | — | — | — | — |
 | 8 | `Egitto` | ⬜ | — | — | — | — |
+| 9 | `Cina` | ✅ | pittura a inchiostro | tramonto | `#C0463C` | Grande Muraglia, dragone, montagne |
 
 ## Tipologie di viaggio (10)
 
@@ -41,7 +42,7 @@ Legenda stato: ✅ fatto · 🟡 in lavorazione · ⬜ da fare
 
 ---
 
-**Avanzamento: 4 / 19**
+**Avanzamento: 5 / 20**
 
 ### Come si aggiunge una card
 1. Genera l'immagine col prompt-madre (input = una voce qui sopra).
