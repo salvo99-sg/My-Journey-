@@ -118,6 +118,23 @@
   .imp-riga .x { background: none; border: none; color: #c9b88a; font-size: 19px; padding: 0 2px; flex: none; }
   #dfIdee { background: none; border: none; font-family: inherit; font-size: 20px; color: #8a7b54;
     margin-top: 18px; text-decoration: underline dashed; }
+  /* Muro dei ricordi: polaroid delle esperienze vissute con foto */
+  #dfMuro { margin-top: 8px; }
+  .muro-titolo { font-size: 23px; color: #2b3a55; font-weight: 700; margin: 22px 0 4px; display: flex; align-items: center; gap: 8px; }
+  .muro-titolo .ic { width: 22px; height: 22px; }
+  .muro-ricordi { display: flex; flex-wrap: wrap; gap: 18px 12px; padding: 12px 6px 6px; }
+  .polaroid { position: relative; background: #fff; padding: 7px 7px 12px; width: calc(50% - 14px);
+    box-shadow: 0 6px 15px rgba(60,40,20,.22); }
+  .polaroid:nth-child(odd) { transform: rotate(-3deg); }
+  .polaroid:nth-child(even) { transform: rotate(2.5deg); }
+  .polaroid img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; background: #e9e4d4; }
+  .polaroid .cap { font-family: 'Caveat', 'Bradley Hand', cursive; font-size: 18px; color: #2b3a55;
+    text-align: center; margin-top: 7px; line-height: 1.15; }
+  .polaroid .voto { text-align: center; font-size: 13px; color: #b07d10; margin-top: 1px; }
+  .polaroid::before { content: ''; position: absolute; top: -10px; left: 50%;
+    transform: translateX(-50%) rotate(-4deg); width: 58px; height: 21px;
+    background: var(--t-accent, #C9514C); opacity: .42; box-shadow: 0 1px 2px rgba(0,0,0,.14); }
+  .polaroid:nth-child(even)::before { transform: translateX(-50%) rotate(5deg); }
   .stelle-box { text-align: center; margin: 10px 0 2px; }
   .stelle-sfondo { position: relative; display: inline-block; font-size: 40px; letter-spacing: 5px;
     color: #d6d3d1; cursor: pointer; user-select: none; -webkit-user-select: none; line-height: 1.1; }
@@ -700,6 +717,7 @@
       </div>
       <div id="dfLista"></div>
       <button id="dfIdee"><span class="ic" data-ic="idea"></span> Suggeriscimi qualche idea</button>
+      <div id="dfMuro"></div>
     </div>
   </main>
 </div>
@@ -2831,6 +2849,28 @@ function renderDafare() {
       salva(); renderDafare();
     });
     lista.appendChild(wrap);
+  }
+  renderMuroRicordi(corrente.daFare.filter((x) => x.fatto && x.fotoId));
+}
+// Muro dei ricordi: polaroid (con washi tape) delle esperienze vissute che hanno una foto
+async function renderMuroRicordi(items) {
+  const muro = $("dfMuro");
+  if (!muro) return;
+  if (!items.length) { muro.innerHTML = ""; return; }
+  let tutte = [];
+  try { tutte = await dbTutti("foto"); } catch {}
+  const byId = {}; for (const f of tutte) byId[f.id] = f;
+  muro.innerHTML = `<div class="muro-titolo">${ico('cam')} I ricordi vissuti</div><div class="muro-ricordi"></div>`;
+  const grid = muro.querySelector(".muro-ricordi");
+  for (const x of items) {
+    const f = byId[x.fotoId];
+    const src = f ? srcFoto(f) : "";
+    const voto = x.voto ? `<div class="voto">★ ${String(x.voto).replace(".", ",")}</div>` : "";
+    const card = document.createElement("div");
+    card.className = "polaroid";
+    card.innerHTML = `<img alt="" ${src ? `src="${src}"` : ""}><div class="cap">${x.testo}</div>${voto}`;
+    card.addEventListener("click", () => apriEsperienza(x));
+    grid.appendChild(card);
   }
 }
 function aggiungiImperdibile() {
