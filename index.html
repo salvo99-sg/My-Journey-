@@ -1366,7 +1366,8 @@ const TEMI = {
   francia:  { paese: "Francia",  anim: "francia", poster: "themes/francia.jpg", accent: "#3E6DA8", accentDark: "#2C5285" },
   grecia:   { paese: "Grecia",   poster: "themes/grecia.jpg",  accent: "#E0904C", accentDark: "#C06C30" },
   regnounito: { paese: "Regno Unito", poster: "themes/regnounito.jpg", accent: "#D9893B", accentDark: "#B26E26" },
-  cina:     { paese: "Cina",     poster: "themes/cina.jpg", accent: "#C0463C", accentDark: "#9C342C" }
+  cina:     { paese: "Cina",     poster: "themes/cina.jpg", accent: "#C0463C", accentDark: "#9C342C" },
+  usa:      { paese: "USA",      poster: "themes/usa.jpg", accent: "#2E8BC0", accentDark: "#1F6A94" }
 };
 function temaViaggio(v) {
   if (!v) return null;
@@ -1377,6 +1378,7 @@ function temaViaggio(v) {
   if (/greci|greece|atene|athen|santorin|mykon|cicladi|creta|crete/.test(t)) return TEMI.grecia;
   if (/londr|london|regno unito|inghilterr|england|gran bretagn|\buk\b|britann/.test(t)) return TEMI.regnounito;
   if (/cina|china|pechino|beijing|shanghai|hong ?kong|xi'?an|canton|guangzhou|muraglia|cinese/.test(t)) return TEMI.cina;
+  if (/\busa\b|u\.s\.a|stati uniti|america|new ?york|\bnyc\b|manhattan|brooklyn/.test(t)) return TEMI.usa;
   return null;
 }
 let temaAnimStop = null;
