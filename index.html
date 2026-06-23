@@ -1364,7 +1364,8 @@ function avviaTemaAnim(canvas, tipo, accent) {
 const TEMI = {
   giappone: { paese: "Giappone", video: "themes/giappone.mp4", poster: "themes/giappone.jpg", accent: "#E0566A", accentDark: "#C23A55" },
   francia:  { paese: "Francia",  anim: "francia", poster: "themes/francia.jpg", accent: "#3E6DA8", accentDark: "#2C5285" },
-  grecia:   { paese: "Grecia",   poster: "themes/grecia.jpg",  accent: "#E0904C", accentDark: "#C06C30" }
+  grecia:   { paese: "Grecia",   poster: "themes/grecia.jpg",  accent: "#E0904C", accentDark: "#C06C30" },
+  regnounito: { paese: "Regno Unito", poster: "themes/regnounito.jpg", accent: "#D9893B", accentDark: "#B26E26" }
 };
 function temaViaggio(v) {
   if (!v) return null;
@@ -1373,6 +1374,7 @@ function temaViaggio(v) {
   if (/giappon|japan|tokyo|kyoto|osaka|fuji/.test(t)) return TEMI.giappone;
   if (/franc|parig|paris/.test(t)) return TEMI.francia;
   if (/greci|greece|atene|athen|santorin|mykon|cicladi|creta|crete/.test(t)) return TEMI.grecia;
+  if (/londr|london|regno unito|inghilterr|england|gran bretagn|\buk\b|britann/.test(t)) return TEMI.regnounito;
   return null;
 }
 let temaAnimStop = null;
