@@ -1441,7 +1441,8 @@ const TEMI = {
   usa:      { paese: "USA",      poster: "themes/usa.jpg", accent: "#2E8BC0", accentDark: "#1F6A94" },
   spagna:   { paese: "Spagna",   poster: "themes/spagna.jpg", accent: "#D2552E", accentDark: "#AE3F1F" },
   olanda:   { paese: "Olanda",   poster: "themes/olanda.jpg", accent: "#E0A93B", accentDark: "#BD8623" },
-  indonesia:{ paese: "Indonesia", poster: "themes/indonesia.jpg", accent: "#2E8F86", accentDark: "#1F6A63" }
+  indonesia:{ paese: "Indonesia", poster: "themes/indonesia.jpg", accent: "#2E8F86", accentDark: "#1F6A63" },
+  emiratiarabi: { paese: "Emirati Arabi", poster: "themes/emiratiarabi.jpg", accent: "#D2A23C", accentDark: "#B07F22" }
 };
 function temaViaggio(v) {
   if (!v) return null;
@@ -1456,6 +1457,7 @@ function temaViaggio(v) {
   if (/spagn|spain|barcellona|barcelona|madrid|siviglia|sevilla|valencia|sagrada|gaudi|ibiza|maiorca|mallorca/.test(t)) return TEMI.spagna;
   if (/oland|paesi bassi|netherlands|holland|amsterdam|rotterdam|aia|tulipan/.test(t)) return TEMI.olanda;
   if (/indonesia|\bbali\b|giacarta|jakarta|ubud|borobudur|lombok|giava|sumatra/.test(t)) return TEMI.indonesia;
+  if (/emirat|dubai|abu ?dhabi|\buae\b|emirates|burj|sharjah/.test(t)) return TEMI.emiratiarabi;
   return null;
 }
 let temaAnimStop = null;
