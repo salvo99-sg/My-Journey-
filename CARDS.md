@@ -5,7 +5,7 @@ Aggiorniamo Stato e metadati man mano che le creiamo.
 
 Legenda stato: ✅ fatto · 🟡 in lavorazione · ⬜ da fare
 
-## Nazioni iconiche (9)
+## Nazioni iconiche (11)
 
 | # | Input | Stato | Stile | Ora | Accento | Elementi |
 |---|-------|-------|-------|-----|---------|----------|
@@ -15,9 +15,11 @@ Legenda stato: ✅ fatto · 🟡 in lavorazione · ⬜ da fare
 | 4 | `Grecia` | ✅ | illustrato (statica) | tramonto | `#E0904C` | Santorini, cupole blu, mare (no animazione, watermark rimosso) |
 | 5 | `Regno Unito` | ✅ | foto (statica) | tramonto | `#D9893B` | Big Ben, Westminster, Tamigi |
 | 6 | `USA` | ✅ | foto (statica) | giorno | `#2E8BC0` | New York, Central Park, Manhattan |
-| 7 | `Spagna` | ⬜ | — | — | — | — |
+| 7 | `Spagna` | ✅ | foto (statica) | tramonto | `#D2552E` | Sagrada Família, Park Güell |
 | 8 | `Egitto` | ⬜ | — | — | — | — |
 | 9 | `Cina` | ✅ | pittura a inchiostro | tramonto | `#C0463C` | Grande Muraglia, dragone, montagne |
+| 10 | `Olanda` | ✅ | stile Van Gogh | notte | `#E0A93B` | Mulini, tulipani, notte stellata |
+| 11 | `Indonesia` | ✅ | foto (statica) | alba | `#2E8F86` | Bali, tempio, Buddha, loto |
 
 ## Tipologie di viaggio (10)
 
@@ -42,7 +44,7 @@ Legenda stato: ✅ fatto · 🟡 in lavorazione · ⬜ da fare
 
 ---
 
-**Avanzamento: 6 / 20**
+**Avanzamento: 9 / 22**
 
 ### Come si aggiunge una card
 1. Genera l'immagine col prompt-madre (input = una voce qui sopra).

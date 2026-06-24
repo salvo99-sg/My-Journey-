@@ -1438,7 +1438,10 @@ const TEMI = {
   grecia:   { paese: "Grecia",   poster: "themes/grecia.jpg",  accent: "#E0904C", accentDark: "#C06C30" },
   regnounito: { paese: "Regno Unito", poster: "themes/regnounito.jpg", accent: "#D9893B", accentDark: "#B26E26" },
   cina:     { paese: "Cina",     poster: "themes/cina.jpg", accent: "#C0463C", accentDark: "#9C342C" },
-  usa:      { paese: "USA",      poster: "themes/usa.jpg", accent: "#2E8BC0", accentDark: "#1F6A94" }
+  usa:      { paese: "USA",      poster: "themes/usa.jpg", accent: "#2E8BC0", accentDark: "#1F6A94" },
+  spagna:   { paese: "Spagna",   poster: "themes/spagna.jpg", accent: "#D2552E", accentDark: "#AE3F1F" },
+  olanda:   { paese: "Olanda",   poster: "themes/olanda.jpg", accent: "#E0A93B", accentDark: "#BD8623" },
+  indonesia:{ paese: "Indonesia", poster: "themes/indonesia.jpg", accent: "#2E8F86", accentDark: "#1F6A63" }
 };
 function temaViaggio(v) {
   if (!v) return null;
@@ -1450,6 +1453,9 @@ function temaViaggio(v) {
   if (/londr|london|regno unito|inghilterr|england|gran bretagn|\buk\b|britann/.test(t)) return TEMI.regnounito;
   if (/cina|china|pechino|beijing|shanghai|hong ?kong|xi'?an|canton|guangzhou|muraglia|cinese/.test(t)) return TEMI.cina;
   if (/\busa\b|u\.s\.a|stati uniti|america|new ?york|\bnyc\b|manhattan|brooklyn/.test(t)) return TEMI.usa;
+  if (/spagn|spain|barcellona|barcelona|madrid|siviglia|sevilla|valencia|sagrada|gaudi|ibiza|maiorca|mallorca/.test(t)) return TEMI.spagna;
+  if (/oland|paesi bassi|netherlands|holland|amsterdam|rotterdam|aia|tulipan/.test(t)) return TEMI.olanda;
+  if (/indonesia|\bbali\b|giacarta|jakarta|ubud|borobudur|lombok|giava|sumatra/.test(t)) return TEMI.indonesia;
   return null;
 }
 let temaAnimStop = null;
