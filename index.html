@@ -190,7 +190,6 @@
   header h1 { font-size: 25px; margin-top: 4px; }
   header .date { font-size: 14px; opacity: .85; margin-top: 2px; }
   .testa-riga { display: flex; justify-content: space-between; align-items: center; }
-  .btn-ghost { background: rgba(255,255,255,.15); color: #fff; border: none; border-radius: 999px; padding: 8px 14px; font-size: 13px; font-weight: 600; }
   .countdown { display: inline-block; margin-top: 10px; background: #EA580C; color: #fff; border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 700; }
   .countdown.corso { background: #0891B2; }
   .countdown.fine { background: rgba(255,255,255,.2); }
@@ -298,9 +297,13 @@
     z-index: 400; box-shadow: 0 8px 24px rgba(0,0,0,.3); opacity: 0; pointer-events: none;
     transition: opacity .25s ease, transform .25s ease; max-width: 86vw; text-align: center; }
   #toast.visibile { opacity: 1; transform: translateX(-50%) translateY(0); }
-  .btn-globo { width: 38px; height: 38px; border-radius: 50%; border: none;
-    background: #ffffff26; font-size: 19px; line-height: 1; }
-  .btn-globo.attivo { background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,.25); }
+  .btn-tonda { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.18);
+    background: rgba(255,255,255,.16); color: #fff; display: inline-flex; align-items: center; justify-content: center;
+    font-size: 19px; line-height: 1; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    transition: background .2s ease, transform .12s ease; }
+  .btn-tonda:active { transform: scale(.92); }
+  .btn-tonda .ic { width: 1.05em; height: 1.05em; }
+  .btn-globo.attivo { background: #fff; color: #1a1a1a; box-shadow: 0 2px 10px rgba(0,0,0,.25); }
   .bwrap { position: relative; overflow: hidden; border-radius: 14px; margin: 8px 0; }
   .bwrap .b-azioni { position: absolute; top: 0; bottom: 0; right: 0; width: 120px; display: flex; }
   .bwrap .b-azioni button { flex: 1; border: none; color: #fff; font-size: 17px; }
@@ -636,10 +639,10 @@
 <div class="app nascosto" id="schermataViaggio">
   <header>
     <div class="testa-riga">
-      <button class="btn-ghost" id="indietro"><span class="ic" data-ic="cl"></span> Viaggi</button>
+      <button class="btn-tonda" id="indietro" title="Torna ai viaggi" aria-label="Torna ai viaggi"><span class="ic" data-ic="cl"></span></button>
       <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn-globo" id="btnGlobo" title="Mappa del viaggio"><span class="ic" data-ic="globe"></span></button>
-        <button class="btn-ghost" id="modificaViaggio"><span class="ic" data-ic="edit"></span> Modifica</button>
+        <button class="btn-tonda btn-globo" id="btnGlobo" title="Mappa del viaggio" aria-label="Mappa del viaggio"><span class="ic" data-ic="globe"></span></button>
+        <button class="btn-tonda" id="modificaViaggio" title="Modifica viaggio" aria-label="Modifica viaggio"><span class="ic" data-ic="edit"></span></button>
       </div>
     </div>
     <h1 id="nomeViaggio"></h1>
