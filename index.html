@@ -1481,16 +1481,16 @@ function temaViaggio(v) {
   if (!v) return null;
   if (v.tema && TEMI[v.tema]) return TEMI[v.tema];
   const t = ((v.nome || "") + " " + (v.destinazione || "") + " " + (v.paese || "")).toLowerCase();
-  if (/giappon|japan|tokyo|kyoto|osaka|fuji/.test(t)) return TEMI.giappone;
-  if (/franc|parig|paris/.test(t)) return TEMI.francia;
-  if (/greci|greece|atene|athen|santorin|mykon|cicladi|creta|crete/.test(t)) return TEMI.grecia;
-  if (/londr|london|regno unito|inghilterr|england|gran bretagn|\buk\b|britann/.test(t)) return TEMI.regnounito;
-  if (/cina|china|pechino|beijing|shanghai|hong ?kong|xi'?an|canton|guangzhou|muraglia|cinese/.test(t)) return TEMI.cina;
-  if (/\busa\b|u\.s\.a|stati uniti|america|new ?york|\bnyc\b|manhattan|brooklyn/.test(t)) return TEMI.usa;
-  if (/spagn|spain|barcellona|barcelona|madrid|siviglia|sevilla|valencia|sagrada|gaudi|ibiza|maiorca|mallorca/.test(t)) return TEMI.spagna;
-  if (/oland|paesi bassi|netherlands|holland|amsterdam|rotterdam|aia|tulipan/.test(t)) return TEMI.olanda;
-  if (/indonesia|\bbali\b|giacarta|jakarta|ubud|borobudur|lombok|giava|sumatra/.test(t)) return TEMI.indonesia;
-  if (/emirat|dubai|abu ?dhabi|\buae\b|emirates|burj|sharjah/.test(t)) return TEMI.emiratiarabi;
+  if (/giappon|japan|tokyo|kyoto|osaka|fuji|hiroshima|\bnara\b|sapporo|yokohama|nagoya|okinawa|hokkaido|\bkobe\b|nikko|giappones/.test(t)) return TEMI.giappone;
+  if (/franc|parig|paris|marsigli|marseille|\blione\b|\blyon\b|nizza|cannes|tolosa|toulouse|bordeaux|\blille\b|nantes|strasburg|strasbourg|montpellier|provenz|provence|costa azzurra|cote d'?azur|riviera francese|french riviera|normandi|bretagn|versailles|avignon|biarritz|chamonix|grenoble|saint-?tropez|antibes|\bloira\b|\bloire\b/.test(t)) return TEMI.francia;
+  if (/greci|greece|atene|athen|santorin|mykon|cicladi|creta|crete|\brodi\b|rhodes|corf[uù]|salonicco|thessalonik|zante|zakynth|\bkos\b|naxos|paros|\bmilos\b|peloponnes|meteora|delfi|delphi|cefalonia|\begeo\b|greco/.test(t)) return TEMI.grecia;
+  if (/londr|london|regno unito|inghilterr|england|gran bretagn|\buk\b|britann|manchester|liverpool|edimburg|edinburgh|glasgow|birmingham|\boxford\b|cambridge|bristol|\bleeds\b|yorkshire|cardiff|belfast|scozia|scotland|galles|\bwales\b|cornovagli|cornwall|tamigi|stonehenge|ingles/.test(t)) return TEMI.regnounito;
+  if (/cina|china|pechino|beijing|shanghai|hong ?kong|xi'?an|canton|guangzhou|muraglia|cinese|shenzhen|chengdu|guilin|chongqing|\btibet\b|lhasa|macao|macau|suzhou|hangzhou|wuhan|nanchino|nanjing|terracotta|citt[aà] proibita/.test(t)) return TEMI.cina;
+  if (/\busa\b|u\.s\.a|stati uniti|america|new ?york|\bnyc\b|manhattan|brooklyn|los angeles|san francisco|las vegas|\bmiami\b|chicago|\bboston\b|washington|seattle|san diego|orlando|hawaii|california|\btexas\b|florida|grand canyon|route 66|yellowstone|statua della libert/.test(t)) return TEMI.usa;
+  if (/spagn|spain|barcellona|barcelona|madrid|siviglia|sevilla|valencia|sagrada|gaudi|ibiza|maiorca|mallorca|bilbao|malaga|\bgranada\b|saragozza|zaragoza|cordova|cordoba|toledo|salamanca|san sebasti|tenerife|canarie|canary|gran canaria|lanzarote|fuerteventura|formentera|andalus|costa del sol|costa brava|marbella|cadice|cadiz|spagnol/.test(t)) return TEMI.spagna;
+  if (/oland|paesi bassi|netherlands|holland|amsterdam|rotterdam|l'?aia\b|den haag|the hague|tulipan|eindhoven|utrecht|maastricht|groning|haarlem|\bdelft\b|leida|leiden|nimega|nijmegen|tilburg|\bbreda\b|almere|zaanse|keukenhof|volendam|giethoorn|olandes/.test(t)) return TEMI.olanda;
+  if (/indonesia|\bbali\b|giacarta|jakarta|ubud|borobudur|lombok|giava|sumatra|yogyakarta|surabaya|komodo|\bgili\b|\bnusa\b|sulawesi|flores|bandung|indonesian/.test(t)) return TEMI.indonesia;
+  if (/emirat|dubai|abu ?dhabi|\buae\b|emirates|burj|sharjah|ajman|fujairah|ras al khaim|palm jumeirah/.test(t)) return TEMI.emiratiarabi;
   return null;
 }
 let temaAnimStop = null;
