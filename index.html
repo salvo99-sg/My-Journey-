@@ -189,6 +189,9 @@
   .eyebrow { font-family: ui-monospace, monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: .7; }
   header h1 { font-size: 25px; margin-top: 4px; }
   header .date { font-size: 14px; opacity: .85; margin-top: 2px; }
+  /* Home: header in tinta unita, senza chiazza/glow */
+  #schermataHome header { background: #1e3160; }
+  #schermataHome header::after { display: none; }
   .testa-riga { display: flex; justify-content: space-between; align-items: center; }
   .countdown { display: inline-block; margin-top: 10px; background: #EA580C; color: #fff; border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 700; }
   .countdown.corso { background: #0891B2; }
@@ -242,9 +245,15 @@
   .viaggio-card .info { flex: 1; }
   .viaggio-card h2 { font-size: 18px; color: #1c1917; }
   .viaggio-card .quando { font-size: 13px; color: #78716c; margin-top: 2px; }
-  .viaggio-card .stato { font-size: 12px; font-weight: 700; margin-top: 6px; color: #EA580C; }
-  .viaggio-card .stato.corso { color: #0891B2; }
-  .viaggio-card .stato.fine { color: #a8a29e; }
+  .stato-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; padding: 5px 11px; border-radius: 999px; margin-top: 8px; letter-spacing: .3px; }
+  .stato-badge .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .sb-corso { color: #15803d; background: rgba(22,163,74,.13); } .sb-corso .dot { background: #16a34a; }
+  .sb-programma { color: #c2410c; background: rgba(234,88,12,.13); } .sb-programma .dot { background: #EA580C; }
+  .sb-bozza { color: #b91c1c; background: rgba(220,38,38,.12); } .sb-bozza .dot { background: #DC2626; }
+  .sb-concluso { color: #78716c; background: rgba(120,113,108,.14); } .sb-concluso .dot { background: #a8a29e; }
+  .viaggio-card.bozza { border: 1px dashed rgba(220,38,38,.45); }
+  .viaggio-card .quando.manca { color: #b91c1c; }
+  .tema-chip .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
   .viaggio-card .x { background: none; border: none; color: #d6d3d1; font-size: 17px; padding: 6px; }
 
   .fab { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1c1917; color: #fff; border: none; border-radius: 999px; padding: 14px 26px; font-size: 15px; font-weight: 700; box-shadow: 0 6px 18px rgba(0,0,0,.25); z-index: 20; }
@@ -547,8 +556,6 @@
   .viaggio-card.tema .stato { display: none; }
   .tema-chip { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.18); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,.24); border-radius: 999px; padding: 6px 11px; font-size: 11.5px; font-weight: 700; white-space: nowrap; }
   .viaggio-card.tema .tema-row { gap: 8px; }
-  .tema-chip.warm { background: var(--t-accent,#E0566A); border: none; box-shadow: 0 6px 16px rgba(0,0,0,.18); }
-  .tema-eye { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; opacity: .9; font-weight: 600; }
   .viaggio-card.tema .x { position: absolute; top: 10px; right: 10px; z-index: 3; color: #fff; background: rgba(0,0,0,.28); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; }
 
   /* --- header del viaggio a tema --- */
@@ -627,7 +634,6 @@
   <header>
     <div class="eyebrow">Agenda di viaggio</div>
     <h1>I miei viaggi</h1>
-    <div class="date">Tocca un viaggio per aprirlo</div>
   </header>
   <main id="listaViaggi"></main>
   <div style="padding: 0 16px 16px; text-align:center">
@@ -1309,6 +1315,30 @@ function statoViaggio(v) {
   if (oggi <= v.fine) return { classe: "corso", icona: "plane", testo: "Viaggio in corso!" };
   return { classe: "fine", icona: "check", testo: "Viaggio concluso" };
 }
+function totaleTappe(v) {
+  return (v.giorni || []).reduce((s, g) => s + ((g.tappe && g.tappe.length) || 0), 0);
+}
+function nomiMancanti(v) {
+  if ((v.persone || 1) < 2) return false;            // viaggio in solo: nessun nome richiesto
+  const nomi = v.nomi || [];
+  if (nomi.length < v.persone) return true;
+  return nomi.some((n) => !n || /^Viaggiatore\s+\d+$/i.test(String(n).trim()));
+}
+function mancanzeViaggio(v) {
+  const m = [];
+  if (!v.inizio || !v.fine) m.push("date");
+  if (totaleTappe(v) === 0) m.push("itinerario");
+  if (nomiMancanti(v)) m.push("nomi partecipanti");
+  return m;
+}
+// Stato per il badge in home: concluso > bozza > in programma > in corso
+function statoBadge(v) {
+  const oggi = oggiISO();
+  if (v.inizio && v.fine && oggi > v.fine) return { classe: "concluso", label: "Concluso", colore: "#a8a29e" };
+  if (mancanzeViaggio(v).length)            return { classe: "bozza", label: "Bozza", colore: "#DC2626" };
+  if (oggi < v.inizio)                       return { classe: "programma", label: "In programma", colore: "#EA580C" };
+  return { classe: "corso", label: "In corso", colore: "#16a34a" };
+}
 const FASCE = [["sunrise","Mattina"],["sun","Pomeriggio"],["moon","Sera"],["clock","Da pianificare"]];
 function fasciaDi(t) {
   if (!t.ora || t.ora === "—") return 3;
@@ -1518,9 +1548,11 @@ function renderHome() {
     return;
   }
   for (const v of viaggi) {
-    const s = statoViaggio(v);
+    const sb = statoBadge(v);
     const tema = temaViaggio(v);
-    const card = document.createElement("div"); card.className = "viaggio-card" + (tema ? " tema" : "");
+    const conDate = v.inizio && v.fine;
+    const quando = (conDate ? fmtData(v.inizio, true) + " → " + fmtData(v.fine, true) : "Date da definire") + " · " + v.persone + " " + ico('user');
+    const card = document.createElement("div"); card.className = "viaggio-card" + (tema ? " tema" : "") + (sb.classe === "bozza" ? " bozza" : "");
     if (tema) {
       card.style.setProperty("--t-accent", tema.accent);
       card.style.backgroundImage = 'url("' + tema.poster + '")';
@@ -1534,21 +1566,23 @@ function renderHome() {
         <div class="info">
           <div class="tema-row">
             <span class="tema-chip">${tema.paese}</span>
-            <span class="tema-chip warm">${s.testo.replace(/^Mancano\s+/i, "")}</span>
+            <span class="tema-chip"><span class="dot" style="background:${sb.colore}"></span>${sb.label}</span>
           </div>
           <div>
-            <div class="tema-eye">Il prossimo viaggio</div>
             <h2>${v.nome}</h2>
-            <div class="quando">${fmtData(v.inizio, true)} → ${fmtData(v.fine, true)} · ${v.persone} ${ico('user')}</div>
+            <div class="quando">${quando}</div>
           </div>
         </div>
         <button class="x">${ico('x')}</button>`;
     } else {
+      const rigaQuando = sb.classe === "bozza"
+        ? `<div class="quando manca">Manca: ${mancanzeViaggio(v).join(" · ")}</div>`
+        : `<div class="quando">${quando}</div>`;
       card.innerHTML = `
       <div class="info">
         <h2>${v.nome}</h2>
-        <div class="quando">${fmtData(v.inizio, true)} → ${fmtData(v.fine, true)} · ${v.persone} ${ico('user')}</div>
-        <div class="stato ${s.classe}">${ico(s.icona)} ${s.testo}</div>
+        ${rigaQuando}
+        <span class="stato-badge sb-${sb.classe}"><span class="dot"></span>${sb.label}</span>
       </div>
       <button class="x">${ico('x')}</button>`;
     }
