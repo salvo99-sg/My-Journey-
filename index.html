@@ -87,12 +87,31 @@
 
   /* Cose da fare */
   #vistaDafare { padding: 0; }
-  #quaderno { min-height: calc(100vh - 150px); background: #f8f2dd;
+  #quaderno, #quaderno2 { min-height: 100%; background: #f8f2dd;
     background-image: repeating-linear-gradient(transparent 0 33px, #c9b88a4d 33px 34px);
     padding: 34px 14px 110px 44px; position: relative;
     background-position: 0 34px;
     font-family: 'Caveat', 'Bradley Hand', 'Segoe Script', cursive; }
-  #quaderno::before { content: ''; position: absolute; top: 0; bottom: 0; left: 30px; width: 2px; background: #d9777759; }
+  #quaderno::before, #quaderno2::before { content: ''; position: absolute; top: 0; bottom: 0; left: 30px; width: 2px; background: #d9777759; }
+  /* Diario sfogliabile: due pagine (lista / ricordi) con giro pagina 3D */
+  #vistaDafare { position: relative; }
+  #diario { position: relative; height: calc(100vh - 150px); height: calc(100dvh - 150px);
+    perspective: 1700px; overflow: hidden; }
+  #diarioCard { position: relative; width: 100%; height: 100%; transform-style: preserve-3d;
+    transition: transform .72s cubic-bezier(.2,.75,.2,1); }
+  #diario.girata #diarioCard { transform: rotateY(-180deg); }
+  .dpagina { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .dpagina.dback { transform: rotateY(180deg); }
+  #diario.girata .dfront { pointer-events: none; }
+  #diario:not(.girata) .dback { pointer-events: none; }
+  .df-gira { position: absolute; bottom: 18px; right: 16px; z-index: 6; width: 50px; height: 50px;
+    border-radius: 50%; border: none; background: var(--t-accent, #2b3a55); color: #fff;
+    box-shadow: 0 6px 16px rgba(0,0,0,.24); display: flex; align-items: center; justify-content: center; }
+  .df-gira .ic { width: 24px; height: 24px; }
+  .muro-vuoto { font-family: 'Caveat', 'Bradley Hand', cursive; font-size: 21px; color: #8a7b54;
+    text-align: center; padding: 40px 16px; line-height: 1.4; }
+  @media (prefers-reduced-motion: reduce) { #diarioCard { transition: none; } }
   .q-titolo { font-size: 31px; color: #2b3a55; font-weight: 700; line-height: 34px; }
   .q-sotto { font-size: 19px; color: #8a7b54; line-height: 34px; min-height: 34px; }
   .q-inserisci { display: flex; gap: 8px; align-items: center; height: 34px; }
@@ -708,16 +727,28 @@
     </div>
   </main>
   <main id="vistaDafare" class="nascosto">
-    <div id="quaderno">
-      <div class="q-titolo">Le mie imperdibili <span class="ic" data-ic="sparkle"></span></div>
-      <div class="q-sotto" id="impContatore">Le cose per cui vale il viaggio</div>
-      <div class="q-inserisci">
-        <input id="dfTesto" placeholder="Scrivi cosa non vuoi perderti..." enterkeyhint="done" />
-        <button id="dfAggiungi" title="Aggiungi"><span class="ic" data-ic="edit"></span></button>
+    <div id="diario">
+      <div id="diarioCard">
+        <div class="dpagina dfront">
+          <div id="quaderno">
+            <div class="q-titolo">Le mie imperdibili <span class="ic" data-ic="sparkle"></span></div>
+            <div class="q-sotto" id="impContatore">Le cose per cui vale il viaggio</div>
+            <div class="q-inserisci">
+              <input id="dfTesto" placeholder="Scrivi cosa non vuoi perderti..." enterkeyhint="done" />
+              <button id="dfAggiungi" title="Aggiungi"><span class="ic" data-ic="edit"></span></button>
+            </div>
+            <div id="dfLista"></div>
+            <button id="dfIdee"><span class="ic" data-ic="idea"></span> Suggeriscimi qualche idea</button>
+          </div>
+        </div>
+        <div class="dpagina dback">
+          <div id="quaderno2">
+            <div class="q-titolo">I ricordi vissuti <span class="ic" data-ic="cam"></span></div>
+            <div id="dfMuro"></div>
+          </div>
+        </div>
       </div>
-      <div id="dfLista"></div>
-      <button id="dfIdee"><span class="ic" data-ic="idea"></span> Suggeriscimi qualche idea</button>
-      <div id="dfMuro"></div>
+      <button id="dfGira" class="df-gira" title="Gira pagina"><span class="ic" data-ic="cr"></span></button>
     </div>
   </main>
 </div>
@@ -1523,6 +1554,7 @@ function renderViaggio() {
   $("countdown").className = "countdown " + s.classe;
   applicaTema(temaViaggio(corrente));
   renderItinerario(); renderBudget(); renderMappa(); renderFoto(); renderBiglietti(); renderValigia(); renderDafare();
+  if ($("diario")) { $("diario").classList.remove("girata"); impostaFrecciaDiario(); } // riparti dalla pagina lista
 }
 let giornoAperto = null;
 function renderItinerario() {
@@ -2856,11 +2888,14 @@ function renderDafare() {
 async function renderMuroRicordi(items) {
   const muro = $("dfMuro");
   if (!muro) return;
-  if (!items.length) { muro.innerHTML = ""; return; }
+  if (!items.length) {
+    muro.innerHTML = `<div class="muro-vuoto">Ancora nessun ricordo qui.<br>Vivi un'imperdibile e aggiungi una foto: comparirà come polaroid. 📸</div>`;
+    return;
+  }
   let tutte = [];
   try { tutte = await dbTutti("foto"); } catch {}
   const byId = {}; for (const f of tutte) byId[f.id] = f;
-  muro.innerHTML = `<div class="muro-titolo">${ico('cam')} I ricordi vissuti</div><div class="muro-ricordi"></div>`;
+  muro.innerHTML = `<div class="muro-ricordi"></div>`;
   const grid = muro.querySelector(".muro-ricordi");
   for (const x of items) {
     const f = byId[x.fotoId];
@@ -2899,6 +2934,43 @@ $("dfIdee").addEventListener("click", () => {
     corrente.daFare.push({ id: Date.now() + Math.random(), testo, fatto: false, voto: 0, fotoId: null });
   salva(); renderDafare();
 });
+
+// ===== Diario sfogliabile: giro pagina (lista <-> ricordi) con freccia e swipe =====
+function impostaFrecciaDiario() {
+  const b = $("dfGira"); if (!b) return;
+  const girata = $("diario") && $("diario").classList.contains("girata");
+  b.innerHTML = ico(girata ? "cl" : "cr");
+  b.title = girata ? "Torna alle imperdibili" : "Vai ai ricordi";
+}
+function giraDiario(verso) { // 'avanti' (ricordi) | 'indietro' (lista) | undefined = alterna
+  const d = $("diario"); if (!d) return;
+  const girata = d.classList.contains("girata");
+  const nuovo = verso === "avanti" ? true : verso === "indietro" ? false : !girata;
+  d.classList.toggle("girata", nuovo);
+  impostaFrecciaDiario();
+}
+(function () {
+  const d = $("diario"); if (!d) return;
+  $("dfGira").addEventListener("click", () => giraDiario());
+  let x0 = null, y0 = null, tgt = null;
+  d.addEventListener("touchstart", (e) => {
+    x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; tgt = e.target;
+  }, { passive: true });
+  d.addEventListener("touchend", (e) => {
+    if (x0 === null) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - x0, dy = t.clientY - y0;
+    x0 = null;
+    if (Math.abs(dx) < 55 || Math.abs(dx) <= Math.abs(dy)) return; // non è uno swipe orizzontale
+    const girata = d.classList.contains("girata");
+    if (!girata) {
+      // swipe a sinistra -> ricordi, ma non se parte da una riga (lì lo swipe è per modifica/elimina)
+      if (dx < 0 && !(tgt && tgt.closest && tgt.closest(".imp-riga"))) giraDiario("avanti");
+    } else if (dx > 0) {
+      giraDiario("indietro"); // swipe a destra -> torna alla lista
+    }
+  }, { passive: true });
+})();
 
 // ===== Rituale dell'esperienza vissuta: voto a stelle (mezze comprese) + foto ricordo =====
 function disegnaStelle() {
