@@ -3709,16 +3709,39 @@ function cqCoordDeiViaggi() {
   }
   return out;
 }
+// Nazione (ISO) a partire da un nome di luogo qualsiasi (città, regione, destinazione...).
+// Usa lo stesso geocoding dei temi e memorizza in cache solo i risultati riusciti.
+async function cqPaeseDaNome(testo) {
+  const t = String(testo || "").trim();
+  if (!t) return "";
+  const k = "n:" + t.toLowerCase();
+  if (cqCache[k] !== undefined) return cqCache[k];
+  const code = (await paeseDiLuogo(t) || "").toUpperCase();
+  if (code) { cqCache[k] = code; cqSalva(); }
+  return code;
+}
+// Raccoglie i nomi di luogo di un viaggio (destinazione, nome, luoghi delle tappe).
+function cqNomiDelViaggio(v) {
+  const nomi = new Set();
+  if (v.destinazione) nomi.add(v.destinazione);
+  if (v.nome) nomi.add(v.nome);
+  for (const g of (v.giorni || [])) for (const t of (g.tappe || [])) {
+    [t.luogo, t.luogoDa, t.luogoA].forEach((x) => { if (x && x !== "—") nomi.add(x); });
+  }
+  return [...nomi];
+}
 async function cqAggiornaDaViaggi() {
   if (!tokenValido()) return;
   let cambiato = false;
+  const accendi = (code) => {
+    if (code && !cqDerivati.has(code)) { cqDerivati.add(code); cambiato = true; cqApplica(); cqConta(); }
+  };
+  // 1) dai NOMI dei luoghi: qualsiasi città/destinazione accende l'intera nazione
+  for (const v of viaggi) for (const nome of cqNomiDelViaggio(v)) accendi(await cqPaeseDaNome(nome));
+  // 2) dalle coordinate delle tappe (quando disponibili, più precise)
   for (const c of cqCoordDeiViaggi()) {
     if (!c || c.length !== 2) continue;
-    const code = await cqPaeseDaCoord(c[0], c[1]);
-    if (code && !cqDerivati.has(code)) {
-      cqDerivati.add(code); cambiato = true;
-      cqApplica(); cqConta();
-    }
+    accendi(await cqPaeseDaCoord(c[0], c[1]));
   }
   if (cambiato) cqSalva();
 }
