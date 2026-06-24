@@ -1493,6 +1493,40 @@ function temaViaggio(v) {
   if (/emirat|dubai|abu ?dhabi|\buae\b|emirates|burj|sharjah|ajman|fujairah|ras al khaim|palm jumeirah/.test(t)) return TEMI.emiratiarabi;
   return null;
 }
+// Mappa codice nazione (ISO Mapbox) -> tema. Per coprire QUALSIASI città senza
+// eccezioni: se i pattern testuali non bastano, geocodifico il luogo, ricavo la
+// nazione e applico l'artwork corrispondente (cache su v.tema).
+const PAESE_TEMA = { jp: "giappone", fr: "francia", gr: "grecia", gb: "regnounito", cn: "cina", us: "usa", es: "spagna", nl: "olanda", id: "indonesia", ae: "emiratiarabi" };
+async function paeseDiLuogo(testo) {
+  if (!testo || !tokenValido()) return null;
+  try {
+    const r = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(testo)}.json?access_token=${MAPBOX_TOKEN}&limit=1&language=it&types=country,region,place,locality,district`);
+    const j = await r.json();
+    const f = j.features && j.features[0];
+    if (!f || (typeof f.relevance === "number" && f.relevance < 0.6)) return null;
+    if ((f.place_type || []).includes("country")) return ((f.properties && f.properties.short_code) || "").toLowerCase();
+    for (const c of (f.context || [])) if (String(c.id || "").startsWith("country")) return String(c.short_code || "").toLowerCase();
+    return null;
+  } catch { return null; }
+}
+// Risolve e memorizza il tema di un viaggio non riconosciuto dai pattern.
+async function risolviTemaAuto(v) {
+  if (!v) return false;
+  if (v.tema && TEMI[v.tema]) return false;       // tema già impostato
+  if (temaViaggio(v)) return false;               // già riconosciuto dai pattern
+  const chiave = String(v.destinazione || v.nome || "").trim();
+  if (!chiave || v._temaGeoFor === chiave) return false; // già tentato per questo nome
+  const code = await paeseDiLuogo(chiave);
+  v._temaGeoFor = chiave;                          // ricordo il tentativo (anche negativo)
+  if (code && PAESE_TEMA[code]) { v.tema = PAESE_TEMA[code]; salva(); return true; }
+  salva();
+  return false;
+}
+async function autoTemiHome() {
+  let cambiato = false;
+  for (const v of viaggi) { try { if (await risolviTemaAuto(v)) cambiato = true; } catch {} }
+  if (cambiato) renderHome();
+}
 let temaAnimStop = null;
 function applicaTema(tema) {
   const screen = $("schermataViaggio");
@@ -1600,6 +1634,7 @@ function renderHome() {
     m.appendChild(card);
     const _cv = card.querySelector(".tema-anim"); if (_cv && tema.anim) avviaTemaAnim(_cv, tema.anim, tema.accent);
   }
+  autoTemiHome(); // in sottofondo: assegna l'artwork per nazione anche alle città non nei pattern
 }
 
 // ============ VIAGGIO ============
@@ -1620,6 +1655,7 @@ function renderViaggio() {
   $("countdown").innerHTML = ico(s.icona) + " " + s.testo;
   $("countdown").className = "countdown " + s.classe;
   applicaTema(temaViaggio(corrente));
+  if (!temaViaggio(corrente)) risolviTemaAuto(corrente).then((ch) => { if (ch && corrente) applicaTema(temaViaggio(corrente)); });
   renderItinerario(); renderBudget(); renderMappa(); renderFoto(); renderBiglietti(); renderValigia(); renderDafare();
   if ($("diario")) { $("diario").classList.remove("girata"); impostaFrecciaDiario(); } // riparti dalla pagina lista
 }
