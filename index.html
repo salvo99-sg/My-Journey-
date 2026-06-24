@@ -3696,7 +3696,7 @@ async function cqPaeseDaCoord(lng, lat) {
     const j = await r.json();
     const f = j.features && j.features[0];
     const code = f && f.properties && f.properties.short_code ? f.properties.short_code.toUpperCase() : "";
-    cqCache[k] = code; cqSalva();
+    if (code) { cqCache[k] = code; cqSalva(); } // non memorizzo i fallimenti: riproveremo al prossimo giro
     return code;
   } catch { return ""; }
 }
@@ -3728,9 +3728,9 @@ function cqInit() {
   cqMap = new mapboxgl.Map({
     container: "mondoMappa",
     style: "mapbox://styles/mapbox/dark-v11",
-    projection: "mercator",
-    center: [12, 25], zoom: 0.5,
-    minZoom: 0.2, maxZoom: 6,
+    projection: "globe",            // globo: niente cuciture/loop, mondo intero visibile
+    center: [10, 20], zoom: 1.2,    // parte mostrando tutto il pianeta, senza crop
+    minZoom: 0.4, maxZoom: 6,
     renderWorldCopies: false,
     dragRotate: false, pitchWithRotate: false,
     bearing: 0, pitch: 0, maxPitch: 0, minPitch: 0,
@@ -3750,6 +3750,7 @@ function cqInit() {
     cqMap.addLayer({ id: "cq-bordo", type: "line", source: "cq-paesi", "source-layer": "country_boundaries",
       paint: { "line-color": "rgba(15,27,46,.8)", "line-width": 0.5 } }, primaLabel);
     cqApplica(); cqConta();
+    cqAggiornaDaViaggi(); // ora che il layer esiste, ricavo e accendo i paesi dei viaggi
   });
   cqMap.on("click", "cq-fill", (e) => {
     const f = e.features[0];
