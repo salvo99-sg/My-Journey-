@@ -2138,7 +2138,7 @@ $("btn3d").addEventListener("click", vola3d);
 $("btnPanorama").addEventListener("click", volaPanoramica);
 
 // ===== Posizione attuale: segnaposto blu con l'iniziale del proprietario =====
-const POS_BUSTO = '<svg viewBox="0 0 256 256" fill="#fff"><path d="M230.9 211.9a8 8 0 0 1-13.8 8.1 92.1 92.1 0 0 0-178.2 0 8 8 0 1 1-13.8-8 105.7 105.7 0 0 1 58.8-46.8 64 64 0 1 1 88.2 0 105.7 105.7 0 0 1 58.8 46.7Z"/></svg>';
+const POS_BUSTO = '<svg viewBox="0 0 256 256" fill="#fff"><circle cx="128" cy="94" r="50"/><path d="M128 154c-49 0-89 31-95 72a8 8 0 0 0 8 9h174a8 8 0 0 0 8-9c-6-41-46-72-95-72Z"/></svg>';
 function inizialeProprietario() {
   let nome = "";
   try { nome = (localStorage.getItem("mj-proprietario") || "").trim(); } catch {}
