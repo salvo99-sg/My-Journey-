@@ -338,6 +338,22 @@
   #btnCasa { left: 14px; }
   #btnPosizione { right: 14px; }
   #btnPosizione.attivo { background: #fff; color: #16264C; }
+  /* Segnaposto posizione attuale: cerchio blu con iniziale + alone pulsante */
+  .pos-utente { position: relative; display: flex; align-items: center; justify-content: center; }
+  .pos-badge { position: relative; z-index: 2; width: 34px; height: 34px; border-radius: 50%;
+    background: #1A73E8; border: 3px solid #fff; box-shadow: 0 2px 10px rgba(0,0,0,.5);
+    display: flex; align-items: center; justify-content: center; color: #fff; }
+  .pos-badge .pos-ini { font-weight: 800; font-size: 16px; line-height: 1; }
+  .pos-badge svg { width: 20px; height: 20px; }
+  .pos-halo { position: absolute; left: 50%; top: 50%; width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(26,115,232,.45); transform: translate(-50%,-50%); z-index: 1;
+    animation: posPulse 2.2s ease-out infinite; }
+  @keyframes posPulse {
+    0% { transform: translate(-50%,-50%) scale(1); opacity: .6; }
+    70% { transform: translate(-50%,-50%) scale(2.8); opacity: 0; }
+    100% { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .pos-halo { animation: none; opacity: .35; } }
   /* Pannello unico in basso: maniglia + lista viaggi + strumenti */
   #dockMappa {
     position: absolute; left: 0; right: 0; bottom: 0; z-index: 7;
@@ -2121,6 +2137,42 @@ function volaPanoramica() {
 $("btn3d").addEventListener("click", vola3d);
 $("btnPanorama").addEventListener("click", volaPanoramica);
 
+// ===== Posizione attuale: segnaposto blu con l'iniziale del proprietario =====
+const POS_BUSTO = '<svg viewBox="0 0 256 256" fill="#fff"><path d="M230.9 211.9a8 8 0 0 1-13.8 8.1 92.1 92.1 0 0 0-178.2 0 8 8 0 1 1-13.8-8 105.7 105.7 0 0 1 58.8-46.8 64 64 0 1 1 88.2 0 105.7 105.7 0 0 1 58.8 46.7Z"/></svg>';
+function inizialeProprietario() {
+  let nome = "";
+  try { nome = (localStorage.getItem("mj-proprietario") || "").trim(); } catch {}
+  if (!nome) { try { const u = JSON.parse(localStorage.getItem("mj-utente") || "null"); if (u && u.nome) nome = String(u.nome).trim(); } catch {} }
+  return nome ? nome[0].toUpperCase() : "";
+}
+function contenutoPosizione() {
+  const ini = inizialeProprietario();
+  return ini ? '<span class="pos-ini">' + ini + '</span>' : POS_BUSTO;
+}
+let marcatorePos = null, watchPosId = null;
+function mostraPosizione(coord) {
+  if (!mappa) return;
+  if (!marcatorePos) {
+    const el = document.createElement("div");
+    el.className = "pos-utente";
+    el.innerHTML = '<span class="pos-halo"></span><span class="pos-badge">' + contenutoPosizione() + '</span>';
+    marcatorePos = new mapboxgl.Marker({ element: el, anchor: "center" }).setLngLat(coord).addTo(mappa);
+  } else {
+    const badge = marcatorePos.getElement().querySelector(".pos-badge");
+    if (badge) badge.innerHTML = contenutoPosizione(); // aggiorno l'iniziale se nel frattempo è arrivato il nome
+    marcatorePos.setLngLat(coord);
+  }
+}
+function avviaWatchPosizione() {
+  if (watchPosId != null || !navigator.geolocation) return;
+  watchPosId = navigator.geolocation.watchPosition(
+    (pos) => mostraPosizione([pos.coords.longitude, pos.coords.latitude]),
+    () => {}, { enableHighAccuracy: true, maximumAge: 5000 }
+  );
+}
+function fermaWatchPosizione() {
+  if (watchPosId != null) { try { navigator.geolocation.clearWatch(watchPosId); } catch {} watchPosId = null; }
+}
 // ===== Tasto mondo (in alto a destra): vola alla posizione attuale =====
 $("btnPosizione").addEventListener("click", () => {
   if (!mappa) return;
@@ -2129,7 +2181,10 @@ $("btnPosizione").addEventListener("click", () => {
   navigator.geolocation.getCurrentPosition(
     (pos) => {
       b.classList.remove("attivo");
-      mappa.flyTo({ center: [pos.coords.longitude, pos.coords.latitude], zoom: 13, pitch: 45, duration: 2200, essential: true });
+      const c = [pos.coords.longitude, pos.coords.latitude];
+      mostraPosizione(c);
+      mappa.flyTo({ center: c, zoom: 13, pitch: 45, duration: 2200, essential: true });
+      avviaWatchPosizione(); // tiene aggiornato il segnaposto mentre ti muovi
     },
     () => { b.classList.remove("attivo"); toast("Non riesco ad accedere alla tua posizione."); },
     { enableHighAccuracy: true, timeout: 8000 }
@@ -3515,7 +3570,7 @@ $("importaCrea").addEventListener("click", async () => {
 // ============ NAVIGAZIONE ============
 let vistaAttuale = "itinerario";
 $("btnGlobo").addEventListener("click", () => mostraVista(vistaAttuale === "mappa" ? vistaDiMacro(macroAttiva) : "mappa"));
-$("btnCasa").addEventListener("click", () => { fermaRiproduzione(); chiudiDock(); corrente = null; renderHome(); });
+$("btnCasa").addEventListener("click", () => { fermaRiproduzione(); fermaWatchPosizione(); chiudiDock(); corrente = null; renderHome(); });
 function mostraVista(nome) {
   vistaAttuale = nome;
   if (!animazioneInCorso) mostraBarraViaggio(false); // nasconde la barra cambiando scheda (non disturba una riproduzione in corso)
