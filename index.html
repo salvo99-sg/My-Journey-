@@ -354,6 +354,52 @@
     100% { opacity: 0; }
   }
   @media (prefers-reduced-motion: reduce) { .pos-halo { animation: none; opacity: .35; } }
+  .pos-badge { background-size: cover; background-position: center; }
+  /* avatar nell'header della home (tasto profilo) */
+  .home-avatar { position: absolute; top: 22px; right: 18px; z-index: 4; width: 42px; height: 42px;
+    border-radius: 50%; border: 2px solid rgba(255,255,255,.55); background: #1A73E8 center/cover no-repeat;
+    color: #fff; font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .home-avatar svg { width: 24px; height: 24px; }
+  .home-avatar .pos-ini { line-height: 1; }
+  /* ===== Onboarding / profilo ===== */
+  #onboarding { position: fixed; inset: 0; z-index: 300; }
+  #onboarding.nascosto { display: none; }
+  .onb-step { position: absolute; inset: 0; display: flex; flex-direction: column;
+    padding: calc(34px + env(safe-area-inset-top,0)) 26px calc(28px + env(safe-area-inset-bottom,0)); }
+  .onb-step.nascosto { display: none; }
+  .onb-step[data-step="benv"] { background: linear-gradient(160deg,#16264C,#243b6e 75%,#2d4a86);
+    color: #fff; align-items: center; justify-content: center; text-align: center; }
+  .onb-orb { width: 96px; height: 96px; border-radius: 50%; background: rgba(255,255,255,.10);
+    border: 1px solid rgba(255,255,255,.22); display: flex; align-items: center; justify-content: center; margin-bottom: 22px; }
+  .onb-orb .ic { width: 52px; height: 52px; color: #fff; }
+  .onb-eye { font-family: ui-monospace, monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; opacity: .65; margin-bottom: 8px; }
+  .onb-h1 { font-family: 'Calistoga', Georgia, serif; font-weight: 400; font-size: 32px; line-height: 1.05; margin-bottom: 10px; }
+  .onb-p { font-size: 14px; opacity: .85; line-height: 1.5; max-width: 230px; margin: 0 auto; }
+  .onb-cta { margin-top: 26px; background: #EA580C; color: #fff; border: none; border-radius: 999px; padding: 14px 34px; font-weight: 800; font-size: 15px; }
+  .onb-step[data-step="nick"], .onb-step[data-step="base"] { background: #FFF7ED; }
+  .onb-passo { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #EA580C; font-weight: 800; margin-bottom: 12px; }
+  .onb-h2 { font-family: 'Calistoga', Georgia, serif; font-weight: 400; font-size: 22px; color: #16264C; margin-bottom: 18px; white-space: nowrap; }
+  .onb-avatar { width: 84px; height: 84px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 6px 18px rgba(22,38,76,.18);
+    display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 38px;
+    margin: 0 auto 18px; background: #1A73E8 center/cover no-repeat; overflow: hidden; }
+  .onb-avatar svg { width: 46px; height: 46px; }
+  .onb-field { background: #fff; border: 1.5px solid #F0DCCE; border-radius: 14px; padding: 13px 16px; font-size: 16px; color: #16264C; width: 100%; outline: none; }
+  .onb-field:focus { border-color: #EA580C; }
+  .onb-lbl { font-size: 11px; color: #8a7e72; font-weight: 700; margin: 18px 0 9px; text-transform: uppercase; letter-spacing: 1px; }
+  .onb-colori { display: flex; gap: 9px; flex-wrap: wrap; align-items: center; }
+  .onb-sw { width: 30px; height: 30px; border-radius: 50%; border: none; padding: 0; cursor: pointer; }
+  .onb-sw.sel { box-shadow: 0 0 0 2px #FFF7ED, 0 0 0 4px #16264C; }
+  .onb-foto { width: 32px; height: 32px; border-radius: 50%; background: #fff; border: 1.5px dashed #C9B7A6;
+    display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .onb-foto .ic { width: 18px; height: 18px; color: #8a7e72; }
+  .onb-iconfield { display: flex; align-items: center; gap: 10px; background: #fff; border: 1.5px solid #F0DCCE; border-radius: 14px; padding: 4px 14px; }
+  .onb-iconfield .ic { width: 20px; height: 20px; color: #EA580C; flex: none; }
+  .onb-field.nobox { border: none; background: transparent; padding: 13px 0; border-radius: 0; }
+  .onb-spacer { flex: 1; }
+  .onb-row { display: flex; gap: 10px; }
+  .onb-btn { flex: 1; border: none; border-radius: 14px; padding: 14px; font-weight: 800; font-size: 14px; }
+  .onb-btn.primario { background: #EA580C; color: #fff; }
+  .onb-btn.ghost { background: #fff; border: 1.5px solid #F0DCCE; color: #16264C; }
   /* Pannello unico in basso: maniglia + lista viaggi + strumenti */
   #dockMappa {
     position: absolute; left: 0; right: 0; bottom: 0; z-index: 7;
@@ -684,6 +730,7 @@
 <!-- ===== HOME ===== -->
 <div class="app" id="schermataHome">
   <header>
+    <button class="home-avatar" id="homeAvatar" title="Il tuo profilo" aria-label="Il tuo profilo"></button>
     <div class="eyebrow">Agenda di viaggio</div>
     <h1>I miei viaggi</h1>
   </header>
@@ -691,6 +738,41 @@
   <div style="padding: 0 16px 16px; text-align:center">
     <button class="btn-importa-home" id="btnImportaHome"><span class="ic" data-ic="sparkle"></span> Importa viaggio da AI</button>
   </div>
+</div>
+
+<!-- ===== ONBOARDING / PROFILO ===== -->
+<div id="onboarding" class="nascosto">
+  <section class="onb-step" data-step="benv">
+    <div class="onb-orb"><span class="ic" data-ic="globe"></span></div>
+    <div class="onb-eye">My Journey</div>
+    <h1 class="onb-h1">Il tuo diario<br>di viaggio</h1>
+    <p class="onb-p">Personalizzalo in pochi secondi: bastano un paio di domande.</p>
+    <button class="onb-cta" id="onbInizia">Iniziamo</button>
+  </section>
+  <section class="onb-step nascosto" data-step="nick">
+    <div class="onb-passo">Passo 1 di 2</div>
+    <h2 class="onb-h2">Scegli il tuo nickname</h2>
+    <div class="onb-avatar" id="onbAvatar"></div>
+    <input id="onbNick" class="onb-field" type="text" maxlength="20" autocomplete="off" placeholder="Es. Salvo" />
+    <div class="onb-lbl">Colore del pallino</div>
+    <div class="onb-colori" id="onbColori"></div>
+    <input id="onbFotoFile" type="file" accept="image/*" hidden />
+    <div class="onb-spacer"></div>
+    <div class="onb-row">
+      <button class="onb-btn ghost" id="onbSaltaNick">Salta</button>
+      <button class="onb-btn primario" id="onbAvanti">Avanti</button>
+    </div>
+  </section>
+  <section class="onb-step nascosto" data-step="base">
+    <div class="onb-passo">Passo 2 di 2</div>
+    <h2 class="onb-h2">Da dove parti?</h2>
+    <div class="onb-iconfield"><span class="ic" data-ic="pin"></span><input id="onbBase" class="onb-field nobox" type="text" autocomplete="off" placeholder="Es. Napoli, Italia" /></div>
+    <div class="onb-spacer"></div>
+    <div class="onb-row">
+      <button class="onb-btn ghost" id="onbSaltaBase">Salta</button>
+      <button class="onb-btn primario" id="onbFine">Fine</button>
+    </div>
+  </section>
 </div>
 
 <!-- ===== VIAGGIO ===== -->
@@ -1628,7 +1710,14 @@ function applicaTema(tema) {
   }
 }
 
+function renderHomeAvatar() {
+  const el = $("homeAvatar"); if (!el) return;
+  const foto = utenteFoto(), ini = inizialeProprietario();
+  if (foto) { el.style.background = "#fff center/cover no-repeat"; el.style.backgroundImage = "url('" + foto + "')"; el.innerHTML = ""; }
+  else { el.style.backgroundImage = ""; el.style.background = utenteColore(); el.innerHTML = ini ? '<span class="pos-ini">' + ini + '</span>' : POS_BUSTO; }
+}
 function renderHome() {
+  renderHomeAvatar();
   $("schermataHome").classList.remove("nascosto");
   $("schermataViaggio").classList.add("nascosto");
   $("fab").classList.remove("nascosto");
@@ -2139,15 +2228,29 @@ $("btnPanorama").addEventListener("click", volaPanoramica);
 
 // ===== Posizione attuale: segnaposto blu con l'iniziale del proprietario =====
 const POS_BUSTO = '<svg viewBox="0 0 256 256" fill="#fff"><circle cx="128" cy="94" r="50"/><path d="M128 154c-49 0-89 31-95 72a8 8 0 0 0 8 9h174a8 8 0 0 0 8-9c-6-41-46-72-95-72Z"/></svg>';
+const COLORI_AVATAR = ["#1A73E8", "#EA580C", "#16a34a", "#7C3AED", "#0EA5A4", "#E0566A", "#E0A93B"];
+// ===== Profilo locale (nickname / colore / foto / base) =====
+function leggiUtente() { try { return JSON.parse(localStorage.getItem("mj-utente") || "{}") || {}; } catch { return {}; } }
+function salvaUtente(u) { try { localStorage.setItem("mj-utente", JSON.stringify(u)); } catch {} }
+function utenteColore() { return leggiUtente().colore || "#1A73E8"; }
+function utenteFoto() { return leggiUtente().foto || ""; }
 function inizialeProprietario() {
-  let nome = "";
-  try { nome = (localStorage.getItem("mj-proprietario") || "").trim(); } catch {}
-  if (!nome) { try { const u = JSON.parse(localStorage.getItem("mj-utente") || "null"); if (u && u.nome) nome = String(u.nome).trim(); } catch {} }
-  return nome ? nome[0].toUpperCase() : "";
+  const n = String(leggiUtente().nickname || "").trim();
+  return n ? n[0].toUpperCase() : "";
 }
-function contenutoPosizione() {
-  const ini = inizialeProprietario();
-  return ini ? '<span class="pos-ini">' + ini + '</span>' : POS_BUSTO;
+// applica colore/foto/iniziale a un elemento tondo (segnaposto mappa o avatar home)
+function decoraBadgeUtente(badge) {
+  const foto = utenteFoto();
+  if (foto) {
+    badge.style.background = "#fff center/cover no-repeat";
+    badge.style.backgroundImage = "url('" + foto + "')";
+    badge.innerHTML = "";
+  } else {
+    badge.style.backgroundImage = "";
+    badge.style.background = utenteColore();
+    const ini = inizialeProprietario();
+    badge.innerHTML = ini ? '<span class="pos-ini">' + ini + '</span>' : POS_BUSTO;
+  }
 }
 let marcatorePos = null, watchPosId = null;
 function mostraPosizione(coord) {
@@ -2155,11 +2258,12 @@ function mostraPosizione(coord) {
   if (!marcatorePos) {
     const el = document.createElement("div");
     el.className = "pos-utente";
-    el.innerHTML = '<span class="pos-halo"></span><span class="pos-badge">' + contenutoPosizione() + '</span>';
+    el.innerHTML = '<span class="pos-halo"></span><span class="pos-badge"></span>';
+    decoraBadgeUtente(el.querySelector(".pos-badge"));
     marcatorePos = new mapboxgl.Marker({ element: el, anchor: "center" }).setLngLat(coord).addTo(mappa);
   } else {
     const badge = marcatorePos.getElement().querySelector(".pos-badge");
-    if (badge) badge.innerHTML = contenutoPosizione(); // aggiorno l'iniziale se nel frattempo è arrivato il nome
+    if (badge) decoraBadgeUtente(badge);
     marcatorePos.setLngLat(coord);
   }
 }
@@ -3706,6 +3810,8 @@ function chiudiSplash() {
   $("splash").classList.add("via"); // dissolvenza morbida
   setTimeout(() => {
     const sp = $("splash"); if (sp) sp.remove();
+    let fatto = false; try { fatto = !!localStorage.getItem("mj-onboarded"); } catch {}
+    if (!fatto && typeof apriOnboarding === "function") apriOnboarding("primo"); // primo avvio: registrazione
   }, 850);
 }
 $("btnInizia").addEventListener("click", chiudiSplash);
@@ -3877,6 +3983,84 @@ $("btnCasa").addEventListener("click", chiudiConquiste);
 $("btnGlobo").addEventListener("click", chiudiConquiste);
 
 // ============ AVVIO ============
+// ============ ONBOARDING / PROFILO ============
+let onbBozza = { nickname: "", colore: "#1A73E8", foto: "" };
+function onbVai(step) {
+  document.querySelectorAll("#onboarding .onb-step").forEach((s) => s.classList.toggle("nascosto", s.dataset.step !== step));
+}
+function onbDisegnaAvatar() {
+  const a = $("onbAvatar"); if (!a) return;
+  if (onbBozza.foto) { a.style.background = "#fff center/cover no-repeat"; a.style.backgroundImage = "url('" + onbBozza.foto + "')"; a.innerHTML = ""; }
+  else {
+    a.style.backgroundImage = ""; a.style.background = onbBozza.colore;
+    const ini = (onbBozza.nickname || "").trim()[0];
+    a.innerHTML = ini ? ini.toUpperCase() : POS_BUSTO;
+  }
+}
+function onbDisegnaColori() {
+  const box = $("onbColori"); if (!box) return; box.innerHTML = "";
+  COLORI_AVATAR.forEach((c) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "onb-sw" + (!onbBozza.foto && c === onbBozza.colore ? " sel" : ""); b.style.background = c;
+    b.addEventListener("click", () => { onbBozza.colore = c; onbBozza.foto = ""; onbDisegnaColori(); onbDisegnaAvatar(); });
+    box.appendChild(b);
+  });
+  const f = document.createElement("button");
+  f.type = "button"; f.className = "onb-foto"; f.innerHTML = '<span class="ic">' + (ICONE.cam || "") + '</span>';
+  f.addEventListener("click", () => $("onbFotoFile").click());
+  box.appendChild(f);
+}
+function apriOnboarding(modo) {
+  const u = leggiUtente();
+  onbBozza = { nickname: u.nickname || "", colore: u.colore || "#1A73E8", foto: u.foto || "" };
+  $("onbNick").value = onbBozza.nickname;
+  $("onbBase").value = u.base || "";
+  onbDisegnaColori(); onbDisegnaAvatar();
+  $("onboarding").classList.remove("nascosto");
+  onbVai(modo === "modifica" ? "nick" : "benv");
+}
+function chiudiOnboarding() { $("onboarding").classList.add("nascosto"); }
+function onbSalva() {
+  const u = leggiUtente();
+  u.nickname = ($("onbNick").value || "").trim();
+  u.colore = onbBozza.colore;
+  u.foto = onbBozza.foto;
+  u.base = ($("onbBase").value || "").trim();
+  salvaUtente(u);
+  try { localStorage.setItem("mj-onboarded", "1"); } catch {}
+  try { if (u.nickname) localStorage.setItem("mj-proprietario", u.nickname); else localStorage.removeItem("mj-proprietario"); } catch {}
+  chiudiOnboarding();
+  renderHomeAvatar();
+  if (marcatorePos) { const b = marcatorePos.getElement().querySelector(".pos-badge"); if (b) decoraBadgeUtente(b); }
+}
+(function () {
+  $("onbNick").addEventListener("input", () => { onbBozza.nickname = $("onbNick").value; onbDisegnaAvatar(); });
+  $("onbFotoFile").addEventListener("change", (e) => {
+    const file = e.target.files && e.target.files[0]; if (!file) return;
+    const r = new FileReader();
+    r.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const s = 160, cv = document.createElement("canvas"); cv.width = s; cv.height = s;
+        const ctx = cv.getContext("2d");
+        const m = Math.min(img.width, img.height), sx = (img.width - m) / 2, sy = (img.height - m) / 2;
+        ctx.drawImage(img, sx, sy, m, m, 0, 0, s, s);
+        onbBozza.foto = cv.toDataURL("image/jpeg", 0.85);
+        onbDisegnaColori(); onbDisegnaAvatar();
+      };
+      img.src = r.result;
+    };
+    r.readAsDataURL(file);
+    e.target.value = "";
+  });
+  $("onbInizia").addEventListener("click", () => onbVai("nick"));
+  $("onbAvanti").addEventListener("click", () => onbVai("base"));
+  $("onbSaltaNick").addEventListener("click", () => onbVai("base"));
+  $("onbFine").addEventListener("click", onbSalva);
+  $("onbSaltaBase").addEventListener("click", onbSalva);
+  const ha = $("homeAvatar"); if (ha) ha.addEventListener("click", () => apriOnboarding("modifica"));
+})();
+
 apriDB().then(() => { renderHome(); avviaSplash(); });
 </script>
 </body>
