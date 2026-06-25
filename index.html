@@ -3843,18 +3843,22 @@ $("btnInizia").addEventListener("click", chiudiSplash);
 const CQ_TOT = 197;
 const CQ_ORO = "#E8B84B", CQ_SPENTO = "#2a3a52", CQ_MARE = "#0f1b2e";
 let cqMap = null, cqSelez = null, cqAperto = false;
-let cqManuali = new Set(), cqDerivati = new Set(), cqCache = {};
-try { cqManuali  = new Set(JSON.parse(localStorage.getItem("pm-manuali")  || "[]")); } catch {}
-try { cqDerivati = new Set(JSON.parse(localStorage.getItem("pm-derivati") || "[]")); } catch {}
-try { cqCache    = JSON.parse(localStorage.getItem("pm-coord-cache") || "{}"); } catch {}
+// cqManuali = aggiunte a mano · cqEsclusi = rimosse a mano (anche quelle dai viaggi)
+// cqDerivati = ricavate dai viaggi ATTUALI: si ricalcola ogni volta, mai persistita
+let cqManuali = new Set(), cqEsclusi = new Set(), cqDerivati = new Set(), cqCache = {};
+try { cqManuali = new Set(JSON.parse(localStorage.getItem("pm-manuali") || "[]")); } catch {}
+try { cqEsclusi = new Set(JSON.parse(localStorage.getItem("pm-esclusi") || "[]")); } catch {}
+try { cqCache   = JSON.parse(localStorage.getItem("pm-coord-cache") || "{}"); } catch {}
+try { localStorage.removeItem("pm-derivati"); } catch {} // pulizia vecchia cache che restava "conquistata"
 function cqSalva() {
   try {
-    localStorage.setItem("pm-manuali",  JSON.stringify([...cqManuali]));
-    localStorage.setItem("pm-derivati", JSON.stringify([...cqDerivati]));
+    localStorage.setItem("pm-manuali", JSON.stringify([...cqManuali]));
+    localStorage.setItem("pm-esclusi", JSON.stringify([...cqEsclusi]));
     localStorage.setItem("pm-coord-cache", JSON.stringify(cqCache));
   } catch {}
 }
-const cqVisitati = () => new Set([...cqDerivati, ...cqManuali]);
+// conquistate = (dai viaggi + aggiunte a mano) − rimosse a mano
+const cqVisitati = () => new Set([...cqDerivati, ...cqManuali].filter((c) => !cqEsclusi.has(c)));
 function cqColore() {
   return ["case", ["in", ["get", "iso_3166_1"], ["literal", [...cqVisitati()]]], CQ_ORO, CQ_SPENTO];
 }
@@ -3914,19 +3918,21 @@ function cqNomiDelViaggio(v) {
   return [...nomi];
 }
 async function cqAggiornaDaViaggi() {
-  if (!tokenValido()) return;
-  let cambiato = false;
-  const accendi = (code) => {
-    if (code && !cqDerivati.has(code)) { cqDerivati.add(code); cambiato = true; cqApplica(); cqConta(); }
-  };
+  // ricalcolo SEMPRE da zero in base ai viaggi attuali: niente accumulo, niente residui
+  if (!tokenValido()) {
+    if (!viaggi.length && cqDerivati.size) { cqDerivati = new Set(); cqApplica(); cqConta(); }
+    return;
+  }
+  const nuovo = new Set();
   // 1) dai NOMI dei luoghi: qualsiasi città/destinazione accende l'intera nazione
-  for (const v of viaggi) for (const nome of cqNomiDelViaggio(v)) accendi(await cqPaeseDaNome(nome));
-  // 2) dalle coordinate delle tappe (quando disponibili, più precise)
+  for (const v of viaggi) for (const nome of cqNomiDelViaggio(v)) { const c = await cqPaeseDaNome(nome); if (c) nuovo.add(c); }
+  // 2) dalle coordinate delle tappe (più precise quando disponibili)
   for (const c of cqCoordDeiViaggi()) {
     if (!c || c.length !== 2) continue;
-    accendi(await cqPaeseDaCoord(c[0], c[1]));
+    const code = await cqPaeseDaCoord(c[0], c[1]); if (code) nuovo.add(code);
   }
-  if (cambiato) cqSalva();
+  cqDerivati = nuovo;
+  cqApplica(); cqConta();
 }
 function cqInit() {
   if (cqMap || typeof mapboxgl === "undefined" || !tokenValido()) return;
@@ -3963,14 +3969,15 @@ function cqInit() {
     const iso = f.properties.iso_3166_1;
     const nome = f.properties.name_it || f.properties.name_en || f.properties.name || "Paese";
     cqSelez = iso;
-    const daViaggio = cqDerivati.has(iso);
-    const manuale = cqManuali.has(iso);
-    $("cqNome").innerHTML = (daViaggio || manuale ? ico('trophy') : ico('pin')) + " " + nome;
-    $("cqStato").textContent = daViaggio ? "Conquistato — risulta da un tuo viaggio"
-      : (manuale ? "Segnato come conquistato" : "Ancora da conquistare");
-    $("cqVisitato").innerHTML = ico('check') + (manuale ? " Già conquistato" : " Segna conquistato");
-    $("cqVisitato").classList.toggle("nascosto", daViaggio);
-    $("cqRimuovi").classList.toggle("nascosto", daViaggio || !manuale);
+    const conquistato = cqVisitati().has(iso);
+    const daViaggio = cqDerivati.has(iso) && !cqEsclusi.has(iso);
+    $("cqNome").innerHTML = (conquistato ? ico('trophy') : ico('pin')) + " " + nome;
+    $("cqStato").textContent = conquistato
+      ? (daViaggio ? "Conquistato — risulta da un tuo viaggio" : "Conquistato")
+      : "Ancora da conquistare";
+    // ogni nazione è modificabile: o la segni o la rimuovi
+    $("cqVisitato").classList.toggle("nascosto", conquistato);
+    $("cqRimuovi").classList.toggle("nascosto", !conquistato);
     $("cqInfo").classList.add("su");
   });
 }
@@ -3993,11 +4000,11 @@ $("btnConquiste").addEventListener("click", () => cqAperto ? chiudiConquiste() :
 $("cqChiudi").addEventListener("click", chiudiConquiste);
 $("cqInfoChiudi").addEventListener("click", () => $("cqInfo").classList.remove("su"));
 $("cqVisitato").addEventListener("click", () => {
-  if (cqSelez) { cqManuali.add(cqSelez); cqSalva(); cqApplica(); cqConta(); }
+  if (cqSelez) { cqManuali.add(cqSelez); cqEsclusi.delete(cqSelez); cqSalva(); cqApplica(); cqConta(); }
   $("cqInfo").classList.remove("su");
 });
 $("cqRimuovi").addEventListener("click", () => {
-  if (cqSelez) { cqManuali.delete(cqSelez); cqSalva(); cqApplica(); cqConta(); }
+  if (cqSelez) { cqManuali.delete(cqSelez); cqEsclusi.add(cqSelez); cqSalva(); cqApplica(); cqConta(); }
   $("cqInfo").classList.remove("su");
 });
 // uscendo dalla mappa l'overlay si chiude, così la prossima volta riparte dalla mappa del viaggio
