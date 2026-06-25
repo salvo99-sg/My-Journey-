@@ -337,7 +337,8 @@
   .mappa-angolo .ic { width: 1.05em; height: 1.05em; }
   #btnCasa { left: 14px; }
   #btnPosizione { right: 14px; }
-  #btnPosizione.attivo { background: #fff; color: #16264C; }
+  #btnBase { right: 68px; }
+  #btnPosizione.attivo, #btnBase.attivo { background: #fff; color: #16264C; }
   /* Segnaposto posizione attuale: cerchio blu con iniziale + alone pulsante */
   .pos-utente { position: relative; display: flex; align-items: center; justify-content: center; }
   .pos-badge { position: relative; z-index: 2; width: 34px; height: 34px; border-radius: 50%;
@@ -806,7 +807,8 @@
       <span class="ic" data-ic="map"></span> <b>La mappa non può caricarsi in questa anteprima</b> perché le risorse esterne di Mapbox sono bloccate qui in chat. Sul tuo sito pubblicato funzionerà normalmente.
     </div>
     <div id="contenitoreMappa"></div>
-    <button id="btnCasa" class="mappa-angolo" title="Vai alla home" aria-label="Vai alla home"><span class="ic" data-ic="home"></span></button>
+    <button id="btnCasa" class="mappa-angolo" title="Torna alla home" aria-label="Torna alla home"><span class="ic" data-ic="cl"></span></button>
+    <button id="btnBase" class="mappa-angolo" title="Vai alla tua base" aria-label="Vai alla tua base"><span class="ic" data-ic="home"></span></button>
     <button id="btnPosizione" class="mappa-angolo" title="Vai alla tua posizione" aria-label="Vai alla tua posizione"><span class="ic" data-ic="globe"></span></button>
     <!-- popover luci, ancorato sopra il dock -->
     <div id="barraLuce">
@@ -2294,6 +2296,26 @@ $("btnPosizione").addEventListener("click", () => {
     { enableHighAccuracy: true, timeout: 8000 }
   );
 });
+
+// ===== Tasto base (casa): vola sulla città scelta in registrazione =====
+async function volaAllaBase() {
+  if (!mappa) return;
+  const u = leggiUtente();
+  const base = String(u.base || "").trim();
+  if (!base) { toast("Imposta la tua città base dal profilo (avatar in home)."); return; }
+  const b = $("btnBase"); b.classList.add("attivo");
+  let coord = u.baseCoord;
+  if (!coord) {
+    try {
+      const feats = await cercaLuoghi(base, 1, true);
+      if (feats && feats[0] && feats[0].center) { coord = feats[0].center; u.baseCoord = coord; salvaUtente(u); }
+    } catch {}
+  }
+  b.classList.remove("attivo");
+  if (!coord) { toast("Non riesco a trovare la tua città base."); return; }
+  mappa.flyTo({ center: coord, zoom: 11, pitch: 45, duration: 2200, essential: true });
+}
+$("btnBase").addEventListener("click", volaAllaBase);
 
 // ===== Itinerario: viaggio in corso, altrimenti il prossimo in programma =====
 function viaggioPerItinerario() {
@@ -4025,7 +4047,9 @@ function onbSalva() {
   u.nickname = ($("onbNick").value || "").trim();
   u.colore = onbBozza.colore;
   u.foto = onbBozza.foto;
-  u.base = ($("onbBase").value || "").trim();
+  const nuovaBase = ($("onbBase").value || "").trim();
+  if (nuovaBase !== (u.base || "")) u.baseCoord = null; // base cambiata: ricalcolo le coordinate
+  u.base = nuovaBase;
   salvaUtente(u);
   try { localStorage.setItem("mj-onboarded", "1"); } catch {}
   try { if (u.nickname) localStorage.setItem("mj-proprietario", u.nickname); else localStorage.removeItem("mj-proprietario"); } catch {}
