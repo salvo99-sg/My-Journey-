@@ -2954,6 +2954,7 @@ function apriOnboarding(modo) {
   $("onbBase").value = u.base || "";
   onbDisegnaColori(); onbDisegnaAvatar();
   $("onboarding").classList.remove("nascosto");
+  if (typeof aggiornaToggleLang === "function") aggiornaToggleLang();
   onbVai(modo === "modifica" ? "nick" : "benv");
 }
 function chiudiOnboarding() { $("onboarding").classList.add("nascosto"); }

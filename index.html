@@ -431,8 +431,11 @@
   .onb-btn { flex: 1; border: none; border-radius: 14px; padding: 14px; font-weight: 800; font-size: 14px; }
   .onb-btn.primario { background: var(--accent); color: #fff; }
   .onb-btn.ghost { background: #fff; border: 1.5px solid var(--border-soft-2); color: var(--navy); }
-  .onb-lang { position: absolute; top: calc(16px + env(safe-area-inset-top,0)); right: 16px; display: flex; gap: 4px; z-index: 3; }
-  .onb-lang button { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.28); color: #fff; font-weight: 800; font-size: 12px; padding: 6px 10px; border-radius: 10px; }
+  .onb-lang { position: absolute; top: calc(16px + env(safe-area-inset-top,0)); right: 16px; z-index: 5;
+    display: flex; gap: 3px; padding: 3px; border-radius: 12px;
+    background: rgba(20,22,30,.55); border: 1px solid rgba(255,255,255,.18);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+  .onb-lang button { background: transparent; border: none; color: #fff; font-weight: 800; font-size: 12px; padding: 6px 11px; border-radius: 9px; }
   .onb-lang button.attivo { background: #fff; color: var(--navy); }
   /* Pannello unico in basso: maniglia + lista viaggi + strumenti */
   #dockMappa {
@@ -776,6 +779,7 @@
 
 <!-- ===== ONBOARDING / PROFILO ===== -->
 <div id="onboarding" class="nascosto">
+  <div class="onb-lang"><button type="button" data-lang="it">IT</button><button type="button" data-lang="en">EN</button></div>
   <section class="onb-step" data-step="benv">
     <div class="onb-lang"><button type="button" data-lang="it">IT</button><button type="button" data-lang="en">EN</button></div>
     <div class="onb-orb"><span class="ic" data-ic="globe"></span></div>
