@@ -16,7 +16,7 @@ Legenda stato: ✅ fatto · 🟡 in lavorazione · ⬜ da fare
 | 5 | `Regno Unito` | ✅ | foto (statica) | tramonto | `#D9893B` | Big Ben, Westminster, Tamigi |
 | 6 | `USA` | ✅ | foto (statica) | giorno | `#2E8BC0` | New York, Central Park, Manhattan |
 | 7 | `Spagna` | ✅ | foto (statica) | tramonto | `#D2552E` | Sagrada Família, Park Güell |
-| 8 | `Egitto` | ⬜ | — | — | — | — |
+| 8 | `Egitto` | ✅ | foto (statica) | notte | `#D99A3C` | Piramidi di Giza, Sfinge, cammello, Via Lattea |
 | 9 | `Cina` | ✅ | pittura a inchiostro | tramonto | `#C0463C` | Grande Muraglia, dragone, montagne |
 | 10 | `Olanda` | ✅ | stile Van Gogh | notte | `#E0A93B` | Mulini, tulipani, notte stellata |
 | 11 | `Indonesia` | ✅ | foto (statica) | alba | `#2E8F86` | Bali, tempio, Buddha, loto |
@@ -45,7 +45,7 @@ Legenda stato: ✅ fatto · 🟡 in lavorazione · ⬜ da fare
 
 ---
 
-**Avanzamento: 11 / 23** · Nazioni: 11/12 (manca Egitto) · Tipologie: 0/10 · Default: 0/1
+**Avanzamento: 12 / 23** · Nazioni: 12/12 ✅ · Tipologie: 0/10 · Default: 0/1
 
 ### Come si aggiunge una card
 1. Genera l'immagine col prompt-madre (input = una voce qui sopra).
