@@ -10,7 +10,7 @@ Legenda stato: ✅ fatto · 🟡 in lavorazione · ⬜ da fare
 | # | Input | Stato | Stile | Ora | Accento | Elementi |
 |---|-------|-------|-------|-----|---------|----------|
 | 1 | `Giappone` | ✅ | illustrato sognante / ukiyo-e | tramonto | `#E0566A` | Monte Fuji, torii, sakura |
-| 2 | `Italia` | ⬜ | — | — | — | — |
+| 2 | `Italia` | ✅ | foto (statica) | tramonto | `#CC7A33` | Roma, Colosseo, Vespa, vicolo, caffè |
 | 3 | `Francia` | ✅ | foto realistica | giorno | `#3E6DA8` | Tour Eiffel, giardini (bolle + particelle) |
 | 4 | `Grecia` | ✅ | illustrato (statica) | tramonto | `#E0904C` | Santorini, cupole blu, mare (no animazione, watermark rimosso) |
 | 5 | `Regno Unito` | ✅ | foto (statica) | tramonto | `#D9893B` | Big Ben, Westminster, Tamigi |
@@ -45,7 +45,7 @@ Legenda stato: ✅ fatto · 🟡 in lavorazione · ⬜ da fare
 
 ---
 
-**Avanzamento: 10 / 23**
+**Avanzamento: 11 / 23** · Nazioni: 11/12 (manca Egitto) · Tipologie: 0/10 · Default: 0/1
 
 ### Come si aggiunge una card
 1. Genera l'immagine col prompt-madre (input = una voce qui sopra).
