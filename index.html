@@ -1295,6 +1295,8 @@ const ICONE = {
   pause: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,48V208a8,8,0,0,1-8,8H160a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8h40A8,8,0,0,1,208,48ZM96,40H56a8,8,0,0,0-8,8V208a8,8,0,0,0,8,8H96a8,8,0,0,0,8-8V48A8,8,0,0,0,96,40Z" opacity="0.2"/><path d="M200,32H160a16,16,0,0,0-16,16V208a16,16,0,0,0,16,16h40a16,16,0,0,0,16-16V48A16,16,0,0,0,200,32Zm0,176H160V48h40ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Zm0,176H56V48H96Z"/></svg>`,
 };
 function ico(n){ return '<span class="ic">' + (ICONE[n] || '') + '</span>'; }
+// Escape HTML: ogni testo di utente/AI va passato qui prima di finire in innerHTML/setHTML
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]; }); }
 function idratoIcone(root){ (root||document).querySelectorAll('[data-ic]').forEach(function(e){ e.innerHTML = ICONE[e.getAttribute('data-ic')] || ''; e.classList.add('ic'); }); }
 idratoIcone();
 
@@ -1758,7 +1760,7 @@ function renderHome() {
             <span class="tema-chip"><span class="dot" style="background:${sb.colore}"></span>${sb.label}</span>
           </div>
           <div>
-            <h2>${v.nome}</h2>
+            <h2>${esc(v.nome)}</h2>
             <div class="quando">${quando}</div>
           </div>
         </div>
@@ -1769,7 +1771,7 @@ function renderHome() {
         : `<div class="quando">${quando}</div>`;
       card.innerHTML = `
       <div class="info">
-        <h2>${v.nome}</h2>
+        <h2>${esc(v.nome)}</h2>
         ${rigaQuando}
         <span class="stato-badge sb-${sb.classe}"><span class="dot"></span>${sb.label}</span>
       </div>
@@ -1830,7 +1832,7 @@ function renderItinerario() {
       <div class="gcard">
         <div class="gcard-testa">
           <div class="gcard-info">
-            <b>${g.titolo}</b>
+            <b>${esc(g.titolo)}</b>
             <small>${fmtData(g.data)} · ${g.tappe.length ? g.tappe.length + " attività" : "giornata libera"}${costoG ? " · " + eur(costoG) : ""}</small>
           </div>
           <span class="chevron">${aperto ? "▾" : "▸"}</span>
@@ -1899,7 +1901,7 @@ function renderItinerario() {
           <div class="barra" style="background:${tp.colore}"></div>
           <div class="corpo">
             <div class="meta">${ico(tp.icona)} ${tp.label} · ${orario}</div>
-            <div class="titolo">${t.titolo}</div>
+            <div class="titolo">${esc(t.titolo)}</div>
             <div class="luogo">${t.luogo ? ico('pin') + " " + t.luogo : ""}</div>
           </div>
           ${t.costo ? `<div class="costo"><b>${eur(t.costo)}</b></div>` : ""}`;
@@ -1958,7 +1960,7 @@ function renderBudget() {
     <div class="card"><b>${ico('users')} Spese per viaggiatore</b>
       ${nomi.map((n, i) => `
         <div class="cat">
-          <div class="riga"><span>${n}</span><b>${eur(Math.round(perPersona[i]))}</b></div>
+          <div class="riga"><span>${esc(n)}</span><b>${eur(Math.round(perPersona[i]))}</b></div>
           <div class="pista"><div class="pieno" style="width:${(perPersona[i] / maxP) * 100}%;background:#0891B2"></div></div>
         </div>`).join("")}
     </div>
@@ -1969,7 +1971,7 @@ function renderBudget() {
       </div>
       ${spese.length ? spese.map((sp) => `
         <div class="spesa-riga" data-id="${sp.id}">
-          <div><span>${sp.titolo}</span><small>${(sp.pagatori || []).map((i) => nomi[i]).filter(Boolean).join(", ") || "tutti"}</small></div>
+          <div><span>${esc(sp.titolo)}</span><small>${esc((sp.pagatori || []).map((i) => nomi[i]).filter(Boolean).join(", ") || "tutti")}</small></div>
           <div style="display:flex;align-items:center;gap:6px"><b>${eur(sp.costo)}</b><button class="x">${ico('x')}</button></div>
         </div>`).join("") : '<div class="vuoto" style="padding:10px 0">Benzina, market, taxi… le spese fuori itinerario.</div>'}
     </div>
@@ -2371,8 +2373,8 @@ function renderDockViaggi() {
     const icoBtn = (inPlay && !viaggioInPausa) ? "pause" : "play";
     const date = (v.inizio && v.fine) ? fmtData(v.inizio, true) + " → " + fmtData(v.fine, true) : "Date da definire";
     return `<div class="dv-riga${inPlay ? " in-play" : ""}" data-id="${v.id}">
-      <button class="dv-play" data-id="${v.id}" aria-label="Riproduci ${v.nome}"><span class="ic">${ICONE[icoBtn]}</span></button>
-      <div class="dv-mid"><div class="dv-nome">${v.nome}</div><div class="dv-dt">${date}</div></div>
+      <button class="dv-play" data-id="${v.id}" aria-label="Riproduci ${esc(v.nome)}"><span class="ic">${ICONE[icoBtn]}</span></button>
+      <div class="dv-mid"><div class="dv-nome">${esc(v.nome)}</div><div class="dv-dt">${date}</div></div>
       <span class="dv-badge" style="color:${sb.colore};background:${sb.colore}26"><span class="dot" style="background:${sb.colore}"></span>${sb.label}</span>
     </div>`;
   }).join("");
@@ -2478,10 +2480,10 @@ function renderMappa() {
   for (const g of corrente.giorni) for (const t of g.tappe) {
     const tp = TIPI[t.tipo];
     if (isTrasporto(t.tipo)) {
-      if (t.coordDa) aggiungi(t.coordDa, tp.colore, `<b>${ico(tp.icona)} ${t.titolo}</b><br>Partenza ${t.ora}<br>${ico('pin')} ${t.luogoDa || ""}`);
-      if (t.coordA) aggiungi(t.coordA, tp.colore, `<b>${ico(tp.icona)} ${t.titolo}</b><br>Arrivo ${t.oraArrivo || ""}<br>${ico('pin')} ${t.luogoA || ""}`);
+      if (t.coordDa) aggiungi(t.coordDa, tp.colore, `<b>${ico(tp.icona)} ${esc(t.titolo)}</b><br>Partenza ${esc(t.ora)}<br>${ico('pin')} ${esc(t.luogoDa || "")}`);
+      if (t.coordA) aggiungi(t.coordA, tp.colore, `<b>${ico(tp.icona)} ${esc(t.titolo)}</b><br>Arrivo ${esc(t.oraArrivo || "")}<br>${ico('pin')} ${esc(t.luogoA || "")}`);
     } else if (t.coord) {
-      aggiungi(t.coord, tp.colore, `<b>${ico(tp.icona)} ${t.titolo}</b><br>${g.titolo} · ${t.ora}<br>${ico('pin')} ${t.luogo}`);
+      aggiungi(t.coord, tp.colore, `<b>${ico(tp.icona)} ${esc(t.titolo)}</b><br>${esc(g.titolo)} · ${esc(t.ora)}<br>${ico('pin')} ${esc(t.luogo)}`);
     }
   }
   if (punti.length && !animazioneInCorso) {
@@ -2698,7 +2700,7 @@ function attivaSuggerimenti(inputId, boxId, okId, assegna) {
         const b = document.createElement("button");
         const nome = f.text || f.place_name;
         const resto = f.place_name && f.place_name !== nome ? f.place_name.replace(nome + ", ", "") : "";
-        b.innerHTML = `${ico('pin')} ${nome}${resto ? `<small>${resto}</small>` : ""}`;
+        b.innerHTML = `${ico('pin')} ${esc(nome)}${resto ? `<small>${esc(resto)}</small>` : ""}`;
         b.addEventListener("click", () => {
           $(inputId).value = f.place_name;
           assegna(f.center);
@@ -2825,7 +2827,7 @@ function apriModaleTappa(modifica) {
   tipoScelto = t ? t.tipo : "attivita";
   renderChips(); aggiornaBlocchi();
   $("tGiorno").innerHTML = corrente.giorni
-    .map((g) => `<option value="${g.id}">${g.titolo} · ${fmtData(g.data)}</option>`).join("");
+    .map((g) => `<option value="${g.id}">${esc(g.titolo)} · ${fmtData(g.data)}</option>`).join("");
   $("tGiorno").value = modifica ? modifica.giorno.id : corrente.giorni[0].id;
   $("tTitolo").value = t ? t.titolo : "";
   $("tCosto").value = t && t.costo ? t.costo : "";
@@ -3071,7 +3073,7 @@ async function renderFoto() {
   for (const f of tutte) (gruppi[f.localita] = gruppi[f.localita] || []).push(f);
   for (const [loc, foto] of Object.entries(gruppi)) {
     const sez = document.createElement("div"); sez.className = "gruppo-foto";
-    sez.innerHTML = `<h2>${ico('pin')} ${loc} <small style="color:#a8a29e">(${foto.length})</small></h2>`;
+    sez.innerHTML = `<h2>${ico('pin')} ${esc(loc)} <small style="color:#a8a29e">(${foto.length})</small></h2>`;
     const griglia = document.createElement("div"); griglia.className = "griglia";
     for (const f of foto) {
       const img = document.createElement("img");
@@ -3111,7 +3113,7 @@ $("btnAlbum").addEventListener("click", () => {
 function mostraFotoAlbum() {
   const f = fotoCorrenti[albumIndice];
   $("albumImg").src = srcFoto(f);
-  $("albumDida").innerHTML = `${ico('pin')} ${f.localita} · ${albumIndice + 1}/${fotoCorrenti.length}`;
+  $("albumDida").innerHTML = `${ico('pin')} ${esc(f.localita)} · ${albumIndice + 1}/${fotoCorrenti.length}`;
 }
 function avantiAlbum() {
   albumIndice = (albumIndice + 1) % fotoCorrenti.length;
@@ -3179,7 +3181,7 @@ async function renderBiglietti() {
     const div = document.createElement("div"); div.className = "biglietto";
     div.innerHTML = `
       <div class="ico">${ico(icone[b.tipo] || "clip")}</div>
-      <div class="info"><b>${b.nome}</b><span>${b.mime.includes("pdf") ? "Documento PDF" : (b.tipo === "qr" ? "QR / codice d'ingresso" : "Immagine")}</span></div>
+      <div class="info"><b>${esc(b.nome)}</b><span>${b.mime.includes("pdf") ? "Documento PDF" : (b.tipo === "qr" ? "QR / codice d'ingresso" : "Immagine")}</span></div>
       <button class="apri-pill">Apri</button>`;
     wrap.appendChild(div);
 
@@ -3270,7 +3272,7 @@ function renderDafare() {
     div.className = "imp-riga" + (x.fatto ? " vissuta" : "");
     const stelle = x.fatto && x.voto ? `<span class="mini">★ ${String(x.voto).replace(".", ",")}</span>` : "";
     const foto = x.fatto && x.fotoId ? `<span class="mini">${ico('cam')}</span>` : "";
-    div.innerHTML = `<button class="spunta">${x.fatto ? ico('check') : ""}</button><div class="testo">${x.testo}</div>${stelle}${foto}`;
+    div.innerHTML = `<button class="spunta">${x.fatto ? ico('check') : ""}</button><div class="testo">${esc(x.testo)}</div>${stelle}${foto}`;
     wrap.appendChild(div);
 
     // ----- swipe a sinistra: rivela ✏ e 🗑 -----
@@ -3341,7 +3343,7 @@ async function renderMuroRicordi(items) {
     const voto = x.voto ? `<div class="voto">★ ${String(x.voto).replace(".", ",")}</div>` : "";
     const card = document.createElement("div");
     card.className = "polaroid";
-    card.innerHTML = `<img alt="" ${src ? `src="${src}"` : ""}><div class="cap">${x.testo}</div>${voto}`;
+    card.innerHTML = `<img alt="" ${src ? `src="${src}"` : ""}><div class="cap">${esc(x.testo)}</div>${voto}`;
     card.addEventListener("click", () => apriEsperienza(x));
     grid.appendChild(card);
   }
@@ -3483,7 +3485,7 @@ function renderChecklist(contId, lista) {
   for (const v of ordinata) {
     const riga = document.createElement("div");
     riga.className = "check-riga" + (v.fatto ? " fatta" : "");
-    riga.innerHTML = `<button class="spunta">${v.fatto ? ico('check') : ""}</button><div class="testo">${v.testo}</div><button class="x">${ico('x')}</button>`;
+    riga.innerHTML = `<button class="spunta">${v.fatto ? ico('check') : ""}</button><div class="testo">${esc(v.testo)}</div><button class="x">${ico('x')}</button>`;
     riga.querySelector(".spunta").addEventListener("click", () => { v.fatto = !v.fatto; salva(); renderValigia(); });
     riga.querySelector(".x").addEventListener("click", () => {
       const arr = contId === "listaValigia" ? corrente.valigia : corrente.promemoria;
