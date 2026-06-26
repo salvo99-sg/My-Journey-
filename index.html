@@ -1618,7 +1618,8 @@ const TEMI = {
   indonesia:{ paese: "Indonesia", poster: "themes/indonesia.jpg", accent: "#2E8F86", accentDark: "#1F6A63" },
   emiratiarabi: { paese: "Emirati Arabi", poster: "themes/emiratiarabi.jpg", accent: "#D2A23C", accentDark: "#B07F22" },
   italia: { paese: "Italia", poster: "themes/italia.jpg", accent: "#CC7A33", accentDark: "#A35E22" },
-  egitto: { paese: "Egitto", poster: "themes/egitto.jpg", accent: "#D99A3C", accentDark: "#A8721F" }
+  egitto: { paese: "Egitto", poster: "themes/egitto.jpg", accent: "#D99A3C", accentDark: "#A8721F" },
+  tropici: { paese: "Tropici", poster: "themes/tropici.jpg", accent: "#0FA3B1", accentDark: "#0B7C88" }
 };
 function temaViaggio(v) {
   if (!v) return null;
@@ -1636,6 +1637,8 @@ function temaViaggio(v) {
   if (/oland|paesi bassi|netherlands|holland|amsterdam|rotterdam|l'?aia\b|den haag|the hague|tulipan|eindhoven|utrecht|maastricht|groning|haarlem|\bdelft\b|leida|leiden|nimega|nijmegen|tilburg|\bbreda\b|almere|zaanse|keukenhof|volendam|giethoorn|olandes/.test(t)) return TEMI.olanda;
   if (/indonesia|\bbali\b|giacarta|jakarta|ubud|borobudur|lombok|giava|sumatra|yogyakarta|surabaya|komodo|\bgili\b|\bnusa\b|sulawesi|flores|bandung|indonesian/.test(t)) return TEMI.indonesia;
   if (/emirat|dubai|abu ?dhabi|\buae\b|emirates|burj|sharjah|ajman|fujairah|ras al khaim|palm jumeirah/.test(t)) return TEMI.emiratiarabi;
+  // ---- Tipologie di viaggio (fallback, dopo le nazioni) ----
+  if (/tropic|caraib|caribbean|maldiv|polinesia|polynesia|bora ?bora|tahiti|seychelles|mauritius|\batollo\b|barriera corallina|coralli|\bspiaggia\b|\bbeach\b|isole? tropical|paradiso tropicale|\bfiji\b|samoa|\baruba\b|barbados|antille|zanzibar/.test(t)) return TEMI.tropici;
   return null;
 }
 // Mappa codice nazione (ISO Mapbox) -> tema. Per coprire QUALSIASI città senza
