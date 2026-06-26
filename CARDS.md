@@ -27,7 +27,7 @@ Legenda stato: ✅ fatto · 🟡 in lavorazione · ⬜ da fare
 | # | Input | Stato | Stile | Ora | Accento | Elementi |
 |---|-------|-------|-------|-----|---------|----------|
 | 9  | `Mare / Costa` | ⬜ | — | — | — | — |
-| 10 | `Tropici / Spiaggia` | ⬜ | — | — | — | — |
+| 10 | `Tropici / Spiaggia` | ✅ | foto (statica) | giorno | `#0FA3B1` | Spiaggia, palme, acqua turchese, pesci tropicali |
 | 11 | `Montagna / Alpino` | ⬜ | — | — | — | — |
 | 12 | `Deserto` | ⬜ | — | — | — | — |
 | 13 | `Nordico / Aurora` | ⬜ | — | — | — | — |
@@ -45,7 +45,7 @@ Legenda stato: ✅ fatto · 🟡 in lavorazione · ⬜ da fare
 
 ---
 
-**Avanzamento: 12 / 23** · Nazioni: 12/12 ✅ · Tipologie: 0/10 · Default: 0/1
+**Avanzamento: 13 / 23** · Nazioni: 12/12 ✅ · Tipologie: 1/10 · Default: 0/1
 
 ### Come si aggiunge una card
 1. Genera l'immagine col prompt-madre (input = una voce qui sopra).
