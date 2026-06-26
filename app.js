@@ -202,6 +202,23 @@ const STR = {
     "ph.tripName": "Es. Weekend a Parigi", "ph.stopTitle": "Es. Cena da Luigi / Volo ANA NH204", "ph.place": "Es. Torre Eiffel, Parigi",
     "ph.from": "Es. Aeroporto di Fiumicino, Roma", "ph.to": "Es. Aeroporto Haneda, Tokyo", "ph.expDesc": "Es. Benzina, spesa al market, taxi",
     "ph.photoLoc": "Es. Tokyo", "ph.ticketName": "Es. Volo Roma → Tokyo, andata",
+    "st.tomorrow": "Si parte domani!", "st.daysLeft": "Mancano {n} giorni", "st.ongoing": "Viaggio in corso!", "st.ended": "Viaggio concluso",
+    "fa.morning": "Mattina", "fa.afternoon": "Pomeriggio", "fa.evening": "Sera", "fa.unplanned": "Da pianificare",
+    "it.activities": "{n} attività", "it.freeDay": "giornata libera", "it.addActivity": "+ Attività in questo giorno",
+    "bud.total": "Totale viaggio", "bud.perTrav": "Spese per viaggiatore", "bud.shared": "Spese condivise", "bud.byCat": "Spese per categoria",
+    "imp.count": "Vissute {f} di {n}", "imp.all": " — tutte!",
+    "cq.fromTrip": "Conquistato — risulta da un tuo viaggio", "cq.conq": "Conquistato", "cq.notYet": "Ancora da conquistare",
+    "to.needStops": "Aggiungi prima qualche tappa con un luogo!", "to.geoNo": "La posizione non è disponibile su questo dispositivo.",
+    "to.geoFail": "Non riesco ad accedere alla tua posizione.", "to.setBase": "Imposta la tua città base dal profilo (avatar in home).",
+    "to.baseNF": "Non riesco a trovare la tua città base.", "to.noTrip": "Nessun viaggio in corso o in programma.",
+    "to.need2": "Servono almeno due tappe con un luogo per riprodurre il viaggio.", "to.nameTrip": "Dai un nome al viaggio!",
+    "to.checkDates": "Controlla le date: il ritorno deve essere dopo la partenza.", "to.expDesc": "Descrivi la spesa!", "to.expAmount": "Inserisci l'importo.",
+    "to.mapNA": "La mappa non è disponibile in questo momento.", "to.moveMap": "Sposta la mappa per scegliere un punto.", "to.posSet": "Posizione impostata",
+    "to.needPhotos": "Aggiungi prima qualche foto!", "to.pdfNo": "Non riesco ad aprire il PDF su questo browser.",
+    "to.copied": "Prompt copiato! Incollalo nella tua AI.", "to.copyFail": "Copia non riuscita: tieni premuto sul testo per copiarlo a mano.",
+    "to.pasteFirst": "Incolla prima il pacchetto che ti ha dato l'AI.", "to.pkgBad": "Non ho riconosciuto un pacchetto valido. Controlla di aver copiato tutto.",
+    "cf.delTripT": "Eliminare il viaggio?", "cf.delTripB": "verranno eliminati anche foto e biglietti.",
+    "cf.delExpT": "Eliminare la spesa?", "cf.delStopT": "Eliminare la tappa?", "cf.delPhotoT": "Eliminare questa foto?", "cf.delTicketT": "Eliminare il biglietto?",
     "lang.name": "Italiano",
   },
   en: {
@@ -253,6 +270,23 @@ const STR = {
     "ph.tripName": "e.g. Weekend in Paris", "ph.stopTitle": "e.g. Dinner at Luigi's / Flight ANA NH204", "ph.place": "e.g. Eiffel Tower, Paris",
     "ph.from": "e.g. Fiumicino Airport, Rome", "ph.to": "e.g. Haneda Airport, Tokyo", "ph.expDesc": "e.g. Fuel, groceries, taxi",
     "ph.photoLoc": "e.g. Tokyo", "ph.ticketName": "e.g. Flight Rome → Tokyo, outbound",
+    "st.tomorrow": "Leaving tomorrow!", "st.daysLeft": "{n} days to go", "st.ongoing": "Trip in progress!", "st.ended": "Trip completed",
+    "fa.morning": "Morning", "fa.afternoon": "Afternoon", "fa.evening": "Evening", "fa.unplanned": "To plan",
+    "it.activities": "{n} activities", "it.freeDay": "free day", "it.addActivity": "+ Activity on this day",
+    "bud.total": "Trip total", "bud.perTrav": "Expenses per traveller", "bud.shared": "Shared expenses", "bud.byCat": "Expenses by category",
+    "imp.count": "Lived {f} of {n}", "imp.all": " — all done!",
+    "cq.fromTrip": "Conquered — from one of your trips", "cq.conq": "Conquered", "cq.notYet": "Yet to conquer",
+    "to.needStops": "Add a stop with a place first!", "to.geoNo": "Location is not available on this device.",
+    "to.geoFail": "I can't access your location.", "to.setBase": "Set your base city in the profile (avatar on home).",
+    "to.baseNF": "I can't find your base city.", "to.noTrip": "No ongoing or planned trip.",
+    "to.need2": "You need at least two stops with a place to play the trip.", "to.nameTrip": "Give the trip a name!",
+    "to.checkDates": "Check the dates: the return must be after the departure.", "to.expDesc": "Describe the expense!", "to.expAmount": "Enter the amount.",
+    "to.mapNA": "The map is not available right now.", "to.moveMap": "Move the map to choose a point.", "to.posSet": "Location set",
+    "to.needPhotos": "Add some photos first!", "to.pdfNo": "I can't open the PDF in this browser.",
+    "to.copied": "Prompt copied! Paste it into your AI.", "to.copyFail": "Copy failed: long-press the text to copy it manually.",
+    "to.pasteFirst": "Paste the package the AI gave you first.", "to.pkgBad": "I didn't recognise a valid package. Check you copied everything.",
+    "cf.delTripT": "Delete the trip?", "cf.delTripB": "photos and tickets will be deleted too.",
+    "cf.delExpT": "Delete the expense?", "cf.delStopT": "Delete the stop?", "cf.delPhotoT": "Delete this photo?", "cf.delTicketT": "Delete the ticket?",
     "lang.name": "English",
   },
 };
@@ -419,10 +453,10 @@ function statoViaggio(v) {
   const oggi = oggiISO();
   if (oggi < v.inizio) {
     const diff = Math.round((new Date(v.inizio) - new Date(oggi)) / 86400000);
-    return { classe: "", icona: "clock", testo: diff === 1 ? "Si parte domani!" : "Mancano " + diff + " giorni" };
+    return { classe: "", icona: "clock", testo: diff === 1 ? t("st.tomorrow") : t("st.daysLeft", {n: diff}) };
   }
-  if (oggi <= v.fine) return { classe: "corso", icona: "plane", testo: "Viaggio in corso!" };
-  return { classe: "fine", icona: "check", testo: "Viaggio concluso" };
+  if (oggi <= v.fine) return { classe: "corso", icona: "plane", testo: t("st.ongoing") };
+  return { classe: "fine", icona: "check", testo: t("st.ended") };
 }
 function totaleTappe(v) {
   return (v.giorni || []).reduce((s, g) => s + ((g.tappe && g.tappe.length) || 0), 0);
@@ -448,7 +482,7 @@ function statoBadge(v) {
   if (oggi < v.inizio)                       return { classe: "programma", label: t("badge.programma"), colore: "#EA580C" };
   return { classe: "corso", label: t("badge.corso"), colore: "#16a34a" };
 }
-const FASCE = [["sunrise","Mattina"],["sun","Pomeriggio"],["moon","Sera"],["clock","Da pianificare"]];
+const FASCE = [["sunrise","fa.morning"],["sun","fa.afternoon"],["moon","fa.evening"],["clock","fa.unplanned"]];
 function fasciaDi(t) {
   if (!t.ora || t.ora === "—") return 3;
   const h = Number(t.ora.split(":")[0]);
@@ -746,7 +780,7 @@ function renderHome() {
     const _vbg = card.querySelector(".tema-bg"); if (_vbg) _vbg.play().catch(function () {});
     card.querySelector(".info").addEventListener("click", () => apriViaggio(v.id));
     card.querySelector(".x").addEventListener("click", async () => {
-      if (!(await chiediConferma("Eliminare il viaggio?", '"' + v.nome + '" — verranno eliminati anche foto e biglietti.', "Elimina", true))) return;
+      if (!(await chiediConferma(t("cf.delTripT"), '"' + v.nome + '" — ' + t("cf.delTripB"), t("common.delete"), true))) return;
       viaggi = viaggi.filter((x) => x.id !== v.id); salva();
       for (const st of ["foto", "biglietti"]) {
         const tutti = await dbTutti(st);
@@ -799,7 +833,7 @@ function renderItinerario() {
         <div class="gcard-testa">
           <div class="gcard-info">
             <b>${esc(g.titolo)}</b>
-            <small>${fmtData(g.data)} · ${g.tappe.length ? g.tappe.length + " attività" : "giornata libera"}${costoG ? " · " + eur(costoG) : ""}</small>
+            <small>${fmtData(g.data)} · ${g.tappe.length ? t("it.activities", {n: g.tappe.length}) : t("it.freeDay")}${costoG ? " · " + eur(costoG) : ""}</small>
           </div>
           <span class="chevron">${aperto ? "▾" : "▸"}</span>
         </div>
@@ -875,7 +909,7 @@ function renderItinerario() {
         corpo.appendChild(div);
       }
       const add = document.createElement("button");
-      add.className = "aggiungi-qui"; add.textContent = "+ Attività in questo giorno";
+      add.className = "aggiungi-qui"; add.textContent = t("it.addActivity");
       add.addEventListener("click", () => { apriModaleTappa(null); $("tGiorno").value = String(g.id); });
       corpo.appendChild(add);
     }
@@ -911,7 +945,7 @@ function renderBudget() {
   const spese = corrente.spese || [];
   $("vistaBudget").innerHTML = `
     <div class="card totale" style="position:relative">
-      <div class="eyebrow" style="color:#78716c">Totale viaggio</div>
+      <div class="eyebrow" style="color:#78716c">${esc(t("bud.total"))}</div>
       <div class="cifra">${eur(totale)}</div>
       <div class="sub" id="totValuta"></div>
       <button class="btn-cambio" id="btnCambio" title="Cambio valuta">
@@ -923,7 +957,7 @@ function renderBudget() {
         </svg>
       </button>
     </div>
-    <div class="card"><b>${ico('users')} Spese per viaggiatore</b>
+    <div class="card"><b>${ico('users')} ${esc(t("bud.perTrav"))}</b>
       ${nomi.map((n, i) => `
         <div class="cat">
           <div class="riga"><span>${esc(n)}</span><b>${eur(Math.round(perPersona[i]))}</b></div>
@@ -932,7 +966,7 @@ function renderBudget() {
     </div>
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-        <b>${ico('handshake')} Spese condivise</b>
+        <b>${ico('handshake')} ${esc(t("bud.shared"))}</b>
         <button class="mini-btn" id="btnSpesa">+ Aggiungi</button>
       </div>
       ${spese.length ? spese.map((sp) => `
@@ -946,7 +980,7 @@ function renderBudget() {
         <div><label id="cvEtic">Valuta</label><input id="cvVal" type="number" inputmode="decimal" placeholder="0" /></div>
       </div>
     </div>
-    ${perTipo.length ? `<div class="card"><b>Spese per categoria</b>
+    ${perTipo.length ? `<div class="card"><b>${esc(t("bud.byCat"))}</b>
       ${perTipo.map(({ k, somma }) => `
         <div class="cat">
           <div class="riga"><span>${ico(TIPI[k].icona)} ${TIPI[k].label}</span><b>${eur(somma)}</b></div>
@@ -957,7 +991,7 @@ function renderBudget() {
     b.addEventListener("click", async (e) => {
       const id = Number(e.target.closest(".spesa-riga").dataset.id);
       const sp = spese.find((x) => x.id === id);
-      if (!(await chiediConferma("Eliminare la spesa?", `"${sp.titolo}" — ${eur(sp.costo)}`, "Elimina", true))) return;
+      if (!(await chiediConferma(t("cf.delExpT"), `"${sp.titolo}" — ${eur(sp.costo)}`, t("common.delete"), true))) return;
       corrente.spese = spese.filter((x) => x.id !== id);
       salva(); renderBudget();
     }));
@@ -980,8 +1014,8 @@ $("sAnnulla").addEventListener("click", () => $("veloSpesa").classList.remove("a
 $("sSalva").addEventListener("click", () => {
   const titolo = $("sNome").value.trim();
   const costo = Number($("sImporto").value) || 0;
-  if (!titolo) return toast("Descrivi la spesa!");
-  if (costo <= 0) return toast("Inserisci l'importo.");
+  if (!titolo) return toast(t("to.expDesc"));
+  if (costo <= 0) return toast(t("to.expAmount"));
   corrente.spese = corrente.spese || [];
   corrente.spese.push({ id: Date.now(), titolo, costo, pagatori: sPag.slice() });
   salva();
@@ -1183,7 +1217,7 @@ setInterval(() => {
 // ===== Tour 3D: gli edifici 3D di Mapbox Standard compaiono solo a zoom alto (15+) =====
 let puntiMappa = [], indice3d = 0;
 function vola3d() {
-  if (!mappa || !puntiMappa.length) return toast("Aggiungi prima qualche tappa con un luogo!");
+  if (!mappa || !puntiMappa.length) return toast(t("to.needStops"));
   const punto = puntiMappa[indice3d % puntiMappa.length];
   indice3d++;
   mappa.flyTo({
@@ -1257,7 +1291,7 @@ function fermaWatchPosizione() {
 // ===== Tasto mondo (in alto a destra): vola alla posizione attuale =====
 $("btnPosizione").addEventListener("click", () => {
   if (!mappa) return;
-  if (!navigator.geolocation) { toast("La posizione non è disponibile su questo dispositivo."); return; }
+  if (!navigator.geolocation) { toast(t("to.geoNo")); return; }
   const b = $("btnPosizione"); b.classList.add("attivo");
   navigator.geolocation.getCurrentPosition(
     (pos) => {
@@ -1267,7 +1301,7 @@ $("btnPosizione").addEventListener("click", () => {
       mappa.flyTo({ center: c, zoom: 13, pitch: 45, duration: 2200, essential: true });
       avviaWatchPosizione(); // tiene aggiornato il segnaposto mentre ti muovi
     },
-    () => { b.classList.remove("attivo"); toast("Non riesco ad accedere alla tua posizione."); },
+    () => { b.classList.remove("attivo"); toast(t("to.geoFail")); },
     { enableHighAccuracy: true, timeout: 8000 }
   );
 });
@@ -1277,7 +1311,7 @@ async function volaAllaBase() {
   if (!mappa) return;
   const u = leggiUtente();
   const base = String(u.base || "").trim();
-  if (!base) { toast("Imposta la tua città base dal profilo (avatar in home)."); return; }
+  if (!base) { toast(t("to.setBase")); return; }
   const b = $("btnBase"); b.classList.add("attivo");
   let coord = u.baseCoord;
   if (!coord) {
@@ -1287,7 +1321,7 @@ async function volaAllaBase() {
     } catch {}
   }
   b.classList.remove("attivo");
-  if (!coord) { toast("Non riesco a trovare la tua città base."); return; }
+  if (!coord) { toast(t("to.baseNF")); return; }
   mappa.flyTo({ center: coord, zoom: 11, pitch: 45, duration: 2200, essential: true });
 }
 $("btnBase").addEventListener("click", volaAllaBase);
@@ -1302,7 +1336,7 @@ function viaggioPerItinerario() {
 }
 $("btnItinerario").addEventListener("click", () => {
   const v = viaggioPerItinerario();
-  if (!v) { toast("Nessun viaggio in corso o in programma."); return; }
+  if (!v) { toast(t("to.noTrip")); return; }
   fermaRiproduzione();
   corrente = v;
   renderMappa();
@@ -1563,7 +1597,7 @@ let mappaPlayId = null;     // id del viaggio attualmente in riproduzione sulla 
 
 async function avviaRiproduzione() {
   const nodi = nodiRotta();
-  if (nodi.length < 2) { toast("Servono almeno due tappe con un luogo per riprodurre il viaggio."); return; }
+  if (nodi.length < 2) { toast(t("to.need2")); return; }
   const gen = ++playGen;     // annulla un'eventuale riproduzione in corso
   animazioneInCorso = true;
   viaggioInPausa = false;
@@ -1717,8 +1751,8 @@ $("vSalva").addEventListener("click", () => {
   const nome = $("vNome").value.trim();
   const inizio = $("vInizio").value, fine = $("vFine").value;
   const persone = Math.max(1, Number($("vPersone").value) || 1);
-  if (!nome) return toast("Dai un nome al viaggio!");
-  if (!inizio || !fine || fine < inizio) return toast("Controlla le date: il ritorno deve essere dopo la partenza.");
+  if (!nome) return toast(t("to.nameTrip"));
+  if (!inizio || !fine || fine < inizio) return toast(t("to.checkDates"));
   const nomi = persone > 1
     ? [...document.querySelectorAll(".v-nome")].map((inp, i) => inp.value.trim() || "Viaggiatore " + (i + 1))
     : ["Io"];
@@ -1827,7 +1861,7 @@ $("tTitolo").addEventListener("input", () => { $("tSalva").disabled = $("tTitolo
 $("tAnnulla").addEventListener("click", () => $("veloTappa").classList.remove("aperto"));
 $("tElimina").addEventListener("click", async () => {
   if (!tappaInModifica) return;
-  if (!(await chiediConferma("Eliminare la tappa?", '"' + tappaInModifica.tappa.titolo + '"', "Elimina", true))) return;
+  if (!(await chiediConferma(t("cf.delStopT"), '"' + tappaInModifica.tappa.titolo + '"', t("common.delete"), true))) return;
   const g = tappaInModifica.giorno;
   g.tappe = g.tappe.filter((x) => x.id !== tappaInModifica.tappa.id);
   salva(); $("veloTappa").classList.remove("aperto"); renderViaggio();
@@ -1907,7 +1941,7 @@ async function nomeDaCoord(lng, lat) {
 // "principale" (campo luogo attività), in futuro estendibile a da/a dei trasporti.
 function apriSelettoreMappa(destinazione) {
   if (!tokenValido() || !mapboxDisponibile()) {
-    toast("La mappa non è disponibile in questo momento.");
+    toast(t("to.mapNA"));
     return;
   }
   selDestinazione = destinazione || "principale";
@@ -1976,7 +2010,7 @@ $("selChiudi").addEventListener("click", () => {
 });
 
 $("selConferma").addEventListener("click", async () => {
-  if (!selCoord) { toast("Sposta la mappa per scegliere un punto."); return; }
+  if (!selCoord) { toast(t("to.moveMap")); return; }
   // ricavo il nome (se non già pronto) e riempio il campo giusto
   let nome = $("selNome").textContent;
   if (!nome || nome.includes("Cerco") || nome.includes("Sposta")) {
@@ -1991,7 +2025,7 @@ $("selConferma").addEventListener("click", async () => {
   }
   $("selettoreMappa").classList.remove("aperto");
   $("selCerca").value = "";
-  toast("Posizione impostata " + ico('pin'));
+  toast(t("to.posSet") + " " + ico('pin'));
 });
 
 // ============ FOTO ============
@@ -2061,7 +2095,7 @@ $("visoreChiudi").addEventListener("click", () => $("visore").classList.add("nas
 $("qrChiudi").addEventListener("click", () => $("visoreQr").classList.add("nascosto"));
 $("visoreElimina").addEventListener("click", async () => {
   if (!fotoAperta) return;
-  if (!(await chiediConferma("Eliminare questa foto?", "", "Elimina", true))) return;
+  if (!(await chiediConferma(t("cf.delPhotoT"), "", t("common.delete"), true))) return;
   await dbElimina("foto", fotoAperta.id);
   $("visore").classList.add("nascosto");
   renderFoto();
@@ -2069,7 +2103,7 @@ $("visoreElimina").addEventListener("click", async () => {
 // Album: scorrimento di tutte le foto, raggruppate per località
 let albumIndice = 0, albumTimer = null;
 $("btnAlbum").addEventListener("click", () => {
-  if (!fotoCorrenti.length) return toast("Aggiungi prima qualche foto!");
+  if (!fotoCorrenti.length) return toast(t("to.needPhotos"));
   albumIndice = 0;
   mostraFotoAlbum();
   $("album").classList.remove("nascosto");
@@ -2187,7 +2221,7 @@ async function renderBiglietti() {
           const a = document.createElement("a");
           a.href = url; a.target = "_blank"; a.rel = "noopener";
           document.body.appendChild(a); a.click(); a.remove();
-        } catch { toast("Non riesco ad aprire il PDF su questo browser."); }
+        } catch { toast(t("to.pdfNo")); }
       } else if (b.tipo === "qr") {
         $("qrImg").src = srcFoto(b);
         $("qrDida").textContent = b.nome + " — alza la luminosità per la scansione";
@@ -2208,7 +2242,7 @@ async function renderBiglietti() {
       renderBiglietti();
     });
     wrap.querySelector(".ba-del").addEventListener("click", async () => {
-      if (!(await chiediConferma("Eliminare il biglietto?", '"' + b.nome + '"', "Elimina", true))) return;
+      if (!(await chiediConferma(t("cf.delTicketT"), '"' + b.nome + '"', t("common.delete"), true))) return;
       await dbElimina("biglietti", b.id);
       renderBiglietti();
     });
@@ -2224,8 +2258,8 @@ function renderDafare() {
   const tot = corrente.daFare.length;
   const fatte = corrente.daFare.filter((x) => x.fatto).length;
   $("impContatore").innerHTML = tot
-    ? `Vissute ${fatte} di ${tot}${fatte === tot ? " — tutte! " + ico('party') : ""}`
-    : "Le cose per cui vale il viaggio";
+    ? `${esc(t("imp.count", {f: fatte, n: tot}))}${fatte === tot ? esc(t("imp.all")) + " " + ico('party') : ""}`
+    : t("imp.sub");
   const ordinate = [...corrente.daFare].sort((a, b) => (a.fatto === b.fatto ? 0 : a.fatto ? 1 : -1));
   for (const x of ordinate) {
     const wrap = document.createElement("div"); wrap.className = "imp-wrap";
@@ -2646,18 +2680,18 @@ $("importaAnnulla").addEventListener("click", () => $("veloImporta").classList.r
 $("copiaPrompt").addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(PROMPT_AI);
-    toast("Prompt copiato! Incollalo nella tua AI.");
+    toast(t("to.copied"));
   } catch {
     // fallback: selezione manuale se la clipboard è negata
-    toast("Copia non riuscita: tieni premuto sul testo per copiarlo a mano.");
+    toast(t("to.copyFail"));
   }
 });
 $("importaCrea").addEventListener("click", async () => {
   const testo = $("importaTesto").value.trim();
-  if (!testo) return toast("Incolla prima il pacchetto che ti ha dato l'AI.");
+  if (!testo) return toast(t("to.pasteFirst"));
   const { out, scartate } = importaPacchetto(testo);
   if (!out.itinerario.length && !out.imperdibili.length && !out.valigia.length && !out.promemoria.length) {
-    return toast("Non ho riconosciuto un pacchetto valido. Controlla di aver copiato tutto.");
+    return toast(t("to.pkgBad"));
   }
   const v = creaViaggioDaPacchetto(out);
   viaggi.push(v); salva();
@@ -2948,8 +2982,8 @@ function cqInit() {
     const daViaggio = cqDerivati.has(iso) && !cqEsclusi.has(iso);
     $("cqNome").innerHTML = (conquistato ? ico('trophy') : ico('pin')) + " " + nome;
     $("cqStato").textContent = conquistato
-      ? (daViaggio ? "Conquistato — risulta da un tuo viaggio" : "Conquistato")
-      : "Ancora da conquistare";
+      ? (daViaggio ? t("cq.fromTrip") : t("cq.conq"))
+      : t("cq.notYet");
     // ogni nazione è modificabile: o la segni o la rimuovi
     $("cqVisitato").classList.toggle("nascosto", conquistato);
     $("cqRimuovi").classList.toggle("nascosto", !conquistato);
