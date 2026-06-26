@@ -180,6 +180,7 @@ const STR = {
     "imp.add": "Scegli foto", "ai.title": "Crea un viaggio con l'AI",
     "ai.s1": "Copia il prompt qui sotto col pulsante verde.", "ai.copy": "Copia il prompt per l'AI",
     "ai.paste": "Poi incolla qui il pacchetto ricevuto:", "ai.create": "Crea viaggio",
+    "ai.directive": "⚠️ IMPORTANTE — Conduci tutta la conversazione (compreso il saluto iniziale) nella lingua dell'utente, deducendola dai suoi messaggi. Quando consegni il PACCHETTO finale devi però mantenere struttura ed etichette ESATTAMENTE come scritte più sotto: NON tradurre MAI le etichette (NOME, DAL, AL, PERSONE, GIORNO, IMPERDIBILE, VALIGIA, PROMEMORIA) né i valori di tipo (volo, treno, hotel, attivita, ristorante); scrivi i nomi dei luoghi in lingua locale o inglese. Titoli e suggerimenti, invece, nella lingua dell'utente.\n\n",
     "ai.s2": "Incollalo nella <b>tua app di AI</b> preferita (ChatGPT, Gemini, Claude…).", "ai.s3": "Rispondi alle domande e <b>accetta</b> il pacchetto viaggio.", "ai.s4": "Incolla qui sotto il <b>pacchetto</b> che ti consegna e premi Crea.",
     "trip.new": "Nuovo viaggio", "trip.name": "Nome del viaggio", "trip.depart": "Partenza", "trip.return": "Ritorno",
     "trip.people": "Quante persone? (per dividere il budget)", "trip.save": "Salva viaggio",
@@ -250,6 +251,7 @@ const STR = {
     "imp.add": "Choose photo", "ai.title": "Create a trip with AI",
     "ai.s1": "Copy the prompt below with the green button.", "ai.copy": "Copy the prompt for AI",
     "ai.paste": "Then paste the package you received here:", "ai.create": "Create trip",
+    "ai.directive": "⚠️ IMPORTANT — Conduct the entire conversation (including the opening greeting) in the user's own language, inferring it from their messages. However, when you deliver the final PACKAGE you MUST keep its structure and labels EXACTLY as written further below: NEVER translate the labels (NOME, DAL, AL, PERSONE, GIORNO, IMPERDIBILE, VALIGIA, PROMEMORIA) or the type values (volo, treno, hotel, attivita, ristorante); write place names in the local language or English. Titles and suggestions, instead, in the user's language.\n\n",
     "ai.s2": "Paste it into your favourite <b>AI app</b> (ChatGPT, Gemini, Claude…).", "ai.s3": "Answer the questions and <b>accept</b> the trip package.", "ai.s4": "Paste below the <b>package</b> it gives you and press Create.",
     "trip.new": "New trip", "trip.name": "Trip name", "trip.depart": "Departure", "trip.return": "Return",
     "trip.people": "How many people? (to split the budget)", "trip.save": "Save trip",
@@ -2684,7 +2686,7 @@ $("btnImportaHome").addEventListener("click", () => {
 $("importaAnnulla").addEventListener("click", () => $("veloImporta").classList.remove("aperto"));
 $("copiaPrompt").addEventListener("click", async () => {
   try {
-    await navigator.clipboard.writeText(PROMPT_AI);
+    await navigator.clipboard.writeText(t("ai.directive") + PROMPT_AI);
     toast(t("to.copied"));
   } catch {
     // fallback: selezione manuale se la clipboard è negata
