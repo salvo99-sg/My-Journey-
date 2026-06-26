@@ -323,6 +323,38 @@ function impostaLingua(l) {
   try { if (typeof renderHome === "function" && !$("schermataHome").classList.contains("nascosto")) renderHome(); } catch {}
 }
 
+// ============ TEMA CHIARO / SCURO (manuale) ============
+function rilevaTema() {
+  try { const s = localStorage.getItem("mj-theme"); if (s === "dark" || s === "light") return s; } catch {}
+  return "light"; // manuale: predefinito chiaro
+}
+let TEMA = rilevaTema();
+function applicaModoTema() { try { document.documentElement.setAttribute("data-theme", TEMA === "dark" ? "dark" : "light"); } catch {} }
+// utilità colore per schiarire gli accenti dei temi in dark mode
+function _hexRgb(h) { h = String(h).replace("#", ""); if (h.length === 3) h = h.split("").map((c) => c + c).join(""); return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)]; }
+function _lum(h) { const c = _hexRgb(h); return (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) / 255; }
+function _schiarisci(h, amt) { const c = _hexRgb(h), f = (x) => Math.round(x + (255 - x) * amt); return "rgb(" + f(c[0]) + "," + f(c[1]) + "," + f(c[2]) + ")"; }
+// accenti del tema adattati alla modalità: in dark niente variante scura per gli sfondi + auto-schiarimento
+function accentiTema(tema) {
+  let acc = tema.accent, accD = tema.accentDark || tema.accent;
+  if (TEMA === "dark") {
+    accD = tema.accent;
+    if (_lum(tema.accent) < 0.5) acc = _schiarisci(tema.accent, 0.28);
+  }
+  return { acc: acc, accD: accD };
+}
+function aggiornaToggleTema() {
+  document.querySelectorAll(".onb-tema button").forEach((b) => b.classList.toggle("attivo", b.dataset.tema === TEMA));
+}
+function impostaTema(x) {
+  TEMA = (x === "dark") ? "dark" : "light";
+  try { localStorage.setItem("mj-theme", TEMA); } catch {}
+  applicaModoTema();
+  aggiornaToggleTema();
+  try { if (typeof renderHome === "function" && !$("schermataHome").classList.contains("nascosto")) renderHome(); } catch {}
+  try { if (typeof corrente !== "undefined" && corrente && typeof applicaTema === "function") applicaTema(temaViaggio(corrente)); } catch {}
+}
+
 // ============ TOAST E DIALOGHI INTERNI ============
 // Niente alert/confirm/prompt del browser: brutti, mostrano il dominio,
 // e iOS può sopprimerli per sempre con "Elimina finestre di dialogo".
@@ -694,8 +726,9 @@ function applicaTema(tema) {
   let cv = header.querySelector(".tema-anim");
   if (tema) {
     screen.classList.add("temato");
-    screen.style.setProperty("--t-accent", tema.accent);
-    screen.style.setProperty("--t-accent-d", tema.accentDark);
+    const _a = accentiTema(tema);
+    screen.style.setProperty("--t-accent", _a.acc);
+    screen.style.setProperty("--t-accent-d", _a.accD);
     header.classList.add("tema");
     header.style.backgroundImage = 'url("' + tema.poster + '")';
     header.style.backgroundSize = "cover";
@@ -752,7 +785,7 @@ function renderHome() {
     const quando = (conDate ? fmtData(v.inizio, true) + " → " + fmtData(v.fine, true) : t("date.tbd")) + " · " + v.persone + " " + ico('user');
     const card = document.createElement("div"); card.className = "viaggio-card" + (tema ? " tema" : "") + (sb.classe === "bozza" ? " bozza" : "");
     if (tema) {
-      card.style.setProperty("--t-accent", tema.accent);
+      card.style.setProperty("--t-accent", accentiTema(tema).acc);
       card.style.backgroundImage = 'url("' + tema.poster + '")';
       card.style.backgroundSize = "cover"; card.style.backgroundPosition = "center";
       const media = tema.video
@@ -3063,6 +3096,7 @@ function apriOnboarding(modo) {
   onbDisegnaColori(); onbDisegnaAvatar();
   $("onboarding").classList.remove("nascosto");
   if (typeof aggiornaToggleLang === "function") aggiornaToggleLang();
+  if (typeof aggiornaToggleTema === "function") aggiornaToggleTema();
   onbVai(modo === "modifica" ? "nick" : "benv");
 }
 function chiudiOnboarding() { $("onboarding").classList.add("nascosto"); }
@@ -3114,8 +3148,12 @@ function aggiornaToggleLang() {
   document.querySelectorAll(".onb-lang button").forEach((b) => b.classList.toggle("attivo", b.dataset.lang === LANG));
 }
 document.addEventListener("click", (e) => {
-  const b = e.target.closest && e.target.closest(".onb-lang button");
-  if (b) { impostaLingua(b.dataset.lang); aggiornaToggleLang(); }
+  if (!e.target.closest) return;
+  const bl = e.target.closest(".onb-lang button");
+  if (bl) { impostaLingua(bl.dataset.lang); aggiornaToggleLang(); return; }
+  const bt = e.target.closest(".onb-tema button");
+  if (bt) { impostaTema(bt.dataset.tema); }
 });
 
-apriDB().then(() => { applicaI18n(); aggiornaToggleLang(); renderHome(); avviaSplash(); });
+applicaModoTema();
+apriDB().then(() => { applicaI18n(); aggiornaToggleLang(); aggiornaToggleTema(); renderHome(); avviaSplash(); });
