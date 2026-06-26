@@ -143,6 +143,7 @@ const TIPI = {
   attivita:   { label: "Attività",   icona: "ticket", colore: "#E9A03B" },
   ristorante: { label: "Ristorante", icona: "food",  colore: "#C9514C" },
 };
+function labelTipo(k){ return t(({volo:"type.flight",treno:"type.train",hotel:"type.hotel",attivita:"type.activity",ristorante:"type.restaurant"})[k] || k); }
 const ICONE_SVG = {
   volo: '<path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>',
   treno: '<path d="M12 2C8 2 4 2.5 4 6v9.5A3.5 3.5 0 0 0 7.5 19L6 20.5v.5h2.2l2-2h3.6l2 2H18v-.5L16.5 19a3.5 3.5 0 0 0 3.5-3.5V6c0-3.5-4-4-8-4zM7.5 16.5A1.5 1.5 0 1 1 9 15a1.5 1.5 0 0 1-1.5 1.5zM11 9.5H6V6h5v3.5zm2 0V6h5v3.5h-5zm3.5 7A1.5 1.5 0 1 1 18 15a1.5 1.5 0 0 1-1.5 1.5z"/>',
@@ -179,6 +180,7 @@ const STR = {
     "imp.add": "Scegli foto", "ai.title": "Crea un viaggio con l'AI",
     "ai.s1": "Copia il prompt qui sotto col pulsante verde.", "ai.copy": "Copia il prompt per l'AI",
     "ai.paste": "Poi incolla qui il pacchetto ricevuto:", "ai.create": "Crea viaggio",
+    "ai.s2": "Incollalo nella <b>tua app di AI</b> preferita (ChatGPT, Gemini, Claude…).", "ai.s3": "Rispondi alle domande e <b>accetta</b> il pacchetto viaggio.", "ai.s4": "Incolla qui sotto il <b>pacchetto</b> che ti consegna e premi Crea.",
     "trip.new": "Nuovo viaggio", "trip.name": "Nome del viaggio", "trip.depart": "Partenza", "trip.return": "Ritorno",
     "trip.people": "Quante persone? (per dividere il budget)", "trip.save": "Salva viaggio",
     "stop.add": "Aggiungi tappa", "stop.day": "Giorno", "stop.title": "Titolo", "stop.time": "Ora",
@@ -219,6 +221,7 @@ const STR = {
     "to.pasteFirst": "Incolla prima il pacchetto che ti ha dato l'AI.", "to.pkgBad": "Non ho riconosciuto un pacchetto valido. Controlla di aver copiato tutto.",
     "cf.delTripT": "Eliminare il viaggio?", "cf.delTripB": "verranno eliminati anche foto e biglietti.",
     "cf.delExpT": "Eliminare la spesa?", "cf.delStopT": "Eliminare la tappa?", "cf.delPhotoT": "Eliminare questa foto?", "cf.delTicketT": "Eliminare il biglietto?",
+    "to.savePhotos": "Non sono riuscito a salvare le foto: ", "to.saveTicket": "Non sono riuscito a salvare il biglietto: ", "to.savePhoto": "Non sono riuscito a salvare la foto: ", "type.restaurant": "Ristorante",
     "lang.name": "Italiano",
   },
   en: {
@@ -247,6 +250,7 @@ const STR = {
     "imp.add": "Choose photo", "ai.title": "Create a trip with AI",
     "ai.s1": "Copy the prompt below with the green button.", "ai.copy": "Copy the prompt for AI",
     "ai.paste": "Then paste the package you received here:", "ai.create": "Create trip",
+    "ai.s2": "Paste it into your favourite <b>AI app</b> (ChatGPT, Gemini, Claude…).", "ai.s3": "Answer the questions and <b>accept</b> the trip package.", "ai.s4": "Paste below the <b>package</b> it gives you and press Create.",
     "trip.new": "New trip", "trip.name": "Trip name", "trip.depart": "Departure", "trip.return": "Return",
     "trip.people": "How many people? (to split the budget)", "trip.save": "Save trip",
     "stop.add": "Add stop", "stop.day": "Day", "stop.title": "Title", "stop.time": "Time",
@@ -287,6 +291,7 @@ const STR = {
     "to.pasteFirst": "Paste the package the AI gave you first.", "to.pkgBad": "I didn't recognise a valid package. Check you copied everything.",
     "cf.delTripT": "Delete the trip?", "cf.delTripB": "photos and tickets will be deleted too.",
     "cf.delExpT": "Delete the expense?", "cf.delStopT": "Delete the stop?", "cf.delPhotoT": "Delete this photo?", "cf.delTicketT": "Delete the ticket?",
+    "to.savePhotos": "Couldn't save the photos: ", "to.saveTicket": "Couldn't save the ticket: ", "to.savePhoto": "Couldn't save the photo: ", "type.restaurant": "Restaurant",
     "lang.name": "English",
   },
 };
@@ -435,7 +440,7 @@ function srcFoto(f) {
 const oggiISO = () => new Date().toISOString().slice(0, 10);
 function fmtData(iso, lungo) {
   const d = new Date(iso + "T12:00:00");
-  return d.toLocaleDateString("it-IT", lungo
+  return d.toLocaleDateString(LANG === "en" ? "en-GB" : "it-IT", lungo
     ? { day: "numeric", month: "long", year: "numeric" }
     : { weekday: "short", day: "numeric", month: "short" });
 }
@@ -892,7 +897,7 @@ function renderItinerario() {
         if (f !== fasciaCorrente) {
           fasciaCorrente = f;
           const et = document.createElement("div"); et.className = "fascia";
-          et.innerHTML = ico(FASCE[f][0]) + " " + FASCE[f][1]; corpo.appendChild(et);
+          et.innerHTML = ico(FASCE[f][0]) + " " + t(FASCE[f][1]); corpo.appendChild(et);
         }
         const tp = TIPI[t.tipo];
         const orario = isTrasporto(t.tipo) && t.oraArrivo ? `${t.ora} → ${t.oraArrivo}` : t.ora;
@@ -900,9 +905,9 @@ function renderItinerario() {
         div.innerHTML = `
           <div class="barra" style="background:${tp.colore}"></div>
           <div class="corpo">
-            <div class="meta">${ico(tp.icona)} ${tp.label} · ${orario}</div>
+            <div class="meta">${ico(tp.icona)} ${labelTipo(t.tipo)} · ${orario}</div>
             <div class="titolo">${esc(t.titolo)}</div>
-            <div class="luogo">${t.luogo ? ico('pin') + " " + t.luogo : ""}</div>
+            <div class="luogo">${t.luogo ? ico('pin') + " " + esc(t.luogo) : ""}</div>
           </div>
           ${t.costo ? `<div class="costo"><b>${eur(t.costo)}</b></div>` : ""}`;
         div.addEventListener("click", () => apriModaleTappa({ giorno: g, tappa: t }));
@@ -983,7 +988,7 @@ function renderBudget() {
     ${perTipo.length ? `<div class="card"><b>${esc(t("bud.byCat"))}</b>
       ${perTipo.map(({ k, somma }) => `
         <div class="cat">
-          <div class="riga"><span>${ico(TIPI[k].icona)} ${TIPI[k].label}</span><b>${eur(somma)}</b></div>
+          <div class="riga"><span>${ico(TIPI[k].icona)} ${labelTipo(k)}</span><b>${eur(somma)}</b></div>
           <div class="pista"><div class="pieno" style="width:${(somma / max) * 100}%;background:${TIPI[k].colore}"></div></div>
         </div>`).join("")}</div>` : ""}`;
   $("btnSpesa").addEventListener("click", apriModaleSpesa);
@@ -1815,7 +1820,7 @@ function renderChips() {
     const c = document.createElement("button");
     c.className = "chip" + (k === tipoScelto ? " scelto" : "");
     if (k === tipoScelto) { c.style.background = t.colore; c.style.borderColor = t.colore; }
-    c.innerHTML = ico(t.icona) + " " + t.label;
+    c.innerHTML = ico(t.icona) + " " + labelTipo(k);
     c.addEventListener("click", () => { tipoScelto = k; renderChips(); aggiornaBlocchi(); });
     $("sceltaTipo").appendChild(c);
   }
@@ -2056,7 +2061,7 @@ $("fileFoto").addEventListener("change", async (e) => {
     e.target.value = "";
     await renderFoto();
   } catch (err) {
-    toast("Non sono riuscito a salvare le foto: " + (err && err.message ? err.message : err));
+    toast(t("to.savePhotos") + (err && err.message ? err.message : err));
   }
 });
 let fotoCorrenti = [];
@@ -2160,7 +2165,7 @@ $("fileBiglietto").addEventListener("change", async (e) => {
     e.target.value = "";
     await renderBiglietti();
   } catch (err) {
-    toast("Non sono riuscito a salvare il biglietto: " + (err && err.message ? err.message : err));
+    toast(t("to.saveTicket") + (err && err.message ? err.message : err));
   }
 });
 async function renderBiglietti() {
@@ -2464,7 +2469,7 @@ $("fileEsperienza").addEventListener("change", async (e) => {
     e.target.value = "";
     renderFoto();
   } catch (err) {
-    toast("Non sono riuscito a salvare la foto: " + (err && err.message ? err.message : err));
+    toast(t("to.savePhoto") + (err && err.message ? err.message : err));
   }
 });
 
