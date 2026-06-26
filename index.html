@@ -767,7 +767,7 @@
 <!-- ===== HOME ===== -->
 <div class="app" id="schermataHome">
   <header>
-    <button class="home-avatar" id="homeAvatar" title="Il tuo profilo" aria-label="Il tuo profilo"></button>
+    <button class="home-avatar" id="homeAvatar" title="Il tuo profilo" aria-label="Il tuo profilo" data-i18n-title="ttl.profile"></button>
     <div class="eyebrow" data-i18n="home.eyebrow">Agenda di viaggio</div>
     <h1 data-i18n="home.title">I miei viaggi</h1>
   </header>
@@ -818,10 +818,10 @@
 <div class="app nascosto" id="schermataViaggio">
   <header>
     <div class="testa-riga">
-      <button class="btn-tonda" id="indietro" title="Torna ai viaggi" aria-label="Torna ai viaggi"><span class="ic" data-ic="cl"></span></button>
+      <button class="btn-tonda" id="indietro" title="Torna ai viaggi" aria-label="Torna ai viaggi" data-i18n-title="ttl.backTrips"><span class="ic" data-ic="cl"></span></button>
       <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn-tonda btn-globo" id="btnGlobo" title="Mappa del viaggio" aria-label="Mappa del viaggio"><span class="ic" data-ic="globe"></span></button>
-        <button class="btn-tonda" id="modificaViaggio" title="Modifica viaggio" aria-label="Modifica viaggio"><span class="ic" data-ic="edit"></span></button>
+        <button class="btn-tonda btn-globo" id="btnGlobo" title="Mappa del viaggio" aria-label="Mappa del viaggio" data-i18n-title="ttl.tripMap"><span class="ic" data-ic="globe"></span></button>
+        <button class="btn-tonda" id="modificaViaggio" title="Modifica viaggio" aria-label="Modifica viaggio" data-i18n-title="ttl.editTrip"><span class="ic" data-ic="edit"></span></button>
       </div>
     </div>
     <h1 id="nomeViaggio"></h1>
@@ -829,10 +829,10 @@
     <div class="countdown" id="countdown"></div>
   </header>
   <div class="tabs" id="macroTabs">
-    <button class="tab attiva" data-macro="viaggio"><span class="mt-ic ic" data-ic="cal"></span>Viaggio</button>
-    <button class="tab" data-macro="budget"><span class="mt-ic ic" data-ic="money"></span>Budget</button>
-    <button class="tab" data-macro="preparativi"><span class="mt-ic ic" data-ic="backpack"></span>Preparativi</button>
-    <button class="tab" data-macro="ricordi"><span class="mt-ic ic" data-ic="cam"></span>Ricordi</button>
+    <button class="tab attiva" data-macro="viaggio"><span class="mt-ic ic" data-ic="cal"></span><span data-i18n="nav.trip">Viaggio</span></button>
+    <button class="tab" data-macro="budget"><span class="mt-ic ic" data-ic="money"></span><span data-i18n="nav.budget">Budget</span></button>
+    <button class="tab" data-macro="preparativi"><span class="mt-ic ic" data-ic="backpack"></span><span data-i18n="nav.prep">Preparativi</span></button>
+    <button class="tab" data-macro="ricordi"><span class="mt-ic ic" data-ic="cam"></span><span data-i18n="nav.memories">Ricordi</span></button>
   </div>
   <div class="sottobar nascosto" id="sottoBar"></div>
   <main id="vistaItinerario"></main>
@@ -845,16 +845,16 @@
       <span class="ic" data-ic="map"></span> <b>La mappa non può caricarsi in questa anteprima</b> perché le risorse esterne di Mapbox sono bloccate qui in chat. Sul tuo sito pubblicato funzionerà normalmente.
     </div>
     <div id="contenitoreMappa"></div>
-    <button id="btnCasa" class="mappa-angolo" title="Torna alla home" aria-label="Torna alla home"><span class="ic" data-ic="cl"></span></button>
-    <button id="btnBase" class="mappa-angolo" title="Vai alla tua base" aria-label="Vai alla tua base"><span class="ic" data-ic="home"></span></button>
-    <button id="btnPosizione" class="mappa-angolo" title="Vai alla tua posizione" aria-label="Vai alla tua posizione"><span class="ic" data-ic="globe"></span></button>
+    <button id="btnCasa" class="mappa-angolo" title="Torna alla home" aria-label="Torna alla home" data-i18n-title="ttl.home"><span class="ic" data-ic="cl"></span></button>
+    <button id="btnBase" class="mappa-angolo" title="Vai alla tua base" aria-label="Vai alla tua base" data-i18n-title="ttl.base"><span class="ic" data-ic="home"></span></button>
+    <button id="btnPosizione" class="mappa-angolo" title="Vai alla tua posizione" aria-label="Vai alla tua posizione" data-i18n-title="ttl.position"><span class="ic" data-ic="globe"></span></button>
     <!-- popover luci, ancorato sopra il dock -->
     <div id="barraLuce">
       <div id="luceOpzioni">
-        <button data-luce="dawn" title="Alba"><span class="ic" data-ic="sunrise"></span> Alba</button>
-        <button data-luce="day" title="Giorno"><span class="ic" data-ic="sun"></span> Giorno</button>
-        <button data-luce="dusk" title="Tramonto"><span class="ic" data-ic="sunrise"></span> Tramonto</button>
-        <button data-luce="night" title="Notte"><span class="ic" data-ic="moon"></span> Notte</button>
+        <button data-luce="dawn" title="Alba" data-i18n-title="ttl.dawn"><span class="ic" data-ic="sunrise"></span> <span data-i18n="ttl.dawn">Alba</span></button>
+        <button data-luce="day" title="Giorno" data-i18n-title="ttl.day"><span class="ic" data-ic="sun"></span> <span data-i18n="ttl.day">Giorno</span></button>
+        <button data-luce="dusk" title="Tramonto" data-i18n-title="ttl.dusk"><span class="ic" data-ic="sunrise"></span> <span data-i18n="ttl.dusk">Tramonto</span></button>
+        <button data-luce="night" title="Notte" data-i18n-title="ttl.night"><span class="ic" data-ic="moon"></span> <span data-i18n="ttl.night">Notte</span></button>
       </div>
     </div>
     <!-- pannello unico: tendina viaggi + strumenti (un solo pezzo) -->
@@ -862,11 +862,11 @@
       <div id="dockManiglia"><span class="grip"></span></div>
       <div id="dockLista"></div>
       <div id="dockStrumenti">
-        <button id="btnPanorama" title="Vista globo"><span class="ic" data-ic="globe"></span></button>
-        <button id="btn3d" title="Zoom sul punto attuale"><span class="ic" data-ic="target"></span></button>
-        <button id="btnItinerario" title="Itinerario del viaggio"><span class="ic" data-ic="route"></span></button>
-        <button id="btnLuce" title="Luci"><span class="ic" data-ic="sun"></span></button>
-        <button id="btnConquiste" title="Le tue terre conquistate"><span class="ic" data-ic="trophy"></span></button>
+        <button id="btnPanorama" title="Vista globo" data-i18n-title="ttl.globe"><span class="ic" data-ic="globe"></span></button>
+        <button id="btn3d" title="Zoom sul punto attuale" data-i18n-title="ttl.zoom"><span class="ic" data-ic="target"></span></button>
+        <button id="btnItinerario" title="Itinerario del viaggio" data-i18n-title="ttl.itinerary"><span class="ic" data-ic="route"></span></button>
+        <button id="btnLuce" title="Luci" data-i18n-title="ttl.lights"><span class="ic" data-ic="sun"></span></button>
+        <button id="btnConquiste" title="Le tue terre conquistate" data-i18n-title="ttl.trophies"><span class="ic" data-ic="trophy"></span></button>
       </div>
     </div>
     <div id="barraViaggio" class="nascosto">
@@ -880,14 +880,14 @@
     <div id="conquisteOverlay" class="nascosto">
       <div class="cq-testa">
         <div>
-          <div class="cq-titolo"><span class="ic" data-ic="trophy"></span> Terre conquistate</div>
-          <div class="cq-sotto">Ogni passo, una storia</div>
+          <div class="cq-titolo"><span class="ic" data-ic="trophy"></span> <span data-i18n="cq.title">Terre conquistate</span></div>
+          <div class="cq-sotto" data-i18n="cq.sub">Ogni passo, una storia</div>
         </div>
         <button class="cq-chiudi" id="cqChiudi"><span class="ic" data-ic="x"></span></button>
       </div>
       <div class="cq-stat">
-        <div><b id="cqPaesi">0</b><span>paesi</span></div>
-        <div><b id="cqPerc">0%</b><span>del mondo</span></div>
+        <div><b id="cqPaesi">0</b><span data-i18n="cq.countries">paesi</span></div>
+        <div><b id="cqPerc">0%</b><span data-i18n="cq.world">del mondo</span></div>
       </div>
       <div class="cq-barra"><div class="cq-barra-pieno" id="cqBarra"></div></div>
       <div id="mondoMappa"></div>
@@ -897,8 +897,8 @@
         <div class="cq-nome" id="cqNome">—</div>
         <div class="cq-info-stato" id="cqStato">—</div>
         <div class="cq-azioni">
-          <button id="cqVisitato"><span class="ic" data-ic="check"></span> Segna conquistato</button>
-          <button id="cqRimuovi">Rimuovi</button>
+          <button id="cqVisitato"><span class="ic" data-ic="check"></span> <span data-i18n="cq.mark">Segna conquistato</span></button>
+          <button id="cqRimuovi" data-i18n="common.remove">Rimuovi</button>
         </div>
       </div>
     </div>
@@ -921,16 +921,16 @@
       <h2><span class="ic" data-ic="backpack"></span> In valigia</h2>
       <div id="listaValigia"></div>
       <div class="valigia-aggiungi">
-        <input id="valigiaTesto" placeholder="Aggiungi una cosa da portare..." enterkeyhint="done" />
-        <button id="valigiaAggiungi" title="Aggiungi">+</button>
+        <input id="valigiaTesto" placeholder="Aggiungi una cosa da portare..." data-i18n-ph="ph.pack" enterkeyhint="done" />
+        <button id="valigiaAggiungi" title="Aggiungi" data-i18n-title="ttl.add">+</button>
       </div>
     </div>
     <div class="valigia-sez">
       <h2><span class="ic" data-ic="list"></span> Da non dimenticare</h2>
       <div id="listaPromemoria"></div>
       <div class="valigia-aggiungi">
-        <input id="promemoriaTesto" placeholder="Aggiungi un promemoria..." enterkeyhint="done" />
-        <button id="promemoriaAggiungi" title="Aggiungi">+</button>
+        <input id="promemoriaTesto" placeholder="Aggiungi un promemoria..." data-i18n-ph="ph.reminder" enterkeyhint="done" />
+        <button id="promemoriaAggiungi" title="Aggiungi" data-i18n-title="ttl.add">+</button>
       </div>
     </div>
   </main>
@@ -939,24 +939,24 @@
       <div id="diarioCard">
         <div class="dpagina dfront">
           <div id="quaderno">
-            <div class="q-titolo">Le mie imperdibili <span class="ic" data-ic="sparkle"></span></div>
+            <div class="q-titolo"><span data-i18n="imp.title">Le mie imperdibili</span> <span class="ic" data-ic="sparkle"></span></div>
             <div class="q-sotto" id="impContatore">Le cose per cui vale il viaggio</div>
             <div class="q-inserisci">
-              <input id="dfTesto" placeholder="Scrivi cosa non vuoi perderti..." enterkeyhint="done" />
-              <button id="dfAggiungi" title="Aggiungi"><span class="ic" data-ic="edit"></span></button>
+              <input id="dfTesto" placeholder="Scrivi cosa non vuoi perderti..." data-i18n-ph="ph.mustdo" enterkeyhint="done" />
+              <button id="dfAggiungi" title="Aggiungi" data-i18n-title="ttl.add"><span class="ic" data-ic="edit"></span></button>
             </div>
             <div id="dfLista"></div>
-            <button id="dfIdee"><span class="ic" data-ic="idea"></span> Suggeriscimi qualche idea</button>
+            <button id="dfIdee"><span class="ic" data-ic="idea"></span> <span data-i18n="imp.ideas">Suggeriscimi qualche idea</span></button>
           </div>
         </div>
         <div class="dpagina dback">
           <div id="quaderno2">
-            <div class="q-titolo">I ricordi vissuti <span class="ic" data-ic="cam"></span></div>
+            <div class="q-titolo"><span data-i18n="mem.title">I ricordi vissuti</span> <span class="ic" data-ic="cam"></span></div>
             <div id="dfMuro"></div>
           </div>
         </div>
       </div>
-      <button id="dfGira" class="df-gira" title="Gira pagina"><span class="ic" data-ic="cr"></span></button>
+      <button id="dfGira" class="df-gira" title="Gira pagina" data-i18n-title="ttl.flip"><span class="ic" data-ic="cr"></span></button>
     </div>
   </main>
 </div>
@@ -968,29 +968,29 @@
   <div id="selMappaCanvas"></div>
   <div id="selPuntina"><span class="ic" data-ic="pin"></span></div>
   <div id="selBarra">
-    <button id="selChiudi" title="Annulla"><span class="ic" data-ic="x"></span></button>
-    <input id="selCerca" placeholder="Cerca un indirizzo o un luogo..." autocomplete="off" />
+    <button id="selChiudi" title="Annulla" data-i18n-title="common.cancel"><span class="ic" data-ic="x"></span></button>
+    <input id="selCerca" placeholder="Cerca un indirizzo o un luogo..." data-i18n-ph="ph.search" autocomplete="off" />
   </div>
   <div id="selNome">Sposta la mappa per posizionare la puntina</div>
-  <button id="selConferma"><span class="ic" data-ic="pin"></span> Conferma posizione</button>
+  <button id="selConferma"><span class="ic" data-ic="pin"></span> <span data-i18n="sel.confirm">Conferma posizione</span></button>
 </div>
 
 <!-- ===== MODALE IMPORTA DA AI ===== -->
 <div class="velo" id="veloImporta">
   <div class="modale">
-    <h3><span class="ic" data-ic="sparkle"></span> Crea un viaggio con l'AI</h3>
+    <h3><span class="ic" data-ic="sparkle"></span> <span data-i18n="ai.title">Crea un viaggio con l'AI</span></h3>
     <div class="importa-passi">
-      <div class="importa-passo"><div>Copia il prompt qui sotto col pulsante verde.</div></div>
+      <div class="importa-passo"><div data-i18n="ai.s1">Copia il prompt qui sotto col pulsante verde.</div></div>
       <div class="importa-passo"><div>Incollalo nella <b>tua app di AI</b> preferita (ChatGPT, Gemini, Claude…).</div></div>
       <div class="importa-passo"><div>Rispondi alle domande e <b>accetta</b> il pacchetto viaggio.</div></div>
       <div class="importa-passo"><div>Incolla qui sotto il <b>pacchetto</b> che ti consegna e premi Crea.</div></div>
     </div>
-    <button class="copia-prompt" id="copiaPrompt"><span class="ic" data-ic="copy"></span> Copia il prompt per l'AI</button>
-    <div class="sub" style="text-align:center;margin-bottom:12px;font-size:12px">Poi incolla qui il pacchetto ricevuto:</div>
-    <textarea id="importaTesto" placeholder="Incolla qui il pacchetto viaggio che ti ha dato l'AI..."></textarea>
+    <button class="copia-prompt" id="copiaPrompt"><span class="ic" data-ic="copy"></span> <span data-i18n="ai.copy">Copia il prompt per l'AI</span></button>
+    <div class="sub" style="text-align:center;margin-bottom:12px;font-size:12px" data-i18n="ai.paste">Poi incolla qui il pacchetto ricevuto:</div>
+    <textarea id="importaTesto" placeholder="Incolla qui il pacchetto viaggio che ti ha dato l'AI..." data-i18n-ph="ph.import"></textarea>
     <div class="azioni">
-      <button id="importaAnnulla">Annulla</button>
-      <button class="salva" id="importaCrea">Crea viaggio</button>
+      <button id="importaAnnulla" data-i18n="common.cancel">Annulla</button>
+      <button class="salva" id="importaCrea" data-i18n="ai.create">Crea viaggio</button>
     </div>
   </div>
 </div>
@@ -999,18 +999,18 @@
 <div class="velo" id="veloViaggio">
   <div class="modale">
     <h3 id="titoloModaleViaggio">Nuovo viaggio</h3>
-    <label>Nome del viaggio</label>
-    <input id="vNome" placeholder="Es. Weekend a Parigi" />
+    <label data-i18n="trip.name">Nome del viaggio</label>
+    <input id="vNome" placeholder="Es. Weekend a Parigi" data-i18n-ph="ph.tripName" />
     <div class="riga-doppia">
-      <div><label>Partenza</label><input id="vInizio" type="date" /></div>
-      <div><label>Ritorno</label><input id="vFine" type="date" /></div>
+      <div><label data-i18n="trip.depart">Partenza</label><input id="vInizio" type="date" /></div>
+      <div><label data-i18n="trip.return">Ritorno</label><input id="vFine" type="date" /></div>
     </div>
-    <label>Quante persone? (per dividere il budget)</label>
+    <label data-i18n="trip.people">Quante persone? (per dividere il budget)</label>
     <input id="vPersone" type="number" inputmode="numeric" min="1" value="1" />
     <div id="vNomi"></div>
     <div class="azioni">
-      <button id="vAnnulla">Annulla</button>
-      <button class="salva" id="vSalva">Salva viaggio</button>
+      <button id="vAnnulla" data-i18n="common.cancel">Annulla</button>
+      <button class="salva" id="vSalva" data-i18n="trip.save">Salva viaggio</button>
     </div>
   </div>
 </div>
@@ -1020,52 +1020,52 @@
   <div class="modale">
     <h3 id="titoloModaleTappa">Aggiungi tappa</h3>
     <div class="chips" id="sceltaTipo"></div>
-    <label>Giorno</label>
+    <label data-i18n="stop.day">Giorno</label>
     <select id="tGiorno"></select>
-    <label>Titolo</label>
-    <input id="tTitolo" placeholder="Es. Cena da Luigi / Volo ANA NH204" />
+    <label data-i18n="stop.title">Titolo</label>
+    <input id="tTitolo" placeholder="Es. Cena da Luigi / Volo ANA NH204" data-i18n-ph="ph.stopTitle" />
 
     <!-- Campi per attività normali -->
     <div id="bloccoNormale">
-      <label>Ora</label>
+      <label data-i18n="stop.time">Ora</label>
       <input id="tOra" type="time" />
-      <label>Luogo — scrivi e scegli dai suggerimenti</label>
+      <label data-i18n="stop.place">Luogo — scrivi e scegli dai suggerimenti</label>
       <div class="campo-luogo">
-        <input id="tLuogo" placeholder="Es. Torre Eiffel, Parigi" autocomplete="off" />
+        <input id="tLuogo" placeholder="Es. Torre Eiffel, Parigi" data-i18n-ph="ph.place" autocomplete="off" />
         <div class="lista-sugg nascosto" id="tSuggerimenti"></div>
       </div>
-      <div class="luogo-ok nascosto" id="tLuogoOk"><span class="ic" data-ic="check"></span> Posizione trovata sulla mappa</div>
-      <button type="button" class="btn-scegli-mappa" id="tScegliMappa"><span class="ic" data-ic="pin"></span> Scegli la posizione sulla mappa</button>
+      <div class="luogo-ok nascosto" id="tLuogoOk"><span class="ic" data-ic="check"></span> <span data-i18n="stop.found">Posizione trovata sulla mappa</span></div>
+      <button type="button" class="btn-scegli-mappa" id="tScegliMappa"><span class="ic" data-ic="pin"></span> <span data-i18n="stop.pickMap">Scegli la posizione sulla mappa</span></button>
     </div>
 
     <!-- Campi per trasporti (volo/treno): DA → A con orari -->
     <div id="bloccoTrasporto" class="nascosto">
-      <label>Da (partenza)</label>
+      <label data-i18n="stop.from">Da (partenza)</label>
       <div class="campo-luogo">
-        <input id="tDa" placeholder="Es. Aeroporto di Fiumicino, Roma" autocomplete="off" />
+        <input id="tDa" placeholder="Es. Aeroporto di Fiumicino, Roma" data-i18n-ph="ph.from" autocomplete="off" />
         <div class="lista-sugg nascosto" id="tDaSugg"></div>
       </div>
-      <div class="luogo-ok nascosto" id="tDaOk"><span class="ic" data-ic="check"></span> Partenza trovata sulla mappa</div>
-      <label>A (arrivo)</label>
+      <div class="luogo-ok nascosto" id="tDaOk"><span class="ic" data-ic="check"></span> <span data-i18n="stop.foundDep">Partenza trovata sulla mappa</span></div>
+      <label data-i18n="stop.to">A (arrivo)</label>
       <div class="campo-luogo">
-        <input id="tA" placeholder="Es. Aeroporto Haneda, Tokyo" autocomplete="off" />
+        <input id="tA" placeholder="Es. Aeroporto Haneda, Tokyo" data-i18n-ph="ph.to" autocomplete="off" />
         <div class="lista-sugg nascosto" id="tASugg"></div>
       </div>
-      <div class="luogo-ok nascosto" id="tAOk"><span class="ic" data-ic="check"></span> Arrivo trovato sulla mappa</div>
+      <div class="luogo-ok nascosto" id="tAOk"><span class="ic" data-ic="check"></span> <span data-i18n="stop.foundArr">Arrivo trovato sulla mappa</span></div>
       <div class="riga-doppia">
-        <div><label>Orario partenza</label><input id="tOraDa" type="time" /></div>
-        <div><label>Orario arrivo</label><input id="tOraA" type="time" /></div>
+        <div><label data-i18n="stop.timeDep">Orario partenza</label><input id="tOraDa" type="time" /></div>
+        <div><label data-i18n="stop.timeArr">Orario arrivo</label><input id="tOraA" type="time" /></div>
       </div>
     </div>
 
-    <label>Costo €</label>
+    <label data-i18n="stop.cost">Costo €</label>
     <input id="tCosto" type="number" inputmode="decimal" placeholder="0" />
-    <label id="tPagLabel" class="nascosto">Chi ha pagato? (più nomi = quote uguali)</label>
+    <label id="tPagLabel" class="nascosto" data-i18n="pay.who">Chi ha pagato? (più nomi = quote uguali)</label>
     <div class="chips nascosto" id="tPagatori"></div>
     <div class="azioni">
-      <button class="pericolo nascosto" id="tElimina">Elimina</button>
-      <button id="tAnnulla">Annulla</button>
-      <button class="salva" id="tSalva" disabled>Salva</button>
+      <button class="pericolo nascosto" id="tElimina" data-i18n="common.delete">Elimina</button>
+      <button id="tAnnulla" data-i18n="common.cancel">Annulla</button>
+      <button class="salva" id="tSalva" disabled data-i18n="common.save">Salva</button>
     </div>
   </div>
 </div>
@@ -1073,16 +1073,16 @@
 <!-- ===== MODALE SPESA CONDIVISA ===== -->
 <div class="velo" id="veloSpesa">
   <div class="modale">
-    <h3><span class="ic" data-ic="handshake"></span> Spesa condivisa</h3>
-    <label>Descrizione</label>
-    <input id="sNome" placeholder="Es. Benzina, spesa al market, taxi" />
-    <label>Importo €</label>
+    <h3><span class="ic" data-ic="handshake"></span> <span data-i18n="exp.title">Spesa condivisa</span></h3>
+    <label data-i18n="exp.desc">Descrizione</label>
+    <input id="sNome" placeholder="Es. Benzina, spesa al market, taxi" data-i18n-ph="ph.expDesc" />
+    <label data-i18n="exp.amount">Importo €</label>
     <input id="sImporto" type="number" inputmode="decimal" placeholder="0" />
-    <label>Chi ha pagato? (più nomi = quote uguali)</label>
+    <label data-i18n="pay.who">Chi ha pagato? (più nomi = quote uguali)</label>
     <div class="chips" id="sPagatori"></div>
     <div class="azioni">
-      <button id="sAnnulla">Annulla</button>
-      <button class="salva" id="sSalva">Salva spesa</button>
+      <button id="sAnnulla" data-i18n="common.cancel">Annulla</button>
+      <button class="salva" id="sSalva" data-i18n="exp.save">Salva spesa</button>
     </div>
   </div>
 </div>
@@ -1094,8 +1094,8 @@
     <p id="dlgTesto" class="sub" style="margin:6px 0 0"></p>
     <input id="dlgInput" class="nascosto" />
     <div class="azioni">
-      <button id="dlgAnnulla">Annulla</button>
-      <button class="salva" id="dlgOk">Conferma</button>
+      <button id="dlgAnnulla" data-i18n="common.cancel">Annulla</button>
+      <button class="salva" id="dlgOk" data-i18n="common.confirm">Conferma</button>
     </div>
   </div>
 </div>
@@ -1103,20 +1103,20 @@
 <!-- ===== MODALE CAMBIO VALUTA ===== -->
 <div class="velo" id="veloCambio">
   <div class="modale">
-    <h3><span class="ic" data-ic="currency"></span> Cambio valuta</h3>
-    <label>Valuta della destinazione</label>
+    <h3><span class="ic" data-ic="currency"></span> <span data-i18n="cur.title">Cambio valuta</span></h3>
+    <label data-i18n="cur.dest">Valuta della destinazione</label>
     <select id="cvValuta"></select>
     <div class="sub" id="cvInfo" style="margin-top:6px"></div>
     <div class="calc-display">
       <button class="calc-c" id="cvAzzera">AC</button>
       <div class="calc-riga attiva"><span id="calcSuEt">€ EUR</span><b id="calcSu">0</b></div>
-      <button class="calc-swap" id="cvSwap" title="Inverti"><span class="ic" data-ic="swap"></span></button>
+      <button class="calc-swap" id="cvSwap" title="Inverti" data-i18n-title="ttl.invert"><span class="ic" data-ic="swap"></span></button>
       <div class="calc-riga"><span id="calcGiuEt">—</span><b id="calcGiu">—</b></div>
     </div>
     <div class="calc-tasti" id="cvTastiera"></div>
     <div class="azioni">
-      <button id="cvAggiorna"><span class="ic" data-ic="refresh"></span> Aggiorna tasso</button>
-      <button class="salva" id="cvChiudi">Fatto</button>
+      <button id="cvAggiorna"><span class="ic" data-ic="refresh"></span> <span data-i18n="cur.refresh">Aggiorna tasso</span></button>
+      <button class="salva" id="cvChiudi" data-i18n="common.done">Fatto</button>
     </div>
   </div>
 </div>
@@ -1124,28 +1124,28 @@
 <!-- ===== MODALE FOTO ===== -->
 <div class="velo" id="veloFoto">
   <div class="modale">
-    <h3>Aggiungi foto</h3>
-    <label>Località (per raggruppare le foto)</label>
-    <input id="fLocalita" list="elencoLocalita" placeholder="Es. Tokyo" />
+    <h3 data-i18n="photo.add">Aggiungi foto</h3>
+    <label data-i18n="photo.loc">Località (per raggruppare le foto)</label>
+    <input id="fLocalita" list="elencoLocalita" placeholder="Es. Tokyo" data-i18n-ph="ph.photoLoc" />
     <datalist id="elencoLocalita"></datalist>
     <div class="azioni">
-      <button id="fAnnulla">Annulla</button>
-      <label class="bottone-file" for="fileFoto">Scegli foto <span class="ic" data-ic="folder"></span></label>
+      <button id="fAnnulla" data-i18n="common.cancel">Annulla</button>
+      <label class="bottone-file" for="fileFoto"><span data-i18n="photo.choose">Scegli foto</span> <span class="ic" data-ic="folder"></span></label>
     </div>
   </div>
 </div>
 <div class="velo" id="veloEsperienza">
   <div class="modale">
     <h3 id="espTitolo"></h3>
-    <p style="text-align:center;color:#78716c;font-size:14px;margin:4px 0 0">Com'è stata questa esperienza?</p>
+    <p style="text-align:center;color:#78716c;font-size:14px;margin:4px 0 0" data-i18n="photo.exp">Com\'è stata questa esperienza?</p>
     <div class="stelle-box">
       <div class="stelle-sfondo" id="espStelle">★★★★★<div class="stelle-oro" id="espOro">★★★★★</div></div>
     </div>
     <div id="espVotoTxt"></div>
     <img id="espFoto" class="nascosto" alt="" />
     <div class="azioni">
-      <button id="espChiudi">Chiudi</button>
-      <label class="bottone-file" for="fileEsperienza"><span class="ic" data-ic="cam"></span> Foto ricordo</label>
+      <button id="espChiudi" data-i18n="common.close">Chiudi</button>
+      <label class="bottone-file" for="fileEsperienza"><span class="ic" data-ic="cam"></span> <span data-i18n="photo.mem">Foto ricordo</span></label>
     </div>
   </div>
 </div>
@@ -1155,21 +1155,21 @@
 <!-- ===== MODALE BIGLIETTO ===== -->
 <div class="velo" id="veloBiglietto">
   <div class="modale">
-    <h3>Aggiungi biglietto</h3>
-    <label>Nome</label>
-    <input id="bNome" placeholder="Es. Volo Roma → Tokyo, andata" />
-    <label>Tipo</label>
+    <h3 data-i18n="ticket.add">Aggiungi biglietto</h3>
+    <label data-i18n="ticket.name">Nome</label>
+    <input id="bNome" placeholder="Es. Volo Roma → Tokyo, andata" data-i18n-ph="ph.ticketName" />
+    <label data-i18n="ticket.type">Tipo</label>
     <select id="bTipo">
-      <option value="volo">Volo</option>
-      <option value="treno">Treno</option>
-      <option value="hotel">Hotel/B&B</option>
-      <option value="attivita">Attività</option>
-      <option value="qr">QR / Codice d'ingresso</option>
-      <option value="altro">Altro</option>
+      <option value="volo" data-i18n="type.flight">Volo</option>
+      <option value="treno" data-i18n="type.train">Treno</option>
+      <option value="hotel" data-i18n="type.hotel">Hotel/B&B</option>
+      <option value="attivita" data-i18n="type.activity">Attività</option>
+      <option value="qr" data-i18n="type.qr">QR / Codice d'ingresso</option>
+      <option value="altro" data-i18n="type.other">Altro</option>
     </select>
     <div class="azioni">
-      <button id="bAnnulla">Annulla</button>
-      <label class="bottone-file" for="fileBiglietto">Scegli file <span class="ic" data-ic="folder"></span></label>
+      <button id="bAnnulla" data-i18n="common.cancel">Annulla</button>
+      <label class="bottone-file" for="fileBiglietto"><span data-i18n="ticket.choose">Scegli file</span> <span class="ic" data-ic="folder"></span></label>
     </div>
   </div>
 </div>
