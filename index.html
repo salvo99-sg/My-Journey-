@@ -1617,7 +1617,8 @@ const TEMI = {
   olanda:   { paese: "Olanda",   poster: "themes/olanda.jpg", accent: "#E0A93B", accentDark: "#BD8623" },
   indonesia:{ paese: "Indonesia", poster: "themes/indonesia.jpg", accent: "#2E8F86", accentDark: "#1F6A63" },
   emiratiarabi: { paese: "Emirati Arabi", poster: "themes/emiratiarabi.jpg", accent: "#D2A23C", accentDark: "#B07F22" },
-  italia: { paese: "Italia", poster: "themes/italia.jpg", accent: "#CC7A33", accentDark: "#A35E22" }
+  italia: { paese: "Italia", poster: "themes/italia.jpg", accent: "#CC7A33", accentDark: "#A35E22" },
+  egitto: { paese: "Egitto", poster: "themes/egitto.jpg", accent: "#D99A3C", accentDark: "#A8721F" }
 };
 function temaViaggio(v) {
   if (!v) return null;
@@ -1625,6 +1626,7 @@ function temaViaggio(v) {
   const t = ((v.nome || "") + " " + (v.destinazione || "") + " " + (v.paese || "")).toLowerCase();
   if (/giappon|japan|tokyo|kyoto|osaka|fuji|hiroshima|\bnara\b|sapporo|yokohama|nagoya|okinawa|hokkaido|\bkobe\b|nikko|giappones/.test(t)) return TEMI.giappone;
   if (/\bitali|\bitaly\b|italian|\broma\b|\brome\b|milano|\bmilan\b|firenze|florence|venezia|venice|napoli|naples|torino|\bturin\b|bologna|genova|palermo|\bbari\b|verona|\bpisa\b|siena|amalfi|costiera|\bcapri\b|toscana|tuscany|sicili|sardegn|sardinia|dolomiti|\bcomo\b|cinque terre|\brimini\b|matera|lecce|\bgarda\b/.test(t)) return TEMI.italia;
+  if (/egitt|egypt|egizi|\bcairo\b|\bgiza\b|piramid|pyramid|sfinge|sphinx|\bluxor\b|\bnilo\b|\bnile\b|assuan|aswan|\bsharm\b|hurghada|abu simbel|marsa alam/.test(t)) return TEMI.egitto;
   if (/franc|parig|paris|marsigli|marseille|\blione\b|\blyon\b|nizza|cannes|tolosa|toulouse|bordeaux|\blille\b|nantes|strasburg|strasbourg|montpellier|provenz|provence|costa azzurra|cote d'?azur|riviera francese|french riviera|normandi|bretagn|versailles|avignon|biarritz|chamonix|grenoble|saint-?tropez|antibes|\bloira\b|\bloire\b/.test(t)) return TEMI.francia;
   if (/greci|greece|atene|athen|santorin|mykon|cicladi|creta|crete|\brodi\b|rhodes|corf[uù]|salonicco|thessalonik|zante|zakynth|\bkos\b|naxos|paros|\bmilos\b|peloponnes|meteora|delfi|delphi|cefalonia|\begeo\b|greco/.test(t)) return TEMI.grecia;
   if (/londr|london|regno unito|inghilterr|england|gran bretagn|\buk\b|britann|manchester|liverpool|edimburg|edinburgh|glasgow|birmingham|\boxford\b|cambridge|bristol|\bleeds\b|yorkshire|cardiff|belfast|scozia|scotland|galles|\bwales\b|cornovagli|cornwall|tamigi|stonehenge|ingles/.test(t)) return TEMI.regnounito;
@@ -1639,7 +1641,7 @@ function temaViaggio(v) {
 // Mappa codice nazione (ISO Mapbox) -> tema. Per coprire QUALSIASI città senza
 // eccezioni: se i pattern testuali non bastano, geocodifico il luogo, ricavo la
 // nazione e applico l'artwork corrispondente (cache su v.tema).
-const PAESE_TEMA = { it: "italia", jp: "giappone", fr: "francia", gr: "grecia", gb: "regnounito", cn: "cina", us: "usa", es: "spagna", nl: "olanda", id: "indonesia", ae: "emiratiarabi" };
+const PAESE_TEMA = { it: "italia", eg: "egitto", jp: "giappone", fr: "francia", gr: "grecia", gb: "regnounito", cn: "cina", us: "usa", es: "spagna", nl: "olanda", id: "indonesia", ae: "emiratiarabi" };
 async function paeseDiLuogo(testo) {
   if (!testo || !tokenValido()) return null;
   try {
