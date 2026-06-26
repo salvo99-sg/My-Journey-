@@ -431,6 +431,9 @@
   .onb-btn { flex: 1; border: none; border-radius: 14px; padding: 14px; font-weight: 800; font-size: 14px; }
   .onb-btn.primario { background: var(--accent); color: #fff; }
   .onb-btn.ghost { background: #fff; border: 1.5px solid var(--border-soft-2); color: var(--navy); }
+  .onb-lang { position: absolute; top: calc(16px + env(safe-area-inset-top,0)); right: 16px; display: flex; gap: 4px; z-index: 3; }
+  .onb-lang button { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.28); color: #fff; font-weight: 800; font-size: 12px; padding: 6px 10px; border-radius: 10px; }
+  .onb-lang button.attivo { background: #fff; color: var(--navy); }
   /* Pannello unico in basso: maniglia + lista viaggi + strumenti */
   #dockMappa {
     position: absolute; left: 0; right: 0; bottom: 0; z-index: 7;
@@ -745,16 +748,16 @@
   <div id="cieloStelle"></div>
   <div id="stellaCadente"></div>
   <div class="splash-testi">
-    <div class="eyebrow">Diario di bordo</div>
+    <div class="eyebrow" data-i18n="splash.eyebrow">Diario di bordo</div>
     <div id="flipNome"></div>
     <div class="fc" id="fcOrologio">
-      <div class="fc-unita"><div class="fc-card" id="cardG">00</div><div class="fc-eti">Giorni</div></div>
-      <div class="fc-unita"><div class="fc-card" id="cardO">00</div><div class="fc-eti">Ore</div></div>
-      <div class="fc-unita"><div class="fc-card" id="cardM">00</div><div class="fc-eti">Minuti</div></div>
-      <div class="fc-unita"><div class="fc-card" id="cardS">00</div><div class="fc-eti">Secondi</div></div>
+      <div class="fc-unita"><div class="fc-card" id="cardG">00</div><div class="fc-eti" data-i18n="cd.days">Giorni</div></div>
+      <div class="fc-unita"><div class="fc-card" id="cardO">00</div><div class="fc-eti" data-i18n="cd.hours">Ore</div></div>
+      <div class="fc-unita"><div class="fc-card" id="cardM">00</div><div class="fc-eti" data-i18n="cd.min">Minuti</div></div>
+      <div class="fc-unita"><div class="fc-card" id="cardS">00</div><div class="fc-eti" data-i18n="cd.sec">Secondi</div></div>
     </div>
     <div class="fc-incorso nascosto" id="fcInCorso"></div>
-    <button class="btn-inizia" id="btnInizia">Inizia il viaggio</button>
+    <button class="btn-inizia" id="btnInizia" data-i18n="splash.start">Inizia il viaggio</button>
   </div>
 </div>
 
@@ -762,46 +765,47 @@
 <div class="app" id="schermataHome">
   <header>
     <button class="home-avatar" id="homeAvatar" title="Il tuo profilo" aria-label="Il tuo profilo"></button>
-    <div class="eyebrow">Agenda di viaggio</div>
-    <h1>I miei viaggi</h1>
+    <div class="eyebrow" data-i18n="home.eyebrow">Agenda di viaggio</div>
+    <h1 data-i18n="home.title">I miei viaggi</h1>
   </header>
   <main id="listaViaggi"></main>
   <div style="padding: 0 16px 16px; text-align:center">
-    <button class="btn-importa-home" id="btnImportaHome"><span class="ic" data-ic="sparkle"></span> Importa viaggio da AI</button>
+    <button class="btn-importa-home" id="btnImportaHome"><span class="ic" data-ic="sparkle"></span> <span data-i18n="home.import">Importa viaggio da AI</span></button>
   </div>
 </div>
 
 <!-- ===== ONBOARDING / PROFILO ===== -->
 <div id="onboarding" class="nascosto">
   <section class="onb-step" data-step="benv">
+    <div class="onb-lang"><button type="button" data-lang="it">IT</button><button type="button" data-lang="en">EN</button></div>
     <div class="onb-orb"><span class="ic" data-ic="globe"></span></div>
     <div class="onb-eye">My Journey</div>
-    <h1 class="onb-h1">Il tuo diario<br>di viaggio</h1>
-    <p class="onb-p">Personalizzalo in pochi secondi: bastano un paio di domande.</p>
-    <button class="onb-cta" id="onbInizia">Iniziamo</button>
+    <h1 class="onb-h1" data-i18n-html="onb.welcome">Il tuo diario<br>di viaggio</h1>
+    <p class="onb-p" data-i18n="onb.welcomeSub">Personalizzalo in pochi secondi: bastano un paio di domande.</p>
+    <button class="onb-cta" id="onbInizia" data-i18n="onb.start">Iniziamo</button>
   </section>
   <section class="onb-step nascosto" data-step="nick">
-    <div class="onb-passo">Passo 1 di 2</div>
-    <h2 class="onb-h2">Scegli il tuo nickname</h2>
+    <div class="onb-passo" data-i18n="onb.step1">Passo 1 di 2</div>
+    <h2 class="onb-h2" data-i18n="onb.nickTitle">Scegli il tuo nickname</h2>
     <div class="onb-avatar" id="onbAvatar"></div>
-    <input id="onbNick" class="onb-field" type="text" maxlength="20" autocomplete="off" placeholder="Es. Salvo" />
-    <div class="onb-lbl">Colore del pallino</div>
+    <input id="onbNick" class="onb-field" type="text" maxlength="20" autocomplete="off" placeholder="Es. Salvo" data-i18n-ph="onb.nickPh" />
+    <div class="onb-lbl" data-i18n="onb.color">Colore del pallino</div>
     <div class="onb-colori" id="onbColori"></div>
     <input id="onbFotoFile" type="file" accept="image/*" hidden />
     <div class="onb-spacer"></div>
     <div class="onb-row">
-      <button class="onb-btn ghost" id="onbSaltaNick">Salta</button>
-      <button class="onb-btn primario" id="onbAvanti">Avanti</button>
+      <button class="onb-btn ghost" id="onbSaltaNick" data-i18n="onb.skip">Salta</button>
+      <button class="onb-btn primario" id="onbAvanti" data-i18n="onb.next">Avanti</button>
     </div>
   </section>
   <section class="onb-step nascosto" data-step="base">
-    <div class="onb-passo">Passo 2 di 2</div>
-    <h2 class="onb-h2">Da dove parti?</h2>
-    <div class="onb-iconfield"><span class="ic" data-ic="pin"></span><input id="onbBase" class="onb-field nobox" type="text" autocomplete="off" placeholder="Es. Napoli, Italia" /></div>
+    <div class="onb-passo" data-i18n="onb.step2">Passo 2 di 2</div>
+    <h2 class="onb-h2" data-i18n="onb.fromWhere">Da dove parti?</h2>
+    <div class="onb-iconfield"><span class="ic" data-ic="pin"></span><input id="onbBase" class="onb-field nobox" type="text" autocomplete="off" placeholder="Es. Napoli, Italia" data-i18n-ph="onb.basePh" /></div>
     <div class="onb-spacer"></div>
     <div class="onb-row">
-      <button class="onb-btn ghost" id="onbSaltaBase">Salta</button>
-      <button class="onb-btn primario" id="onbFine">Fine</button>
+      <button class="onb-btn ghost" id="onbSaltaBase" data-i18n="onb.skip">Salta</button>
+      <button class="onb-btn primario" id="onbFine" data-i18n="onb.finish">Fine</button>
     </div>
   </section>
 </div>

@@ -151,6 +151,70 @@ const ICONE_SVG = {
 const CHIAVE = "agenda-viaggi-v2";
 const $ = (id) => document.getElementById(id);
 
+// ============ INTERNAZIONALIZZAZIONE (it / en) ============
+const STR = {
+  it: {
+    "home.eyebrow": "Agenda di viaggio", "home.title": "I miei viaggi",
+    "home.empty1": "Nessun viaggio ancora.", "home.empty2": "Crea il primo con il pulsante qui sotto!",
+    "home.import": "Importa viaggio da AI", "home.new": "+ Nuovo viaggio", "trip.addStop": "+ Aggiungi tappa",
+    "onb.welcome": "Il tuo diario<br>di viaggio", "onb.welcomeSub": "Personalizzalo in pochi secondi: bastano un paio di domande.",
+    "onb.start": "Iniziamo", "onb.step1": "Passo 1 di 2", "onb.step2": "Passo 2 di 2",
+    "onb.nickTitle": "Scegli il tuo nickname", "onb.color": "Colore del pallino",
+    "onb.skip": "Salta", "onb.next": "Avanti", "onb.finish": "Fine",
+    "onb.fromWhere": "Da dove parti?", "onb.nickPh": "Es. Salvo", "onb.basePh": "Es. Napoli, Italia",
+    "badge.corso": "In corso", "badge.programma": "In programma", "badge.bozza": "Bozza", "badge.concluso": "Concluso",
+    "badge.manca": "Manca", "date.tbd": "Date da definire",
+    "splash.eyebrow": "Diario di bordo", "splash.start": "Inizia il viaggio",
+    "splash.firstTrip": "Crea il tuo primo viaggio", "splash.diaryReady": "Il diario è pronto",
+    "splash.worldWaits": "Il mondo ti aspetta", "splash.day": "Giorno", "splash.bon": "Buon viaggio!",
+    "cd.days": "Giorni", "cd.hours": "Ore", "cd.min": "Minuti", "cd.sec": "Secondi",
+    "miss.date": "date", "miss.itinerario": "itinerario", "miss.nomi": "nomi partecipanti",
+    "lang.name": "Italiano",
+  },
+  en: {
+    "home.eyebrow": "Travel journal", "home.title": "My trips",
+    "home.empty1": "No trips yet.", "home.empty2": "Create your first one with the button below!",
+    "home.import": "Import trip from AI", "home.new": "+ New trip", "trip.addStop": "+ Add stop",
+    "onb.welcome": "Your travel<br>journal", "onb.welcomeSub": "Personalize it in seconds: just a couple of questions.",
+    "onb.start": "Let's go", "onb.step1": "Step 1 of 2", "onb.step2": "Step 2 of 2",
+    "onb.nickTitle": "Choose your nickname", "onb.color": "Dot colour",
+    "onb.skip": "Skip", "onb.next": "Next", "onb.finish": "Done",
+    "onb.fromWhere": "Where do you start from?", "onb.nickPh": "e.g. Sam", "onb.basePh": "e.g. London, UK",
+    "badge.corso": "Ongoing", "badge.programma": "Planned", "badge.bozza": "Draft", "badge.concluso": "Completed",
+    "badge.manca": "Missing", "date.tbd": "Dates to be set",
+    "splash.eyebrow": "Travel diary", "splash.start": "Start the journey",
+    "splash.firstTrip": "Create your first trip", "splash.diaryReady": "Your diary is ready",
+    "splash.worldWaits": "The world awaits", "splash.day": "Day", "splash.bon": "Have a great trip!",
+    "cd.days": "Days", "cd.hours": "Hours", "cd.min": "Minutes", "cd.sec": "Seconds",
+    "miss.date": "dates", "miss.itinerario": "itinerary", "miss.nomi": "traveller names",
+    "lang.name": "English",
+  },
+};
+function rilevaLang() {
+  try { const s = localStorage.getItem("mj-lang"); if (s === "it" || s === "en") return s; } catch {}
+  return ((navigator.language || "it").toLowerCase().startsWith("en")) ? "en" : "it";
+}
+let LANG = rilevaLang();
+function t(k, vars) {
+  let s = (STR[LANG] && STR[LANG][k]) != null ? STR[LANG][k] : (STR.it[k] != null ? STR.it[k] : k);
+  if (vars) for (const v in vars) s = s.replace(new RegExp("\\{" + v + "\\}", "g"), vars[v]);
+  return s;
+}
+// idrata gli elementi statici marcati con data-i18n / -ph / -html
+function applicaI18n(root) {
+  const r = root || document;
+  r.querySelectorAll("[data-i18n]").forEach((e) => { e.textContent = t(e.getAttribute("data-i18n")); });
+  r.querySelectorAll("[data-i18n-html]").forEach((e) => { e.innerHTML = t(e.getAttribute("data-i18n-html")); });
+  r.querySelectorAll("[data-i18n-ph]").forEach((e) => { e.setAttribute("placeholder", t(e.getAttribute("data-i18n-ph"))); });
+  try { document.documentElement.lang = LANG; } catch {}
+}
+function impostaLingua(l) {
+  LANG = (l === "en") ? "en" : "it";
+  try { localStorage.setItem("mj-lang", LANG); } catch {}
+  applicaI18n();
+  try { if (typeof renderHome === "function" && !$("schermataHome").classList.contains("nascosto")) renderHome(); } catch {}
+}
+
 // ============ TOAST E DIALOGHI INTERNI ============
 // Niente alert/confirm/prompt del browser: brutti, mostrano il dominio,
 // e iOS può sopprimerli per sempre con "Elimina finestre di dialogo".
@@ -306,16 +370,16 @@ function mancanzeViaggio(v) {
   const m = [];
   if (!v.inizio || !v.fine) m.push("date");
   if (totaleTappe(v) === 0) m.push("itinerario");
-  if (nomiMancanti(v)) m.push("nomi partecipanti");
+  if (nomiMancanti(v)) m.push("nomi");
   return m;
 }
 // Stato per il badge in home: concluso > bozza > in programma > in corso
 function statoBadge(v) {
   const oggi = oggiISO();
-  if (v.inizio && v.fine && oggi > v.fine) return { classe: "concluso", label: "Concluso", colore: "#a8a29e" };
-  if (mancanzeViaggio(v).length)            return { classe: "bozza", label: "Bozza", colore: "#DC2626" };
-  if (oggi < v.inizio)                       return { classe: "programma", label: "In programma", colore: "#EA580C" };
-  return { classe: "corso", label: "In corso", colore: "#16a34a" };
+  if (v.inizio && v.fine && oggi > v.fine) return { classe: "concluso", label: t("badge.concluso"), colore: "#a8a29e" };
+  if (mancanzeViaggio(v).length)            return { classe: "bozza", label: t("badge.bozza"), colore: "#DC2626" };
+  if (oggi < v.inizio)                       return { classe: "programma", label: t("badge.programma"), colore: "#EA580C" };
+  return { classe: "corso", label: t("badge.corso"), colore: "#16a34a" };
 }
 const FASCE = [["sunrise","Mattina"],["sun","Pomeriggio"],["moon","Sera"],["clock","Da pianificare"]];
 function fasciaDi(t) {
@@ -567,17 +631,17 @@ function renderHome() {
   $("schermataHome").classList.remove("nascosto");
   $("schermataViaggio").classList.add("nascosto");
   $("fab").classList.remove("nascosto");
-  $("fab").textContent = "+ Nuovo viaggio";
+  $("fab").textContent = t("home.new");
   const m = $("listaViaggi"); m.innerHTML = "";
   if (viaggi.length === 0) {
-    m.innerHTML = '<div class="vuoto" style="text-align:center;padding:30px 10px">Nessun viaggio ancora.<br>Crea il primo con il pulsante qui sotto! ' + ico('globe') + '</div>';
+    m.innerHTML = '<div class="vuoto" style="text-align:center;padding:30px 10px">' + esc(t("home.empty1")) + '<br>' + esc(t("home.empty2")) + ' ' + ico('globe') + '</div>';
     return;
   }
   for (const v of viaggi) {
     const sb = statoBadge(v);
     const tema = temaViaggio(v);
     const conDate = v.inizio && v.fine;
-    const quando = (conDate ? fmtData(v.inizio, true) + " → " + fmtData(v.fine, true) : "Date da definire") + " · " + v.persone + " " + ico('user');
+    const quando = (conDate ? fmtData(v.inizio, true) + " → " + fmtData(v.fine, true) : t("date.tbd")) + " · " + v.persone + " " + ico('user');
     const card = document.createElement("div"); card.className = "viaggio-card" + (tema ? " tema" : "") + (sb.classe === "bozza" ? " bozza" : "");
     if (tema) {
       card.style.setProperty("--t-accent", tema.accent);
@@ -602,7 +666,7 @@ function renderHome() {
         <button class="x">${ico('x')}</button>`;
     } else {
       const rigaQuando = sb.classe === "bozza"
-        ? `<div class="quando manca">Manca: ${mancanzeViaggio(v).join(" · ")}</div>`
+        ? `<div class="quando manca">${esc(t("badge.manca"))}: ${esc(mancanzeViaggio(v).map((x) => t("miss." + x)).join(" · "))}</div>`
         : `<div class="quando">${quando}</div>`;
       card.innerHTML = `
       <div class="info">
@@ -634,7 +698,7 @@ function apriViaggio(id) {
   corrente = viaggi.find((v) => v.id === id);
   $("schermataHome").classList.add("nascosto");
   $("schermataViaggio").classList.remove("nascosto");
-  $("fab").textContent = "+ Aggiungi tappa";
+  $("fab").textContent = t("trip.addStop");
   macroSub.viaggio = "itinerario"; macroSub.preparativi = "valigia"; // ogni apertura riparte da Itinerario
   mostraMacro("viaggio");
   renderViaggio();
@@ -1206,7 +1270,7 @@ function renderDockViaggi() {
     const sb = statoBadge(v);
     const inPlay = animazioneInCorso && mappaPlayId === v.id;
     const icoBtn = (inPlay && !viaggioInPausa) ? "pause" : "play";
-    const date = (v.inizio && v.fine) ? fmtData(v.inizio, true) + " → " + fmtData(v.fine, true) : "Date da definire";
+    const date = (v.inizio && v.fine) ? fmtData(v.inizio, true) + " → " + fmtData(v.fine, true) : t("date.tbd");
     return `<div class="dv-riga${inPlay ? " in-play" : ""}" data-id="${v.id}">
       <button class="dv-play" data-id="${v.id}" aria-label="Riproduci ${esc(v.nome)}"><span class="ic">${ICONE[icoBtn]}</span></button>
       <div class="dv-mid"><div class="dv-nome">${esc(v.nome)}</div><div class="dv-dt">${date}</div></div>
@@ -2652,7 +2716,7 @@ function aggiornaCountdown() {
     const giorno = Math.floor((new Date(oggi) - new Date(inCorso.inizio)) / 86400000) + 1;
     const totale = Math.floor((new Date(inCorso.fine) - new Date(inCorso.inizio)) / 86400000) + 1;
     nome.textContent = inCorso.nome;
-    ic.innerHTML = `Giorno ${giorno}/${totale}<small>Buon viaggio!</small>`;
+    ic.innerHTML = `${esc(t("splash.day"))} ${giorno}/${totale}<small>${esc(t("splash.bon"))}</small>`;
     oro.classList.add("nascosto"); ic.classList.remove("nascosto");
   } else if (futuri.length) {
     const v = futuri[0];
@@ -2665,8 +2729,8 @@ function aggiornaCountdown() {
     setCifra("cardS", Math.floor(diff / 1000) % 60);
     oro.classList.remove("nascosto"); ic.classList.add("nascosto");
   } else {
-    nome.innerHTML = "Il mondo ti aspetta " + ico('globe');
-    ic.innerHTML = `Crea il tuo primo viaggio<small>Il diario è pronto</small>`;
+    nome.innerHTML = esc(t("splash.worldWaits")) + " " + ico('globe');
+    ic.innerHTML = `${esc(t("splash.firstTrip"))}<small>${esc(t("splash.diaryReady"))}</small>`;
     oro.classList.add("nascosto"); ic.classList.remove("nascosto");
   }
 }
@@ -2936,4 +3000,13 @@ function onbSalva() {
   const ha = $("homeAvatar"); if (ha) ha.addEventListener("click", () => apriOnboarding("modifica"));
 })();
 
-apriDB().then(() => { renderHome(); avviaSplash(); });
+// Interruttore lingua (IT/EN) — delegato, funziona anche quando l'onboarding si riapre
+function aggiornaToggleLang() {
+  document.querySelectorAll(".onb-lang button").forEach((b) => b.classList.toggle("attivo", b.dataset.lang === LANG));
+}
+document.addEventListener("click", (e) => {
+  const b = e.target.closest && e.target.closest(".onb-lang button");
+  if (b) { impostaLingua(b.dataset.lang); aggiornaToggleLang(); }
+});
+
+apriDB().then(() => { applicaI18n(); aggiornaToggleLang(); renderHome(); avviaSplash(); });
