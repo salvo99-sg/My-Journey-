@@ -3157,3 +3157,10 @@ document.addEventListener("click", (e) => {
 
 applicaModoTema();
 apriDB().then(() => { applicaI18n(); aggiornaToggleLang(); aggiornaToggleTema(); renderHome(); avviaSplash(); });
+
+// ============ PWA: registrazione service worker ============
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").catch(function () {});
+  });
+}
