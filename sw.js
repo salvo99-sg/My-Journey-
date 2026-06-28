@@ -1,10 +1,15 @@
 // ============ My Journey — Service Worker (PWA) ============
 // Rende l'app installabile e utilizzabile offline.
-// Strategia: precache del "guscio" + cache-first per gli asset locali,
-// network-first per le navigazioni. Le risorse esterne (Mapbox, font,
-// cambio valuta) passano sempre dalla rete e non vengono memorizzate qui.
+// Strategia:
+//  - CODICE (index.html, app.js, manifest): network-first -> sempre aggiornato
+//    quando sei online, con la cache come riserva offline. Questo evita che una
+//    vecchia versione resti "incastrata" in cache dopo una pubblicazione.
+//  - ASSET statici (icone, immagini dei temi): cache-first -> veloci e offline.
+//  - Risorse di terze parti (Mapbox, font, cambio valuta): sempre dalla rete.
+// IMPORTANTE: a ogni cambio di strategia/struttura, alzare il numero di CACHE
+// (mj-vN). Il nuovo service worker cancella le cache vecchie all'attivazione.
 
-const CACHE = "mj-v1";
+const CACHE = "mj-v2";
 const CORE = [
   "./",
   "index.html",
@@ -32,6 +37,33 @@ self.addEventListener("activate", (e) => {
   );
 });
 
+// rete-prima: prova la rete, aggiorna la cache, e ripiega sulla cache se offline
+function retePrima(req, fallback) {
+  return fetch(req)
+    .then((res) => {
+      if (res && res.ok) {
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put(req, copy));
+      }
+      return res;
+    })
+    .catch(() => caches.match(req).then((r) => r || (fallback ? caches.match(fallback) : undefined)));
+}
+
+// cache-prima: serve dalla cache se c'è, altrimenti rete (e memorizza)
+function cachePrima(req) {
+  return caches.match(req).then((cached) =>
+    cached ||
+    fetch(req).then((res) => {
+      if (res && res.ok) {
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put(req, copy));
+      }
+      return res;
+    })
+  );
+}
+
 self.addEventListener("fetch", (e) => {
   const req = e.request;
   if (req.method !== "GET") return;
@@ -40,31 +72,18 @@ self.addEventListener("fetch", (e) => {
   // Risorse di terze parti: lascia gestire alla rete (no cache).
   if (url.origin !== self.location.origin) return;
 
-  // Navigazioni (apertura pagina): prima la rete, poi la cache come riserva.
+  // Navigazioni (apertura pagina): sempre l'ultima versione se online.
   if (req.mode === "navigate") {
-    e.respondWith(
-      fetch(req)
-        .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE).then((c) => c.put(req, copy));
-          return res;
-        })
-        .catch(() => caches.match(req).then((r) => r || caches.match("index.html")))
-    );
+    e.respondWith(retePrima(req, "index.html"));
     return;
   }
 
-  // Asset locali (app.js, icone, immagini dei temi): prima la cache, poi la rete.
-  e.respondWith(
-    caches.match(req).then((cached) =>
-      cached ||
-      fetch(req).then((res) => {
-        if (res && res.ok) {
-          const copy = res.clone();
-          caches.open(CACHE).then((c) => c.put(req, copy));
-        }
-        return res;
-      })
-    )
-  );
+  // Codice (js/json): network-first, così le correzioni arrivano subito.
+  if (/\.(?:js|json)$/.test(url.pathname)) {
+    e.respondWith(retePrima(req));
+    return;
+  }
+
+  // Tutto il resto (icone, immagini dei temi): cache-first.
+  e.respondWith(cachePrima(req));
 });
