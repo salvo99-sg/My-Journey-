@@ -927,25 +927,27 @@ function renderItinerario() {
     if (aperto) {
       const corpo = card.querySelector(".gcard-corpo");
       let fasciaCorrente = -1;
-      for (const t of ordina(g.tappe)) {
-        const f = fasciaDi(t);
+      // NB: la variabile del ciclo si chiama "ta" (tappa), NON "t": dentro questo
+      // blocco "t" deve restare la funzione di traduzione (vedi t(FASCE[f][1])).
+      for (const ta of ordina(g.tappe)) {
+        const f = fasciaDi(ta);
         if (f !== fasciaCorrente) {
           fasciaCorrente = f;
           const et = document.createElement("div"); et.className = "fascia";
           et.innerHTML = ico(FASCE[f][0]) + " " + t(FASCE[f][1]); corpo.appendChild(et);
         }
-        const tp = TIPI[t.tipo];
-        const orario = isTrasporto(t.tipo) && t.oraArrivo ? `${t.ora} → ${t.oraArrivo}` : t.ora;
-        const div = document.createElement("div"); div.className = "tappa" + (t.costo ? "" : " senza-costo");
+        const tp = TIPI[ta.tipo];
+        const orario = isTrasporto(ta.tipo) && ta.oraArrivo ? `${ta.ora} → ${ta.oraArrivo}` : ta.ora;
+        const div = document.createElement("div"); div.className = "tappa" + (ta.costo ? "" : " senza-costo");
         div.innerHTML = `
           <div class="barra" style="background:${tp.colore}"></div>
           <div class="corpo">
-            <div class="meta">${ico(tp.icona)} ${labelTipo(t.tipo)} · ${orario}</div>
-            <div class="titolo">${esc(t.titolo)}</div>
-            <div class="luogo">${t.luogo ? ico('pin') + " " + esc(t.luogo) : ""}</div>
+            <div class="meta">${ico(tp.icona)} ${labelTipo(ta.tipo)} · ${orario}</div>
+            <div class="titolo">${esc(ta.titolo)}</div>
+            <div class="luogo">${ta.luogo ? ico('pin') + " " + esc(ta.luogo) : ""}</div>
           </div>
-          ${t.costo ? `<div class="costo"><b>${eur(t.costo)}</b></div>` : ""}`;
-        div.addEventListener("click", () => apriModaleTappa({ giorno: g, tappa: t }));
+          ${ta.costo ? `<div class="costo"><b>${eur(ta.costo)}</b></div>` : ""}`;
+        div.addEventListener("click", () => apriModaleTappa({ giorno: g, tappa: ta }));
         corpo.appendChild(div);
       }
       const add = document.createElement("button");
@@ -1951,6 +1953,7 @@ $("tSalva").addEventListener("click", async () => {
     tappa = { id: Date.now(), ...dati };
     giornoDest.tappe.push(tappa);
   }
+  giornoAperto = giornoDest.id; // apri il giorno così la tappa appena salvata è subito visibile
   salva(); $("veloTappa").classList.remove("aperto"); renderViaggio();
   // Geocoding in background per i campi senza suggerimento scelto
   let cambiato = false;
