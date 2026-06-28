@@ -320,6 +320,9 @@ function impostaLingua(l) {
   LANG = (l === "en") ? "en" : "it";
   try { localStorage.setItem("mj-lang", LANG); } catch {}
   applicaI18n();
+  // aggiorna subito le etichette delle mappe già aperte
+  try { if (typeof mappa !== "undefined" && mappa) mappa.setConfigProperty("basemap", "language", LANG); } catch {}
+  try { if (typeof selMappa !== "undefined" && selMappa) selMappa.setConfigProperty("basemap", "language", LANG); } catch {}
   try { if (typeof renderHome === "function" && !$("schermataHome").classList.contains("nascosto")) renderHome(); } catch {}
 }
 
@@ -1479,6 +1482,7 @@ function renderMappa() {
       style: "mapbox://styles/mapbox/standard",
       config: {
         basemap: {
+          language: LANG, // etichette della mappa nella lingua dell'app (toggle IT/EN)
           lightPreset: lucePerOra(),
           show3dObjects: true,
           show3dBuildings: true,
@@ -1977,7 +1981,7 @@ let selMappa = null, selCoord = null, selDestinazione = null, selTimerNome = nul
 async function nomeDaCoord(lng, lat) {
   if (!tokenValido()) return "";
   try {
-    const r = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${MAPBOX_TOKEN}&limit=1`);
+    const r = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${MAPBOX_TOKEN}&limit=1&language=${LANG}`);
     const j = await r.json();
     if (j.features && j.features[0]) return j.features[0].place_name || "";
   } catch {}
@@ -2008,6 +2012,7 @@ function apriSelettoreMappa(destinazione) {
       selMappa = new mapboxgl.Map({
         container: "selMappaCanvas",
         style: "mapbox://styles/mapbox/standard",
+        config: { basemap: { language: LANG } }, // etichette nella lingua dell'app
         center: centro, zoom: zoom,
       });
       // mentre muovo la mappa, la puntina "salta" un po' e azzero il nome
