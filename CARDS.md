@@ -1,7 +1,11 @@
 # 🎴 Card dei temi — lista & avanzamento
 
-Riferimento delle **19 card** da generare con il prompt-madre (input = `DESTINATION_OR_TYPE`).
+Riferimento delle **23 card** da generare con il prompt-madre (input = `DESTINATION_OR_TYPE`).
 Aggiorniamo Stato e metadati man mano che le creiamo.
+
+**Avanzamento: 13 / 23** (57%)
+`█████████████░░░░░░░░░░`
+Nazioni 12/12 ✅ · Tipologie 1/10 · Default 0/1
 
 Legenda stato: ✅ fatto · 🟡 in lavorazione · ⬜ da fare
 
@@ -26,26 +30,28 @@ Legenda stato: ✅ fatto · 🟡 in lavorazione · ⬜ da fare
 
 | # | Input | Stato | Stile | Ora | Accento | Elementi |
 |---|-------|-------|-------|-----|---------|----------|
-| 9  | `Mare / Costa` | ⬜ | — | — | — | — |
-| 10 | `Tropici / Spiaggia` | ✅ | foto (statica) | giorno | `#0FA3B1` | Spiaggia, palme, acqua turchese, pesci tropicali |
-| 11 | `Montagna / Alpino` | ⬜ | — | — | — | — |
-| 12 | `Deserto` | ⬜ | — | — | — | — |
-| 13 | `Nordico / Aurora` | ⬜ | — | — | — | — |
-| 14 | `Metropoli / Notte` | ⬜ | — | — | — | — |
-| 15 | `Città storica` | ⬜ | — | — | — | — |
-| 16 | `Campagna / Vigne` | ⬜ | — | — | — | — |
-| 17 | `Foresta / Natura` | ⬜ | — | — | — | — |
-| 18 | `Safari` | ⬜ | — | — | — | — |
+| 13 | `Mare / Costa` | ⬜ | — | — | — | — |
+| 14 | `Tropici / Spiaggia` | ✅ | foto (statica) | giorno | `#0FA3B1` | Spiaggia, palme, acqua turchese, pesci tropicali |
+| 15 | `Montagna / Alpino` | ⬜ | — | — | — | — |
+| 16 | `Deserto` | ⬜ | — | — | — | — |
+| 17 | `Nordico / Aurora` | ⬜ | — | — | — | — |
+| 18 | `Metropoli / Notte` | ⬜ | — | — | — | — |
+| 19 | `Città storica` | ⬜ | — | — | — | — |
+| 20 | `Campagna / Vigne` | ⬜ | — | — | — | — |
+| 21 | `Foresta / Natura` | ⬜ | — | — | — | — |
+| 22 | `Safari` | ⬜ | — | — | — | — |
 
 ## Default
 
 | # | Input | Stato | Stile | Ora | Accento | Elementi |
 |---|-------|-------|-------|-----|---------|----------|
-| 19 | `Avventura / Mondo` | ⬜ | — | — | — | — |
+| 23 | `Avventura / Mondo` | ⬜ | — | — | — | — |
 
 ---
 
-**Avanzamento: 13 / 23** · Nazioni: 12/12 ✅ · Tipologie: 1/10 · Default: 0/1
+**Avanzamento: 13 / 23** (57%) · Nazioni: 12/12 ✅ · Tipologie: 1/10 · Default: 0/1
+
+`█████████████░░░░░░░░░░`
 
 ### Come si aggiunge una card
 1. Genera l'immagine col prompt-madre (input = una voce qui sopra).

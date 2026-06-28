@@ -1703,7 +1703,7 @@ function fermaRiproduzione() {
 }
 
 // ===== Ricerca luoghi (geocoding Mapbox) =====
-async function cercaLuoghi(testo, limite, assoluto) {
+async function cercaLuoghi(testo, limite, assoluto, paese) {
   if (!tokenValido() || !testo) return [];
   try {
     // La prossimità ("cerca vicino a...") aiuta quando aggiungi una tappa a mano,
@@ -1718,7 +1718,11 @@ async function cercaLuoghi(testo, limite, assoluto) {
     // chiedo più risultati (così posso scegliere il migliore) e do priorità ai
     // punti d'interesse famosi (poi) prima degli indirizzi generici.
     const quanti = assoluto ? 5 : (limite || 5);
-    const r = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(testo)}.json?access_token=${MAPBOX_TOKEN}&limit=${quanti}&types=poi,place,locality,address,region${prossimita}`);
+    // Vincolo di nazione: se conosco il paese della tappa restringo la ricerca a
+    // QUEL paese (country=xx). È la difesa più forte contro i salti di continente:
+    // Mapbox non potrà mai rispondere con un omonimo dall'altra parte del mondo.
+    const filtroPaese = paese ? "&country=" + encodeURIComponent(String(paese).toLowerCase()) : "";
+    const r = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(testo)}.json?access_token=${MAPBOX_TOKEN}&limit=${quanti}&language=it&types=poi,place,locality,address,region${prossimita}${filtroPaese}`);
     const j = await r.json();
     return j.features || [];
   } catch { return []; }
@@ -2681,28 +2685,105 @@ function soloCitta(luogo) {
   return parti.slice(1).join(", ");
 }
 
+// Nomi di nazione (italiano + inglese/locale) -> codice ISO, per vincolare il
+// geocoding al paese giusto SENZA chiamate extra. Copre le mete più comuni; per
+// le altre si ripiega sul geocoding (paeseDiLuogo). L'IA scrive il luogo come
+// "Nome, Città, Nazione": l'ultima virgola è quasi sempre la nazione.
+const NAZIONI_ISO = {
+  "italia": "it", "italy": "it",
+  "francia": "fr", "france": "fr",
+  "spagna": "es", "spain": "es", "espana": "es",
+  "germania": "de", "germany": "de", "deutschland": "de",
+  "regno unito": "gb", "gran bretagna": "gb", "inghilterra": "gb", "uk": "gb", "united kingdom": "gb", "england": "gb", "scozia": "gb", "scotland": "gb",
+  "irlanda": "ie", "ireland": "ie",
+  "portogallo": "pt", "portugal": "pt",
+  "olanda": "nl", "paesi bassi": "nl", "netherlands": "nl", "holland": "nl",
+  "belgio": "be", "belgium": "be",
+  "svizzera": "ch", "switzerland": "ch",
+  "austria": "at",
+  "grecia": "gr", "greece": "gr",
+  "croazia": "hr", "croatia": "hr",
+  "slovenia": "si", "albania": "al",
+  "norvegia": "no", "norway": "no",
+  "svezia": "se", "sweden": "se",
+  "danimarca": "dk", "denmark": "dk",
+  "finlandia": "fi", "finland": "fi",
+  "islanda": "is", "iceland": "is",
+  "polonia": "pl", "poland": "pl",
+  "repubblica ceca": "cz", "cechia": "cz", "czech republic": "cz", "czechia": "cz",
+  "ungheria": "hu", "hungary": "hu",
+  "romania": "ro", "bulgaria": "bg",
+  "russia": "ru",
+  "turchia": "tr", "turkey": "tr", "turkiye": "tr",
+  "stati uniti": "us", "usa": "us", "united states": "us", "america": "us",
+  "canada": "ca",
+  "messico": "mx", "mexico": "mx",
+  "brasile": "br", "brazil": "br",
+  "argentina": "ar", "cile": "cl", "chile": "cl", "peru": "pe", "colombia": "co",
+  "giappone": "jp", "japan": "jp",
+  "cina": "cn", "china": "cn",
+  "corea del sud": "kr", "corea": "kr", "south korea": "kr",
+  "india": "in",
+  "thailandia": "th", "thailand": "th",
+  "vietnam": "vn",
+  "indonesia": "id", "bali": "id",
+  "filippine": "ph", "philippines": "ph",
+  "malesia": "my", "malaysia": "my",
+  "singapore": "sg",
+  "emirati arabi": "ae", "emirati arabi uniti": "ae", "uae": "ae", "united arab emirates": "ae", "dubai": "ae",
+  "qatar": "qa", "oman": "om", "giordania": "jo", "jordan": "jo", "israele": "il", "israel": "il",
+  "egitto": "eg", "egypt": "eg",
+  "marocco": "ma", "morocco": "ma",
+  "tunisia": "tn",
+  "sudafrica": "za", "south africa": "za",
+  "kenya": "ke", "tanzania": "tz",
+  "australia": "au",
+  "nuova zelanda": "nz", "new zealand": "nz",
+  "maldive": "mv", "maldives": "mv"
+};
+function codicePaeseNome(nome) {
+  const n = String(nome || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+  return NAZIONI_ISO[n] || "";
+}
+
 async function geocodificaViaggio(v) {
   if (!tokenValido()) return;
   let cambiato = false;
+  // Per ogni tappa ricavo la NAZIONE (l'ultima parte del luogo) e ci restringo la
+  // ricerca: niente più punti finiti nel continente sbagliato. La cache evita di
+  // ri-dedurre la stessa nazione decine di volte.
+  const cachePaese = new Map();
+  async function paesePerLuogo(luogo) {
+    const parti = String(luogo).split(",").map((x) => x.trim()).filter(Boolean);
+    if (!parti.length) return "";
+    const coda = parti[parti.length - 1];
+    const diretto = codicePaeseNome(coda);          // nazione nota: zero chiamate
+    if (diretto) return diretto;
+    if (cachePaese.has(coda)) return cachePaese.get(coda);
+    const code = (await paeseDiLuogo(luogo)) || ""; // sconosciuta: la deduco una volta
+    cachePaese.set(coda, code);
+    return code;
+  }
   for (const g of v.giorni) for (const t of g.tappe) {
     if (!t.luogo || t.coord) continue;
+    const cc = await paesePerLuogo(t.luogo);
     let scelto = null;
     // RISTORANTI e HOTEL: il nome del locale spesso non è mappato o inganna la mappa
     // (es. "Ouzeri To Kyma" -> Mapbox aggancia "Kymi"). Cerchiamo direttamente la CITTÀ,
     // che esiste sempre nel database. Per il ricordo basta sapere in che città eri.
     if (t.tipo === "ristorante" || t.tipo === "hotel") {
       const citta = soloCitta(t.luogo);
-      const r = await cercaLuoghi(citta, 5, true);
+      const r = await cercaLuoghi(citta, 5, true, cc);
       scelto = miglioreRisultato(citta, r);
     } else {
       // ATTIVITÀ (monumenti, spiagge, parchi): il nome è affidabile, cerco il luogo preciso.
-      const r = await cercaLuoghi(t.luogo, 5, true);
+      const r = await cercaLuoghi(t.luogo, 5, true, cc);
       scelto = miglioreRisultato(t.luogo, r);
       // rete di sicurezza: se il luogo preciso non si trova, ripiego sulla città
       if (!scelto) {
         const citta = soloCitta(t.luogo);
         if (citta && citta !== t.luogo) {
-          const r2 = await cercaLuoghi(citta, 5, true);
+          const r2 = await cercaLuoghi(citta, 5, true, cc);
           scelto = miglioreRisultato(citta, r2);
         }
       }
