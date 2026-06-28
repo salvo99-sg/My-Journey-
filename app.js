@@ -3247,4 +3247,12 @@ if ("serviceWorker" in navigator) {
   window.addEventListener("load", function () {
     navigator.serviceWorker.register("sw.js").catch(function () {});
   });
+  // Quando un nuovo service worker prende il controllo, ricarico una sola volta
+  // così l'app usa subito il codice aggiornato (niente versioni "incastrate").
+  var swRicaricato = false;
+  navigator.serviceWorker.addEventListener("controllerchange", function () {
+    if (swRicaricato) return;
+    swRicaricato = true;
+    window.location.reload();
+  });
 }
