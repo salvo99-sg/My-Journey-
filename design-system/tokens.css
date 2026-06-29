@@ -1,7 +1,18 @@
 /* ===========================================================
    FILE: tokens.css
    PRODUCT: My Journey
-   VERSION: 1.0
+   VERSION: 1.1
+   ===========================================================
+   FONTE UNICA DI VERITÀ — RIPARTIZIONE (decisione 1A):
+   Per evitare duplicazioni/collisioni, ogni dominio ha UN solo file:
+     - spacing  (--space-*, grid, page, padding...) -> spacing.css
+     - motion   (--motion-*, --ease-*, --transition-*) -> motion.css
+     - tipografia (--fs-*, --fw-*, --tracking-*, --font-*) -> typography.css
+     - colori   (--color-*, --status-*, --trip-*...) -> colors.css
+   Questo file (tokens.css) tiene SOLO i token strutturali non coperti
+   dai precedenti: safe-area, breakpoints, radius, icone, dimensioni
+   componenti, z-index, blur, opacity, shadows, border, hero, timeline
+   (misure), map, sheet, modal, badge, chip, avatar, ratio.
    =========================================================== */
 
 :root {
@@ -25,32 +36,7 @@
 --bp-tablet:768px;
 --bp-desktop:1200px;
 
-/* ===========================================================
-   SPACING
-   =========================================================== */
-
---space-0:0;
---space-2:2px;
---space-4:4px;
---space-6:6px;
---space-8:8px;
---space-10:10px;
---space-12:12px;
---space-14:14px;
---space-16:16px;
---space-18:18px;
---space-20:20px;
---space-24:24px;
---space-28:28px;
---space-32:32px;
---space-36:36px;
---space-40:40px;
---space-48:48px;
---space-56:56px;
---space-64:64px;
---space-72:72px;
---space-80:80px;
---space-96:96px;
+/* SPACING -> spostato in spacing.css (fonte unica) */
 
 /* ===========================================================
    BORDER RADIUS
@@ -184,45 +170,7 @@
 --border:1.5px;
 --border-thick:2px;
 
-/* ===========================================================
-   MOTION
-   =========================================================== */
-
---duration-instant:80ms;
---duration-fast:120ms;
---duration-normal:220ms;
---duration-medium:340ms;
---duration-slow:650ms;
---duration-hero:900ms;
---duration-map:1200ms;
-
-/* ===========================================================
-   EASING
-   =========================================================== */
-
---ease-standard:cubic-bezier(.22,.61,.36,1);
-
---ease-enter:cubic-bezier(.18,.89,.32,1.15);
-
---ease-exit:cubic-bezier(.55,0,.1,1);
-
---ease-linear:linear;
-
-/* ===========================================================
-   TRANSITIONS
-   =========================================================== */
-
---transition-fast:
-all var(--duration-fast)
-var(--ease-standard);
-
---transition:
-all var(--duration-normal)
-var(--ease-standard);
-
---transition-slow:
-all var(--duration-medium)
-var(--ease-standard);
+/* MOTION / EASING / TRANSITIONS -> spostati in motion.css (fonte unica) */
 
 /* ===========================================================
    GRID
@@ -234,7 +182,7 @@ var(--ease-standard);
 
 --page-gap:24px;
 
---grid-gap:16px;
+/* (--grid-gap -> definito in spacing.css) */
 
 /* ===========================================================
    HERO
@@ -247,12 +195,12 @@ var(--ease-standard);
 --hero-max:500px;
 
 /* ===========================================================
-   TIMELINE
+   TIMELINE (solo misure; i colori sono in colors.css)
    =========================================================== */
 
---timeline-line:2px;
+--timeline-line-width:2px;
 
---timeline-node:14px;
+--timeline-node-size:14px;
 
 /* ===========================================================
    MAP
@@ -318,61 +266,7 @@ var(--ease-standard);
 
 --ratio-ticket:16/7;
 
-/* ===========================================================
-   TYPOGRAPHY SCALE
-   =========================================================== */
-
---font-display-xl:56px;
-
---font-display:48px;
-
---font-hero:40px;
-
---font-h1:34px;
-
---font-h2:28px;
-
---font-h3:24px;
-
---font-title:20px;
-
---font-body-lg:18px;
-
---font-body:16px;
-
---font-small:14px;
-
---font-caption:12px;
-
---font-micro:11px;
-
-/* ===========================================================
-   FONT WEIGHT
-   =========================================================== */
-
---weight-light:300;
-
---weight-regular:400;
-
---weight-medium:500;
-
---weight-semibold:600;
-
---weight-bold:700;
-
---weight-black:800;
-
-/* ===========================================================
-   LETTER SPACING
-   =========================================================== */
-
---tracking-tight:-.03em;
-
---tracking-normal:0;
-
---tracking-wide:.04em;
-
---tracking-xl:.08em;
+/* TYPOGRAPHY SCALE / FONT WEIGHT / LETTER SPACING -> typography.css (fonte unica) */
 
 }
 
