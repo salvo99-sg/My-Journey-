@@ -404,3 +404,69 @@ BADGES
 --trip-gradient-end:#F7E5E5;
 
 }
+
+/* United Kingdom */
+
+[data-trip-theme="uk"]{
+
+--trip-accent:#D9893B;
+--trip-accent-soft:#FAF1E7;
+--trip-gradient-start:#FEFBF8;
+--trip-gradient-end:#F9EBDE;
+
+}
+
+/* Spain */
+
+[data-trip-theme="spain"]{
+
+--trip-accent:#D2552E;
+--trip-accent-soft:#FAEBE6;
+--trip-gradient-start:#FDF9F8;
+--trip-gradient-end:#F7E2DB;
+
+}
+
+/* China */
+
+[data-trip-theme="china"]{
+
+--trip-accent:#C0463C;
+--trip-accent-soft:#F7E9E8;
+--trip-gradient-start:#FDF9F8;
+--trip-gradient-end:#F4E0DE;
+
+}
+
+/* Netherlands */
+
+[data-trip-theme="netherlands"]{
+
+--trip-accent:#E0A93B;
+--trip-accent-soft:#FBF5E7;
+--trip-gradient-start:#FEFCF8;
+--trip-gradient-end:#FAF0DE;
+
+}
+
+/* Indonesia */
+
+[data-trip-theme="indonesia"]{
+
+--trip-accent:#2E8F86;
+--trip-accent-soft:#E6F2F0;
+--trip-gradient-start:#F8FBFB;
+--trip-gradient-end:#DBECEA;
+
+}
+
+/* United Arab Emirates */
+
+[data-trip-theme="uae"]{
+
+--trip-accent:#D2A23C;
+--trip-accent-soft:#FAF4E8;
+--trip-gradient-start:#FDFCF8;
+--trip-gradient-end:#F7EFDE;
+
+}
