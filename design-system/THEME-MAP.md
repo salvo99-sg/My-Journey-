@@ -21,32 +21,30 @@ Mappatura tra i temi-destinazione **attuali dell'app** (chiavi italiane, oggetto
 | `egitto` | `#D99A3C` | `#A8721F` | `egypt` | `#C59B37` | ✅ presente nel DS |
 | `tropici` | `#0FA3B1` | `#0B7C88` | `tropical` | `#22B6A8` | ✅ presente nel DS |
 | `usa` | `#2E8BC0` | `#1F6A94` | `usa` | `#B44A46` | ✅ presente nel DS |
-| `regnounito` | `#D9893B` | `#B26E26` | `uk` *(proposto)* | — | 🟠 **manca nel DS** |
-| `spagna` | `#D2552E` | `#AE3F1F` | `spain` *(proposto)* | — | 🟠 **manca nel DS** |
-| `cina` | `#C0463C` | `#9C342C` | `china` *(proposto)* | — | 🟠 **manca nel DS** |
-| `olanda` | `#E0A93B` | `#BD8623` | `netherlands` *(proposto)* | — | 🟠 **manca nel DS** |
-| `indonesia` | `#2E8F86` | `#1F6A63` | `indonesia` *(proposto)* | — | 🟠 **manca nel DS** |
-| `emiratiarabi` | `#D2A23C` | `#B07F22` | `uae` *(proposto)* | — | 🟠 **manca nel DS** |
+| `regnounito` | `#D9893B` | `#B26E26` | `uk` | `#D9893B` | ✅ aggiunto al DS |
+| `spagna` | `#D2552E` | `#AE3F1F` | `spain` | `#D2552E` | ✅ aggiunto al DS |
+| `cina` | `#C0463C` | `#9C342C` | `china` | `#C0463C` | ✅ aggiunto al DS |
+| `olanda` | `#E0A93B` | `#BD8623` | `netherlands` | `#E0A93B` | ✅ aggiunto al DS |
+| `indonesia` | `#2E8F86` | `#1F6A63` | `indonesia` | `#2E8F86` | ✅ aggiunto al DS |
+| `emiratiarabi` | `#D2A23C` | `#B07F22` | `uae` | `#D2A23C` | ✅ aggiunto al DS |
 
-**Extra solo nel DS (senza artwork/tema nell'app):** `iceland` (`#5D8FCF`) — 🔵 nessun corrispettivo lato app.
+**Extra solo nel DS (senza artwork/tema nell'app):** `iceland` (`#5D8FCF`) — 🔵 **mantenuto** per un tema futuro.
 
-Sintesi: **7 mappabili subito**, **6 da aggiungere al DS**, **1 in più nel DS** (iceland).
+Sintesi: **13 temi app tutti mappati e presenti nel DS** + `iceland` (extra, mantenuto).
 
 ---
 
-## 2. Da decidere (non agisco da solo)
+## 2. Decisioni prese (chiuse)
 
-1. **6 temi mancanti nel DS** (`uk`, `spain`, `china`, `netherlands`, `indonesia`, `uae`):
-   vanno aggiunti a `colors.css` come blocchi `[data-trip-theme="…"]` completi
-   (`--trip-accent`, `--trip-accent-soft`, `--trip-gradient-start`, `--trip-gradient-end`).
-   In tabella ho riportato gli **accenti attuali dell'app** come **seme di riferimento**:
-   non li trascrivo nel DS di mia iniziativa (sarebbe "creare colori nel DS").
-   → Mi confermi le **chiavi EN** proposte e se devo portare io quei valori nel DS,
-   oppure li fornisce il designer (con soft + gradient).
-2. **`iceland`**: lo teniamo nel DS per un futuro tema, o lo rimuoviamo?
-3. **Cambio di palette all'attivazione**: gli accenti DS **differiscono** da quelli
-   attuali (es. `giappone` `#E0566A` → `japan` `#C94C63`). Quando passeremo al DS,
-   le tinte cambieranno leggermente (il DS diventa la fonte di verità). Confermi che va bene?
+1. ✅ **6 temi mancanti** (`uk`, `spain`, `china`, `netherlands`, `indonesia`, `uae`)
+   **aggiunti a `colors.css`**: `--trip-accent` = accento attuale dell'app;
+   `--trip-accent-soft` / `--trip-gradient-start` / `--trip-gradient-end` generati
+   con le **stesse frazioni di tinta** degli altri temi DS (coerenza), cioè
+   12% / 3.5% / 17% di accento mescolato nel bianco.
+2. ✅ **`iceland` mantenuto** per un tema futuro.
+3. ✅ **Cambio palette confermato**: all'attivazione del DS gli accenti diventano
+   quelli del DS (per i 7 già presenti cambiano leggermente; per i 6 aggiunti
+   coincidono con gli attuali dell'app).
 
 ---
 
@@ -72,11 +70,11 @@ export const THEME_KEY_MAP = {
   egitto: "egypt",
   tropici: "tropical",
   usa: "usa",
-  regnounito: "uk",        // DS da creare
-  spagna: "spain",         // DS da creare
-  cina: "china",           // DS da creare
-  olanda: "netherlands",   // DS da creare
-  indonesia: "indonesia",  // DS da creare
-  emiratiarabi: "uae",     // DS da creare
+  regnounito: "uk",
+  spagna: "spain",
+  cina: "china",
+  olanda: "netherlands",
+  indonesia: "indonesia",
+  emiratiarabi: "uae",
 };
 ```
