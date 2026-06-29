@@ -40,7 +40,7 @@ padding:
 
 calc(env(safe-area-inset-bottom) + 10px);
 
-background:var(--glass-bg);
+background:var(--glass-nav);
 
 backdrop-filter:blur(28px);
 
@@ -48,7 +48,7 @@ backdrop-filter:blur(28px);
 
 border-top:1px solid var(--color-border);
 
-box-shadow:0 -8px 32px rgba(0,0,0,.06);
+box-shadow:var(--nav-shadow);
 
 z-index:var(--z-navigation);
 
@@ -328,23 +328,8 @@ background:var(--trip-accent);
 
 }
 
-/*======================================================================
-DARK MODE
-======================================================================*/
-
-[data-theme="dark"] .bottom-nav{
-
-background:rgba(24,27,34,.88);
-
-box-shadow:0 -10px 34px rgba(0,0,0,.30);
-
-}
-
-[data-theme="dark"] .bottom-nav__item:hover{
-
-background:var(--color-surface-hover);
-
-}
+/* DARK MODE: gestito dai token --glass-nav e --nav-shadow (flip automatico, P3.3).
+   L'hover usa --color-surface-hover (gia' theme-aware). */
 
 /*======================================================================
 TABLET

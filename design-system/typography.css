@@ -380,29 +380,8 @@ FONT UTILITIES
 
 .text-error{color:var(--color-error);}
 
-/*==========================================================
-SELECTION
-==========================================================*/
-
-::selection{
-
-background:var(--color-primary);
-
-color:#fff;
-
-}
-
-/*==========================================================
-FOCUS
-==========================================================*/
-
-:focus-visible{
-
-outline:2px solid var(--color-primary);
-
-outline-offset:3px;
-
-}
+/* ::selection e :focus-visible -> definiti in design-system.css
+   (fonte unica globale, decisione P2.2) */
 
 /*==========================================================
 RESPONSIVE

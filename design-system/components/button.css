@@ -437,7 +437,7 @@ to top,
 
 var(--color-bg),
 
-rgba(252,248,242,.92),
+var(--scrim-bg),
 
 transparent
 
@@ -451,27 +451,7 @@ z-index:40;
 
 }
 
-/*======================================================================
-DARK MODE FIX
-======================================================================*/
-
-[data-theme="dark"] .bottom-actions{
-
-background:
-
-linear-gradient(
-
-to top,
-
-var(--color-bg),
-
-rgba(16,18,22,.88),
-
-transparent
-
-);
-
-}
+/* DARK MODE: gestito dal token --scrim-bg (flip automatico, P3.3). */
 
 /*======================================================================
 ACCESSIBILITY
