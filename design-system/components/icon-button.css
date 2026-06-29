@@ -201,7 +201,7 @@ MAP
 
 .icon-btn--map{
 
-background:rgba(255,255,255,.94);
+background:var(--glass-strong);
 
 backdrop-filter:blur(18px);
 
@@ -211,11 +211,7 @@ box-shadow:var(--shadow-md);
 
 }
 
-[data-theme="dark"] .icon-btn--map{
-
-background:rgba(24,27,34,.90);
-
-}
+/* DARK MODE: gestito dal token --glass-strong (flip automatico, P3.3). */
 
 /*======================================================================
 NOTIFICATION DOT

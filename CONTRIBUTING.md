@@ -503,7 +503,9 @@ Mai rinominare file del Design System senza aggiornare tutta la documentazione.
 Deroghe approvate dal proprietario (registrate qui per tracciabilità):
 
 - **Mapbox GL JS**: libreria mappa attuale del prodotto (vedi STACK).
-- **`!important`** consentito **solo** nel blocco `@media (prefers-reduced-motion: reduce)` di `motion.css` (accessibilità).
+- **`!important`** consentito **solo** in:
+  - blocco `@media (prefers-reduced-motion: reduce)` di `motion.css` (accessibilità);
+  - utility `.hidden { display: none !important }` in `design-system.css` (utility di nascondimento prioritaria).
 
 ---
 

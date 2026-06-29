@@ -232,67 +232,8 @@ gap:var(--space-8);
 
 }
 
-/*==========================================================
-PAGE CONTAINER
-==========================================================*/
-
-.page{
-
-width:100%;
-
-max-width:480px;
-
-margin-inline:auto;
-
-padding-inline:var(--page-padding-inline);
-
-padding-top:var(--page-padding-top);
-
-padding-bottom:var(--page-padding-bottom);
-
-}
-
-/*==========================================================
-SECTION
-==========================================================*/
-
-.section{
-
-margin-bottom:var(--section-gap);
-
-}
-
-/*==========================================================
-GRID
-==========================================================*/
-
-.grid{
-
-display:grid;
-
-gap:var(--grid-gap);
-
-}
-
-.grid-2{
-
-display:grid;
-
-grid-template-columns:repeat(2,minmax(0,1fr));
-
-gap:var(--grid-gap);
-
-}
-
-.grid-3{
-
-display:grid;
-
-grid-template-columns:repeat(3,minmax(0,1fr));
-
-gap:var(--grid-gap);
-
-}
+/* .page / .section / .grid / .grid-2 / .grid-3
+   -> definiti in design-system.css (fonte unica layout, decisione P2.1) */
 
 /*==========================================================
 SPACING UTILITIES
@@ -326,30 +267,6 @@ SPACING UTILITIES
 .p-16{padding:var(--space-16);}
 .p-24{padding:var(--space-24);}
 
-/*==========================================================
-RESPONSIVE
-==========================================================*/
-
-@media (min-width:768px){
-
-.page{
-
-max-width:720px;
-
-padding-inline:40px;
-
-}
-
-}
-
-@media (min-width:1200px){
-
-.page{
-
-max-width:1180px;
-
-padding-inline:48px;
-
-}
-
-}
+/* RESPONSIVE .page (max-width 720/1180) rimosso con .page (P2.1).
+   NB (segnalato): l'allargamento responsive tablet/desktop va ri-applicato
+   in design-system.css (.app/.page); design-system.css ha solo max-width:480. */
