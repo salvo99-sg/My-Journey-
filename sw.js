@@ -9,7 +9,7 @@
 // IMPORTANTE: a ogni cambio di strategia/struttura, alzare il numero di CACHE
 // (mj-vN). Il nuovo service worker cancella le cache vecchie all'attivazione.
 
-const CACHE = "mj-v5";
+const CACHE = "mj-v6";
 const CORE = [
   "./",
   "index.html",
@@ -78,8 +78,9 @@ self.addEventListener("fetch", (e) => {
     return;
   }
 
-  // Codice (js/json): network-first, così le correzioni arrivano subito.
-  if (/\.(?:js|json)$/.test(url.pathname)) {
+  // Codice e Design System (js/json/css): network-first, così gli aggiornamenti
+  // arrivano subito (i file del DS verranno consegnati in modo progressivo).
+  if (/\.(?:js|json|css)$/.test(url.pathname)) {
     e.respondWith(retePrima(req));
     return;
   }
