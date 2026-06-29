@@ -43,7 +43,7 @@ Consentito:
 - Service Worker
 - IndexedDB
 - LocalStorage
-- MapLibre / Leaflet (solo moduli già presenti)
+- Mapbox GL JS / MapLibre / Leaflet (libreria mappa già presente)
 - Canvas API
 - SVG
 
@@ -495,6 +495,15 @@ Mai fare commit direttamente su main.
 Mai rimuovere commenti architetturali.
 
 Mai rinominare file del Design System senza aggiornare tutta la documentazione.
+
+---
+
+## ECCEZIONI AUTORIZZATE
+
+Deroghe approvate dal proprietario (registrate qui per tracciabilità):
+
+- **Mapbox GL JS**: libreria mappa attuale del prodotto (vedi STACK).
+- **`!important`** consentito **solo** nel blocco `@media (prefers-reduced-motion: reduce)` di `motion.css` (accessibilità).
 
 ---
 
