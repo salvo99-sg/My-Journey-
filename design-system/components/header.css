@@ -1,0 +1,468 @@
+/*======================================================================
+PRODUCT.......: My Journey
+MODULE........: Components
+FILE..........: components/header.css
+VERSION.......: 1.0.0
+STATUS........: Production Ready
+COMPATIBILITY.: HTML5 / CSS3 / Vanilla JS / PWA
+======================================================================*/
+
+/*======================================================================
+EDITORIAL HEADER
+Premium "Travel Magazine" Hero
+======================================================================*/
+
+/*======================================================================
+ROOT
+======================================================================*/
+
+.header{
+
+position:relative;
+
+overflow:hidden;
+
+border-radius:0 0 var(--radius-xl) var(--radius-xl);
+
+background:var(--color-surface);
+
+isolation:isolate;
+
+}
+
+/*======================================================================
+BACKGROUND ARTWORK
+======================================================================*/
+
+.header__artwork{
+
+position:absolute;
+
+inset:0;
+
+z-index:0;
+
+overflow:hidden;
+
+pointer-events:none;
+
+}
+
+.header__artwork img,
+.header__artwork picture{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+transform:scale(1.02);
+
+transition:
+
+transform var(--motion-hero) var(--ease-soft),
+
+filter var(--motion-normal) var(--ease-standard);
+
+}
+
+/*======================================================================
+EDITORIAL OVERLAY
+======================================================================*/
+
+.header__overlay{
+
+position:absolute;
+
+inset:0;
+
+z-index:1;
+
+background:
+
+linear-gradient(
+180deg,
+rgba(0,0,0,.08) 0%,
+rgba(0,0,0,.18) 35%,
+rgba(0,0,0,.48) 100%
+);
+
+}
+
+/*======================================================================
+CONTENT
+======================================================================*/
+
+.header__content{
+
+position:relative;
+
+z-index:2;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:flex-end;
+
+min-height:340px;
+
+padding:
+
+calc(env(safe-area-inset-top) + 82px)
+
+24px
+
+28px;
+
+color:#fff;
+
+}
+
+/*======================================================================
+COUNTRY
+======================================================================*/
+
+.header__country{
+
+display:inline-flex;
+
+align-items:center;
+
+gap:8px;
+
+margin-bottom:10px;
+
+font-size:12px;
+
+font-weight:700;
+
+letter-spacing:.14em;
+
+text-transform:uppercase;
+
+opacity:.92;
+
+}
+
+.header__country::before{
+
+content:"";
+
+width:22px;
+
+height:1px;
+
+background:rgba(255,255,255,.75);
+
+}
+
+/*======================================================================
+TITLE
+======================================================================*/
+
+.header__title{
+
+font-family:var(--font-editorial);
+
+font-size:clamp(2.3rem,6vw,3.2rem);
+
+font-weight:400;
+
+line-height:1.05;
+
+letter-spacing:-.03em;
+
+text-wrap:balance;
+
+max-width:10ch;
+
+text-shadow:
+
+0 2px 10px rgba(0,0,0,.28);
+
+}
+
+/*======================================================================
+SUBTITLE
+======================================================================*/
+
+.header__subtitle{
+
+margin-top:14px;
+
+max-width:32ch;
+
+font-size:15px;
+
+line-height:1.65;
+
+color:rgba(255,255,255,.92);
+
+text-shadow:
+
+0 1px 4px rgba(0,0,0,.24);
+
+}
+
+/*======================================================================
+TRIP META
+======================================================================*/
+
+.header__meta{
+
+display:flex;
+
+flex-wrap:wrap;
+
+gap:10px;
+
+margin-top:22px;
+
+}
+
+.header__pill{
+
+display:inline-flex;
+
+align-items:center;
+
+gap:8px;
+
+padding:
+
+8px
+
+14px;
+
+border-radius:999px;
+
+background:rgba(255,255,255,.16);
+
+backdrop-filter:blur(16px);
+
+-webkit-backdrop-filter:blur(16px);
+
+border:1px solid rgba(255,255,255,.18);
+
+font-size:13px;
+
+font-weight:600;
+
+}
+
+.header__pill svg{
+
+width:18px;
+
+height:18px;
+
+stroke:currentColor;
+
+}
+
+/*======================================================================
+HEADER ACTIONS
+======================================================================*/
+
+.header__actions{
+
+position:absolute;
+
+top:
+
+calc(env(safe-area-inset-top) + 18px);
+
+right:20px;
+
+z-index:5;
+
+display:flex;
+
+gap:10px;
+
+}
+
+/*======================================================================
+SCROLL COLLAPSE
+======================================================================*/
+
+.header.is-collapsed{
+
+border-radius:0;
+
+}
+
+.header.is-collapsed .header__content{
+
+min-height:160px;
+
+padding-top:
+
+calc(env(safe-area-inset-top) + 70px);
+
+}
+
+.header.is-collapsed .header__title{
+
+font-size:2rem;
+
+}
+
+.header.is-collapsed .header__artwork img{
+
+transform:scale(1.08);
+
+filter:saturate(.92);
+
+}
+
+/*======================================================================
+PARALLAX
+======================================================================*/
+
+.header[data-parallax="true"] .header__artwork{
+
+will-change:transform;
+
+}
+
+/*======================================================================
+EMPTY HEADER
+======================================================================*/
+
+.header--empty{
+
+background:
+
+linear-gradient(
+135deg,
+var(--trip-gradient-start),
+var(--trip-gradient-end)
+);
+
+}
+
+.header--empty .header__overlay{
+
+display:none;
+
+}
+
+.header--empty .header__content{
+
+color:var(--color-text);
+
+}
+
+.header--empty .header__title{
+
+text-shadow:none;
+
+}
+
+.header--empty .header__subtitle{
+
+color:var(--color-text-secondary);
+
+text-shadow:none;
+
+}
+
+.header--empty .header__country{
+
+color:var(--trip-accent);
+
+}
+
+.header--empty .header__country::before{
+
+background:var(--trip-accent);
+
+}
+
+/*======================================================================
+HOME HEADER
+======================================================================*/
+
+.header--home .header__content{
+
+min-height:260px;
+
+}
+
+.header--home .header__title{
+
+max-width:100%;
+
+}
+
+/*======================================================================
+DARK MODE
+======================================================================*/
+
+[data-theme="dark"] .header__overlay{
+
+background:
+
+linear-gradient(
+180deg,
+rgba(0,0,0,.22),
+rgba(0,0,0,.36),
+rgba(0,0,0,.72)
+);
+
+}
+
+[data-theme="dark"] .header--empty{
+
+background:
+
+linear-gradient(
+135deg,
+var(--color-surface),
+var(--color-surface-secondary)
+);
+
+}
+
+/*======================================================================
+RESPONSIVE
+======================================================================*/
+
+@media (min-width:768px){
+
+.header__content{
+
+padding-inline:36px;
+
+}
+
+.header__actions{
+
+right:32px;
+
+}
+
+}
+
+/*======================================================================
+REDUCED MOTION
+======================================================================*/
+
+@media (prefers-reduced-motion:reduce){
+
+.header__artwork img{
+
+transition:none;
+
+transform:none;
+
+}
+
+}
+
+/*======================================================================
+END OF FILE
+======================================================================*/
