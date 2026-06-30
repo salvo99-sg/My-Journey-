@@ -86,6 +86,10 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] 🔴 **Mismatch chiavi storage**: il nuovo core legge `Storage.get("theme")` / `("language")`, ma l'app live usa `mj-theme` / `mj-lang` (+ dati `agenda-viaggi-v2`, `mj-utente`, `mj-onboarded`, `mj-proprietario`, IndexedDB `agenda-viaggi-db`). Al cut-over il modulo `Storage` dovrà **mappare/migrare** le chiavi esistenti, altrimenti tema/lingua e soprattutto **i viaggi salvati si perderebbero**
 - [ ] 🔵 **Sostituzione totale di `app.js` (root, ~3200 righe)**: la nuova architettura rimpiazza tutta la logica live. Rischio più alto del cut-over → i moduli nuovi devono re-implementare TUTTE le feature attuali (CRUD viaggi, IndexedDB foto/biglietti, geocoding+country, Mapbox lingua/preset, i18n IT/EN, PWA/SW, onboarding, /admin). Da verificare feature-by-feature prima di pubblicare
 - [ ] Nota: archiviato in `design-system/js/` per non toccare il `app.js` di root (live). La cartella JS del DS è separata dalla root fino al cut-over
+- [ ] **`js/core/router.js` dipende dall'HTML #9**: si aspetta elementi con id `page-home`/`page-trip`/`page-map`/`page-album`/`page-tickets`/`page-budget`/`page-packing`/`page-journal`/`page-memories`/`page-settings`/`page-trophies`. L'HTML attuale ha una struttura schermate diversa → questi id arriveranno con la consegna #9. Usa `.page-enter` (da `animations.css`) per la transizione
+- [ ] `router.js`: **nessuna route `/admin`** né logica owner. L'app live ha gestione admin/proprietario (`mj-proprietario`) → al cut-over decidere se reintrodurla nel router o tenerla fuori (route nascosta)
+- [ ] 🟡 `router.js` transizione `page-enter` probabilmente troncata: aggiunge la classe e la rimuove al `requestAnimationFrame` successivo (~1 frame) → l'animazione `fadeUp` non fa in tempo a girare. Valutare rimozione su `animationend` o durata. Minore
+- [ ] `router.js` amplia le sezioni rispetto all'app attuale (trophies, journal, memories, packing, budget separati): verificare che l'HTML/JS #9-#10 implementi davvero queste pagine
 
 ## ✅ Già risolto in fasi precedenti (per memoria)
 - Fonte unica: spacing→spacing.css, motion→motion.css (`--motion-*`), tipografia→typography.css, layout/focus/selection→design-system.css
@@ -95,5 +99,5 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ---
 
-**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system) · + `styles/utilities.css` (utility layer) · + `styles/helpers.css` (helper layer) · **#10 JS avviato**: `js/core/app.js`.
+**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system) · + `styles/utilities.css` (utility layer) · + `styles/helpers.css` (helper layer) · **#10 JS avviato**: `js/core/app.js`, `router.js`.
 Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al consolidamento.
