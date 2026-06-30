@@ -39,6 +39,7 @@ Legenda stato:
 | `select.css` | `.select` (+ `__field`/`__dropdown`/`__option.is-selected`/…) | 🟡 archiviato |
 | `search.css` | `.search` (ricerca universale; + `__results`/`__item`/`__match`/…) | 🟡 archiviato |
 | `map-dock.css` | `.map-dock` (+ `is-expanded`/`is-collapsed`/`__controls`/…) | 🟡 archiviato |
+| `journey-timeline.css` | `.journey-timeline` (+ `.timeline-day`/`.timeline-stop`/…) | 🟡 archiviato |
 
 I componenti sono **namespaced** (additivi) e dipendono dai token di `typography.css` + `motion.css` + `spacing.css`: funzioneranno appieno solo quando tutto il DS sarà collegato insieme (cut-over).
 
@@ -62,7 +63,7 @@ I componenti sono **namespaced** (additivi) e dipendono dai token di `typography
 | 5 | `spacing.css` | ✅ |
 | 6 | `motion.css` | ✅ |
 | 7 | `design-system.css` | ✅ |
-| 8 | Libreria completa componenti | 🟡 in corso (button, icon-button, fab, navigation, bottom-navigation, accordion, calendar, select, search, map-dock) |
+| 8 | Libreria completa componenti | 🟡 in corso (button, icon-button, fab, navigation, bottom-navigation, accordion, calendar, select, search, map-dock, journey-timeline) |
 | 9 | HTML completo di tutte le schermate | ⬜ |
 | 10 | JavaScript ES Modules | ⬜ |
 | 11 | SVG (150+ icone) | ⬜ |

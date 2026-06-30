@@ -15,8 +15,8 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] `--z-dock` → `tokens.css` (usato da `map-dock.css`; nome reale **`--z-dock`**, non `--z-map-dock`. Valore atteso ~250, tra `--z-dropdown:200` e `--z-sheet:300`)
 - [ ] `--z-overlay` → `tokens.css` (usato da `bottom-sheet.css`; in alternativa mappare su `--z-modal`)
 - [ ] `--shadow-2xl` → `tokens.css` (usato da `modal.css`; la scala arriva a `--shadow-xl`)
-- [ ] keyframe `pulse-marker` → `motion.css` (usato da `day-card.css` e `timeline-card.css`)
-- [ ] `--trip-accent-rgb` → **non** aggiungere 14 triplette: convertire i consumatori a `color-mix(in srgb, var(--trip-accent) X%, transparent)`. Consumatori: `empty-state.css`; **`calendar.css`** (`.calendar__day--range` light .12 / dark .18)
+- [ ] keyframe pulse del marker → **unificare in `motion.css`**: oggi mancante per `day-card.css`/`timeline-card.css` (riferito come `pulse-marker`) MA `journey-timeline.css` ne definisce uno proprio inline `timelinePulse`. Tenere un solo keyframe condiviso
+- [ ] `--trip-accent-rgb` → **non** aggiungere 14 triplette: convertire i consumatori a `color-mix(in srgb, var(--trip-accent) X%, transparent)`. Consumatori: `empty-state.css`; **`calendar.css`** (`.calendar__day--range` light .12 / dark .18); **`journey-timeline.css`** (keyframe `timelinePulse` .45→0)
 
 ## 🔴 Typo / riferimenti errati
 - [ ] `ticket-card.css` (dark): `var(--color-background)` → `var(--color-bg)`
@@ -32,11 +32,13 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] `calendar.css`: testo su sfondo accent `#fff` (`--day--selected`, `--range-start/-end`, dot `--selected::after`) → `--color-text-inverse`. Inoltre misure/tipo hardcoded (titolo `28px` vs `--fs-*`; giorni `border-radius:16px` vs `--radius-*`)
 - [ ] `select.css`: misure/tipo hardcoded → token (opzione `border-radius:14px` vs `--radius-*`; `font-size:14/15/11px` vs `--fs-*`). Coerente con gli altri componenti, da valutare in blocco
 - [ ] `map-dock.css`: `#fff` su `__button--primary` (sfondo `--trip-accent`) → `--color-text-inverse`; raggi hardcoded (`28px`/`18px`/`14px`) → `--radius-*`; titolo `24px` → `--fs-*`
+- [ ] `journey-timeline.css`: `#fff` su `.timeline-day__badge` (sfondo `--trip-accent`) → `--color-text-inverse`; raggi/font hardcoded (`18px`, `24px`, ecc.) → `--radius-*`/`--fs-*`
 
 ## 🟡 Duplicazioni / doppi meccanismi
 - [ ] `.skeleton` definito 2 volte (`motion.css` shimmer vs `skeleton.css` ::after) → tenere `skeleton.css`, rimuovere da `motion.css` (+ keyframe `shimmer` orfano)
 - [ ] Bottom-sheet apertura: `.is-open` (transition) vs `motion.css .bottom-sheet--open` (animation) → un solo meccanismo
-- [ ] `motion.css .timeline-item` (trattino) orfana → i componenti usano `.timeline__item` / `.day-card__stop`
+- [ ] `motion.css .timeline-item` (trattino) orfana → i componenti usano altri nomi (vedi sotto)
+- [ ] **Famiglia timeline frammentata**: `journey-timeline.css` (`.timeline-day`/`.timeline-stop`/`.timeline`) vs `timeline-card.css` vs `day-card.css` (`.day-card__stop`) vs orfana `motion.css .timeline-item`. Convenzioni di naming divergenti per lo stesso dominio (giorno+tappe) → al cut-over scegliere UNA struttura. Attenzione anche a `.timeline` (nome generico) come possibile collisione
 - [ ] `input.css ::selection` duplica il `::selection` globale di `design-system.css`
 - [ ] `empty-state.css` keyframe `emptyFloat` ≈ `floating` di `motion.css`
 - [ ] `day-card.css` `transition:background .18s` (durata fissa) → token `--motion-*`
@@ -58,5 +60,5 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ---
 
-**Stato consegna**: 7/13 · #8 libreria componenti: 26 file archiviati.
+**Stato consegna**: 7/13 · #8 libreria componenti: 27 file archiviati.
 Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al consolidamento.
