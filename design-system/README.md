@@ -45,8 +45,23 @@ Legenda stato:
 | `map-dock.css` | `.map-dock` (+ `is-expanded`/`is-collapsed`/`__controls`/…) | 🟡 archiviato |
 | `journey-timeline.css` | `.journey-timeline` (+ `.timeline-day`/`.timeline-stop`/…) | 🟡 archiviato |
 | `map-markers.css` | `.map-marker` (+ `--hotel`/`--restaurant`/…, `.route-line`/…) | 🟡 archiviato |
+| `header.css` | `.header` (top app bar) | 🟡 archiviato |
+| `input.css` | `.input` / `.field` | 🟡 archiviato |
+| `searchbar.css` | `.searchbar` (+ `--map`) | 🟡 archiviato |
+| `trip-card.css` | `.trip-card` (+ stati) | 🟡 archiviato |
+| `day-card.css` | `.day-card` (+ `__stop`) | 🟡 archiviato |
+| `timeline-card.css` | `.timeline-card` | 🟡 archiviato |
+| `bottom-sheet.css` | `.bottom-sheet` (+ `.is-open`) | 🟡 archiviato |
+| `modal.css` | `.modal` | 🟡 archiviato |
+| `album-card.css` | `.album-card` | 🟡 archiviato |
+| `photo-card.css` | `.photo-card` | 🟡 archiviato |
+| `ticket-card.css` | `.ticket-card` | 🟡 archiviato |
+| `memory-card.css` | `.memory-card` | 🟡 archiviato |
+| `empty-state.css` | `.empty-state` | 🟡 archiviato |
+| `skeleton.css` | `.skeleton` | 🟡 archiviato |
+| `toast.css` | `.toast` | 🟡 archiviato |
 
-I componenti sono **namespaced** (additivi) e dipendono dai token di `typography.css` + `motion.css` + `spacing.css`: funzioneranno appieno solo quando tutto il DS sarà collegato insieme (cut-over).
+**27 componenti unificati su un unico branch.** I componenti sono **namespaced** (additivi) e dipendono dai token di `typography.css` + `motion.css` + `spacing.css`: funzioneranno appieno solo quando tutto il DS sarà collegato insieme (cut-over).
 
 ## ⚙️ JavaScript (`design-system/js/` — #10, nuova architettura modulare)
 

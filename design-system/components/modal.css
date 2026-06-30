@@ -1,0 +1,471 @@
+/*======================================================================
+PRODUCT.......: My Journey
+MODULE........: Components
+FILE..........: components/modal.css
+VERSION.......: 1.0.0
+STATUS........: Production Ready
+COMPATIBILITY.: HTML5 / CSS3 / Vanilla JS / PWA
+======================================================================
+MODALS
+Used for:
+• New Journey
+• New Stop
+• Expense
+• Photo
+• Ticket
+• Delete Confirmation
+• Rename
+• Generic Dialog
+======================================================================*/
+
+/*======================================================================
+BACKDROP
+======================================================================*/
+
+.modal-backdrop{
+
+position:fixed;
+
+inset:0;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+padding:24px;
+
+background:rgba(0,0,0,.56);
+
+backdrop-filter:blur(8px);
+
+-webkit-backdrop-filter:blur(8px);
+
+opacity:0;
+
+visibility:hidden;
+
+pointer-events:none;
+
+transition:
+
+opacity var(--motion-medium) var(--ease-standard),
+
+visibility var(--motion-medium);
+
+z-index:var(--z-modal);
+
+}
+
+.modal-backdrop.is-open{
+
+opacity:1;
+
+visibility:visible;
+
+pointer-events:auto;
+
+}
+
+/*======================================================================
+MODAL
+======================================================================*/
+
+.modal{
+
+position:relative;
+
+display:flex;
+
+flex-direction:column;
+
+width:100%;
+
+max-width:460px;
+
+max-height:90vh;
+
+overflow:hidden;
+
+background:var(--color-surface);
+
+border:1px solid var(--color-border);
+
+border-radius:var(--radius-2xl);
+
+box-shadow:var(--shadow-2xl);
+
+transform:translateY(18px) scale(.96);
+
+opacity:0;
+
+transition:
+
+transform var(--motion-medium) var(--ease-standard),
+
+opacity var(--motion-medium) var(--ease-standard);
+
+}
+
+.modal-backdrop.is-open .modal{
+
+opacity:1;
+
+transform:translateY(0) scale(1);
+
+}
+
+/*======================================================================
+HEADER
+======================================================================*/
+
+.modal__header{
+
+display:flex;
+
+align-items:flex-start;
+
+justify-content:space-between;
+
+gap:20px;
+
+padding:24px 24px 18px;
+
+border-bottom:1px solid var(--color-border);
+
+}
+
+.modal__title{
+
+font-family:var(--font-editorial);
+
+font-size:28px;
+
+line-height:1.1;
+
+color:var(--color-text);
+
+}
+
+.modal__subtitle{
+
+margin-top:8px;
+
+font-size:14px;
+
+line-height:1.6;
+
+color:var(--color-text-secondary);
+
+}
+
+/*======================================================================
+CLOSE
+======================================================================*/
+
+.modal__close{
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+width:42px;
+
+height:42px;
+
+border-radius:50%;
+
+background:var(--color-surface-secondary);
+
+color:var(--color-text-secondary);
+
+transition:
+
+background var(--motion-fast),
+
+transform var(--motion-fast),
+
+color var(--motion-fast);
+
+}
+
+.modal__close:hover{
+
+background:var(--color-surface-hover);
+
+color:var(--color-text);
+
+}
+
+.modal__close:active{
+
+transform:scale(.92);
+
+}
+
+/*======================================================================
+BODY
+======================================================================*/
+
+.modal__body{
+
+flex:1;
+
+overflow-y:auto;
+
+padding:24px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:22px;
+
+scrollbar-width:none;
+
+}
+
+.modal__body::-webkit-scrollbar{
+
+display:none;
+
+}
+
+/*======================================================================
+SECTION
+======================================================================*/
+
+.modal__section{
+
+display:flex;
+
+flex-direction:column;
+
+gap:16px;
+
+}
+
+/*======================================================================
+IMAGE PREVIEW
+======================================================================*/
+
+.modal__preview{
+
+aspect-ratio:16/10;
+
+border-radius:var(--radius-xl);
+
+overflow:hidden;
+
+background:var(--color-surface-secondary);
+
+}
+
+.modal__preview img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+}
+
+/*======================================================================
+INFO CARD
+======================================================================*/
+
+.modal__card{
+
+padding:18px;
+
+border-radius:var(--radius-lg);
+
+background:var(--color-surface-secondary);
+
+border:1px solid var(--color-border);
+
+}
+
+/*======================================================================
+FOOTER
+======================================================================*/
+
+.modal__footer{
+
+display:flex;
+
+gap:14px;
+
+padding:22px 24px;
+
+border-top:1px solid var(--color-border);
+
+background:var(--color-surface);
+
+}
+
+/*======================================================================
+CONFIRMATION
+======================================================================*/
+
+.modal--confirm .modal__header{
+
+text-align:center;
+
+justify-content:center;
+
+padding-top:34px;
+
+}
+
+.modal--confirm .modal__body{
+
+text-align:center;
+
+align-items:center;
+
+}
+
+.modal--confirm .modal__footer{
+
+justify-content:center;
+
+}
+
+/*======================================================================
+DANGER
+======================================================================*/
+
+.modal--danger{
+
+border-color:var(--color-error);
+
+}
+
+.modal--danger .modal__title{
+
+color:var(--color-error);
+
+}
+
+/*======================================================================
+SUCCESS
+======================================================================*/
+
+.modal--success{
+
+border-color:var(--color-success);
+
+}
+
+/*======================================================================
+FULLSCREEN
+======================================================================*/
+
+.modal--fullscreen{
+
+max-width:none;
+
+width:100%;
+
+height:100dvh;
+
+max-height:none;
+
+border-radius:0;
+
+}
+
+/*======================================================================
+LOADING
+======================================================================*/
+
+.modal.is-loading{
+
+pointer-events:none;
+
+}
+
+.modal.is-loading .modal__body{
+
+opacity:.45;
+
+}
+
+/*======================================================================
+DARK MODE
+======================================================================*/
+
+[data-theme="dark"] .modal{
+
+background:var(--color-surface);
+
+}
+
+/*======================================================================
+ACCESSIBILITY
+======================================================================*/
+
+.modal button:focus-visible,
+
+.modal input:focus-visible,
+
+.modal textarea:focus-visible,
+
+.modal select:focus-visible{
+
+outline:none;
+
+box-shadow:
+
+0 0 0 3px var(--trip-accent-soft);
+
+}
+
+/*======================================================================
+RESPONSIVE
+======================================================================*/
+
+@media (max-width:480px){
+
+.modal-backdrop{
+
+padding:12px;
+
+}
+
+.modal{
+
+max-width:none;
+
+border-radius:24px;
+
+}
+
+}
+
+/*======================================================================
+REDUCED MOTION
+======================================================================*/
+
+@media (prefers-reduced-motion:reduce){
+
+.modal,
+
+.modal-backdrop,
+
+.modal__close{
+
+transition:none;
+
+}
+
+}
+
+/*======================================================================
+END OF FILE
+======================================================================*/
