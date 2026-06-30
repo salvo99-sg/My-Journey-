@@ -97,6 +97,22 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
   - ❓ **Da decidere**: (a) Leaflet vince → riscrivere CSP, ricablare `map-markers.css` via divIcon, riportare geocoding/lingua su un servizio compatibile, rinunciare a Mapbox; (b) Mapbox resta → riscrivere `map.js` su Mapbox GL mantenendo l'API del modulo (init/addMarker/drawRoute/focusMarker); (c) decido al cut-over. **Scelta non autonoma**
 - [ ] `map.js` si sincronizza con la timeline (`timeline:current`→`focusMarker`) e usa container id `journey-map` (HTML #9). API pulita (init/addMarker/removeMarker/select/focus/drawRoute/locate/clear/refresh) → riusabile anche se si cambia libreria sotto
 
+## 🔴 Base-path GitHub Pages (deploy) — path assoluti `/` rompono
+- [ ] L'app live è servita sotto **`salvo99-sg.github.io/My-Journey-/`** (sotto-cartella). Ma `manifest.json` e altri file usano **path assoluti dalla root** (`start_url:"/"`, `scope:"/"`, `id:"/"`, `icons:"/icons/…"`, shortcuts `"/#…"`, screenshots `"/screenshots/…"`) + `notifications.js` `"/icons/icon-192.png"`. Su GitHub Pages project-site questi risolvono a `salvo99-sg.github.io/icons/…` (404), **non** a `/My-Journey-/icons/…`. Al cut-over: rendere i path **relativi** o prefissarli con `/My-Journey-/` (start_url/scope `"./"`/`"/My-Journey-/"`). 🔴 Altrimenti PWA install/icone/shortcut rotti
+
+## 🟣 Config / Constants (#10) — dichiarati ma non collegati
+- [ ] `config.js` `map.provider:"OpenStreetMap"` **contraddice DECISO #5 (Mapbox)** → aggiornare a Mapbox al cut-over (e i relativi parametri zoom/animationDuration)
+- [ ] `config.js` e `constants.js` sono **frozen ma non consumati** dai moduli: i valori sono **duplicati** hardcoded (es. `Search.delay=220` vs `Config.search.debounce=220`; zoom 13 in `map.js` vs `Config.map.defaultZoom`; eventi stringa vs `Constants.APP_EVENTS`). Al cut-over: cablare i moduli su Config/Constants (fonte unica) o accettare i duplicati
+- [ ] 🟢 `constants.js` `TRIP_THEMES` elenca **gli stessi 16 temi** di `trip-themes.css` → **conferma DECISO #1** (trip-themes canonico, colors.css 14 superato)
+- [ ] `constants.js` `JOURNEY_STATUS` (planning/active/completed/archived) ≠ token `--status-*` (planned/progress/completed/draft) → riconciliare la mappatura stato↔colore al cut-over
+- [ ] `gestures.js`: swipe globali (`gesture:swipe*`) ok; va aggiunto a `loadModules`. Nessun nodo critico
+
+## 🔵 PWA assets (#12) — manifest ricevuto, asset mancanti
+- [ ] `pwa/manifest.json` archiviato. **Mancano i file referenziati**: `icons/icon-{72..512}.png` (logo #12), `screenshots/home.png`+`dashboard.png`. Da produrre al cut-over col logo Bob&Cosmo
+- [ ] `theme_color:#0F172A` / `background_color:#FFFFFF` **divergono dalla palette DS** (bg cream `#FCF8F2`, navy `#1E3160`) → allineare (il background bianco causa flash su splash diverso dal tema)
+- [ ] shortcut `"/#trip/new"` non gestito dal router flat (`resolve()` cerca route esatta → cade su home). Serve gestione sub-route/param nel router, oppure cambiare l'url shortcut
+- [ ] Esiste già un `manifest.json` **live alla root**: al cut-over sostituirlo con questo (path corretti per base-path) — non duplicarlo
+
 ## 🔵 Strutturali / fondamenta
 - [ ] **Responsive `.page`** (allargamento 720/1180 tablet/desktop) da ri-applicare in `design-system.css` (`.app`/`.page`); oggi solo `max-width:480`
 - [ ] Tokenizzare colori brand **taupe `#6B645D`** e **oliva `#708050`**
@@ -139,5 +155,5 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ---
 
-**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system) · + `styles/utilities.css` (utility layer) · + `styles/helpers.css` (helper layer) · **#10 JS avviato**: core (app, router, storage, state, theme, language) · ui (modal, animations) · modules (timeline, map, search, autocomplete, onboarding). Tutti i 9 moduli di App.loadModules consegnati + extra (state, autocomplete, onboarding, ui-controls, offline, sync, notifications) da registrare.
+**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system) · + `styles/utilities.css` (utility layer) · + `styles/helpers.css` (helper layer) · **#10 JS avviato**: core (app, router, storage, state, theme, language) · ui (modal, animations) · modules (timeline, map, search, autocomplete, onboarding). Tutti i 9 moduli di App.loadModules consegnati + extra (state, autocomplete, onboarding, ui-controls, offline, sync, notifications, gestures) da registrare. + config/constants (statici).
 Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al consolidamento.
