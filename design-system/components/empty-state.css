@@ -1,0 +1,414 @@
+/*======================================================================
+PRODUCT.......: My Journey
+MODULE........: Components
+FILE..........: components/empty-state.css
+VERSION.......: 1.0.0
+STATUS........: Production Ready
+COMPATIBILITY.: HTML5 / CSS3 / Vanilla JS / PWA
+======================================================================
+EMPTY STATE
+Used throughout the application
+Screens:
+• Home
+• Journey
+• Budget
+• Album
+• Tickets
+• Map
+• Memories
+• Search
+======================================================================*/
+
+/*======================================================================
+ROOT
+======================================================================*/
+
+.empty-state{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+text-align:center;
+
+padding:56px 28px;
+
+min-height:320px;
+
+}
+
+/*======================================================================
+ILLUSTRAZIONE
+======================================================================*/
+
+.empty-state__illustration{
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+width:128px;
+
+height:128px;
+
+margin-bottom:28px;
+
+border-radius:50%;
+
+background:
+
+radial-gradient(
+
+circle,
+
+var(--trip-accent-soft) 0%,
+
+transparent 72%
+
+);
+
+position:relative;
+
+}
+
+.empty-state__illustration svg{
+
+width:64px;
+
+height:64px;
+
+stroke-width:2;
+
+color:var(--trip-accent);
+
+z-index:2;
+
+}
+
+/*======================================================================
+DECORATION
+======================================================================*/
+
+.empty-state__illustration::before,
+
+.empty-state__illustration::after{
+
+content:"";
+
+position:absolute;
+
+border-radius:50%;
+
+background:var(--trip-accent);
+
+opacity:.12;
+
+animation:emptyFloat 7s ease-in-out infinite;
+
+}
+
+.empty-state__illustration::before{
+
+width:14px;
+
+height:14px;
+
+top:18px;
+
+left:18px;
+
+}
+
+.empty-state__illustration::after{
+
+width:8px;
+
+height:8px;
+
+bottom:24px;
+
+right:22px;
+
+animation-delay:1.6s;
+
+}
+
+/*======================================================================
+TITLE
+======================================================================*/
+
+.empty-state__title{
+
+font-family:var(--font-editorial);
+
+font-size:32px;
+
+line-height:1.15;
+
+color:var(--color-text);
+
+margin-bottom:14px;
+
+}
+
+/*======================================================================
+TEXT
+======================================================================*/
+
+.empty-state__text{
+
+max-width:300px;
+
+font-size:15px;
+
+line-height:1.8;
+
+color:var(--color-text-secondary);
+
+margin-bottom:30px;
+
+}
+
+/*======================================================================
+ACTION
+======================================================================*/
+
+.empty-state__actions{
+
+display:flex;
+
+flex-direction:column;
+
+gap:14px;
+
+width:100%;
+
+max-width:260px;
+
+}
+
+/*======================================================================
+SECONDARY LINK
+======================================================================*/
+
+.empty-state__link{
+
+display:inline-flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:8px;
+
+margin-top:18px;
+
+font-size:14px;
+
+font-weight:600;
+
+color:var(--trip-accent);
+
+transition:
+
+opacity var(--motion-fast),
+
+transform var(--motion-fast);
+
+}
+
+.empty-state__link:hover{
+
+opacity:.85;
+
+}
+
+.empty-state__link:active{
+
+transform:scale(.97);
+
+}
+
+/*======================================================================
+VARIANTS
+======================================================================*/
+
+.empty-state--map .empty-state__illustration{
+
+background:
+
+radial-gradient(
+
+circle,
+
+rgba(var(--trip-accent-rgb),.14),
+
+transparent 74%
+
+);
+
+}
+
+.empty-state--album .empty-state__illustration svg{
+
+transform:rotate(-4deg);
+
+}
+
+.empty-state--budget .empty-state__illustration svg{
+
+transform:scale(1.08);
+
+}
+
+.empty-state--ticket .empty-state__illustration svg{
+
+transform:rotate(5deg);
+
+}
+
+.empty-state--memory .empty-state__illustration svg{
+
+transform:translateY(-2px);
+
+}
+
+/*======================================================================
+COMPACT
+======================================================================*/
+
+.empty-state--compact{
+
+padding:36px 18px;
+
+min-height:220px;
+
+}
+
+.empty-state--compact .empty-state__illustration{
+
+width:84px;
+
+height:84px;
+
+margin-bottom:18px;
+
+}
+
+.empty-state--compact .empty-state__illustration svg{
+
+width:42px;
+
+height:42px;
+
+}
+
+.empty-state--compact .empty-state__title{
+
+font-size:24px;
+
+}
+
+/*======================================================================
+FULLSCREEN
+======================================================================*/
+
+.empty-state--fullscreen{
+
+min-height:calc(100dvh - 120px);
+
+}
+
+/*======================================================================
+DARK MODE
+======================================================================*/
+
+[data-theme="dark"] .empty-state__illustration{
+
+background:
+
+radial-gradient(
+
+circle,
+
+rgba(var(--trip-accent-rgb),.18),
+
+transparent 72%
+
+);
+
+}
+
+/*======================================================================
+ACCESSIBILITY
+======================================================================*/
+
+.empty-state a:focus-visible,
+
+.empty-state button:focus-visible{
+
+outline:none;
+
+box-shadow:
+
+0 0 0 4px var(--trip-accent-soft);
+
+border-radius:999px;
+
+}
+
+/*======================================================================
+ANIMATION
+======================================================================*/
+
+@keyframes emptyFloat{
+
+0%{
+
+transform:translateY(0);
+
+}
+
+50%{
+
+transform:translateY(-8px);
+
+}
+
+100%{
+
+transform:translateY(0);
+
+}
+
+}
+
+/*======================================================================
+REDUCED MOTION
+======================================================================*/
+
+@media (prefers-reduced-motion:reduce){
+
+.empty-state__illustration::before,
+
+.empty-state__illustration::after,
+
+.empty-state__link{
+
+animation:none;
+
+transition:none;
+
+}
+
+}
+
+/*======================================================================
+END OF FILE
+======================================================================*/
