@@ -139,6 +139,13 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] **"Gallery"** (lazy/fullscreen/zoom/swipe/masonry) descritta come componente, ma lato CSS abbiamo `album-card`/`photo-card` e lato JS manca `album.js` → la gallery completa arriverà coi moduli mancanti
 - [ ] Conferma che budget/ticket/packing/journal(diary) sono feature attese → mappano sui **5 moduli JS mancanti** (budget/tickets/packing/diary/album)
 
+## 🟣 CONTRIBUTING.md del designer (#13) — duplicato della governance root
+- [ ] **Due CONTRIBUTING**: questo (designer, EN, generico, in `design-system/docs/`) vs **root `CONTRIBUTING.md`** (governance reale del progetto, IT, con le **Eccezioni autorizzate**: Mapbox GL JS, `!important` per reduced-motion/`.hidden`/layer utility). Al cut-over **NON sostituire la root**: semmai fonderle, mantenendo le eccezioni autorizzate (la root vince)
+- [ ] **Convenzione commit divergente**: designer usa Conventional `feat:`/`fix:` **senza scope**; la root impone `tipo(scope): oggetto`. Tenere quella root (con scope) per coerenza con lo storico
+- [ ] Branch model: il designer aggiunge `hotfix/*` e `release/*` (root aveva main/develop/feature/*). Adozione opzionale
+- [ ] 🟢 **Auto-legittimazione dei fix**: il CONTRIBUTING del designer vieta esplicitamente "hardcode colors/typography" e "duplicate logic" → ma i suoi stessi componenti li violano (#fff, palette marker, font-size; doppioni search/timeline). Applicare i nodi 🟠/🟡 **fa rispettare le sue regole**, non le contraddice
+- [ ] 🟢 "remove comments defining file headers" è vietato → i miei archivi mantengono gli header verbatim: conforme
+
 ## 🔵 Strutturali / fondamenta
 - [ ] **Responsive `.page`** (allargamento 720/1180 tablet/desktop) da ri-applicare in `design-system.css` (`.app`/`.page`); oggi solo `max-width:480`
 - [ ] Tokenizzare colori brand **taupe `#6B645D`** e **oliva `#708050`**
