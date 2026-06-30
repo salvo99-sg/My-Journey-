@@ -79,6 +79,7 @@ Legenda stato:
 | `js/modules/map.js` | Mappa: init, marker, rotta, fitBounds, locate, sync con timeline (`timeline:current`) | 🟡 archiviato | 🔴 Usa **Leaflet+OSM**, non Mapbox GL (stack live) → decisione utente; non usa map-markers.css → vedi CONSOLIDATION |
 | `js/modules/search.js` | Ricerca: debounce, filtro `[data-searchable]`, history (Storage), highlight `.is-search-match` | 🟡 archiviato | ⚠️ Non usa le classi di search.css/searchbar.css (`.search__match`) → vedi CONSOLIDATION |
 | `js/modules/autocomplete.js` | Suggerimenti destinazione: tastiera (frecce/invio/esc), filtro, history (Storage), item `.autocomplete-item` | 🟡 archiviato | ⚠️ Non in `App.loadModules`; `.autocomplete-item` non stilato; suggerimenti solo locali → vedi CONSOLIDATION |
+| `js/modules/onboarding.js` | Onboarding slide-based: next/prev/skip, una-tantum (Storage `onboarding-completed`), via Modal | 🟡 archiviato | ⚠️ Non in `App.loadModules`; eredita bug modal `.is-visible`; chiave ≠ `mj-onboarded` → vedi CONSOLIDATION |
 
 > Archiviato sotto `design-system/js/` per **non toccare** il `app.js` di root (live).
 
@@ -104,7 +105,7 @@ Legenda stato:
 | 7 | `design-system.css` | ✅ |
 | 8 | Libreria completa componenti | 🟡 in corso (button, icon-button, fab, navigation, bottom-navigation, accordion, calendar, select, search, map-dock, journey-timeline, map-markers) |
 | 9 | HTML completo di tutte le schermate | ⬜ |
-| 10 | JavaScript ES Modules | 🟡 in corso (core: app/router/storage/state/theme/language · ui: modal/animations · modules: timeline/map/search/autocomplete) |
+| 10 | JavaScript ES Modules | 🟡 in corso (core: app/router/storage/state/theme/language · ui: modal/animations · modules: timeline/map/search/autocomplete/onboarding) |
 | 11 | SVG (150+ icone) | ⬜ |
 | 12 | Logo e PWA Assets | ⬜ |
 | 13 | Documentazione tecnica finale | ⬜ |
