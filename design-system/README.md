@@ -72,6 +72,9 @@ Legenda stato:
 | `js/core/storage.js` | Wrapper localStorage namespaced (`myjourney.1.0.*`): get/set/remove/has/toggle + CRUD array (push/update/delete by id) + export/import (backup) + size | 🟡 archiviato | ⚠️ Chiavi diverse dall'app live (`mj-*`) → serve migrazione; **non gestisce IndexedDB** (foto/biglietti) → vedi CONSOLIDATION |
 | `js/core/state.js` | Stato reattivo centralizzato: store (user/journeys/currentJourney/map/ui…), get/set/update per dot-path, subscribe/notify, restore/persist via Storage | 🟡 archiviato | ⚠️ Doppia persistenza con storage; non in `App.loadModules` → vedi CONSOLIDATION |
 | `js/core/theme.js` | Theme engine JS: light/dark (`data-theme`), trip theme (`data-trip-theme`), system preference, persistenza, toggle/restore | 🟡 archiviato | Pilota correttamente colors.css + trip-themes.css; trip-theme non ripristinato al boot via App → vedi CONSOLIDATION |
+| `js/core/language.js` | i18n IT/EN: `set`/`toggle`/`register`/`t()`, auto-translate via `[data-i18n]`/`-placeholder`/`-title`/`-aria`, persistenza | 🟡 archiviato | ⚠️ Dizionario non ancora fornito (`register` non chiamato) → `t()` torna la chiave |
+| `js/ui/modal.js` | Modal/sheet manager: open/close/toggle, backdrop, ESC, focus, stack, scroll-lock | 🟡 archiviato | 🔴 Aggiunge `.is-visible` ma `modal.css` usa `.modal-backdrop.is-open` → non apre. Vedi CONSOLIDATION |
+| `js/modules/timeline.js` | Itinerario: expand/collapse giorni (`.timeline-day.is-open`), tappa corrente (`.is-current`), playback, auto-scroll | 🟡 archiviato | Conferma `journey-timeline.css` canonico; dipende da id tappe (HTML #9) |
 
 > Archiviato sotto `design-system/js/` per **non toccare** il `app.js` di root (live).
 
@@ -97,7 +100,7 @@ Legenda stato:
 | 7 | `design-system.css` | ✅ |
 | 8 | Libreria completa componenti | 🟡 in corso (button, icon-button, fab, navigation, bottom-navigation, accordion, calendar, select, search, map-dock, journey-timeline, map-markers) |
 | 9 | HTML completo di tutte le schermate | ⬜ |
-| 10 | JavaScript ES Modules | 🟡 in corso (core: app, router, storage, state, theme) |
+| 10 | JavaScript ES Modules | 🟡 in corso (core: app/router/storage/state/theme/language · ui: modal · modules: timeline) |
 | 11 | SVG (150+ icone) | ⬜ |
 | 12 | Logo e PWA Assets | ⬜ |
 | 13 | Documentazione tecnica finale | ⬜ |
