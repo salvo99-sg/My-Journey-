@@ -42,6 +42,7 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] `motion.css .timeline-item` (trattino) orfana → i componenti usano altri nomi (vedi sotto)
 - [ ] **Famiglia timeline frammentata**: `journey-timeline.css` (`.timeline-day`/`.timeline-stop`/`.timeline`) vs `timeline-card.css` vs `day-card.css` (`.day-card__stop`) vs orfana `motion.css .timeline-item`. Convenzioni di naming divergenti per lo stesso dominio (giorno+tappe) → al cut-over scegliere UNA struttura. Attenzione anche a `.timeline` (nome generico) come possibile collisione
 - [ ] `input.css ::selection` duplica il `::selection` globale di `design-system.css`
+- [ ] **Doppia convenzione utility**: `styles/utilities.css` (`u-*`, tutte `!important`) duplica utility già presenti senza prefisso in `typography.css` (`.text-center`/`.fw-bold`/`.text-muted`/`.text-success`…) e `spacing.css` (`.mt-*`/`.p-*`/`.text-*`). Inoltre `.u-hidden` vs `.hidden` (design-system.css). Al cut-over scegliere UNA convenzione (consigliato: `u-*` per gli helper atomici, lasciare le classi semantiche ai componenti)
 - [ ] `empty-state.css` keyframe `emptyFloat` ≈ `floating` di `motion.css`
 - [ ] `day-card.css` `transition:background .18s` (durata fissa) → token `--motion-*`
 - [ ] **`search.css` vs `searchbar.css`**: due componenti di ricerca distinti (`.search` = ricerca universale con dropdown risultati; `.searchbar`/`searchbar--map` = barra compatta inline/mappa). Nessuna collisione di classi, ma sovrapposizione concettuale → al cut-over chiarire ruoli ed evitare doppioni di markup
@@ -74,6 +75,7 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [x] ~~Fallback per `--trip-*` nei componenti "globali"~~ **RISOLTO dal designer**: `theme/trip-themes.css` definisce un blocco `:root` di default (`--trip-accent`/`-soft`/`-rgb`/`-gradient`) → i componenti fuori da `[data-trip-theme]` (modal, bottom-sheet, toast, accordion, select, search) restano colorati con l'arancione di default. ⚠️ Si attiverà solo quando `trip-themes.css` sarà collegato al cut-over (prima di colors.css o con precedenza, vedi nodo conflitto sotto)
 - [ ] Collisioni `.app` / `.card` / `.fab` con le classi attuali → si risolvono sostituendo l'HTML (consegna #9)
 - [ ] Ordine di collegamento `<link>` al cut-over: tokens → colors → typography → spacing → motion → design-system → components/*
+- [ ] **Governance `!important`**: `styles/utilities.css` è un layer interamente `!important` (per design, è normale negli utility atomici). CONTRIB.md "Eccezioni autorizzate" oggi cita solo Mapbox + `!important` per reduced-motion e `.hidden` → al cut-over **estendere l'autorizzazione** al layer utility `u-*` (rispettando la decisione "rispetta la contributing")
 
 ## ✅ Già risolto in fasi precedenti (per memoria)
 - Fonte unica: spacing→spacing.css, motion→motion.css (`--motion-*`), tipografia→typography.css, layout/focus/selection→design-system.css
@@ -83,5 +85,5 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ---
 
-**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system).
+**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system) · + `styles/utilities.css` (utility layer).
 Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al consolidamento.
