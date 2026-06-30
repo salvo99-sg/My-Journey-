@@ -15,7 +15,7 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] `--z-dock` → `tokens.css` (usato da `map-dock.css`; nome reale **`--z-dock`**, non `--z-map-dock`. Valore atteso ~250, tra `--z-dropdown:200` e `--z-sheet:300`)
 - [ ] `--z-overlay` → `tokens.css` (usato da `bottom-sheet.css`; in alternativa mappare su `--z-modal`)
 - [ ] `--shadow-2xl` → `tokens.css` (usato da `modal.css`; la scala arriva a `--shadow-xl`)
-- [ ] keyframe pulse del marker → **unificare in `motion.css`**: oggi mancante per `day-card.css`/`timeline-card.css` (riferito come `pulse-marker`) MA `journey-timeline.css` ne definisce uno proprio inline `timelinePulse`. Tenere un solo keyframe condiviso
+- [ ] keyframe pulse del marker → **unificare in `motion.css`**: oggi mancante per `day-card.css`/`timeline-card.css` (riferito come `pulse-marker`), MA `journey-timeline.css` definisce `timelinePulse` (accent) e `map-markers.css` definisce `markerPulse` (verde hardcoded). 3 keyframe pulse divergenti → tenerne uno parametrizzato. NB `markerPulse` usa `rgba(34,197,94,.40)` hardcoded mentre lo sfondo `--map-marker--current` usa `--color-success`: incoerenti
 - [x] ~~`--trip-accent-rgb`~~ **RISOLTO dal designer**: `theme/trip-themes.css` fornisce `--trip-accent-rgb` per `:root` (default) e per ogni tema. La mia proposta `color-mix` è **superata** (rispetto la scelta del designer: triplette esplicite). Consumatori già pronti: `empty-state.css`, `calendar.css`, `journey-timeline.css`. ⚠️ Si attiverà solo quando `trip-themes.css` sarà collegato al cut-over
 
 ## 🔴 Typo / riferimenti errati
@@ -33,6 +33,8 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] `select.css`: misure/tipo hardcoded → token (opzione `border-radius:14px` vs `--radius-*`; `font-size:14/15/11px` vs `--fs-*`). Coerente con gli altri componenti, da valutare in blocco
 - [ ] `map-dock.css`: `#fff` su `__button--primary` (sfondo `--trip-accent`) → `--color-text-inverse`; raggi hardcoded (`28px`/`18px`/`14px`) → `--radius-*`; titolo `24px` → `--fs-*`
 - [ ] `journey-timeline.css`: `#fff` su `.timeline-day__badge` (sfondo `--trip-accent`) → `--color-text-inverse`; raggi/font hardcoded (`18px`, `24px`, ecc.) → `--radius-*`/`--fs-*`
+- [ ] **`map-markers.css`: palette categorie POI non tokenizzata** → hotel `#4F46E5`, restaurant `#EA580C`, attraction `#0F9D8A`, photo `#D946EF`, shopping `#F59E0B`, train `#2563EB`, flight `#DC2626`. Nessun token esistente le copre. Decidere: creare scala `--marker-*` (consigliato) o lasciare hardcoded. ⚠️ Alcune coincidono con accent dei temi (restaurant=default, attraction=tropical, flight=usa) ma sono semantica diversa (categoria, non destinazione)
+- [ ] `map-markers.css`: `#fff` su icona/label/`route-point` border (sfondi colorati) → `--color-text-inverse`; tooltip label `rgba(0,0,0,.78)` / dark `rgba(18,18,22,.92)` → token dedicato; ombre marker custom
 
 ## 🟡 Duplicazioni / doppi meccanismi
 - [ ] `.skeleton` definito 2 volte (`motion.css` shimmer vs `skeleton.css` ::after) → tenere `skeleton.css`, rimuovere da `motion.css` (+ keyframe `shimmer` orfano)
@@ -70,5 +72,5 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ---
 
-**Stato consegna**: 7/13 · #8 libreria componenti: 27 file archiviati · + `theme/trip-themes.css` (theme engine).
+**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine).
 Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al consolidamento.

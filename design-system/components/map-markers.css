@@ -1,0 +1,515 @@
+/*======================================================================
+PRODUCT.......: My Journey
+MODULE........: Map
+FILE..........: components/map-markers.css
+VERSION.......: 1.0.0
+STATUS........: Production Ready
+COMPATIBILITY.: HTML5 / CSS3 / Vanilla JS / PWA
+======================================================================
+MAP MARKERS
+
+Marker system for:
+• Hotel
+• Restaurant
+• Attraction
+• Flight
+• Train
+• Shopping
+• Photo
+• Current Position
+• Selected Position
+• Route Playback
+======================================================================*/
+
+
+/*======================================================================
+BASE MARKER
+======================================================================*/
+
+.map-marker{
+
+position:absolute;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+width:52px;
+
+height:52px;
+
+border-radius:50% 50% 50% 0;
+
+transform:
+translate(-50%,-100%)
+rotate(-45deg);
+
+background:var(--trip-accent);
+
+box-shadow:
+
+0 8px 18px rgba(0,0,0,.22);
+
+cursor:pointer;
+
+transition:
+
+transform var(--motion-fast),
+
+box-shadow var(--motion-fast),
+
+filter var(--motion-fast);
+
+will-change:transform;
+
+z-index:10;
+
+}
+
+.map-marker:hover{
+
+transform:
+translate(-50%,-104%)
+rotate(-45deg)
+scale(1.05);
+
+box-shadow:
+
+0 12px 26px rgba(0,0,0,.26);
+
+}
+
+.map-marker:active{
+
+transform:
+translate(-50%,-98%)
+rotate(-45deg)
+scale(.94);
+
+}
+
+/*======================================================================
+ICON
+======================================================================*/
+
+.map-marker__icon{
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+width:26px;
+
+height:26px;
+
+transform:rotate(45deg);
+
+color:#fff;
+
+}
+
+.map-marker__icon svg{
+
+width:20px;
+
+height:20px;
+
+stroke-width:2.2;
+
+}
+
+/*======================================================================
+LABEL
+======================================================================*/
+
+.map-marker__label{
+
+position:absolute;
+
+bottom:calc(100% + 12px);
+
+left:50%;
+
+transform:translateX(-50%);
+
+padding:8px 12px;
+
+border-radius:999px;
+
+background:rgba(0,0,0,.78);
+
+backdrop-filter:blur(10px);
+
+color:#fff;
+
+font-size:12px;
+
+font-weight:700;
+
+white-space:nowrap;
+
+opacity:0;
+
+pointer-events:none;
+
+transition:
+
+opacity var(--motion-fast),
+
+transform var(--motion-fast);
+
+}
+
+.map-marker:hover .map-marker__label{
+
+opacity:1;
+
+transform:
+
+translateX(-50%)
+
+translateY(-4px);
+
+}
+
+/*======================================================================
+SELECTED
+======================================================================*/
+
+.map-marker.is-selected{
+
+box-shadow:
+
+0 0 0 6px var(--trip-accent-soft),
+
+0 12px 28px rgba(0,0,0,.25);
+
+}
+
+/*======================================================================
+CURRENT POSITION
+======================================================================*/
+
+.map-marker--current{
+
+background:var(--color-success);
+
+animation:
+
+markerPulse 2.8s infinite;
+
+}
+
+/*======================================================================
+HOTEL
+======================================================================*/
+
+.map-marker--hotel{
+
+background:#4F46E5;
+
+}
+
+/*======================================================================
+RESTAURANT
+======================================================================*/
+
+.map-marker--restaurant{
+
+background:#EA580C;
+
+}
+
+/*======================================================================
+ATTRACTION
+======================================================================*/
+
+.map-marker--attraction{
+
+background:#0F9D8A;
+
+}
+
+/*======================================================================
+PHOTO
+======================================================================*/
+
+.map-marker--photo{
+
+background:#D946EF;
+
+}
+
+/*======================================================================
+SHOPPING
+======================================================================*/
+
+.map-marker--shopping{
+
+background:#F59E0B;
+
+}
+
+/*======================================================================
+TRAIN
+======================================================================*/
+
+.map-marker--train{
+
+background:#2563EB;
+
+}
+
+/*======================================================================
+FLIGHT
+======================================================================*/
+
+.map-marker--flight{
+
+background:#DC2626;
+
+}
+
+/*======================================================================
+START
+======================================================================*/
+
+.map-marker--start{
+
+background:var(--color-success);
+
+}
+
+/*======================================================================
+FINISH
+======================================================================*/
+
+.map-marker--finish{
+
+background:var(--color-error);
+
+}
+
+/*======================================================================
+TEMP PIN
+======================================================================*/
+
+.map-marker--placing{
+
+animation:
+
+markerBounce .9s ease-in-out infinite;
+
+}
+
+/*======================================================================
+ROUTE DOT
+======================================================================*/
+
+.route-point{
+
+width:14px;
+
+height:14px;
+
+border-radius:50%;
+
+background:var(--trip-accent);
+
+border:3px solid #fff;
+
+box-shadow:
+
+0 2px 10px rgba(0,0,0,.2);
+
+}
+
+/*======================================================================
+ROUTE LINE
+======================================================================*/
+
+.route-line{
+
+stroke:var(--trip-accent);
+
+stroke-width:5;
+
+stroke-linecap:round;
+
+stroke-linejoin:round;
+
+fill:none;
+
+}
+
+/*======================================================================
+ANIMATED FLIGHT
+======================================================================*/
+
+.route-flight{
+
+position:absolute;
+
+width:26px;
+
+height:26px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+color:var(--trip-accent);
+
+animation:
+
+flightFloat 1.8s ease-in-out infinite;
+
+}
+
+.route-flight svg{
+
+width:22px;
+
+height:22px;
+
+}
+
+/*======================================================================
+ANIMATIONS
+======================================================================*/
+
+@keyframes markerPulse{
+
+0%{
+
+box-shadow:
+
+0 0 0 0 rgba(34,197,94,.40);
+
+}
+
+100%{
+
+box-shadow:
+
+0 0 0 18px rgba(34,197,94,0);
+
+}
+
+}
+
+@keyframes markerBounce{
+
+0%{
+
+transform:
+
+translate(-50%,-100%)
+
+rotate(-45deg);
+
+}
+
+50%{
+
+transform:
+
+translate(-50%,-110%)
+
+rotate(-45deg);
+
+}
+
+100%{
+
+transform:
+
+translate(-50%,-100%)
+
+rotate(-45deg);
+
+}
+
+}
+
+@keyframes flightFloat{
+
+0%,100%{
+
+transform:translateY(0);
+
+}
+
+50%{
+
+transform:translateY(-6px);
+
+}
+
+}
+
+/*======================================================================
+DARK MODE
+======================================================================*/
+
+[data-theme="dark"] .map-marker{
+
+box-shadow:
+
+0 10px 24px rgba(0,0,0,.45);
+
+}
+
+[data-theme="dark"] .map-marker__label{
+
+background:rgba(18,18,22,.92);
+
+}
+
+/*======================================================================
+ACCESSIBILITY
+======================================================================*/
+
+.map-marker:focus-visible{
+
+outline:none;
+
+box-shadow:
+
+0 0 0 5px var(--trip-accent-soft),
+
+0 10px 24px rgba(0,0,0,.25);
+
+}
+
+/*======================================================================
+REDUCED MOTION
+======================================================================*/
+
+@media (prefers-reduced-motion:reduce){
+
+.map-marker,
+
+.route-flight,
+
+.map-marker--current,
+
+.map-marker--placing{
+
+animation:none;
+
+transition:none;
+
+}
+
+}
+
+/*======================================================================
+END OF FILE
+======================================================================*/
