@@ -70,6 +70,8 @@ Legenda stato:
 | `js/core/app.js` | Core: bootstrap, lifecycle, eventi globali (online/offline/visibility/resize), carica e avvia i moduli, ripristina tema/lingua | 🟡 archiviato | ⚠️ Non è ESM reale; dipende da 9 moduli non ancora consegnati; chiavi storage diverse dall'app live → vedi CONSOLIDATION |
 | `js/core/router.js` | Router hash-based: 11 route (home/trip/map/album/tickets/budget/packing/journal/memories/settings/trophies), show/hide `page.hidden`, transizione `.page-enter`, evento `route:change` | 🟡 archiviato | ⚠️ Dipende dagli id `page-*` dell'HTML #9; nessuna route `/admin` → vedi CONSOLIDATION |
 | `js/core/storage.js` | Wrapper localStorage namespaced (`myjourney.1.0.*`): get/set/remove/has/toggle + CRUD array (push/update/delete by id) + export/import (backup) + size | 🟡 archiviato | ⚠️ Chiavi diverse dall'app live (`mj-*`) → serve migrazione; **non gestisce IndexedDB** (foto/biglietti) → vedi CONSOLIDATION |
+| `js/core/state.js` | Stato reattivo centralizzato: store (user/journeys/currentJourney/map/ui…), get/set/update per dot-path, subscribe/notify, restore/persist via Storage | 🟡 archiviato | ⚠️ Doppia persistenza con storage; non in `App.loadModules` → vedi CONSOLIDATION |
+| `js/core/theme.js` | Theme engine JS: light/dark (`data-theme`), trip theme (`data-trip-theme`), system preference, persistenza, toggle/restore | 🟡 archiviato | Pilota correttamente colors.css + trip-themes.css; trip-theme non ripristinato al boot via App → vedi CONSOLIDATION |
 
 > Archiviato sotto `design-system/js/` per **non toccare** il `app.js` di root (live).
 
@@ -95,7 +97,7 @@ Legenda stato:
 | 7 | `design-system.css` | ✅ |
 | 8 | Libreria completa componenti | 🟡 in corso (button, icon-button, fab, navigation, bottom-navigation, accordion, calendar, select, search, map-dock, journey-timeline, map-markers) |
 | 9 | HTML completo di tutte le schermate | ⬜ |
-| 10 | JavaScript ES Modules | 🟡 in corso (core/app.js, core/router.js, core/storage.js) |
+| 10 | JavaScript ES Modules | 🟡 in corso (core: app, router, storage, state, theme) |
 | 11 | SVG (150+ icone) | ⬜ |
 | 12 | Logo e PWA Assets | ⬜ |
 | 13 | Documentazione tecnica finale | ⬜ |
