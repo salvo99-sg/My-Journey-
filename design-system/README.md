@@ -48,6 +48,14 @@ Legenda stato:
 
 I componenti sono **namespaced** (additivi) e dipendono dai token di `typography.css` + `motion.css` + `spacing.css`: funzioneranno appieno solo quando tutto il DS sarà collegato insieme (cut-over).
 
+## ⚙️ JavaScript (`design-system/js/` — #10, nuova architettura modulare)
+
+| File | Ruolo | Stato | Note |
+|------|-------|-------|------|
+| `js/core/app.js` | Core: bootstrap, lifecycle, eventi globali (online/offline/visibility/resize), carica e avvia i moduli, ripristina tema/lingua | 🟡 archiviato | ⚠️ Non è ESM reale; dipende da 9 moduli non ancora consegnati; chiavi storage diverse dall'app live → vedi CONSOLIDATION |
+
+> Archiviato sotto `design-system/js/` per **non toccare** il `app.js` di root (live).
+
 ## 📚 Governance (root del repo)
 
 | File | Contenuto |
@@ -70,7 +78,7 @@ I componenti sono **namespaced** (additivi) e dipendono dai token di `typography
 | 7 | `design-system.css` | ✅ |
 | 8 | Libreria completa componenti | 🟡 in corso (button, icon-button, fab, navigation, bottom-navigation, accordion, calendar, select, search, map-dock, journey-timeline, map-markers) |
 | 9 | HTML completo di tutte le schermate | ⬜ |
-| 10 | JavaScript ES Modules | ⬜ |
+| 10 | JavaScript ES Modules | 🟡 in corso (core/app.js) |
 | 11 | SVG (150+ icone) | ⬜ |
 | 12 | Logo e PWA Assets | ⬜ |
 | 13 | Documentazione tecnica finale | ⬜ |

@@ -80,6 +80,13 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] Ordine di collegamento `<link>` al cut-over: tokens → colors → typography → spacing → motion → design-system → components/*
 - [ ] **Governance `!important`**: `styles/utilities.css` è un layer interamente `!important` (per design, è normale negli utility atomici). CONTRIB.md "Eccezioni autorizzate" oggi cita solo Mapbox + `!important` per reduced-motion e `.hidden` → al cut-over **estendere l'autorizzazione** al layer utility `u-*` (rispettando la decisione "rispetta la contributing")
 
+## 🟣 Migrazione JavaScript (#10 — nuova architettura modulare)
+- [ ] **`js/core/app.js` ≠ ES Module reale**: nessun `import`/`export`, è un oggetto globale `App` + riferimenti a globali. La scaletta lo chiama "ES Modules" → al cut-over decidere: ESM vero (`<script type="module">` + import/export) o pattern globale/IIFE. CSP `script-src 'self'` compatibile con entrambi
+- [ ] **Dipende da 9 moduli non ancora consegnati**: `Theme`, `Router`, `Storage`, `Modal`, `Timeline`, `JourneyMap`, `Search`, `Language`, `Animations`. Finché mancano, `loadModules()`/`restorePreferences()` lanciano ReferenceError → il core non gira da solo (atteso: arriveranno nelle prossime consegne)
+- [ ] 🔴 **Mismatch chiavi storage**: il nuovo core legge `Storage.get("theme")` / `("language")`, ma l'app live usa `mj-theme` / `mj-lang` (+ dati `agenda-viaggi-v2`, `mj-utente`, `mj-onboarded`, `mj-proprietario`, IndexedDB `agenda-viaggi-db`). Al cut-over il modulo `Storage` dovrà **mappare/migrare** le chiavi esistenti, altrimenti tema/lingua e soprattutto **i viaggi salvati si perderebbero**
+- [ ] 🔵 **Sostituzione totale di `app.js` (root, ~3200 righe)**: la nuova architettura rimpiazza tutta la logica live. Rischio più alto del cut-over → i moduli nuovi devono re-implementare TUTTE le feature attuali (CRUD viaggi, IndexedDB foto/biglietti, geocoding+country, Mapbox lingua/preset, i18n IT/EN, PWA/SW, onboarding, /admin). Da verificare feature-by-feature prima di pubblicare
+- [ ] Nota: archiviato in `design-system/js/` per non toccare il `app.js` di root (live). La cartella JS del DS è separata dalla root fino al cut-over
+
 ## ✅ Già risolto in fasi precedenti (per memoria)
 - Fonte unica: spacing→spacing.css, motion→motion.css (`--motion-*`), tipografia→typography.css, layout/focus/selection→design-system.css
 - Collisione token `--timeline-line/-node` (misura vs colore) → rinominati width/size vs color
@@ -88,5 +95,5 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ---
 
-**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system) · + `styles/utilities.css` (utility layer) · + `styles/helpers.css` (helper layer).
+**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system) · + `styles/utilities.css` (utility layer) · + `styles/helpers.css` (helper layer) · **#10 JS avviato**: `js/core/app.js`.
 Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al consolidamento.
