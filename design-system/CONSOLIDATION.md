@@ -55,6 +55,7 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] `input.css ::selection` duplica il `::selection` globale di `design-system.css`
 - [ ] **Tre convenzioni utility/helper**: `styles/utilities.css` (`u-*`, `!important`) + `styles/helpers.css` (`h-*`) + classi unprefixed in `typography.css`/`spacing.css`. ✅ **DECISO #4**: tenere `u-*` (atomici) + `h-*` (compositi); rimuovere le unprefixed duplicate (`.text-*`/`.fw-*`/`.mt-*`/`.stack`/`.inline`) e `.hidden` (tenere `.u-hidden`)
 - [ ] `empty-state.css` keyframe `emptyFloat` ≈ `floating` di `motion.css`
+- [ ] **`animations.js` ↔ `animations.css`**: (a) `shake()` aggiunge classe `.shake` ma `animations.css` ha solo `@keyframes shake`, **nessuna classe `.shake`** → no-op. Aggiungere `.shake{animation:shake ...}`. (b) scroll-reveal aggiunge `.is-visible` a `[data-animate]` ma **manca la regola CSS** `[data-animate]{opacity:0;…}` + `[data-animate].is-visible{…}` → nessun effetto. (c) `.is-visible` ora è **sovraccarica** (scroll-reveal + toast + manager modali): contesti diversi, ma da tenere a mente. `.fade-up`/`.pulse` OK (classi presenti)
 - [ ] `day-card.css` `transition:background .18s` (durata fissa) → token `--motion-*`
 - [ ] **`search.css` vs `searchbar.css` vs `search.js`**: TRE rappresentazioni della ricerca. `search.css` (`.search__results`/`__item`/`__match`) e `searchbar.css` (`.searchbar__result`) sono componenti col loro markup; ma `js/modules/search.js` lavora in modo **generico** su `[data-search-input]`/`[data-search-results]`/`[data-searchable]`, **clona** i nodi nei risultati e evidenzia con classe `.is-search-match` (che **nessuno** dei due CSS stila — loro usano `.search__match`). Al cut-over: scegliere il componente e **collegare il JS alle sue classi** (o definire `.is-search-match`)
 
@@ -129,5 +130,5 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ---
 
-**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system) · + `styles/utilities.css` (utility layer) · + `styles/helpers.css` (helper layer) · **#10 JS avviato**: core (app, router, storage, state, theme, language) · ui (modal) · modules (timeline, map, search, autocomplete).
+**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system) · + `styles/utilities.css` (utility layer) · + `styles/helpers.css` (helper layer) · **#10 JS avviato**: core (app, router, storage, state, theme, language) · ui (modal, animations) · modules (timeline, map, search, autocomplete). TUTTI i 9 moduli di App.loadModules consegnati.
 Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al consolidamento.
