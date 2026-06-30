@@ -73,6 +73,7 @@ Legenda stato:
 | `js/core/state.js` | Stato reattivo centralizzato: store (user/journeys/currentJourney/map/ui…), get/set/update per dot-path, subscribe/notify, restore/persist via Storage | 🟡 archiviato | ⚠️ Doppia persistenza con storage; non in `App.loadModules` → vedi CONSOLIDATION |
 | `js/core/theme.js` | Theme engine JS: light/dark (`data-theme`), trip theme (`data-trip-theme`), system preference, persistenza, toggle/restore | 🟡 archiviato | Pilota correttamente colors.css + trip-themes.css; trip-theme non ripristinato al boot via App → vedi CONSOLIDATION |
 | `js/core/language.js` | i18n IT/EN: `set`/`toggle`/`register`/`t()`, auto-translate via `[data-i18n]`/`-placeholder`/`-title`/`-aria`, persistenza | 🟡 archiviato | ⚠️ Dizionario non ancora fornito (`register` non chiamato) → `t()` torna la chiave |
+| `js/core/offline.js` | Stato online/offline: toggle `body.is-offline`, `State.set('offline')`, evento `offline:change` | 🟡 archiviato | ⚠️ Duplica gli handler online/offline di app.js (classe `.offline` vs `.is-offline`) → vedi CONSOLIDATION |
 | `js/ui/modal.js` | Modal/sheet manager: open/close/toggle, backdrop, ESC, focus, stack, scroll-lock | 🟡 archiviato | 🔴 Aggiunge `.is-visible` ma `modal.css` usa `.modal-backdrop.is-open` → non apre. Vedi CONSOLIDATION |
 | `js/ui/animations.js` | Motion engine JS: scroll-reveal (IntersectionObserver `[data-animate]`), stagger, counter, progress, shake/pulse, reduced-motion | 🟡 archiviato | ⚠️ `.shake` e reveal `[data-animate].is-visible` non stilati in animations.css → vedi CONSOLIDATION |
 | `js/ui/ui-controls.js` | Wiring generico: tabs (`[data-tab]`), accordion (`[data-accordion]`), bottom-nav (`[data-route]`→Router) | 🟡 archiviato | ⚠️ Non in `App.loadModules`; tabs senza CSS dedicato; `getElementById(target)` senza null-check → vedi CONSOLIDATION |
@@ -106,7 +107,7 @@ Legenda stato:
 | 7 | `design-system.css` | ✅ |
 | 8 | Libreria completa componenti | 🟡 in corso (button, icon-button, fab, navigation, bottom-navigation, accordion, calendar, select, search, map-dock, journey-timeline, map-markers) |
 | 9 | HTML completo di tutte le schermate | ⬜ |
-| 10 | JavaScript ES Modules | 🟡 in corso (core: app/router/storage/state/theme/language · ui: modal/animations/ui-controls · modules: timeline/map/search/autocomplete/onboarding) |
+| 10 | JavaScript ES Modules | 🟡 in corso (core: app/router/storage/state/theme/language/offline · ui: modal/animations/ui-controls · modules: timeline/map/search/autocomplete/onboarding) |
 | 11 | SVG (150+ icone) | ⬜ |
 | 12 | Logo e PWA Assets | ⬜ |
 | 13 | Documentazione tecnica finale | ⬜ |
