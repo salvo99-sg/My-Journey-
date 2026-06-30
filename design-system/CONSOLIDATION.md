@@ -20,6 +20,8 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ## 🔴 Typo / riferimenti errati
 - [ ] `ticket-card.css` (dark): `var(--color-background)` → `var(--color-bg)`
+- [ ] **`helpers.css`: spacing token inesistenti** → usa `--space-md/-sm/-lg/-xl` (named) ma `spacing.css` ha scala **numerica** `--space-1..--space-24`. Tutti i gap/margin di `.h-stack`/`.h-inline`/`.h-grid-*`/`.h-flow`/`.h-scroll-x` collassano (var undefined). Decidere: aggiungere alias named (`--space-sm:8px`/`-md:16px`/`-lg:20px`/`-xl:24px`) o rimappare helpers sui numerici. ⚠️ Possibile **terza fonte spacing** in arrivo (named) → attendere eventuale `spacing.css` v2
+- [ ] **`helpers.css`: `.h-handwriting` usa `--font-handwriting`** ma il token reale è `--font-handwritten` (typography.css) → non risolve
 
 ## 🟠 Hardcoded → token esistenti
 - [ ] `trip-card.css`: colori stato `#F59E0B / #22C55E / #3B82F6 / #D1D5DB` → `--status-planned/-progress/-completed/-draft`
@@ -35,6 +37,7 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] `journey-timeline.css`: `#fff` su `.timeline-day__badge` (sfondo `--trip-accent`) → `--color-text-inverse`; raggi/font hardcoded (`18px`, `24px`, ecc.) → `--radius-*`/`--fs-*`
 - [ ] **`map-markers.css`: palette categorie POI non tokenizzata** → hotel `#4F46E5`, restaurant `#EA580C`, attraction `#0F9D8A`, photo `#D946EF`, shopping `#F59E0B`, train `#2563EB`, flight `#DC2626`. Nessun token esistente le copre. Decidere: creare scala `--marker-*` (consigliato) o lasciare hardcoded. ⚠️ Alcune coincidono con accent dei temi (restaurant=default, attraction=tropical, flight=usa) ma sono semantica diversa (categoria, non destinazione)
 - [ ] `map-markers.css`: `#fff` su icona/label/`route-point` border (sfondi colorati) → `--color-text-inverse`; tooltip label `rgba(0,0,0,.78)` / dark `rgba(18,18,22,.92)` → token dedicato; ombre marker custom
+- [ ] `helpers.css`: `#fff` su `.h-trip-gradient` (sfondo gradiente) → `--color-text-inverse`
 
 ## 🟡 Duplicazioni / doppi meccanismi
 - [ ] `.skeleton` definito 2 volte (`motion.css` shimmer vs `skeleton.css` ::after) → tenere `skeleton.css`, rimuovere da `motion.css` (+ keyframe `shimmer` orfano)
@@ -42,7 +45,7 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] `motion.css .timeline-item` (trattino) orfana → i componenti usano altri nomi (vedi sotto)
 - [ ] **Famiglia timeline frammentata**: `journey-timeline.css` (`.timeline-day`/`.timeline-stop`/`.timeline`) vs `timeline-card.css` vs `day-card.css` (`.day-card__stop`) vs orfana `motion.css .timeline-item`. Convenzioni di naming divergenti per lo stesso dominio (giorno+tappe) → al cut-over scegliere UNA struttura. Attenzione anche a `.timeline` (nome generico) come possibile collisione
 - [ ] `input.css ::selection` duplica il `::selection` globale di `design-system.css`
-- [ ] **Doppia convenzione utility**: `styles/utilities.css` (`u-*`, tutte `!important`) duplica utility già presenti senza prefisso in `typography.css` (`.text-center`/`.fw-bold`/`.text-muted`/`.text-success`…) e `spacing.css` (`.mt-*`/`.p-*`/`.text-*`). Inoltre `.u-hidden` vs `.hidden` (design-system.css). Al cut-over scegliere UNA convenzione (consigliato: `u-*` per gli helper atomici, lasciare le classi semantiche ai componenti)
+- [ ] **Tre convenzioni utility/helper**: `styles/utilities.css` (`u-*`, `!important`) + `styles/helpers.css` (`h-*`) + classi unprefixed in `typography.css`/`spacing.css` (`.text-center`/`.fw-bold`/`.mt-*`/`.stack`/`.inline`). Sovrapposizioni dirette: `.h-stack`≈`.stack`, `.h-inline`≈`.inline`, `.h-center`≈`.u-center`, `.u-hidden` vs `.hidden`. Al cut-over scegliere UNA tassonomia (es. `u-*` atomici + `h-*` compositi, rimuovere le unprefixed duplicate)
 - [ ] `empty-state.css` keyframe `emptyFloat` ≈ `floating` di `motion.css`
 - [ ] `day-card.css` `transition:background .18s` (durata fissa) → token `--motion-*`
 - [ ] **`search.css` vs `searchbar.css`**: due componenti di ricerca distinti (`.search` = ricerca universale con dropdown risultati; `.searchbar`/`searchbar--map` = barra compatta inline/mappa). Nessuna collisione di classi, ma sovrapposizione concettuale → al cut-over chiarire ruoli ed evitare doppioni di markup
@@ -61,7 +64,7 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] **Due fonti motion divergenti**:
   - `motion.css` (archiviato, fonte attuale): token `--motion-instant/fast/normal/medium/slow/hero/map` + `--ease-standard` + regole globali `*`/`button`/`input` + keyframes
   - `styles/animations.css` (nuovo): token `--motion-instant/fast/medium/slow/hero` + `--ease-standard/-soft/-emphasized` + libreria keyframes + utility (`.fade-in`/`.fade-up`/`.scale-in`/`.pop`/`.float`/`.pulse`/`.spin`) + reduced-motion globale
-  - **Valori diversi** sugli stessi token: `--motion-fast` 120→**160ms**, `--motion-medium` 340→**280ms**, `--motion-slow` 520→**420ms**, `--motion-hero` 680→**700ms**; `--ease-standard` `cubic-bezier(.22,.61,.36,1)` → `(.20,.80,.20,1)`
+  - **Valori diversi** sugli stessi token: `--motion-fast` 120→**160ms**, `--motion-medium` 340→**280ms**, `--motion-slow` 520→**420ms**, `--motion-hero` 680→**700ms**; `--ease-standard` `cubic-bezier(.22,.61,.36,1)` → `(.20,.80,.20,1)`. Anche **`--ease-soft` diverge**: `motion.css` `(.20,.80,.20,1)` vs `animations.css` `(.25,.90,.25,1)`
   - ⚠️ **`animations.css` NON definisce `--motion-normal` né `--motion-map`**. Ma `--motion-normal` è usato da 5 componenti già archiviati (**button, fab, icon-button, navigation, bottom-navigation**) e `--motion-map` da `motion.css`. Se `animations.css` **sostituisce** `motion.css` → quelle transizioni si rompono (token undefined)
   - ❓ **Da decidere**: tenere `animations.css` come unica fonte motion E aggiungere `--motion-normal`/`--motion-map` (o rimappare i 5 componenti su `--motion-medium`), oppure fondere le due. Scelta non autonoma
 - [ ] Keyframe duplicati tra `motion.css` e `animations.css` (`floating`, `spin`, `shimmer`, `sheetOpen/Close`, `modalOpen/Close`, `fade*`, `scaleIn`…) → al cut-over una sola fonte. NB `animations.css .pulse` è scale-based (≠ `markerPulse`/`timelinePulse` che sono ring box-shadow): non confondere
@@ -85,5 +88,5 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ---
 
-**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system) · + `styles/utilities.css` (utility layer).
+**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system) · + `styles/utilities.css` (utility layer) · + `styles/helpers.css` (helper layer).
 Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al consolidamento.
