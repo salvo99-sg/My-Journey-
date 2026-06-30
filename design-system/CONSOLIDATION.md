@@ -119,6 +119,13 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] shortcut `"/#trip/new"` non gestito dal router flat (`resolve()` cerca route esatta → cade su home). Serve gestione sub-route/param nel router, oppure cambiare l'url shortcut
 - [ ] Esiste già un `manifest.json` **live alla root**: al cut-over sostituirlo con questo (path corretti per base-path) — non duplicarlo
 
+## 🟣 ARCHITECTURE.md (#13) — cosa rivela
+- [ ] **Mancano ancora 5 Journey Modules**: il doc elenca `budget.js`, `album.js`, `diary.js`, `tickets.js`, `packing.js` (oltre a timeline/map/search/autocomplete già arrivati). Quindi **#10 JS non è completo**. (NB: `onboarding.js` consegnato ma non in elenco doc.)
+- [ ] **Mancano i layer `js/data/` e `js/services/`** (citati nella folder structure, nessun file ancora). Probabile sede del **modulo media/IndexedDB** (DECISO #6) e dei servizi (geocoding Mapbox, ecc.)
+- [ ] 🟢 **Risolve l'ambiguità doppia-persistenza**: il doc impone *Data Flow* `UI→State→Storage` e "State = single source of truth", "No module modifies data directly", "Never use localStorage directly" → al cut-over i moduli aggiornano **State**, che persiste via **Storage** (chiarisce il nodo `state.js`/`storage.js`)
+- [ ] **Struttura cartelle CSS diversa**: il doc prevede `css/{tokens,base,layout,components,themes,utilities}/` (sottocartelle) vs il nostro archivio piatto `design-system/`. Riorganizzazione opzionale al cut-over (cosmetica)
+- [ ] 🟢 I "Principles" del doc **corroborano nodi già aperti**: "Components never define colors/typography" → conferma i nodi hardcoded (#fff/raggi/font); "No inline CSS/JS" → l'HTML #9 dovrà esternalizzare lo stile/JS inline dell'app live
+
 ## 🔵 Strutturali / fondamenta
 - [ ] **Responsive `.page`** (allargamento 720/1180 tablet/desktop) da ri-applicare in `design-system.css` (`.app`/`.page`); oggi solo `max-width:480`
 - [ ] Tokenizzare colori brand **taupe `#6B645D`** e **oliva `#708050`**
