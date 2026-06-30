@@ -28,6 +28,7 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] Vetri/scrim dark hardcoded → `--glass-strong` / `--glass-nav` (unificare valori divergenti
       .82/.84/.85/.88/.90/.92/.94): `toast`, `searchbar--map`, `map-dock`, `header`, `icon-btn--map`
 - [ ] Ombre custom (dock/sheet/bottom-nav: `0 -Xpx … rgba(0,0,0,…)`) → token ombra dedicato
+- [ ] `accordion.css`: misure/tipo hardcoded → token (icona `border-radius:14px` vs scala `--radius-*`; `font-size:17/13/12px` vs `--fs-*`; `gap:14px`). Coerente con gli altri componenti, da valutare in blocco
 
 ## 🟡 Duplicazioni / doppi meccanismi
 - [ ] `.skeleton` definito 2 volte (`motion.css` shimmer vs `skeleton.css` ::after) → tenere `skeleton.css`, rimuovere da `motion.css` (+ keyframe `shimmer` orfano)
@@ -41,7 +42,7 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] **Responsive `.page`** (allargamento 720/1180 tablet/desktop) da ri-applicare in `design-system.css` (`.app`/`.page`); oggi solo `max-width:480`
 - [ ] Tokenizzare colori brand **taupe `#6B645D`** e **oliva `#708050`**
 - [ ] Durate motion vs mockup: hero `680→650ms`, map `900→1200ms`
-- [ ] Fallback per `--trip-*` nei componenti "globali" senza `[data-trip-theme]` (modal, bottom-sheet, toast): es. focus-ring `--trip-accent-soft` che altrimenti sparisce
+- [ ] Fallback per `--trip-*` nei componenti "globali" senza `[data-trip-theme]` (modal, bottom-sheet, toast, **accordion**): es. focus-ring `--trip-accent-soft` che altrimenti sparisce. NB `accordion.css` usa `--trip-accent`/`--trip-accent-soft` per bordo `is-open`, icona, chevron e focus-ring, ma è dichiarato anche per FAQ/Packing/Notes (potenzialmente fuori da `[data-trip-theme]`)
 - [ ] Collisioni `.app` / `.card` / `.fab` con le classi attuali → si risolvono sostituendo l'HTML (consegna #9)
 - [ ] Ordine di collegamento `<link>` al cut-over: tokens → colors → typography → spacing → motion → design-system → components/*
 
@@ -53,5 +54,5 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ---
 
-**Stato consegna**: 7/13 · #8 libreria componenti: 21 file archiviati.
+**Stato consegna**: 7/13 · #8 libreria componenti: 22 file archiviati.
 Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al consolidamento.
