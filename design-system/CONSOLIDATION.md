@@ -56,7 +56,7 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] **Tre convenzioni utility/helper**: `styles/utilities.css` (`u-*`, `!important`) + `styles/helpers.css` (`h-*`) + classi unprefixed in `typography.css`/`spacing.css`. ✅ **DECISO #4**: tenere `u-*` (atomici) + `h-*` (compositi); rimuovere le unprefixed duplicate (`.text-*`/`.fw-*`/`.mt-*`/`.stack`/`.inline`) e `.hidden` (tenere `.u-hidden`)
 - [ ] `empty-state.css` keyframe `emptyFloat` ≈ `floating` di `motion.css`
 - [ ] `day-card.css` `transition:background .18s` (durata fissa) → token `--motion-*`
-- [ ] **`search.css` vs `searchbar.css`**: due componenti di ricerca distinti (`.search` = ricerca universale con dropdown risultati; `.searchbar`/`searchbar--map` = barra compatta inline/mappa). Nessuna collisione di classi, ma sovrapposizione concettuale → al cut-over chiarire ruoli ed evitare doppioni di markup
+- [ ] **`search.css` vs `searchbar.css` vs `search.js`**: TRE rappresentazioni della ricerca. `search.css` (`.search__results`/`__item`/`__match`) e `searchbar.css` (`.searchbar__result`) sono componenti col loro markup; ma `js/modules/search.js` lavora in modo **generico** su `[data-search-input]`/`[data-search-results]`/`[data-searchable]`, **clona** i nodi nei risultati e evidenzia con classe `.is-search-match` (che **nessuno** dei due CSS stila — loro usano `.search__match`). Al cut-over: scegliere il componente e **collegare il JS alle sue classi** (o definire `.is-search-match`)
 
 ## 🔴 Doppia fonte temi destinazione — colors.css vs trip-themes.css ✅ DECISO #1 (trip-themes.css vince)
 - [ ] **Due definizioni divergenti** degli stessi `[data-trip-theme]`:
@@ -128,5 +128,5 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ---
 
-**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system) · + `styles/utilities.css` (utility layer) · + `styles/helpers.css` (helper layer) · **#10 JS avviato**: core (app, router, storage, state, theme, language) · ui (modal) · modules (timeline, map).
+**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system) · + `styles/utilities.css` (utility layer) · + `styles/helpers.css` (helper layer) · **#10 JS avviato**: core (app, router, storage, state, theme, language) · ui (modal) · modules (timeline, map, search).
 Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al consolidamento.
