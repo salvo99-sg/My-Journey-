@@ -19,6 +19,10 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 6. **Foto/biglietti → layer IndexedDB aggiunto da me al cut-over**: piccolo modulo media che riusa lo schema `agenda-viaggi-db` esistente, agganciato all'architettura a moduli. `storage.js` resta per localStorage. Garantire che foto/biglietti esistenti **non si perdano**.
 7. **`/admin` → reintrodurre come route nascosta** nel nuovo router + logica proprietario (`mj-proprietario`), comportamento come l'app live (accesso nascosto, nessun dato esposto).
 8. **Palette POI → tokenizzare `--marker-*`**: creare scala token (`--marker-hotel/-restaurant/-attraction/-photo/-shopping/-train/-flight`) e convertire `map-markers.css`.
+9. **Responsive → resta mobile-first**: mantenere l'esperienza a telefono (PWA), al massimo leggero allargamento tablet. **NON** implementare sidebar/griglia desktop ora; breakpoint del doc (1024/1280/1600) ignorati per desktop. Sidebar/drawer del DS restano archiviati per il futuro.
+10. **Colori PWA → allineare alla palette DS**: nel manifest `theme_color:#1E3160` (navy DS), `background_color:#FCF8F2` (crema) — sostituire `#0F172A`/`#FFFFFF`. Evita il flash bianco sullo splash, coerenza brand.
+11. **Stati viaggio → tassonomia attuale dell'app**: `draft/planned/progress/completed` (token `--status-*` + dati esistenti). Riallineare `constants.js JOURNEY_STATUS` a questa (NON adottare planning/active/archived) → nessun rischio sui viaggi salvati.
+12. **Ricerca → tenere entrambi i componenti con ruoli distinti**: `.searchbar` (luoghi su mappa/inline) + `.search` (universale viaggi/memorie). Collegare il JS alle classi corrette (definire `.search__match` o adattare `search.js`).
 
 ---
 
