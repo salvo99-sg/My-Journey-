@@ -16,7 +16,7 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] `--z-overlay` → `tokens.css` (usato da `bottom-sheet.css`; in alternativa mappare su `--z-modal`)
 - [ ] `--shadow-2xl` → `tokens.css` (usato da `modal.css`; la scala arriva a `--shadow-xl`)
 - [ ] keyframe `pulse-marker` → `motion.css` (usato da `day-card.css` e `timeline-card.css`)
-- [ ] `--trip-accent-rgb` → **non** aggiungere 14 triplette: convertire `empty-state.css` a `color-mix(in srgb, var(--trip-accent) X%, transparent)`
+- [ ] `--trip-accent-rgb` → **non** aggiungere 14 triplette: convertire i consumatori a `color-mix(in srgb, var(--trip-accent) X%, transparent)`. Consumatori: `empty-state.css`; **`calendar.css`** (`.calendar__day--range` light .12 / dark .18)
 
 ## 🔴 Typo / riferimenti errati
 - [ ] `ticket-card.css` (dark): `var(--color-background)` → `var(--color-bg)`
@@ -29,6 +29,7 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
       .82/.84/.85/.88/.90/.92/.94): `toast`, `searchbar--map`, `map-dock`, `header`, `icon-btn--map`
 - [ ] Ombre custom (dock/sheet/bottom-nav: `0 -Xpx … rgba(0,0,0,…)`) → token ombra dedicato
 - [ ] `accordion.css`: misure/tipo hardcoded → token (icona `border-radius:14px` vs scala `--radius-*`; `font-size:17/13/12px` vs `--fs-*`; `gap:14px`). Coerente con gli altri componenti, da valutare in blocco
+- [ ] `calendar.css`: testo su sfondo accent `#fff` (`--day--selected`, `--range-start/-end`, dot `--selected::after`) → `--color-text-inverse`. Inoltre misure/tipo hardcoded (titolo `28px` vs `--fs-*`; giorni `border-radius:16px` vs `--radius-*`)
 
 ## 🟡 Duplicazioni / doppi meccanismi
 - [ ] `.skeleton` definito 2 volte (`motion.css` shimmer vs `skeleton.css` ::after) → tenere `skeleton.css`, rimuovere da `motion.css` (+ keyframe `shimmer` orfano)
@@ -54,5 +55,5 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ---
 
-**Stato consegna**: 7/13 · #8 libreria componenti: 22 file archiviati.
+**Stato consegna**: 7/13 · #8 libreria componenti: 23 file archiviati.
 Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al consolidamento.

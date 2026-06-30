@@ -35,6 +35,7 @@ Legenda stato:
 | `navigation.css` | `.navigation` (top nav) | 🟡 archiviato |
 | `bottom-navigation.css` | `.bottom-nav` | 🟡 archiviato |
 | `accordion.css` | `.accordion` (+ `__item.is-open`/`__badge`/…) | 🟡 archiviato |
+| `calendar.css` | `.calendar` (+ `__day--today/--selected/--range`/…) | 🟡 archiviato |
 
 I componenti sono **namespaced** (additivi) e dipendono dai token di `typography.css` + `motion.css` + `spacing.css`: funzioneranno appieno solo quando tutto il DS sarà collegato insieme (cut-over).
 
@@ -58,7 +59,7 @@ I componenti sono **namespaced** (additivi) e dipendono dai token di `typography
 | 5 | `spacing.css` | ✅ |
 | 6 | `motion.css` | ✅ |
 | 7 | `design-system.css` | ✅ |
-| 8 | Libreria completa componenti | 🟡 in corso (button, icon-button, fab, navigation, bottom-navigation, accordion) |
+| 8 | Libreria completa componenti | 🟡 in corso (button, icon-button, fab, navigation, bottom-navigation, accordion, calendar) |
 | 9 | HTML completo di tutte le schermate | ⬜ |
 | 10 | JavaScript ES Modules | ⬜ |
 | 11 | SVG (150+ icone) | ⬜ |
