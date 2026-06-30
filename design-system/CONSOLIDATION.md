@@ -107,6 +107,12 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] `constants.js` `JOURNEY_STATUS` (planning/active/completed/archived) ≠ token `--status-*` (planned/progress/completed/draft) → riconciliare la mappatura stato↔colore al cut-over
 - [ ] `gestures.js`: swipe globali (`gesture:swipe*`) ok; va aggiunto a `loadModules`. Nessun nodo critico
 
+## 🔴 Service worker (#12) — REGRESSIONE rispetto a fix già fatto
+- [ ] **`pwa/service-worker.js` è cache-first per TUTTO** (`caches.match` prima, poi network) → **reintroduce il bug "la PWA non si aggiorna"** che avevamo già risolto sull'app live passando a **network-first per js/json/css/html** (vedi sw.js live, cache `mj-v6`). Al cut-over: NON adottare questa strategia così com'è → riportare network-first per i file di codice, cache-first solo per immagini
+- [ ] `service-worker.js` `STATIC_CACHE` precache `"/css/app.css"`,`"/js/app.js"` → **non esistono** nella nuova struttura modulare (decine di file `js/core|ui|modules/*`, CSS `design-system/*`+`components/*`). Serve un **bundle** (build) o una lista di precache corretta
+- [ ] `service-worker.js` path assoluti (`/`,`/index.html`,`/manifest.json`,`/css/…`,`/js/…`,`/icons/…`) → stesso problema **base-path GitHub Pages** (vedi sopra)
+- [ ] **Due service worker**: nuovo `service-worker.js` vs `sw.js` live (cache `mj-v6`, network-first). Al cut-over tenerne **uno solo** e aggiornare la registrazione (oggi l'app registra `sw.js`)
+
 ## 🔵 PWA assets (#12) — manifest ricevuto, asset mancanti
 - [ ] `pwa/manifest.json` archiviato. **Mancano i file referenziati**: `icons/icon-{72..512}.png` (logo #12), `screenshots/home.png`+`dashboard.png`. Da produrre al cut-over col logo Bob&Cosmo
 - [ ] `theme_color:#0F172A` / `background_color:#FFFFFF` **divergono dalla palette DS** (bg cream `#FCF8F2`, navy `#1E3160`) → allineare (il background bianco causa flash su splash diverso dal tema)
