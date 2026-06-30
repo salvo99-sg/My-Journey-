@@ -133,6 +133,12 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] **Spec icone #11**: SVG-only, griglia 24px, stroke 2.2, rounded outline → coerente coi componenti (`stroke-width:2.2`); attesa la libreria SVG
 - [ ] 🟢 **Easter egg autorizzato**: firma "Bob & Cosmo" da mantenere in metadata/commenti/elementi non intrusivi (già in `config.js` author). Coerente con BRAND-BIBLE; **non** esporre in UX. Nessuna azione, solo da preservare al cleanup
 
+## 🟣 COMPONENT_GUIDE.md (#13) — note
+- [ ] **Breakpoint divergenti**: il doc indica `480/768/1024/1280/1600`, ma il nodo "responsive `.page`" rimosso usava `720/1180`, e `typography.css` ha `@media (max-width:390px)`. Riconciliare un'unica scala breakpoint (allinearsi a `tokens.css`) al cut-over
+- [ ] **Card menzionate senza componente dedicato**: "Weather Card", "Hotel Card" → non esistono `weather-card.css`/`hotel-card.css` (probabili varianti di card generica). Verificare se servono o sono usi di `.trip-card`/`.card`
+- [ ] **"Gallery"** (lazy/fullscreen/zoom/swipe/masonry) descritta come componente, ma lato CSS abbiamo `album-card`/`photo-card` e lato JS manca `album.js` → la gallery completa arriverà coi moduli mancanti
+- [ ] Conferma che budget/ticket/packing/journal(diary) sono feature attese → mappano sui **5 moduli JS mancanti** (budget/tickets/packing/diary/album)
+
 ## 🔵 Strutturali / fondamenta
 - [ ] **Responsive `.page`** (allargamento 720/1180 tablet/desktop) da ri-applicare in `design-system.css` (`.app`/`.page`); oggi solo `max-width:480`
 - [ ] Tokenizzare colori brand **taupe `#6B645D`** e **oliva `#708050`**
