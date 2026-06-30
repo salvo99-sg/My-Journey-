@@ -10,6 +10,14 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ---
 
+## 🔎 AUDIT FINALE AUTOMATICO (2026-06-30, notte) — esito
+Scansione di tutti i file archiviati (CSS + JS) per scovare problemi nascosti:
+- **Token CSS usati ma non definiti** (in TUTTO il DS): solo i 9 già tracciati → `--color-background` (ticket-card), `--font-handwriting` (helpers), `--shadow-2xl` (modal), `--space-sm/md/lg/xl` (helpers), `--z-dock` (map-dock), `--z-overlay` (bottom-sheet). **Nessun nuovo.**
+- **Keyframe usati ma non definiti**: solo `pulse-marker` (day-card, timeline-card) → già tracciato.
+- **Keyframe duplicati tra file**: `floating`/`pulse`/`shimmer`/`spin` in `motion.css`+`animations.css` → coperti da DECISO #2 (animations vince, rimuovere motion.css).
+- **JS syntax-check (`node --check`)**: **20/20 file OK**, nessun errore di parsing.
+→ Conclusione: la checklist sotto è **completa**; non sono emersi difetti non catalogati. Restano da *consegnare* (non da scoprire): HTML #9, 5 moduli JS, SVG #11, asset #12, i18n.
+
 ## ✅ DECISIONI PRESE (checkpoint 2026-06-30) — da eseguire AL CUT-OVER
 1. **Temi → `trip-themes.css` è fonte unica**. Al cut-over: rimuovere il blocco `[data-trip-theme]` da `colors.css`; accettare il cambio palette di 9 temi e il nuovo elenco paesi (−spain/china/netherlands/indonesia/uae · +canada/norway/australia/brazil/morocco/india); riallineare `THEME-MAP.md`. Ordine `<link>`: `trip-themes.css` dopo `colors.css`.
 2. **Motion → `animations.css` è fonte unica** + **aggiungere `--motion-normal` e `--motion-map`** (per non rompere button/fab/icon-button/navigation/bottom-navigation). Rimuovere `motion.css`; migrare eventuali keyframe unici prima.
