@@ -39,12 +39,13 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] `input.css ::selection` duplica il `::selection` globale di `design-system.css`
 - [ ] `empty-state.css` keyframe `emptyFloat` ≈ `floating` di `motion.css`
 - [ ] `day-card.css` `transition:background .18s` (durata fissa) → token `--motion-*`
+- [ ] **`search.css` vs `searchbar.css`**: due componenti di ricerca distinti (`.search` = ricerca universale con dropdown risultati; `.searchbar`/`searchbar--map` = barra compatta inline/mappa). Nessuna collisione di classi, ma sovrapposizione concettuale → al cut-over chiarire ruoli ed evitare doppioni di markup
 
 ## 🔵 Strutturali / fondamenta
 - [ ] **Responsive `.page`** (allargamento 720/1180 tablet/desktop) da ri-applicare in `design-system.css` (`.app`/`.page`); oggi solo `max-width:480`
 - [ ] Tokenizzare colori brand **taupe `#6B645D`** e **oliva `#708050`**
 - [ ] Durate motion vs mockup: hero `680→650ms`, map `900→1200ms`
-- [ ] Fallback per `--trip-*` nei componenti "globali" senza `[data-trip-theme]` (modal, bottom-sheet, toast, **accordion**, **select**): es. focus-ring `--trip-accent-soft` che altrimenti sparisce. NB `accordion.css` usa `--trip-accent`/`--trip-accent-soft` per bordo `is-open`, icona, chevron e focus-ring, ma è dichiarato anche per FAQ/Packing/Notes (potenzialmente fuori da `[data-trip-theme]`). **`select.css` è il caso più critico**: usato per i picker tema/lingua/paese/valuta (schermata Impostazioni, sempre fuori da `[data-trip-theme]`) → hover/focus-ring/icona-aperta/opzione-selezionata perderebbero colore
+- [ ] Fallback per `--trip-*` nei componenti "globali" senza `[data-trip-theme]` (modal, bottom-sheet, toast, **accordion**, **select**): es. focus-ring `--trip-accent-soft` che altrimenti sparisce. NB `accordion.css` usa `--trip-accent`/`--trip-accent-soft` per bordo `is-open`, icona, chevron e focus-ring, ma è dichiarato anche per FAQ/Packing/Notes (potenzialmente fuori da `[data-trip-theme]`). **`select.css` è il caso più critico**: usato per i picker tema/lingua/paese/valuta (schermata Impostazioni, sempre fuori da `[data-trip-theme]`) → hover/focus-ring/icona-aperta/opzione-selezionata perderebbero colore. Anche **`search.css`** (ricerca universale su home/memorie, spesso fuori da `[data-trip-theme]`): hover/focus-ring/item-icon/match perderebbero colore
 - [ ] Collisioni `.app` / `.card` / `.fab` con le classi attuali → si risolvono sostituendo l'HTML (consegna #9)
 - [ ] Ordine di collegamento `<link>` al cut-over: tokens → colors → typography → spacing → motion → design-system → components/*
 
@@ -56,5 +57,5 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ---
 
-**Stato consegna**: 7/13 · #8 libreria componenti: 24 file archiviati.
+**Stato consegna**: 7/13 · #8 libreria componenti: 25 file archiviati.
 Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al consolidamento.
