@@ -79,6 +79,16 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] `animations.css` reduced-motion globale (`*`/`::before`/`::after` con `!important`) rende **ridondanti** i blocchi reduced-motion per-componente (innocui, ma rimovibili). `!important` qui è già autorizzato (CONTRIBUTING)
 - [ ] `successRing` (in `animations.css`) usa `--trip-accent-rgb` → ok una volta collegato `trip-themes.css`
 
+## 🔴 Stack mappa — Leaflet (nuovo) vs Mapbox GL JS (live) (DECISIONE UTENTE, alto impatto)
+- [ ] **`js/modules/map.js` usa Leaflet + OpenStreetMap**, l'app live usa **Mapbox GL JS v3.4.0**. Divergenza profonda:
+  - **Libreria**: `L.map`/`L.tileLayer`/`L.marker`/`L.polyline` (Leaflet) vs Mapbox GL. Tile da `tile.openstreetmap.org` vs Mapbox Standard style
+  - **CSP**: l'attuale è `script-src 'self' https://api.mapbox.com`. Leaflet richiede CDN JS (es. unpkg) + tile/connect verso openstreetmap.org → **CSP da riscrivere**; CONTRIBUTING "Eccezioni autorizzate" cita Mapbox, non Leaflet
+  - **Funzioni che si perdono passando a Leaflet/OSM**: geocoding Mapbox con `country=`/`language=it` (i fix di precisione), `setConfigProperty("basemap","language")` IT/EN, `lightPreset`, stile 3D Standard, token Mapbox URL-restricted
+  - **Marker**: `map.js` usa `L.marker` default → **NON usa `map-markers.css`** (i pin a goccia/categorie POI del designer). Andrebbe `L.divIcon` con quelle classi, altrimenti il componente marker è inutile
+  - **Bug minore**: `drawRoute` passa `color:"var(--trip-accent)"` a Leaflet → la CSS var non si risolve come attributo SVG stroke → rotta senza colore tema
+  - ❓ **Da decidere**: (a) Leaflet vince → riscrivere CSP, ricablare `map-markers.css` via divIcon, riportare geocoding/lingua su un servizio compatibile, rinunciare a Mapbox; (b) Mapbox resta → riscrivere `map.js` su Mapbox GL mantenendo l'API del modulo (init/addMarker/drawRoute/focusMarker); (c) decido al cut-over. **Scelta non autonoma**
+- [ ] `map.js` si sincronizza con la timeline (`timeline:current`→`focusMarker`) e usa container id `journey-map` (HTML #9). API pulita (init/addMarker/removeMarker/select/focus/drawRoute/locate/clear/refresh) → riusabile anche se si cambia libreria sotto
+
 ## 🔵 Strutturali / fondamenta
 - [ ] **Responsive `.page`** (allargamento 720/1180 tablet/desktop) da ri-applicare in `design-system.css` (`.app`/`.page`); oggi solo `max-width:480`
 - [ ] Tokenizzare colori brand **taupe `#6B645D`** e **oliva `#708050`**
@@ -118,5 +128,5 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ---
 
-**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system) · + `styles/utilities.css` (utility layer) · + `styles/helpers.css` (helper layer) · **#10 JS avviato**: core (app, router, storage, state, theme, language) · ui (modal) · modules (timeline).
+**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system) · + `styles/utilities.css` (utility layer) · + `styles/helpers.css` (helper layer) · **#10 JS avviato**: core (app, router, storage, state, theme, language) · ui (modal) · modules (timeline, map).
 Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al consolidamento.
