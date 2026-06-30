@@ -115,7 +115,7 @@ Legenda stato:
 | 10 | JavaScript ES Modules | 🟡 in corso (core: app/router/storage/state/theme/language/offline/sync/notifications · ui: modal/animations/ui-controls · modules: timeline/map/search/autocomplete/onboarding) |
 | 11 | SVG (150+ icone) | ⬜ |
 | 12 | Logo e PWA Assets | ⬜ |
-| 13 | Documentazione tecnica finale | 🟡 in corso (docs/ARCHITECTURE.md) |
+| 13 | Documentazione tecnica finale | 🟡 in corso (docs/ARCHITECTURE.md + DESIGN_SYSTEM.md) |
 
 ---
 

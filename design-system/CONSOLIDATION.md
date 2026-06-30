@@ -126,6 +126,13 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] **Struttura cartelle CSS diversa**: il doc prevede `css/{tokens,base,layout,components,themes,utilities}/` (sottocartelle) vs il nostro archivio piatto `design-system/`. Riorganizzazione opzionale al cut-over (cosmetica)
 - [ ] 🟢 I "Principles" del doc **corroborano nodi già aperti**: "Components never define colors/typography" → conferma i nodi hardcoded (#fff/raggi/font); "No inline CSS/JS" → l'HTML #9 dovrà esternalizzare lo stile/JS inline dell'app live
 
+## 🟣 DESIGN_SYSTEM.md (#13) — conferme e incongruenze
+- [ ] 🟢 **Scala motion del doc = `animations.css`** (80/160/280/420/700) → **conferma DECISO #2** (animations.css canonico, non motion.css 120/340/520/680)
+- [ ] **Elevation si ferma a `Shadow XL`** nel doc → `--shadow-2xl` usato da `modal.css` è **fuori scala** → modal dovrebbe usare `--shadow-xl` (rafforza il nodo token mancante: non aggiungere 2xl, correggere modal)
+- [ ] **Componenti navigation mancanti**: il doc prevede **Sidebar (desktop)**, **Drawer**, **Tabs** oltre a Bottom-nav. Consegnati solo `bottom-navigation.css` + `navigation.css` (top). Mancano sidebar/drawer/tabs (tabs già segnalato lato JS `ui-controls`). Desktop responsive (sidebar) da prevedere
+- [ ] **Spec icone #11**: SVG-only, griglia 24px, stroke 2.2, rounded outline → coerente coi componenti (`stroke-width:2.2`); attesa la libreria SVG
+- [ ] 🟢 **Easter egg autorizzato**: firma "Bob & Cosmo" da mantenere in metadata/commenti/elementi non intrusivi (già in `config.js` author). Coerente con BRAND-BIBLE; **non** esporre in UX. Nessuna azione, solo da preservare al cleanup
+
 ## 🔵 Strutturali / fondamenta
 - [ ] **Responsive `.page`** (allargamento 720/1180 tablet/desktop) da ri-applicare in `design-system.css` (`.app`/`.page`); oggi solo `max-width:480`
 - [ ] Tokenizzare colori brand **taupe `#6B645D`** e **oliva `#708050`**
