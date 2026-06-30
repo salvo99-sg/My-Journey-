@@ -10,6 +10,14 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ---
 
+## ✅ DECISIONI PRESE (checkpoint 2026-06-30) — da eseguire AL CUT-OVER
+1. **Temi → `trip-themes.css` è fonte unica**. Al cut-over: rimuovere il blocco `[data-trip-theme]` da `colors.css`; accettare il cambio palette di 9 temi e il nuovo elenco paesi (−spain/china/netherlands/indonesia/uae · +canada/norway/australia/brazil/morocco/india); riallineare `THEME-MAP.md`. Ordine `<link>`: `trip-themes.css` dopo `colors.css`.
+2. **Motion → `animations.css` è fonte unica** + **aggiungere `--motion-normal` e `--motion-map`** (per non rompere button/fab/icon-button/navigation/bottom-navigation). Rimuovere `motion.css`; migrare eventuali keyframe unici prima.
+3. **Spacing → aggiungere alias named** `--space-sm:8px` / `-md:16px` / `-lg:20px` / `-xl:24px` mappati sulla scala numerica (così `helpers.css` funziona senza modificarlo). Resta da correggere comunque il typo `--font-handwriting`→`--font-handwritten`.
+4. **Utility → `u-*` atomici + `h-*` compositi**; rimuovere le utility unprefixed duplicate da `typography.css`/`spacing.css` (es. `.text-*`/`.fw-*`/`.mt-*`/`.stack`/`.inline`) e `.hidden` (tenere `.u-hidden`).
+
+---
+
 ## 🔴 Token / keyframe mancanti (da aggiungere)
 - [x] `--z-fab`, `--z-navigation` → aggiunti in `tokens.css` (PR #61)
 - [ ] `--z-dock` → `tokens.css` (usato da `map-dock.css`; nome reale **`--z-dock`**, non `--z-map-dock`. Valore atteso ~250, tra `--z-dropdown:200` e `--z-sheet:300`)
@@ -20,7 +28,7 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ## 🔴 Typo / riferimenti errati
 - [ ] `ticket-card.css` (dark): `var(--color-background)` → `var(--color-bg)`
-- [ ] **`helpers.css`: spacing token inesistenti** → usa `--space-md/-sm/-lg/-xl` (named) ma `spacing.css` ha scala **numerica** `--space-1..--space-24`. Tutti i gap/margin di `.h-stack`/`.h-inline`/`.h-grid-*`/`.h-flow`/`.h-scroll-x` collassano (var undefined). Decidere: aggiungere alias named (`--space-sm:8px`/`-md:16px`/`-lg:20px`/`-xl:24px`) o rimappare helpers sui numerici. ⚠️ Possibile **terza fonte spacing** in arrivo (named) → attendere eventuale `spacing.css` v2
+- [ ] **`helpers.css`: spacing token inesistenti** → usa `--space-md/-sm/-lg/-xl` (named) ma `spacing.css` ha scala **numerica** `--space-1..--space-24`. ✅ **DECISO #3**: aggiungere alias named `--space-sm:8px`/`-md:16px`/`-lg:20px`/`-xl:24px` mappati sui numerici (helpers resta invariato)
 - [ ] **`helpers.css`: `.h-handwriting` usa `--font-handwriting`** ma il token reale è `--font-handwritten` (typography.css) → non risolve
 
 ## 🟠 Hardcoded → token esistenti
@@ -45,12 +53,12 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] `motion.css .timeline-item` (trattino) orfana → i componenti usano altri nomi (vedi sotto)
 - [ ] **Famiglia timeline frammentata**: `journey-timeline.css` (`.timeline-day`/`.timeline-stop`/`.timeline`) vs `timeline-card.css` vs `day-card.css` (`.day-card__stop`) vs orfana `motion.css .timeline-item`. Convenzioni di naming divergenti per lo stesso dominio (giorno+tappe) → al cut-over scegliere UNA struttura. Attenzione anche a `.timeline` (nome generico) come possibile collisione
 - [ ] `input.css ::selection` duplica il `::selection` globale di `design-system.css`
-- [ ] **Tre convenzioni utility/helper**: `styles/utilities.css` (`u-*`, `!important`) + `styles/helpers.css` (`h-*`) + classi unprefixed in `typography.css`/`spacing.css` (`.text-center`/`.fw-bold`/`.mt-*`/`.stack`/`.inline`). Sovrapposizioni dirette: `.h-stack`≈`.stack`, `.h-inline`≈`.inline`, `.h-center`≈`.u-center`, `.u-hidden` vs `.hidden`. Al cut-over scegliere UNA tassonomia (es. `u-*` atomici + `h-*` compositi, rimuovere le unprefixed duplicate)
+- [ ] **Tre convenzioni utility/helper**: `styles/utilities.css` (`u-*`, `!important`) + `styles/helpers.css` (`h-*`) + classi unprefixed in `typography.css`/`spacing.css`. ✅ **DECISO #4**: tenere `u-*` (atomici) + `h-*` (compositi); rimuovere le unprefixed duplicate (`.text-*`/`.fw-*`/`.mt-*`/`.stack`/`.inline`) e `.hidden` (tenere `.u-hidden`)
 - [ ] `empty-state.css` keyframe `emptyFloat` ≈ `floating` di `motion.css`
 - [ ] `day-card.css` `transition:background .18s` (durata fissa) → token `--motion-*`
 - [ ] **`search.css` vs `searchbar.css`**: due componenti di ricerca distinti (`.search` = ricerca universale con dropdown risultati; `.searchbar`/`searchbar--map` = barra compatta inline/mappa). Nessuna collisione di classi, ma sovrapposizione concettuale → al cut-over chiarire ruoli ed evitare doppioni di markup
 
-## 🔴 Doppia fonte temi destinazione — colors.css vs trip-themes.css (DECISIONE UTENTE)
+## 🔴 Doppia fonte temi destinazione — colors.css vs trip-themes.css ✅ DECISO #1 (trip-themes.css vince)
 - [ ] **Due definizioni divergenti** degli stessi `[data-trip-theme]`:
   - `colors.css` (collegato): 14 temi (japan, italy, greece, iceland, egypt, tropical, france, usa, uk, **spain, china, netherlands, indonesia, uae**), `--trip-accent-soft` come **hex**, **nessun** `--trip-accent-rgb`, nessun `--trip-header-overlay`
   - `theme/trip-themes.css` (nuovo, archiviato): `:root` default + 16 temi (japan, italy, france, greece, egypt, tropical, usa, **canada, norway, australia, brazil, morocco, india**), `--trip-accent-soft` come **rgba**, **con** `--trip-accent-rgb`, `--trip-header-overlay`, helper `.trip-*`
@@ -60,7 +68,7 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
   - Impatto: `THEME-MAP.md` va riallineato (mappa IT⇄EN + elenco paesi); verificare quali `data-trip-theme` usa davvero l'app
 - [ ] `--trip-header-overlay`: nuovo token definito **solo** su `:root` (default) e `japan` → mancante sugli altri 15 temi (eredita il default `rgba(0,0,0,.24)`). Da valutare se serve per-tema o se basta il default
 
-## 🔴 Doppia fonte motion — motion.css vs styles/animations.css (DECISIONE UTENTE)
+## 🔴 Doppia fonte motion — motion.css vs styles/animations.css ✅ DECISO #2 (animations.css vince + aggiungere --motion-normal/--motion-map)
 - [ ] **Due fonti motion divergenti**:
   - `motion.css` (archiviato, fonte attuale): token `--motion-instant/fast/normal/medium/slow/hero/map` + `--ease-standard` + regole globali `*`/`button`/`input` + keyframes
   - `styles/animations.css` (nuovo): token `--motion-instant/fast/medium/slow/hero` + `--ease-standard/-soft/-emphasized` + libreria keyframes + utility (`.fade-in`/`.fade-up`/`.scale-in`/`.pop`/`.float`/`.pulse`/`.spin`) + reduced-motion globale
