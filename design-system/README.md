@@ -23,7 +23,8 @@ Legenda stato:
 | `typography.css` | Scala tipografica (`--fs-*`), pesi (`--fw-*`), tracking, classi titoli/testo + base `html/body/h1-h6` | 🟡 archiviato | Ha stili globali → si attiva al cut-over |
 | `motion.css` | Durate (`--motion-*`), easing, transizioni, keyframes (fade/slide/scale/sheet/modal/spin/skeleton…) + regole globali `*`/`button`/`input` | 🟡 archiviato | Ha stili globali → si attiva al cut-over |
 | `design-system.css` | Entry point: reset, layout (`.app`/`.page`/`.section`/`.grid`), superfici (`.card`/`.surface`/`.glass`), utility, `:focus-visible`/`::selection`, scrollbar | 🟡 archiviato | Reset globale → si attiva al cut-over |
-| `THEME-MAP.md` | Mappatura temi app (IT) ⇄ DS (EN) + `THEME_KEY_MAP` | 📄 doc | — |
+| `theme/trip-themes.css` | **Theme engine**: `:root` default + 16 `[data-trip-theme]` con `--trip-accent`/`-rgb`/`-soft`/`-gradient`/`-header-overlay` + helper `.trip-*` | 🟡 archiviato | ⚠️ **Sovrappone/diverge** dai temi in `colors.css` (vedi CONSOLIDATION: doppia fonte) → da consolidare al cut-over |
+| `THEME-MAP.md` | Mappatura temi app (IT) ⇄ DS (EN) + `THEME_KEY_MAP` | 📄 doc | ⚠️ da riallineare al nuovo elenco paesi di `trip-themes.css` |
 
 ## 🧩 Componenti (`design-system/components/`)
 

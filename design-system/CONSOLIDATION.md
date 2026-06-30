@@ -16,7 +16,7 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] `--z-overlay` → `tokens.css` (usato da `bottom-sheet.css`; in alternativa mappare su `--z-modal`)
 - [ ] `--shadow-2xl` → `tokens.css` (usato da `modal.css`; la scala arriva a `--shadow-xl`)
 - [ ] keyframe pulse del marker → **unificare in `motion.css`**: oggi mancante per `day-card.css`/`timeline-card.css` (riferito come `pulse-marker`) MA `journey-timeline.css` ne definisce uno proprio inline `timelinePulse`. Tenere un solo keyframe condiviso
-- [ ] `--trip-accent-rgb` → **non** aggiungere 14 triplette: convertire i consumatori a `color-mix(in srgb, var(--trip-accent) X%, transparent)`. Consumatori: `empty-state.css`; **`calendar.css`** (`.calendar__day--range` light .12 / dark .18); **`journey-timeline.css`** (keyframe `timelinePulse` .45→0)
+- [x] ~~`--trip-accent-rgb`~~ **RISOLTO dal designer**: `theme/trip-themes.css` fornisce `--trip-accent-rgb` per `:root` (default) e per ogni tema. La mia proposta `color-mix` è **superata** (rispetto la scelta del designer: triplette esplicite). Consumatori già pronti: `empty-state.css`, `calendar.css`, `journey-timeline.css`. ⚠️ Si attiverà solo quando `trip-themes.css` sarà collegato al cut-over
 
 ## 🔴 Typo / riferimenti errati
 - [ ] `ticket-card.css` (dark): `var(--color-background)` → `var(--color-bg)`
@@ -44,11 +44,21 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 - [ ] `day-card.css` `transition:background .18s` (durata fissa) → token `--motion-*`
 - [ ] **`search.css` vs `searchbar.css`**: due componenti di ricerca distinti (`.search` = ricerca universale con dropdown risultati; `.searchbar`/`searchbar--map` = barra compatta inline/mappa). Nessuna collisione di classi, ma sovrapposizione concettuale → al cut-over chiarire ruoli ed evitare doppioni di markup
 
+## 🔴 Doppia fonte temi destinazione — colors.css vs trip-themes.css (DECISIONE UTENTE)
+- [ ] **Due definizioni divergenti** degli stessi `[data-trip-theme]`:
+  - `colors.css` (collegato): 14 temi (japan, italy, greece, iceland, egypt, tropical, france, usa, uk, **spain, china, netherlands, indonesia, uae**), `--trip-accent-soft` come **hex**, **nessun** `--trip-accent-rgb`, nessun `--trip-header-overlay`
+  - `theme/trip-themes.css` (nuovo, archiviato): `:root` default + 16 temi (japan, italy, france, greece, egypt, tropical, usa, **canada, norway, australia, brazil, morocco, india**), `--trip-accent-soft` come **rgba**, **con** `--trip-accent-rgb`, `--trip-header-overlay`, helper `.trip-*`
+  - Valori **diversi** per i temi in comune (es. japan `#C94C63` vs `#E63946`; italy `#A64F2F` vs `#2A9D8F`; usa `#B44A46` vs `#DC2626`; uk `#D9893B` vs `#334155`…)
+  - Set paesi diverso: **rimossi** spain/china/netherlands/indonesia/uae · **aggiunti** canada/norway/australia/brazil/morocco/india
+  - ❓ **Da decidere**: quale fonte vince? Ipotesi: `trip-themes.css` è l'evoluzione (ha rgb+default+helper) → rimuovere il blocco `[data-trip-theme]` da `colors.css` e tenere `trip-themes.css` come unica fonte. Ma cambia la palette di 9 temi e l'elenco paesi → **scelta del designer/utente, non autonoma**
+  - Impatto: `THEME-MAP.md` va riallineato (mappa IT⇄EN + elenco paesi); verificare quali `data-trip-theme` usa davvero l'app
+- [ ] `--trip-header-overlay`: nuovo token definito **solo** su `:root` (default) e `japan` → mancante sugli altri 15 temi (eredita il default `rgba(0,0,0,.24)`). Da valutare se serve per-tema o se basta il default
+
 ## 🔵 Strutturali / fondamenta
 - [ ] **Responsive `.page`** (allargamento 720/1180 tablet/desktop) da ri-applicare in `design-system.css` (`.app`/`.page`); oggi solo `max-width:480`
 - [ ] Tokenizzare colori brand **taupe `#6B645D`** e **oliva `#708050`**
 - [ ] Durate motion vs mockup: hero `680→650ms`, map `900→1200ms`
-- [ ] Fallback per `--trip-*` nei componenti "globali" senza `[data-trip-theme]` (modal, bottom-sheet, toast, **accordion**, **select**): es. focus-ring `--trip-accent-soft` che altrimenti sparisce. NB `accordion.css` usa `--trip-accent`/`--trip-accent-soft` per bordo `is-open`, icona, chevron e focus-ring, ma è dichiarato anche per FAQ/Packing/Notes (potenzialmente fuori da `[data-trip-theme]`). **`select.css` è il caso più critico**: usato per i picker tema/lingua/paese/valuta (schermata Impostazioni, sempre fuori da `[data-trip-theme]`) → hover/focus-ring/icona-aperta/opzione-selezionata perderebbero colore. Anche **`search.css`** (ricerca universale su home/memorie, spesso fuori da `[data-trip-theme]`): hover/focus-ring/item-icon/match perderebbero colore
+- [x] ~~Fallback per `--trip-*` nei componenti "globali"~~ **RISOLTO dal designer**: `theme/trip-themes.css` definisce un blocco `:root` di default (`--trip-accent`/`-soft`/`-rgb`/`-gradient`) → i componenti fuori da `[data-trip-theme]` (modal, bottom-sheet, toast, accordion, select, search) restano colorati con l'arancione di default. ⚠️ Si attiverà solo quando `trip-themes.css` sarà collegato al cut-over (prima di colors.css o con precedenza, vedi nodo conflitto sotto)
 - [ ] Collisioni `.app` / `.card` / `.fab` con le classi attuali → si risolvono sostituendo l'HTML (consegna #9)
 - [ ] Ordine di collegamento `<link>` al cut-over: tokens → colors → typography → spacing → motion → design-system → components/*
 
@@ -60,5 +70,5 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ---
 
-**Stato consegna**: 7/13 · #8 libreria componenti: 27 file archiviati.
+**Stato consegna**: 7/13 · #8 libreria componenti: 27 file archiviati · + `theme/trip-themes.css` (theme engine).
 Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al consolidamento.
