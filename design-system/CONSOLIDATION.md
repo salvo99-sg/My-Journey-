@@ -56,6 +56,17 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
   - Impatto: `THEME-MAP.md` va riallineato (mappa IT⇄EN + elenco paesi); verificare quali `data-trip-theme` usa davvero l'app
 - [ ] `--trip-header-overlay`: nuovo token definito **solo** su `:root` (default) e `japan` → mancante sugli altri 15 temi (eredita il default `rgba(0,0,0,.24)`). Da valutare se serve per-tema o se basta il default
 
+## 🔴 Doppia fonte motion — motion.css vs styles/animations.css (DECISIONE UTENTE)
+- [ ] **Due fonti motion divergenti**:
+  - `motion.css` (archiviato, fonte attuale): token `--motion-instant/fast/normal/medium/slow/hero/map` + `--ease-standard` + regole globali `*`/`button`/`input` + keyframes
+  - `styles/animations.css` (nuovo): token `--motion-instant/fast/medium/slow/hero` + `--ease-standard/-soft/-emphasized` + libreria keyframes + utility (`.fade-in`/`.fade-up`/`.scale-in`/`.pop`/`.float`/`.pulse`/`.spin`) + reduced-motion globale
+  - **Valori diversi** sugli stessi token: `--motion-fast` 120→**160ms**, `--motion-medium` 340→**280ms**, `--motion-slow` 520→**420ms**, `--motion-hero` 680→**700ms**; `--ease-standard` `cubic-bezier(.22,.61,.36,1)` → `(.20,.80,.20,1)`
+  - ⚠️ **`animations.css` NON definisce `--motion-normal` né `--motion-map`**. Ma `--motion-normal` è usato da 5 componenti già archiviati (**button, fab, icon-button, navigation, bottom-navigation**) e `--motion-map` da `motion.css`. Se `animations.css` **sostituisce** `motion.css` → quelle transizioni si rompono (token undefined)
+  - ❓ **Da decidere**: tenere `animations.css` come unica fonte motion E aggiungere `--motion-normal`/`--motion-map` (o rimappare i 5 componenti su `--motion-medium`), oppure fondere le due. Scelta non autonoma
+- [ ] Keyframe duplicati tra `motion.css` e `animations.css` (`floating`, `spin`, `shimmer`, `sheetOpen/Close`, `modalOpen/Close`, `fade*`, `scaleIn`…) → al cut-over una sola fonte. NB `animations.css .pulse` è scale-based (≠ `markerPulse`/`timelinePulse` che sono ring box-shadow): non confondere
+- [ ] `animations.css` reduced-motion globale (`*`/`::before`/`::after` con `!important`) rende **ridondanti** i blocchi reduced-motion per-componente (innocui, ma rimovibili). `!important` qui è già autorizzato (CONTRIBUTING)
+- [ ] `successRing` (in `animations.css`) usa `--trip-accent-rgb` → ok una volta collegato `trip-themes.css`
+
 ## 🔵 Strutturali / fondamenta
 - [ ] **Responsive `.page`** (allargamento 720/1180 tablet/desktop) da ri-applicare in `design-system.css` (`.app`/`.page`); oggi solo `max-width:480`
 - [ ] Tokenizzare colori brand **taupe `#6B645D`** e **oliva `#708050`**
@@ -72,5 +83,5 @@ Legenda: 🔴 bug (non rende) · 🟠 coerenza (hardcoded vs token esistente) ·
 
 ---
 
-**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine).
+**Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system).
 Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al consolidamento.
