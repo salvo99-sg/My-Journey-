@@ -108,6 +108,7 @@ Legenda stato:
 | `js/utils/utils.js` | Helpers: debounce/throttle/uuid/format date-time/capitalize/slug/clamp/sleep/$/$$ | 🟡 archiviato | Libreria utility pulita |
 | `js/ui/icons.js` | SVG sprite manager: init/create/replace (`[data-icon]`) | 🟡 archiviato | ⚠️ `/icons/icons.svg` assoluto → base-path |
 | `js/bootstrap.js` | Bootstrap: init di TUTTI i moduli + registra SW | 🟡 archiviato | 🔴 Chiama `Journal.init()` non consegnato; doppia init con app.js → vedi CONSOLIDATION |
+| `js/i18n/dictionary.js` | **Scaffold i18n**: `Language.register({it,en})`, 48 chiavi (incl. link_copied/backup_restored) | 🟡 scaffold | Da completare coi `data-i18n` dell'HTML #9 |
 
 > Archiviato sotto `design-system/js/` per **non toccare** il `app.js` di root (live).
 
