@@ -36,9 +36,9 @@ Scansione di tutti i file archiviati (CSS + JS) per scovare problemi nascosti:
 
 ## 🔴 Token / keyframe mancanti (da aggiungere)
 - [x] `--z-fab`, `--z-navigation` → aggiunti in `tokens.css` (PR #61)
-- [ ] `--z-dock` → `tokens.css` (usato da `map-dock.css`; nome reale **`--z-dock`**, non `--z-map-dock`. Valore atteso ~250, tra `--z-dropdown:200` e `--z-sheet:300`)
-- [ ] `--z-overlay` → `tokens.css` (usato da `bottom-sheet.css`; in alternativa mappare su `--z-modal`)
-- [ ] `--shadow-2xl` → `tokens.css` (usato da `modal.css`; la scala arriva a `--shadow-xl`)
+- [x] ✅ FATTO `--z-dock:250` in `tokens.css` (usato da `map-dock.css`; nome reale **`--z-dock`**, non `--z-map-dock`. Valore atteso ~250, tra `--z-dropdown:200` e `--z-sheet:300`)
+- [x] ✅ FATTO `--z-overlay:350` in `tokens.css` (usato da `bottom-sheet.css`; in alternativa mappare su `--z-modal`)
+- [x] ✅ FATTO `--shadow-2xl` aggiunto (preservato intento modal, non declassato) (usato da `modal.css`; la scala arriva a `--shadow-xl`)
 - [ ] keyframe pulse del marker → **unificare in `motion.css`**: oggi mancante per `day-card.css`/`timeline-card.css` (riferito come `pulse-marker`), MA `journey-timeline.css` definisce `timelinePulse` (accent) e `map-markers.css` definisce `markerPulse` (verde hardcoded). 3 keyframe pulse divergenti → tenerne uno parametrizzato. NB `markerPulse` usa `rgba(34,197,94,.40)` hardcoded mentre lo sfondo `--map-marker--current` usa `--color-success`: incoerenti
 - [x] ~~`--trip-accent-rgb`~~ **RISOLTO dal designer**: `theme/trip-themes.css` fornisce `--trip-accent-rgb` per `:root` (default) e per ogni tema. La mia proposta `color-mix` è **superata** (rispetto la scelta del designer: triplette esplicite). Consumatori già pronti: `empty-state.css`, `calendar.css`, `journey-timeline.css`. ⚠️ Si attiverà solo quando `trip-themes.css` sarà collegato al cut-over
 
@@ -61,7 +61,7 @@ L'utente/designer ha dato **autonomia operativa** per tutto il consolidamento te
 Ricevuti 2 riferimenti: poster Design System + brand/logo ufficiale. **La grafica finale cambierà** (l'utente ricostruirà la maggior parte delle immagini). Impatti:
 - [ ] **Nuovo logo**: montagne + sole + libro aperto + penna + rotta aereo, wordmark "My Journey", tagline "Pianifica. Vivi. Ricorda.", **monogramma B&C nascosto** (= easter egg autorizzato). **Sostituisce il vecchio Bob&Cosmo** (libro navy)
 - [ ] 🟠 **Gli asset PWA generati sono PROVVISORI**: icone/favicon/mask-icon/splash creati da `icon-512-v2.png` (vecchio logo) → **da rigenerare dal nuovo logo** quando arriverà come file sorgente (idealmente SVG/512 su fondo crema). Icona app nuova = logo su **crema**, non navy
-- [ ] 🟠 **Palette ufficiale del poster** (autorevole): navy **#16264C**, arancio **#D97706**, crema **#FFF7ED**, taupe **#6B645D**, oliva **#708050**. Divergenze da `colors.css`: navy `#1E3160`→**#16264C**; bg crema `#FCF8F2`→**#FFF7ED**; arancio `#D97706` ✅ combacia. **Conferma il nodo taupe/oliva da tokenizzare**. ⚠️ Rivedere anche DECISO #10 (theme_color era `#1E3160` → diventa `#16264C`? background `#FCF8F2`→`#FFF7ED`?)
+- [x] ✅ **FATTO** — Palette poster adottata: `colors.css` navy `#16264C`, crema `#FFF7ED`, map navy #16264C; manifest `theme_color:#16264C`/`background:#FFF7ED` (rivede DECISO #10). Originali: Divergenze da `colors.css`: navy `#1E3160`→**#16264C**; bg crema `#FCF8F2`→**#FFF7ED**; arancio `#D97706` ✅ combacia. **Conferma il nodo taupe/oliva da tokenizzare**. ⚠️ Rivedere anche DECISO #10 (theme_color era `#1E3160` → diventa `#16264C`? background `#FCF8F2`→`#FFF7ED`?)
 - [ ] 🟢 **Durate motion del poster**: Tap 120 · Swipe 280 · Bottom-sheet 340 · **Hero 650** · **Riproduzione/Itinerario 1200** → coincide col nodo "durate vs mockup". Poster = riferimento autorevole (hero 650 non 700; map 1200 non 900). Da allineare al cut-over con animations.css
 - [ ] Il poster conferma: Calistoga (titoli) / Inter (UI) / Caveat (diario), icon stroke 2.2 round, radius 10/14/18/24/38, shadow L1/L2/Floating, temi destinazione (Giappone/Italia/Grecia/Tropici…), safe-area PWA, switch manuale tema — tutto coerente con l'archiviato
 
@@ -87,7 +87,7 @@ Ricevuti 2 riferimenti: poster Design System + brand/logo ufficiale. **La grafic
 
 ## 🔴 Typo / riferimenti errati
 - [x] ✅ FATTO `ticket-card.css` (dark): `var(--color-background)` → `var(--color-bg)`
-- [ ] **`helpers.css`: spacing token inesistenti** → usa `--space-md/-sm/-lg/-xl` (named) ma `spacing.css` ha scala **numerica** `--space-1..--space-24`. ✅ **DECISO #3**: aggiungere alias named `--space-sm:8px`/`-md:16px`/`-lg:20px`/`-xl:24px` mappati sui numerici (helpers resta invariato)
+- [ ] **`helpers.css`: spacing token inesistenti** → usa `--space-md/-sm/-lg/-xl` (named) ma `spacing.css` ha scala **numerica** `--space-1..--space-24`. ✅ **FATTO** (DECISO #3): alias `--space-sm/md/lg/xl` aggiunti in spacing.css → helpers ora rende
 - [x] ✅ FATTO **`helpers.css`: `.h-handwriting`** → corretto in `--font-handwritten`
 
 ## 🟠 Hardcoded → token esistenti
@@ -102,7 +102,7 @@ Ricevuti 2 riferimenti: poster Design System + brand/logo ufficiale. **La grafic
 - [ ] `select.css`: misure/tipo hardcoded → token (opzione `border-radius:14px` vs `--radius-*`; `font-size:14/15/11px` vs `--fs-*`). Coerente con gli altri componenti, da valutare in blocco
 - [ ] `map-dock.css`: `#fff` su `__button--primary` (sfondo `--trip-accent`) → `--color-text-inverse`; raggi hardcoded (`28px`/`18px`/`14px`) → `--radius-*`; titolo `24px` → `--fs-*`
 - [ ] `journey-timeline.css`: `#fff` su `.timeline-day__badge` (sfondo `--trip-accent`) → `--color-text-inverse`; raggi/font hardcoded (`18px`, `24px`, ecc.) → `--radius-*`/`--fs-*`
-- [ ] **`map-markers.css`: palette categorie POI non tokenizzata** → hotel `#4F46E5`, restaurant `#EA580C`, attraction `#0F9D8A`, photo `#D946EF`, shopping `#F59E0B`, train `#2563EB`, flight `#DC2626`. Nessun token esistente le copre. ✅ **DECISO #8**: creare scala `--marker-*` e convertire il CSS. ⚠️ Alcune coincidono con accent dei temi (restaurant=default, attraction=tropical, flight=usa) ma sono semantica diversa (categoria, non destinazione)
+- [x] ✅ FATTO **`map-markers.css` tokenizzata** con scala `--marker-*` (colors.css) → hotel `#4F46E5`, restaurant `#EA580C`, attraction `#0F9D8A`, photo `#D946EF`, shopping `#F59E0B`, train `#2563EB`, flight `#DC2626`. Nessun token esistente le copre. ✅ **DECISO #8**: creare scala `--marker-*` e convertire il CSS. ⚠️ Alcune coincidono con accent dei temi (restaurant=default, attraction=tropical, flight=usa) ma sono semantica diversa (categoria, non destinazione)
 - [ ] `map-markers.css`: `#fff` su icona/label/`route-point` border (sfondi colorati) → `--color-text-inverse`; tooltip label `rgba(0,0,0,.78)` / dark `rgba(18,18,22,.92)` → token dedicato; ombre marker custom
 - [ ] `helpers.css`: `#fff` su `.h-trip-gradient` (sfondo gradiente) → `--color-text-inverse`
 
@@ -229,7 +229,7 @@ Ricevuti 2 riferimenti: poster Design System + brand/logo ufficiale. **La grafic
 
 ## 🔵 Strutturali / fondamenta
 - [ ] **Responsive `.page`** (allargamento 720/1180 tablet/desktop) da ri-applicare in `design-system.css` (`.app`/`.page`); oggi solo `max-width:480`
-- [ ] Tokenizzare colori brand **taupe `#6B645D`** e **oliva `#708050`**
+- [x] ✅ FATTO taupe `--color-taupe`, oliva `--color-olive` in colors.css
 - [ ] Durate motion vs mockup: hero `680→650ms`, map `900→1200ms`
 - [x] ~~Fallback per `--trip-*` nei componenti "globali"~~ **RISOLTO dal designer**: `theme/trip-themes.css` definisce un blocco `:root` di default (`--trip-accent`/`-soft`/`-rgb`/`-gradient`) → i componenti fuori da `[data-trip-theme]` (modal, bottom-sheet, toast, accordion, select, search) restano colorati con l'arancione di default. ⚠️ Si attiverà solo quando `trip-themes.css` sarà collegato al cut-over (prima di colors.css o con precedenza, vedi nodo conflitto sotto)
 - [ ] Collisioni `.app` / `.card` / `.fab` con le classi attuali → si risolvono sostituendo l'HTML (consegna #9)

@@ -210,7 +210,7 @@ HOTEL
 
 .map-marker--hotel{
 
-background:#4F46E5;
+background:var(--marker-hotel);
 
 }
 
@@ -220,7 +220,7 @@ RESTAURANT
 
 .map-marker--restaurant{
 
-background:#EA580C;
+background:var(--marker-restaurant);
 
 }
 
@@ -230,7 +230,7 @@ ATTRACTION
 
 .map-marker--attraction{
 
-background:#0F9D8A;
+background:var(--marker-attraction);
 
 }
 
@@ -240,7 +240,7 @@ PHOTO
 
 .map-marker--photo{
 
-background:#D946EF;
+background:var(--marker-photo);
 
 }
 
@@ -250,7 +250,7 @@ SHOPPING
 
 .map-marker--shopping{
 
-background:#F59E0B;
+background:var(--marker-shopping);
 
 }
 
@@ -260,7 +260,7 @@ TRAIN
 
 .map-marker--train{
 
-background:#2563EB;
+background:var(--marker-train);
 
 }
 
@@ -270,7 +270,7 @@ FLIGHT
 
 .map-marker--flight{
 
-background:#DC2626;
+background:var(--marker-flight);
 
 }
 

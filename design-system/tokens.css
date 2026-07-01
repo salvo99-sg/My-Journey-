@@ -118,7 +118,9 @@
 --z-fab:70;
 --z-floating:100;
 --z-dropdown:200;
+--z-dock:250;
 --z-sheet:300;
+--z-overlay:350;
 --z-modal:400;
 --z-toast:500;
 --z-tooltip:600;
@@ -163,6 +165,9 @@
 
 --shadow-xl:
 0 24px 72px rgba(0,0,0,.16);
+
+--shadow-2xl:
+0 32px 90px rgba(0,0,0,.22);
 
 /* ===========================================================
    BORDER

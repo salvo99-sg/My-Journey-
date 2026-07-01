@@ -17,7 +17,7 @@
 BACKGROUND
 --------------------------------------------------------------------------*/
 
---color-bg:#FCF8F2;
+--color-bg:#FFF7ED;
 --color-bg-secondary:#F7F2EB;
 --color-bg-tertiary:#EFE9E1;
 
@@ -64,11 +64,30 @@ PRIMARY
 SECONDARY
 --------------------------------------------------------------------------*/
 
---color-secondary:#1E3160;
---color-secondary-hover:#253D76;
---color-secondary-active:#18294F;
+--color-secondary:#16264C;
+--color-secondary-hover:#1F3563;
+--color-secondary-active:#101B38;
 
 --color-secondary-soft:#EDF2FC;
+
+/*--------------------------------------------------------------------------
+BRAND NEUTRALS (palette ufficiale poster)
+--------------------------------------------------------------------------*/
+
+--color-taupe:#6B645D;
+--color-olive:#708050;
+
+/*--------------------------------------------------------------------------
+MARKER — palette categorie POI (map-markers.css)
+--------------------------------------------------------------------------*/
+
+--marker-hotel:#4F46E5;
+--marker-restaurant:#EA580C;
+--marker-attraction:#0F9D8A;
+--marker-photo:#D946EF;
+--marker-shopping:#F59E0B;
+--marker-train:#2563EB;
+--marker-flight:#DC2626;
 
 /*--------------------------------------------------------------------------
 SUCCESS
@@ -133,9 +152,9 @@ MAP
 --------------------------------------------------------------------------*/
 
 --map-route:#D97706;
---map-current:#1E3160;
+--map-current:#16264C;
 --map-pin:#D97706;
---map-cluster:#1E3160;
+--map-cluster:#16264C;
 
 /*--------------------------------------------------------------------------
 STATUS
