@@ -23,13 +23,74 @@ MOTION TOKENS
 
 --motion-instant:80ms;
 --motion-fast:160ms;
+--motion-normal:220ms;
 --motion-medium:280ms;
 --motion-slow:420ms;
---motion-hero:700ms;
+--motion-hero:650ms;
+--motion-map:1200ms;
 
 --ease-standard:cubic-bezier(.20,.80,.20,1);
 --ease-soft:cubic-bezier(.25,.90,.25,1);
 --ease-emphasized:cubic-bezier(.16,1,.30,1);
+
+}
+
+/*======================================================================
+SHAKE (classe usata da animations.js)
+======================================================================*/
+
+.shake{
+
+animation:
+
+shake .5s var(--ease-standard);
+
+}
+
+/*======================================================================
+SCROLL REVEAL (IntersectionObserver -> [data-animate].is-visible)
+======================================================================*/
+
+[data-animate]{
+
+opacity:0;
+
+transform:translateY(18px);
+
+transition:
+
+opacity var(--motion-medium) var(--ease-emphasized),
+
+transform var(--motion-medium) var(--ease-emphasized);
+
+}
+
+[data-animate].is-visible{
+
+opacity:1;
+
+transform:none;
+
+}
+
+/*======================================================================
+PULSE MARKER (condiviso: day-card / timeline-card / marker "current")
+Usa --trip-accent-rgb (fornito da trip-themes.css)
+======================================================================*/
+
+@keyframes pulse-marker{
+
+0%{
+
+box-shadow:0 0 0 0 rgba(var(--trip-accent-rgb),.45);
+
+}
+
+100%{
+
+box-shadow:0 0 0 14px rgba(var(--trip-accent-rgb),0);
+
+}
 
 }
 
