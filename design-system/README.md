@@ -129,7 +129,7 @@ Legenda stato:
 | 8 | Libreria completa componenti | 🟡 in corso (button, icon-button, fab, navigation, bottom-navigation, accordion, calendar, select, search, map-dock, journey-timeline, map-markers) |
 | 9 | HTML completo di tutte le schermate | ⬜ |
 | 10 | JavaScript ES Modules | 🟡 in corso (core: app/router/storage/state/theme/language/offline/sync/notifications · ui: modal/animations/ui-controls/gestures/toast/loader/fab · modules: …/gallery/tickets/packing/budget/memories) |
-| 11 | SVG (150+ icone) | ⬜ |
+| 11 | SVG (150+ icone) | 🟡 in corso (icons/icons.svg — sprite campione ~10 di ~200) |
 | 12 | Logo e PWA Assets | ⬜ |
 | 13 | Documentazione tecnica finale | 🟡 in corso (docs: ARCHITECTURE, DESIGN_SYSTEM, COMPONENT_GUIDE, CONTRIBUTING) |
 
