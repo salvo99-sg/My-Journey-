@@ -174,6 +174,9 @@ Scansione di tutti i file archiviati (CSS + JS) per scovare problemi nascosti:
 - [ ] `currency.js`: `convert()` usa `this.rates[from]` ma le rate partono con **solo `{EUR:1}`** → per valute senza tasso `convert()` restituisce **NaN**. Serve un provider FX (API) o rate manuali via `updateRates()`. `format()` (Intl.NumberFormat) ok, dipende da `Language.get()`. Non in `loadModules`
 - [ ] 🟢 `share.js`: Web Share API (`navigator.share`) + fallback `clipboard` + `Toast.success(Language.t("link_copied"))`, share immagine via `canShare`/`File`. **Nessun `init()`** → non serve in `loadModules` (chiamato on-demand). Dipende da `Toast` e da chiave i18n **`link_copied`** (dizionario pendente). Rilevante per "**Shared Trips**" futuri (native share sheet). Richiede secure context (GitHub Pages https ok)
 
+## 🟣 Export/backup (#10)
+- [ ] 🟢 `export.js`: backup JSON via `Storage.export()` → download `my-journey-backup.json`. Ottimo per **trasferimento manuale dati tra dispositivi** (con `Storage.import`). ⚠️ **Copre solo localStorage**, NON i blob IndexedDB (foto/biglietti) → backup **incompleto**. Al cut-over estendere per includere anche i media IndexedDB (complementa DECISO #6) per un backup/restore completo. No init (on-demand)
+
 ## 🔵 Strutturali / fondamenta
 - [ ] **Responsive `.page`** (allargamento 720/1180 tablet/desktop) da ri-applicare in `design-system.css` (`.app`/`.page`); oggi solo `max-width:480`
 - [ ] Tokenizzare colori brand **taupe `#6B645D`** e **oliva `#708050`**
