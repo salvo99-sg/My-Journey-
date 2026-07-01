@@ -1,0 +1,10 @@
+User-agent: *
+
+Allow: /
+
+Disallow: /backups/
+Disallow: /cache/
+Disallow: /exports/
+Disallow: /docs/private/
+
+Sitemap: https://example.com/sitemap.xml
