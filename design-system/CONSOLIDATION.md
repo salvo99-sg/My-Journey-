@@ -163,6 +163,7 @@ Scansione di tutti i file archiviati (CSS + JS) per scovare problemi nascosti:
 - [ ] `budget.js`/`packing.js`: dati piccoli → localStorage ok. Chiavi `budget-total`/`budget-currency`/`expenses`/`packing`/`gallery`/`tickets` (→ `myjourney.1.0.*`) diverse dai dati live (probabilmente dentro `agenda-viaggi-v2`) → rientrano nella **migrazione** una-tantum
 - [ ] Naming: il doc ARCHITECTURE chiama il modulo `album.js`, il designer l'ha consegnato come **`gallery.js`** (stessa cosa). Coerenza nomi al cut-over
 - [ ] Tutti e 4 **non in `App.loadModules`** → registrare/inizializzare (init carica da Storage)
+- [ ] `memories.js`: CRUD via Storage `memories`. Il componente `memory-card.css` include foto/voce/waveform (`__photo`/`__voice`/`__wave`) → se le memorie contengono **media (foto/audio)**, vale la stessa regola: blob in **IndexedDB**, metadati in Storage. Non in `loadModules`. NB: router ha route separate `journal` e `memories` → `memories.js` copre "memories"; il **`diary.js`/journal** potrebbe essere ancora un modulo a sé (da verificare se manca)
 
 ## 🔵 Strutturali / fondamenta
 - [ ] **Responsive `.page`** (allargamento 720/1180 tablet/desktop) da ri-applicare in `design-system.css` (`.app`/`.page`); oggi solo `max-width:480`
