@@ -98,6 +98,8 @@ Legenda stato:
 | `js/modules/weather.js` | Meteo: cache/get/set (Storage `weather-cache`) | 🟡 archiviato | ⚠️ Stub, nessuna API reale → serve provider meteo + CSP |
 | `js/modules/hotels.js` | Hotel: add/remove/get/all (Storage `hotels`) | 🟡 archiviato | CRUD metadati; non in loadModules |
 | `js/modules/transport.js` | Trasporti: add/remove/all/next (Storage `transport`) | 🟡 archiviato | CRUD metadati; non in loadModules |
+| `js/modules/currency.js` | Valute: set/convert/format (Intl), rate in Storage | 🟡 archiviato | ⚠️ rate solo EUR di default → convert NaN senza provider FX |
+| `js/modules/share.js` | Condivisione: Web Share API + clipboard fallback + share immagine | 🟡 archiviato | Dipende da Toast + i18n `link_copied`; no init (on-demand) |
 
 > Archiviato sotto `design-system/js/` per **non toccare** il `app.js` di root (live).
 
