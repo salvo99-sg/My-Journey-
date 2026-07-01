@@ -104,6 +104,9 @@ Legenda stato:
 | `js/modules/import.js` | Ripristino backup da file (JSON → Storage.import) | 🟡 archiviato | ⚠️ JSON.parse non protetto; version-check non implementato; solo localStorage |
 | `js/modules/analytics.js` | Analytics locali privacy-first (track/clear/export, cap 1000) | 🟡 archiviato | ✅ Nessun tracciamento esterno; non in loadModules |
 | `js/utils/validators.js` | Validatori: required/email/url/number/positive/date/min/maxLength | 🟡 archiviato | 🔴 `maxLength`/`minLength` tornano `undefined` (ASI bug) → vedi CONSOLIDATION |
+| `js/utils/utils.js` | Helpers: debounce/throttle/uuid/format date-time/capitalize/slug/clamp/sleep/$/$$ | 🟡 archiviato | Libreria utility pulita |
+| `js/ui/icons.js` | SVG sprite manager: init/create/replace (`[data-icon]`) | 🟡 archiviato | ⚠️ `/icons/icons.svg` assoluto → base-path |
+| `js/bootstrap.js` | Bootstrap: init di TUTTI i moduli + registra SW | 🟡 archiviato | 🔴 Chiama `Journal.init()` non consegnato; doppia init con app.js → vedi CONSOLIDATION |
 
 > Archiviato sotto `design-system/js/` per **non toccare** il `app.js` di root (live).
 
