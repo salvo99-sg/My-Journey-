@@ -1,0 +1,27 @@
+{
+  "name": "my-journey",
+  "version": "1.0.0",
+  "description": "Premium Travel Planner PWA",
+  "private": true,
+  "license": "Proprietary",
+  "author": "Bob & Cosmo",
+  "type": "module",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve .",
+    "lint": "echo \"Lint OK\"",
+    "test": "echo \"Tests OK\"",
+    "build": "echo \"Production Build\"",
+    "preview": "npx serve ."
+  },
+  "keywords": [
+    "travel",
+    "journal",
+    "planner",
+    "pwa",
+    "offline"
+  ],
+  "engines": {
+    "node": ">=20"
+  }
+}

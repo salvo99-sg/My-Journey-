@@ -178,6 +178,12 @@ Scansione di tutti i file archiviati (CSS + JS) per scovare problemi nascosti:
 - [ ] 🟢 `export.js`: backup JSON via `Storage.export()` → download `my-journey-backup.json`. Ottimo per **trasferimento manuale dati tra dispositivi** (con `Storage.import`). ⚠️ **Copre solo localStorage**, NON i blob IndexedDB (foto/biglietti) → backup **incompleto**. Al cut-over estendere per includere anche i media IndexedDB (complementa DECISO #6) per un backup/restore completo. No init (on-demand)
 - [ ] `import.js`: ripristino da file (complementa `export.js`). (a) `JSON.parse` in `fromFile()` **non è in try/catch** → file malformato = eccezione non gestita (aggiungere Toast di errore). (b) header cita "Version check" ma **non è implementato** (nessun controllo `myjourney.1.0` vs versione file). (c) come export, **solo localStorage**, non i blob IndexedDB. Dipende da `Toast` + i18n `backup_restored`. ⚠️ `Storage.import` **sovrascrive** le chiavi: valutare merge vs replace. No init (on-demand)
 
+## 🟣 File di configurazione (root/special-path) — archiviati in `config/`, non attivati
+- [ ] **`.github/workflows/ci.yml`**: workflow CI **stub** (solo `echo`), trigger su push main/develop + PR. Archiviato in `config/.github-workflows/ci.yml` per **non attivarlo** ora (girerebbe ad ogni push). Al cut-over: spostarlo in `.github/workflows/` **solo** se si vuole CI reale (implementare davvero le validazioni html/css/js/manifest) e coordinarlo con l'eventuale workflow Pages esistente
+- [ ] **`.editorconfig`** (`config/editorconfig`): innocuo, va alla root al cut-over
+- [ ] **`package.json`** (`config/package.json`): alla root **non esiste** oggi (progetto no-build). Introdurlo aggiunge `"type":"module"` (i `.js` diventerebbero ESM per Node — irrilevante per hosting statico, ma coerente col nodo "ESM reale"). Script usano `npx serve .`. Al cut-over: adottare solo se serve build/serve locale
+- [ ] **`.gitignore` designer** (`config/gitignore`) vs **root `.gitignore`** esistente (che ha voci specifiche: `.agents/`, `.claude/skills/`, `src/`, `proposta-*.html`, `_v*.html`, `_*.png`…). **Fondere** al cut-over mantenendo le voci della root; il designer aggiunge utili `/backups/`, `/exports/`, `/cache/`, `/screenshots/generated/` (coerenti con export/import/screenshot). NON sovrascrivere la root
+
 ## 🔵 Strutturali / fondamenta
 - [ ] **Responsive `.page`** (allargamento 720/1180 tablet/desktop) da ri-applicare in `design-system.css` (`.app`/`.page`); oggi solo `max-width:480`
 - [ ] Tokenizzare colori brand **taupe `#6B645D`** e **oliva `#708050`**

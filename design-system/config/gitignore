@@ -1,0 +1,63 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Logs
+*.log
+
+# Cache
+.cache/
+
+# Coverage
+coverage/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Temporary
+tmp/
+temp/
+
+# OS
+Desktop.ini
+
+# Service Worker
+sw.js.map
+
+# Backup
+*.bak
+*.old
+
+# Archives
+*.zip
+
+# Generated screenshots
+/screenshots/generated/
+
+# Generated exports
+/exports/
+
+# User backups
+/backups/
+
+# Runtime cache
+/cache/
+
+# Testing
+/playwright-report/
+/test-results/
