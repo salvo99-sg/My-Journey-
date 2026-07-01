@@ -42,6 +42,9 @@ Scansione di tutti i file archiviati (CSS + JS) per scovare problemi nascosti:
 - [ ] keyframe pulse del marker → **unificare in `motion.css`**: oggi mancante per `day-card.css`/`timeline-card.css` (riferito come `pulse-marker`), MA `journey-timeline.css` definisce `timelinePulse` (accent) e `map-markers.css` definisce `markerPulse` (verde hardcoded). 3 keyframe pulse divergenti → tenerne uno parametrizzato. NB `markerPulse` usa `rgba(34,197,94,.40)` hardcoded mentre lo sfondo `--map-marker--current` usa `--color-success`: incoerenti
 - [x] ~~`--trip-accent-rgb`~~ **RISOLTO dal designer**: `theme/trip-themes.css` fornisce `--trip-accent-rgb` per `:root` (default) e per ogni tema. La mia proposta `color-mix` è **superata** (rispetto la scelta del designer: triplette esplicite). Consumatori già pronti: `empty-state.css`, `calendar.css`, `journey-timeline.css`. ⚠️ Si attiverà solo quando `trip-themes.css` sarà collegato al cut-over
 
+## 🔴 Bug JavaScript
+- [ ] **`js/utils/validators.js`: `maxLength()` e `minLength()` restituiscono sempre `undefined`** (verificato con Node). Causa: **ASI** — `return` è su una riga da solo, seguito dall'espressione sotto → l'interprete inserisce `;` dopo `return` (`return;`) e `String(value).length<=max` diventa codice morto. Effetto: qualsiasi validazione lunghezza min/max fallisce (undefined = falsy). Fix: mettere l'espressione **sulla stessa riga** di `return`. (Gli altri metric — required/email/url/number/positive/date — sono corretti perché la riga termina con `&&`/apertura espressione)
+
 ## 🔴 Typo / riferimenti errati
 - [ ] `ticket-card.css` (dark): `var(--color-background)` → `var(--color-bg)`
 - [ ] **`helpers.css`: spacing token inesistenti** → usa `--space-md/-sm/-lg/-xl` (named) ma `spacing.css` ha scala **numerica** `--space-1..--space-24`. ✅ **DECISO #3**: aggiungere alias named `--space-sm:8px`/`-md:16px`/`-lg:20px`/`-xl:24px` mappati sui numerici (helpers resta invariato)

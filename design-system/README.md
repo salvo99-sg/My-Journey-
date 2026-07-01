@@ -103,6 +103,7 @@ Legenda stato:
 | `js/modules/export.js` | Backup JSON (Storage.export → download) | 🟡 archiviato | ⚠️ Solo localStorage, non i blob IndexedDB → backup incompleto |
 | `js/modules/import.js` | Ripristino backup da file (JSON → Storage.import) | 🟡 archiviato | ⚠️ JSON.parse non protetto; version-check non implementato; solo localStorage |
 | `js/modules/analytics.js` | Analytics locali privacy-first (track/clear/export, cap 1000) | 🟡 archiviato | ✅ Nessun tracciamento esterno; non in loadModules |
+| `js/utils/validators.js` | Validatori: required/email/url/number/positive/date/min/maxLength | 🟡 archiviato | 🔴 `maxLength`/`minLength` tornano `undefined` (ASI bug) → vedi CONSOLIDATION |
 
 > Archiviato sotto `design-system/js/` per **non toccare** il `app.js` di root (live).
 
