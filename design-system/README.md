@@ -95,6 +95,9 @@ Legenda stato:
 | `js/modules/packing.js` | Valigia: add/toggle/update/remove/progress (Storage `packing`) | 🟡 archiviato | Dati piccoli, ok localStorage; non in loadModules |
 | `js/modules/budget.js` | Budget/spese: setBudget/currency/addExpense/spent/remaining/% (Storage) | 🟡 archiviato | Dati piccoli, ok; non in loadModules |
 | `js/modules/memories.js` | Ricordi: create/update/remove/all (Storage `memories`) | 🟡 archiviato | ⚠️ Media (foto/voce) → IndexedDB; non in loadModules |
+| `js/modules/weather.js` | Meteo: cache/get/set (Storage `weather-cache`) | 🟡 archiviato | ⚠️ Stub, nessuna API reale → serve provider meteo + CSP |
+| `js/modules/hotels.js` | Hotel: add/remove/get/all (Storage `hotels`) | 🟡 archiviato | CRUD metadati; non in loadModules |
+| `js/modules/transport.js` | Trasporti: add/remove/all/next (Storage `transport`) | 🟡 archiviato | CRUD metadati; non in loadModules |
 
 > Archiviato sotto `design-system/js/` per **non toccare** il `app.js` di root (live).
 

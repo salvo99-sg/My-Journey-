@@ -165,6 +165,11 @@ Scansione di tutti i file archiviati (CSS + JS) per scovare problemi nascosti:
 - [ ] Tutti e 4 **non in `App.loadModules`** → registrare/inizializzare (init carica da Storage)
 - [ ] `memories.js`: CRUD via Storage `memories`. Il componente `memory-card.css` include foto/voce/waveform (`__photo`/`__voice`/`__wave`) → se le memorie contengono **media (foto/audio)**, vale la stessa regola: blob in **IndexedDB**, metadati in Storage. Non in `loadModules`. NB: router ha route separate `journal` e `memories` → `memories.js` copre "memories"; il **`diary.js`/journal** potrebbe essere ancora un modulo a sé (da verificare se manca)
 
+## 🟣 Moduli journey aggiuntivi (#10) — weather/hotels/transport
+- [ ] 🔵 `weather.js`: **stub, nessuna API reale** — `get()` restituisce `temperature:null/condition:null/forecast:[]` (header "Future API integration"). Inerte finché non si collega un provider meteo (API esterna → **CSP da estendere** + eventuale key). Copre la "Weather Card" del COMPONENT_GUIDE. Cache in Storage `weather-cache` (piccola, ok)
+- [ ] `hotels.js` / `transport.js`: CRUD metadati via Storage (`hotels`/`transport`) → ok localStorage. `transport.next()` = primo segmento non completato. Chiavi da includere nella **migrazione**. Tutti e 3 **non in `App.loadModules`**
+- [ ] Questi 3 moduli **non erano nella lista ARCHITECTURE** (bonus): il modello dati si sta ampliando (meteo, hotel, trasporti) → verificare che l'HTML #9 e i componenti (`ticket-card` per transport?, card hotel/meteo) li supportino
+
 ## 🔵 Strutturali / fondamenta
 - [ ] **Responsive `.page`** (allargamento 720/1180 tablet/desktop) da ri-applicare in `design-system.css` (`.app`/`.page`); oggi solo `max-width:480`
 - [ ] Tokenizzare colori brand **taupe `#6B645D`** e **oliva `#708050`**
