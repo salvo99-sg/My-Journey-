@@ -176,6 +176,7 @@ Scansione di tutti i file archiviati (CSS + JS) per scovare problemi nascosti:
 
 ## 🟣 Export/backup (#10)
 - [ ] 🟢 `export.js`: backup JSON via `Storage.export()` → download `my-journey-backup.json`. Ottimo per **trasferimento manuale dati tra dispositivi** (con `Storage.import`). ⚠️ **Copre solo localStorage**, NON i blob IndexedDB (foto/biglietti) → backup **incompleto**. Al cut-over estendere per includere anche i media IndexedDB (complementa DECISO #6) per un backup/restore completo. No init (on-demand)
+- [ ] `import.js`: ripristino da file (complementa `export.js`). (a) `JSON.parse` in `fromFile()` **non è in try/catch** → file malformato = eccezione non gestita (aggiungere Toast di errore). (b) header cita "Version check" ma **non è implementato** (nessun controllo `myjourney.1.0` vs versione file). (c) come export, **solo localStorage**, non i blob IndexedDB. Dipende da `Toast` + i18n `backup_restored`. ⚠️ `Storage.import` **sovrascrive** le chiavi: valutare merge vs replace. No init (on-demand)
 
 ## 🔵 Strutturali / fondamenta
 - [ ] **Responsive `.page`** (allargamento 720/1180 tablet/desktop) da ri-applicare in `design-system.css` (`.app`/`.page`); oggi solo `max-width:480`

@@ -101,6 +101,7 @@ Legenda stato:
 | `js/modules/currency.js` | Valute: set/convert/format (Intl), rate in Storage | 🟡 archiviato | ⚠️ rate solo EUR di default → convert NaN senza provider FX |
 | `js/modules/share.js` | Condivisione: Web Share API + clipboard fallback + share immagine | 🟡 archiviato | Dipende da Toast + i18n `link_copied`; no init (on-demand) |
 | `js/modules/export.js` | Backup JSON (Storage.export → download) | 🟡 archiviato | ⚠️ Solo localStorage, non i blob IndexedDB → backup incompleto |
+| `js/modules/import.js` | Ripristino backup da file (JSON → Storage.import) | 🟡 archiviato | ⚠️ JSON.parse non protetto; version-check non implementato; solo localStorage |
 
 > Archiviato sotto `design-system/js/` per **non toccare** il `app.js` di root (live).
 
