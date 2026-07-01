@@ -74,17 +74,13 @@ Date.parse(value)
 
 maxLength(value,max){
 
-return
-
-String(value).length<=max;
+return String(value).length<=max;
 
 },
 
 minLength(value,min){
 
-return
-
-String(value).length>=min;
+return String(value).length>=min;
 
 }
 

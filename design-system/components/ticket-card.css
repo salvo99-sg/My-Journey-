@@ -487,7 +487,7 @@ DARK MODE
 
 [data-theme="dark"] .ticket-card::after{
 
-background:var(--color-background);
+background:var(--color-bg);
 
 }
 
