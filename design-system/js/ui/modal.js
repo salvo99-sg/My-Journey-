@@ -104,7 +104,7 @@ document.body.classList.add(
 
 this.backdrop?.classList.add(
 
-"is-visible"
+"is-open"
 
 );
 
@@ -114,7 +114,7 @@ requestAnimationFrame(()=>{
 
 modal.classList.add(
 
-"is-visible"
+"is-open"
 
 );
 
@@ -162,7 +162,7 @@ const current=this.active;
 
 current.classList.remove(
 
-"is-visible"
+"is-open"
 
 );
 
@@ -192,7 +192,7 @@ return;
 
 this.backdrop?.classList.remove(
 
-"is-visible"
+"is-open"
 
 );
 

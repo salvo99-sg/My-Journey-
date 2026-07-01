@@ -41,7 +41,7 @@ this.container=document.createElement("div");
 
 this.container.id="toast-container";
 
-this.container.className="toast-container";
+this.container.className="toast-stack";
 
 document.body.appendChild(this.container);
 
@@ -111,6 +111,22 @@ this.next();
 
 },
 
+escape(text){
+
+return String(text==null?"":text)
+
+.replace(/&/g,"&amp;")
+
+.replace(/</g,"&lt;")
+
+.replace(/>/g,"&gt;")
+
+.replace(/"/g,"&quot;")
+
+.replace(/'/g,"&#39;");
+
+},
+
 create(data){
 
 const toast=document.createElement("div");
@@ -125,7 +141,7 @@ toast.innerHTML=`
 
 <div class="toast__message">
 
-${data.message}
+${this.escape(data.message)}
 
 </div>
 
