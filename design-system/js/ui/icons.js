@@ -21,7 +21,7 @@ Responsibilities
 
 const Icons={
 
-sprite:"/icons/icons.svg",
+sprite:"icons/icons.svg",
 
 loaded:false,
 

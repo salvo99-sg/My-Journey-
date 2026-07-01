@@ -60,7 +60,7 @@ this.show(
 
 body:text,
 
-icon:"/icons/icon-192.png",
+icon:"icons/icon-192.png",
 
 tag:"journey"
 

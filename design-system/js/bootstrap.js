@@ -106,7 +106,7 @@ window.addEventListener(
 
 navigator.serviceWorker.register(
 
-"/service-worker.js"
+"service-worker.js"
 
 );
 

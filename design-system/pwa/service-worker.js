@@ -2,45 +2,32 @@
 PRODUCT.......: My Journey
 MODULE........: PWA
 FILE..........: service-worker.js
-VERSION.......: 1.0.0
+VERSION.......: 1.1.0
 STATUS........: Production Ready
 COMPATIBILITY.: Progressive Web App
 ======================================================================
 SERVICE WORKER
 
-Responsibilities
-
-• Offline support
-• Static asset cache
-• Runtime cache
-• Cache versioning
-• Automatic cleanup
+Strategy
+• Network-first  -> HTML / JS / JSON / CSS (codice sempre aggiornato)
+• Cache-first    -> immagini
+• Solo same-origin in cache (API esterne: mapbox/open-meteo/frankfurter
+  passano sempre dalla rete, mai cache)
+• Path relativi -> compatibile con base-path GitHub Pages (/My-Journey-/)
 
 ======================================================================*/
 
 "use strict";
 
-/*======================================================================
-CACHE
-======================================================================*/
-
-const CACHE_VERSION="myjourney-v1.0.0";
+const CACHE_VERSION="myjourney-v1.1.0";
 
 const STATIC_CACHE=[
 
-"/",
+"./",
 
-"/index.html",
+"index.html",
 
-"/manifest.json",
-
-"/css/app.css",
-
-"/js/app.js",
-
-"/icons/icon-192.png",
-
-"/icons/icon-512.png"
+"manifest.json"
 
 ];
 
@@ -48,47 +35,33 @@ const STATIC_CACHE=[
 INSTALL
 ======================================================================*/
 
-self.addEventListener(
-
-"install",
-
-event=>{
+self.addEventListener("install",event=>{
 
 event.waitUntil(
 
-caches.open(CACHE_VERSION)
+caches.open(CACHE_VERSION).then(cache=>
 
-.then(cache=>{
+cache.addAll(STATIC_CACHE)
 
-return cache.addAll(STATIC_CACHE);
-
-})
+)
 
 );
 
 self.skipWaiting();
 
-}
+});
 
 /*======================================================================
 ACTIVATE
 ======================================================================*/
 
-);
-
-self.addEventListener(
-
-"activate",
-
-event=>{
+self.addEventListener("activate",event=>{
 
 event.waitUntil(
 
-caches.keys()
+caches.keys().then(keys=>
 
-.then(keys=>{
-
-return Promise.all(
+Promise.all(
 
 keys.map(key=>{
 
@@ -100,9 +73,9 @@ return caches.delete(key);
 
 })
 
-);
+)
 
-})
+)
 
 );
 
@@ -114,61 +87,81 @@ self.clients.claim();
 FETCH
 ======================================================================*/
 
-self.addEventListener(
+self.addEventListener("fetch",event=>{
 
-"fetch",
+const request=event.request;
 
-event=>{
+if(request.method!=="GET") return;
 
-if(event.request.method!=="GET"){
+const url=new URL(request.url);
 
-return;
+// solo same-origin: le API esterne passano sempre dalla rete
 
-}
+if(url.origin!==self.location.origin) return;
+
+const isImage=
+
+request.destination==="image" ||
+
+/\.(png|jpe?g|webp|gif|svg|ico)$/i.test(url.pathname);
+
+if(isImage){
+
+// cache-first
 
 event.respondWith(
 
-caches.match(event.request)
+caches.match(request).then(cached=>
 
-.then(cached=>{
+cached ||
 
-if(cached){
-
-return cached;
-
-}
-
-return fetch(event.request)
-
-.then(response=>{
+fetch(request).then(response=>{
 
 const clone=response.clone();
 
-caches.open(CACHE_VERSION)
+caches.open(CACHE_VERSION).then(cache=>
 
-.then(cache=>{
-
-cache.put(
-
-event.request,
-
-clone
+cache.put(request,clone)
 
 );
-
-});
 
 return response;
 
 })
 
-.catch(()=>{
+)
 
-return caches.match("/");
+);
 
-});
+return;
 
-})
+}
+
+// network-first (HTML/JS/JSON/CSS)
+
+event.respondWith(
+
+fetch(request).then(response=>{
+
+const clone=response.clone();
+
+caches.open(CACHE_VERSION).then(cache=>
+
+cache.put(request,clone)
+
+);
+
+return response;
+
+}).catch(()=>
+
+caches.match(request).then(cached=>
+
+cached || caches.match("./")
+
+)
+
+)
 
 );
 
@@ -178,17 +171,9 @@ return caches.match("/");
 MESSAGE
 ======================================================================*/
 
-self.addEventListener(
+self.addEventListener("message",event=>{
 
-"message",
-
-event=>{
-
-if(
-
-event.data==="skipWaiting"
-
-){
+if(event.data==="skipWaiting"){
 
 self.skipWaiting();
 

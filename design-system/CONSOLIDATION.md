@@ -152,7 +152,7 @@ Ricevuti 2 riferimenti: poster Design System + brand/logo ufficiale. **La grafic
   - ❓ **Da decidere**: (a) Leaflet vince → riscrivere CSP, ricablare `map-markers.css` via divIcon, riportare geocoding/lingua su un servizio compatibile, rinunciare a Mapbox; (b) Mapbox resta → riscrivere `map.js` su Mapbox GL mantenendo l'API del modulo (init/addMarker/drawRoute/focusMarker); (c) decido al cut-over. **Scelta non autonoma**
 - [ ] `map.js` si sincronizza con la timeline (`timeline:current`→`focusMarker`) e usa container id `journey-map` (HTML #9). API pulita (init/addMarker/removeMarker/select/focus/drawRoute/locate/clear/refresh) → riusabile anche se si cambia libreria sotto
 
-## 🔴 Base-path GitHub Pages (deploy) — path assoluti `/` rompono
+## 🔴 Base-path GitHub Pages — ✅ FATTO su asset esistenti (manifest/SW/icons.js/notifications/404/privacy/bootstrap); resterà da applicare all'HTML #9 quando arriva
 - [ ] L'app live è servita sotto **`salvo99-sg.github.io/My-Journey-/`** (sotto-cartella). Ma `manifest.json` e altri file usano **path assoluti dalla root** (`start_url:"/"`, `scope:"/"`, `id:"/"`, `icons:"/icons/…"`, shortcuts `"/#…"`, screenshots `"/screenshots/…"`) + `notifications.js` `"/icons/icon-192.png"` + **`icons.js` `sprite:"/icons/icons.svg"`** + **`bootstrap.js` registra SW `"/service-worker.js"`**. Su GitHub Pages project-site questi risolvono a `salvo99-sg.github.io/icons/…` (404), **non** a `/My-Journey-/icons/…`. Al cut-over: rendere i path **relativi** o prefissarli con `/My-Journey-/` (start_url/scope `"./"`/`"/My-Journey-/"`). 🔴 Altrimenti PWA install/icone/shortcut rotti
 
 ## 🟣 Config / Constants (#10) — dichiarati ma non collegati
@@ -162,9 +162,9 @@ Ricevuti 2 riferimenti: poster Design System + brand/logo ufficiale. **La grafic
 - [ ] `constants.js` `JOURNEY_STATUS` (planning/active/completed/archived) ≠ token `--status-*` (planned/progress/completed/draft) → riconciliare la mappatura stato↔colore al cut-over
 - [ ] `gestures.js`: swipe globali (`gesture:swipe*`) ok; va aggiunto a `loadModules`. Nessun nodo critico
 
-## 🔴 Service worker (#12) — REGRESSIONE rispetto a fix già fatto
-- [ ] **`pwa/service-worker.js` è cache-first per TUTTO** (`caches.match` prima, poi network) → **reintroduce il bug "la PWA non si aggiorna"** che avevamo già risolto sull'app live passando a **network-first per js/json/css/html** (vedi sw.js live, cache `mj-v6`). Al cut-over: NON adottare questa strategia così com'è → riportare network-first per i file di codice, cache-first solo per immagini
-- [ ] `service-worker.js` `STATIC_CACHE` precache `"/css/app.css"`,`"/js/app.js"` → **non esistono** nella nuova struttura modulare (decine di file `js/core|ui|modules/*`, CSS `design-system/*`+`components/*`). Serve un **bundle** (build) o una lista di precache corretta
+## 🔴 Service worker (#12) — ✅ RISOLTO (network-first ripristinato)
+- [x] ✅ **FATTO** `pwa/service-worker.js` riscritto **network-first** (HTML/JS/JSON/CSS) + **cache-first immagini** + solo same-origin (API esterne mai in cache). Nota orig: (`caches.match` prima, poi network) → **reintroduce il bug "la PWA non si aggiorna"** che avevamo già risolto sull'app live passando a **network-first per js/json/css/html** (vedi sw.js live, cache `mj-v6`). Al cut-over: NON adottare questa strategia così com'è → riportare network-first per i file di codice, cache-first solo per immagini
+- [x] ✅ **FATTO** `STATIC_CACHE` ridotto a `./`,`index.html`,`manifest.json` (path relativi); il bundle reale si aggiunge al cut-over. Nota orig: nella nuova struttura modulare (decine di file `js/core|ui|modules/*`, CSS `design-system/*`+`components/*`). Serve un **bundle** (build) o una lista di precache corretta
 - [ ] `service-worker.js` path assoluti (`/`,`/index.html`,`/manifest.json`,`/css/…`,`/js/…`,`/icons/…`) → stesso problema **base-path GitHub Pages** (vedi sopra)
 - [ ] **Due service worker**: nuovo `service-worker.js` vs `sw.js` live (cache `mj-v6`, network-first). Al cut-over tenerne **uno solo** e aggiornare la registrazione (oggi l'app registra `sw.js`)
 
