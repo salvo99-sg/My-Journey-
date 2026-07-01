@@ -42,6 +42,18 @@ Scansione di tutti i file archiviati (CSS + JS) per scovare problemi nascosti:
 - [ ] keyframe pulse del marker → **unificare in `motion.css`**: oggi mancante per `day-card.css`/`timeline-card.css` (riferito come `pulse-marker`), MA `journey-timeline.css` definisce `timelinePulse` (accent) e `map-markers.css` definisce `markerPulse` (verde hardcoded). 3 keyframe pulse divergenti → tenerne uno parametrizzato. NB `markerPulse` usa `rgba(34,197,94,.40)` hardcoded mentre lo sfondo `--map-marker--current` usa `--color-success`: incoerenti
 - [x] ~~`--trip-accent-rgb`~~ **RISOLTO dal designer**: `theme/trip-themes.css` fornisce `--trip-accent-rgb` per `:root` (default) e per ogni tema. La mia proposta `color-mix` è **superata** (rispetto la scelta del designer: triplette esplicite). Consumatori già pronti: `empty-state.css`, `calendar.css`, `journey-timeline.css`. ⚠️ Si attiverà solo quando `trip-themes.css` sarà collegato al cut-over
 
+## ✅✅ DIRETTIVE DEFINITIVE + AUTONOMIA (2026-07) — riferimento vincolante
+L'utente/designer ha dato **autonomia operativa** per tutto il consolidamento tecnico che **non cambia l'architettura funzionale**. Approvati: migrazione Leaflet→Mapbox, perf, refactoring interno, consolidamento token, bugfix, ottimizzazione SW, base-path, caching, PWA, a11y, responsive, SEO, Lighthouse. **Vietato senza approvazione**: architettura generale, struttura moduli, **API pubbliche**, naming convention, Design System, filosofia Local First, UX/UI principale, struttura progetto.
+
+1. **Journal** → modulo definitivo `js/modules/journal.js` (**`diary.js` DEPRECATO**). bootstrap usa `Journal.init()`. Deve gestire CRUD, Storage, allegati foto, GPS, meteo, mood, tag, ordinamento, ricerca, export/sync-ready. ✅ **FATTO** (creato e testato; bootstrap già lo chiama)
+2. **HTML** completo = **prossima consegna del designer** (struttura unica responsive con tutti gli hook page-*/#loader/#toast-container/#journey-map/#onboarding/.modal-backdrop + data-*). → attendo
+3. **i18n** → `Language.register({it:{…},en:{…}})`, intera UI incl. `link_copied`/`backup_restored`. → attendo dizionario
+4. **Grafica**: Bob&Cosmo era placeholder → asset definitivi dopo (logo/wordmark/icona/favicon/PWA/splash/sprite/immagini/screenshot). Asset generati = provvisori
+5. **Mappa** → **sostituzione completa Leaflet → Mapbox GL JS autorizzata**, trasparente, **API pubblica invariata** (init/addMarker/removeMarker/selectMarker/focusMarker/drawRoute/locate/clear/refresh). Impl. interna riscrivibile. (chiude/attua DECISO #5)
+6. **Weather** → integrare provider reale, preferenza **Open-Meteo** poi OpenWeather, isolato in `weather.js` senza toccare altri moduli
+7. **Currency** → integrare **Frankfurter / exchangerate.host / ECB**, interfaccia pubblica invariata
+8. **`--trip-header-overlay`** → **eredita da `:root`**; solo i temi che servono lo ridefiniscono. ✅ **RISOLTO: nessuna azione** (comportamento attuale già corretto)
+
 ## 🎨 NUOVA brand identity (poster + logo, checkpoint 2026-07) — SUPERSEDE
 Ricevuti 2 riferimenti: poster Design System + brand/logo ufficiale. **La grafica finale cambierà** (l'utente ricostruirà la maggior parte delle immagini). Impatti:
 - [ ] **Nuovo logo**: montagne + sole + libro aperto + penna + rotta aereo, wordmark "My Journey", tagline "Pianifica. Vivi. Ricorda.", **monogramma B&C nascosto** (= easter egg autorizzato). **Sostituisce il vecchio Bob&Cosmo** (libro navy)
