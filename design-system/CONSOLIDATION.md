@@ -158,6 +158,12 @@ Scansione di tutti i file archiviati (CSS + JS) per scovare problemi nascosti:
 - [ ] 🟢 **Auto-legittimazione dei fix**: il CONTRIBUTING del designer vieta esplicitamente "hardcode colors/typography" e "duplicate logic" → ma i suoi stessi componenti li violano (#fff, palette marker, font-size; doppioni search/timeline). Applicare i nodi 🟠/🟡 **fa rispettare le sue regole**, non le contraddice
 - [ ] 🟢 "remove comments defining file headers" è vietato → i miei archivi mantengono gli header verbatim: conforme
 
+## 🟣 Journey Modules dati (#10) — budget/gallery/tickets/packing
+- [ ] 🔴 **`gallery.js` salva le foto in localStorage** (`Storage.set("gallery", photos)`) → se `photo` contiene dati immagine (base64/blob), **sfora la quota localStorage (~5MB)** e contraddice **DECISO #6 (IndexedDB per i blob)**. Al cut-over: i **dati immagine** vanno in IndexedDB (layer media), in `Storage` solo i **metadati** (id, didascalia, coords, riferimento al blob). Stessa cosa per `tickets.js` se il biglietto include allegati (immagine/PDF) — l'app live tiene i biglietti in IndexedDB `agenda-viaggi-db`
+- [ ] `budget.js`/`packing.js`: dati piccoli → localStorage ok. Chiavi `budget-total`/`budget-currency`/`expenses`/`packing`/`gallery`/`tickets` (→ `myjourney.1.0.*`) diverse dai dati live (probabilmente dentro `agenda-viaggi-v2`) → rientrano nella **migrazione** una-tantum
+- [ ] Naming: il doc ARCHITECTURE chiama il modulo `album.js`, il designer l'ha consegnato come **`gallery.js`** (stessa cosa). Coerenza nomi al cut-over
+- [ ] Tutti e 4 **non in `App.loadModules`** → registrare/inizializzare (init carica da Storage)
+
 ## 🔵 Strutturali / fondamenta
 - [ ] **Responsive `.page`** (allargamento 720/1180 tablet/desktop) da ri-applicare in `design-system.css` (`.app`/`.page`); oggi solo `max-width:480`
 - [ ] Tokenizzare colori brand **taupe `#6B645D`** e **oliva `#708050`**

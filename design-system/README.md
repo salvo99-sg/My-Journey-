@@ -90,6 +90,10 @@ Legenda stato:
 | `js/modules/search.js` | Ricerca: debounce, filtro `[data-searchable]`, history (Storage), highlight `.is-search-match` | 🟡 archiviato | ⚠️ Non usa le classi di search.css/searchbar.css (`.search__match`) → vedi CONSOLIDATION |
 | `js/modules/autocomplete.js` | Suggerimenti destinazione: tastiera (frecce/invio/esc), filtro, history (Storage), item `.autocomplete-item` | 🟡 archiviato | ⚠️ Non in `App.loadModules`; `.autocomplete-item` non stilato; suggerimenti solo locali → vedi CONSOLIDATION |
 | `js/modules/onboarding.js` | Onboarding slide-based: next/prev/skip, una-tantum (Storage `onboarding-completed`), via Modal | 🟡 archiviato | ⚠️ Non in `App.loadModules`; eredita bug modal `.is-visible`; chiave ≠ `mj-onboarded` → vedi CONSOLIDATION |
+| `js/modules/gallery.js` | Foto/album: add/remove/all (Storage `gallery`) | 🟡 archiviato | 🔴 Salva foto in localStorage → deve usare IndexedDB (DECISO #6) → vedi CONSOLIDATION |
+| `js/modules/tickets.js` | Biglietti: create/remove/get/all (Storage `tickets`) | 🟡 archiviato | ⚠️ Allegati → IndexedDB; non in loadModules |
+| `js/modules/packing.js` | Valigia: add/toggle/update/remove/progress (Storage `packing`) | 🟡 archiviato | Dati piccoli, ok localStorage; non in loadModules |
+| `js/modules/budget.js` | Budget/spese: setBudget/currency/addExpense/spent/remaining/% (Storage) | 🟡 archiviato | Dati piccoli, ok; non in loadModules |
 
 > Archiviato sotto `design-system/js/` per **non toccare** il `app.js` di root (live).
 
@@ -115,7 +119,7 @@ Legenda stato:
 | 7 | `design-system.css` | ✅ |
 | 8 | Libreria completa componenti | 🟡 in corso (button, icon-button, fab, navigation, bottom-navigation, accordion, calendar, select, search, map-dock, journey-timeline, map-markers) |
 | 9 | HTML completo di tutte le schermate | ⬜ |
-| 10 | JavaScript ES Modules | 🟡 in corso (core: app/router/storage/state/theme/language/offline/sync/notifications · ui: modal/animations/ui-controls/gestures/toast/loader/fab · modules: timeline/map/search/autocomplete/onboarding) |
+| 10 | JavaScript ES Modules | 🟡 in corso (core: app/router/storage/state/theme/language/offline/sync/notifications · ui: modal/animations/ui-controls/gestures/toast/loader/fab · modules: timeline/map/search/autocomplete/onboarding/gallery/tickets/packing/budget) |
 | 11 | SVG (150+ icone) | ⬜ |
 | 12 | Logo e PWA Assets | ⬜ |
 | 13 | Documentazione tecnica finale | 🟡 in corso (docs: ARCHITECTURE, DESIGN_SYSTEM, COMPONENT_GUIDE, CONTRIBUTING) |
