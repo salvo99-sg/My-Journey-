@@ -4,14 +4,14 @@ MODULE........: Map
 FILE..........: js/modules/map.js
 VERSION.......: 1.0.0
 STATUS........: Production Ready
-COMPATIBILITY.: Vanilla JavaScript / Leaflet
+COMPATIBILITY.: Vanilla JavaScript / Mapbox GL JS v3
 ======================================================================
 JOURNEY MAP
 
 Responsibilities
 
-• Map initialization
-• Marker management
+• Map initialization (Mapbox GL JS — Standard style)
+• Marker management (custom DOM markers -> map-markers.css)
 • Route rendering
 • Fit bounds
 • Current position
@@ -19,15 +19,21 @@ Responsibilities
 • Marker selection
 • Synchronization with Timeline
 
+NOTE
+Internal implementation migrated from Leaflet to Mapbox GL JS.
+The public API is UNCHANGED:
+init / addMarker / removeMarker / selectMarker / focusMarker /
+drawRoute / locate / clear / refresh
+
 ======================================================================*/
 
 "use strict";
 
 const JourneyMap={
 
-map:null,
+token:"pk.eyJ1IjoieGNvc21veCIsImEiOiJjbXFjd2pzZHYwZjB0MnFyOG03cTA4ZXZzIn0.I8FKfkbsa_1A5bZbz4PUEw",
 
-layer:null,
+map:null,
 
 markers:new Map(),
 
@@ -47,37 +53,41 @@ document.getElementById("journey-map");
 
 if(!container) return;
 
-this.map=L.map(container,{
+if(typeof mapboxgl==="undefined") return;
 
-zoomControl:false,
+mapboxgl.accessToken=this.token;
 
-attributionControl:false
+const lang=
 
-});
+(typeof Language!=="undefined" && Language.get)
 
-L.tileLayer(
+? Language.get()
 
-"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+: "it";
 
-{
+this.map=new mapboxgl.Map({
 
-maxZoom:20
+container,
+
+style:"mapbox://styles/mapbox/standard",
+
+center:[12.4964,41.9028],
+
+zoom:13,
+
+attributionControl:false,
+
+config:{
+
+basemap:{
+
+language:lang
 
 }
 
-).addTo(this.map);
+}
 
-this.layer=L.layerGroup()
-
-.addTo(this.map);
-
-this.map.setView(
-
-[41.9028,12.4964],
-
-13
-
-);
+});
 
 this.bind();
 
@@ -108,48 +118,142 @@ event.detail.id
 },
 
 /*======================================================================
-ADD MARKER
+INTERNAL — run once the style is ready
 ======================================================================*/
 
-addMarker(data){
+whenReady(callback){
 
-const marker=L.marker(
+if(!this.map) return;
 
-[data.lat,data.lng]
+if(this.map.isStyleLoaded()){
 
-)
+callback();
 
-.addTo(this.layer);
+return;
 
-marker.bindPopup(
+}
 
-data.title
+this.map.once("load",callback);
 
-);
+},
 
-marker.on(
+/*======================================================================
+INTERNAL — build a custom DOM marker (map-markers.css)
+======================================================================*/
 
-"click",
+element(data){
 
-()=>{
+const el=
 
-this.selectMarker(
+document.createElement("div");
 
-data.id
+el.className="map-marker";
+
+if(data.category){
+
+el.classList.add(
+
+`map-marker--${data.category}`
 
 );
 
 }
 
+if(data.current){
+
+el.classList.add("map-marker--current");
+
+}
+
+const icon=
+
+document.createElement("div");
+
+icon.className="map-marker__icon";
+
+if(data.icon){
+
+const use=document.createElementNS(
+
+"http://www.w3.org/2000/svg",
+
+"svg"
+
 );
 
-this.markers.set(
+const href=document.createElementNS(
 
-data.id,
+"http://www.w3.org/2000/svg",
 
-marker
+"use"
 
 );
+
+href.setAttribute(
+
+"href",
+
+`#${data.icon}`
+
+);
+
+use.appendChild(href);
+
+icon.appendChild(use);
+
+}
+
+el.appendChild(icon);
+
+return el;
+
+},
+
+/*======================================================================
+ADD MARKER
+======================================================================*/
+
+addMarker(data){
+
+if(!this.map) return;
+
+const marker=
+
+new mapboxgl.Marker({
+
+element:this.element(data),
+
+anchor:"bottom"
+
+})
+
+.setLngLat([data.lng,data.lat])
+
+.addTo(this.map);
+
+if(data.title){
+
+marker.setPopup(
+
+new mapboxgl.Popup({offset:24})
+
+.setText(data.title)
+
+);
+
+}
+
+marker.getElement()
+
+.addEventListener(
+
+"click",
+
+()=>this.selectMarker(data.id)
+
+);
+
+this.markers.set(data.id,marker);
 
 },
 
@@ -165,7 +269,7 @@ this.markers.get(id);
 
 if(!marker) return;
 
-this.layer.removeLayer(marker);
+marker.remove();
 
 this.markers.delete(id);
 
@@ -179,6 +283,8 @@ selectMarker(id){
 
 this.currentMarker=id;
 
+if(typeof State!=="undefined"){
+
 State.set(
 
 "map.selectedMarker",
@@ -186,6 +292,8 @@ State.set(
 id
 
 );
+
+}
 
 document.dispatchEvent(
 
@@ -215,23 +323,19 @@ const marker=
 
 this.markers.get(id);
 
-if(!marker) return;
+if(!marker || !this.map) return;
 
-this.map.flyTo(
+this.map.flyTo({
 
-marker.getLatLng(),
+center:marker.getLngLat(),
 
-16,
+zoom:16,
 
-{
+duration:1100
 
-duration:1.1
+});
 
-}
-
-);
-
-marker.openPopup();
+marker.togglePopup();
 
 },
 
@@ -241,45 +345,103 @@ ROUTE
 
 drawRoute(points){
 
-if(this.route){
+if(!this.map || !points || !points.length) return;
 
-this.map.removeLayer(
+const accent=
 
-this.route
+getComputedStyle(document.documentElement)
+
+.getPropertyValue("--trip-accent")
+
+.trim() || "#D97706";
+
+const geojson={
+
+type:"Feature",
+
+geometry:{
+
+type:"LineString",
+
+coordinates:points
+
+}
+
+};
+
+this.whenReady(()=>{
+
+if(this.map.getSource("route")){
+
+this.map.getSource("route")
+
+.setData(geojson);
+
+}
+
+else{
+
+this.map.addSource("route",{
+
+type:"geojson",
+
+data:geojson
+
+});
+
+this.map.addLayer({
+
+id:"route",
+
+type:"line",
+
+source:"route",
+
+layout:{
+
+"line-cap":"round",
+
+"line-join":"round"
+
+},
+
+paint:{
+
+"line-color":accent,
+
+"line-width":5,
+
+"line-opacity":.95
+
+}
+
+});
+
+}
+
+const bounds=points.reduce(
+
+(b,c)=>b.extend(c),
+
+new mapboxgl.LngLatBounds(
+
+points[0],
+
+points[0]
+
+)
 
 );
 
-}
+this.map.fitBounds(bounds,{
 
-this.route=L.polyline(
+padding:40
 
-points,
+});
 
-{
+});
 
-color:
-
-"var(--trip-accent)",
-
-weight:5,
-
-opacity:.95
-
-}
-
-).addTo(this.map);
-
-this.map.fitBounds(
-
-this.route.getBounds(),
-
-{
-
-padding:[40,40]
-
-}
-
-);
+this.route=geojson;
 
 },
 
@@ -289,13 +451,29 @@ CURRENT POSITION
 
 locate(){
 
-this.map.locate({
+if(!this.map || !navigator.geolocation) return;
 
-setView:true,
+navigator.geolocation.getCurrentPosition(
 
-maxZoom:16
+position=>{
+
+this.map.flyTo({
+
+center:[
+
+position.coords.longitude,
+
+position.coords.latitude
+
+],
+
+zoom:16
 
 });
+
+}
+
+);
 
 },
 
@@ -305,21 +483,27 @@ CLEAR
 
 clear(){
 
-this.layer.clearLayers();
+this.markers.forEach(
 
-this.markers.clear();
-
-if(this.route){
-
-this.map.removeLayer(
-
-this.route
+marker=>marker.remove()
 
 );
 
-this.route=null;
+this.markers.clear();
+
+if(this.map && this.map.getLayer("route")){
+
+this.map.removeLayer("route");
 
 }
+
+if(this.map && this.map.getSource("route")){
+
+this.map.removeSource("route");
+
+}
+
+this.route=null;
 
 },
 
@@ -329,7 +513,37 @@ REFRESH
 
 refresh(){
 
-this.map.invalidateSize();
+if(this.map){
+
+this.map.resize();
+
+}
+
+},
+
+/*======================================================================
+LANGUAGE — keep labels in the app language
+======================================================================*/
+
+setLanguage(lang){
+
+if(!this.map) return;
+
+try{
+
+this.map.setConfigProperty(
+
+"basemap",
+
+"language",
+
+lang
+
+);
+
+}
+
+catch(error){}
 
 }
 

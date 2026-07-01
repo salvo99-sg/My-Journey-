@@ -139,7 +139,7 @@ Ricevuti 2 riferimenti: poster Design System + brand/logo ufficiale. **La grafic
 - [ ] `animations.css` reduced-motion globale (`*`/`::before`/`::after` con `!important`) rende **ridondanti** i blocchi reduced-motion per-componente (innocui, ma rimovibili). `!important` qui è già autorizzato (CONTRIBUTING)
 - [ ] `successRing` (in `animations.css`) usa `--trip-accent-rgb` → ok una volta collegato `trip-themes.css`
 
-## 🔴 Stack mappa — Leaflet vs Mapbox GL JS ✅ DECISO #5 (Mapbox vince, riscrivere map.js mantenendo API)
+## 🔴 Stack mappa — Leaflet vs Mapbox GL JS ✅ DECISO #5 · ✅✅ ATTUATO (map.js riscritto su Mapbox GL JS, API invariata)
 - [ ] **`js/modules/map.js` usa Leaflet + OpenStreetMap**, l'app live usa **Mapbox GL JS v3.4.0**. Divergenza profonda:
   - **Libreria**: `L.map`/`L.tileLayer`/`L.marker`/`L.polyline` (Leaflet) vs Mapbox GL. Tile da `tile.openstreetmap.org` vs Mapbox Standard style
   - **CSP**: l'attuale è `script-src 'self' https://api.mapbox.com`. Leaflet richiede CDN JS (es. unpkg) + tile/connect verso openstreetmap.org → **CSP da riscrivere**; CONTRIBUTING "Eccezioni autorizzate" cita Mapbox, non Leaflet
