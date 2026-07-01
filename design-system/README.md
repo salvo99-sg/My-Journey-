@@ -96,10 +96,10 @@ Legenda stato:
 | `js/modules/budget.js` | Budget/spese: setBudget/currency/addExpense/spent/remaining/% (Storage) | 🟡 archiviato | Dati piccoli, ok; non in loadModules |
 | `js/modules/memories.js` | Ricordi: create/update/remove/all (Storage `memories`) | 🟡 archiviato | ⚠️ Media (foto/voce) → IndexedDB; non in loadModules |
 | `js/modules/journal.js` | **Diario**: CRUD, foto(ref)/GPS/meteo/mood/tag, sort/search, export (Storage `journal`) | 🟢 creato | Modulo definitivo (diary.js deprecato); sblocca bootstrap |
-| `js/modules/weather.js` | Meteo: cache/get/set (Storage `weather-cache`) | 🟡 archiviato | ⚠️ Stub, nessuna API reale → serve provider meteo + CSP |
+| `js/modules/weather.js` | Meteo **Open-Meteo** (geocoding+forecast, no key, cache 1h) | 🟢 integrato | CSP: open-meteo.com |
 | `js/modules/hotels.js` | Hotel: add/remove/get/all (Storage `hotels`) | 🟡 archiviato | CRUD metadati; non in loadModules |
 | `js/modules/transport.js` | Trasporti: add/remove/all/next (Storage `transport`) | 🟡 archiviato | CRUD metadati; non in loadModules |
-| `js/modules/currency.js` | Valute: set/convert/format (Intl), rate in Storage | 🟡 archiviato | ⚠️ rate solo EUR di default → convert NaN senza provider FX |
+| `js/modules/currency.js` | Valute **Frankfurter** (ECB, base EUR, refresh 6h) + convert/format | 🟢 integrato | CSP: api.frankfurter.app |
 | `js/modules/share.js` | Condivisione: Web Share API + clipboard fallback + share immagine | 🟡 archiviato | Dipende da Toast + i18n `link_copied`; no init (on-demand) |
 | `js/modules/export.js` | Backup JSON (Storage.export → download) | 🟡 archiviato | ⚠️ Solo localStorage, non i blob IndexedDB → backup incompleto |
 | `js/modules/import.js` | Ripristino backup da file (JSON → Storage.import) | 🟡 archiviato | ⚠️ JSON.parse non protetto; version-check non implementato; solo localStorage |
