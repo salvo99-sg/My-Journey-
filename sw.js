@@ -9,7 +9,7 @@
 // IMPORTANTE: a ogni cambio di strategia/struttura, alzare il numero di CACHE
 // (mj-vN). Il nuovo service worker cancella le cache vecchie all'attivazione.
 
-const CACHE = "mj-v6";
+const CACHE = "mj-v7";
 const CORE = [
   "./",
   "index.html",
