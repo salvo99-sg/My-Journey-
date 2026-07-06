@@ -249,21 +249,21 @@
     box-shadow: 0 6px 18px rgba(0,0,0,.30); }
   .testa-riga { display: flex; justify-content: space-between; align-items: center; }
   .countdown { display: inline-block; margin-top: 10px; background: var(--accent); color: #fff; border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 700; }
-  .countdown.corso { background: #0891B2; }
+  .countdown.corso { background: var(--olive, #708050); }
   .countdown.fine { background: rgba(255,255,255,.2); }
 
   .tabs { display: flex; gap: 6px; padding: 14px 16px 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .tab { flex: 0 0 auto; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--border-soft); background: var(--surface); color: var(--muted-3); font-size: 14px; font-weight: 600; }
-  .tab.attiva { background: var(--ink); color: #fff; border-color: var(--text); }
+  .tab.attiva { background: var(--navy); color: #fff; border-color: var(--navy); }
   #macroTabs { overflow-x: visible; }
   #macroTabs .tab { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center;
     justify-content: center; gap: 3px; padding: 9px 4px; font-size: 11px; line-height: 1.1;
     border-radius: 14px; white-space: nowrap; }
   #macroTabs .tab .mt-ic { font-size: 20px; line-height: 1; }
   .sottobar { display: flex; gap: 6px; padding: 12px 16px 0; }
-  .sottobar button { flex: 1; padding: 9px; border-radius: 10px; border: none; background: #ececeb;
+  .sottobar button { flex: 1; padding: 9px; border-radius: 999px; border: 1px solid var(--border-soft); background: var(--surface);
     color: var(--muted-3); font-size: 13px; font-weight: 700; }
-  .sottobar button.attiva { background: var(--ink); color: #fff; }
+  .sottobar button.attiva { background: var(--t-accent, var(--accent)); border-color: transparent; color: #fff; }
 
   main { padding: 18px 16px; }
   .giorno { margin-bottom: 24px; }
@@ -272,14 +272,16 @@
   .giorno-testa h2 small { font-weight: 400; color: var(--muted-2); font-size: 12px; }
   .giorno-testa span { font-family: ui-monospace, monospace; font-size: 11px; color: var(--muted); }
   .fascia { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted-2); margin: 10px 2px 6px; }
-  .tappa { display: flex; background: var(--surface); border: 1px solid var(--border-soft); border-radius: 14px; overflow: hidden; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(120,70,30,.06); }
-  .tappa .barra { width: 6px; flex-shrink: 0; }
-  .tappa .corpo { flex: 1; padding: 10px 12px; border-right: 1px dashed var(--line); }
-  .tappa .meta { font-family: ui-monospace, monospace; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
-  .tappa .titolo { font-weight: 600; color: var(--text); margin-top: 2px; }
-  .tappa .luogo { font-size: 13px; color: var(--muted); }
+  .tappa { display: flex; background: var(--surface); border: 1px solid var(--border-soft); border-radius: 16px; overflow: hidden; margin-bottom: 9px; box-shadow: 0 1px 3px rgba(22,38,76,.06); }
+  .tappa:active { transform: scale(.99); }
+  .tappa .barra { width: 5px; flex-shrink: 0; }
+  .tappa .corpo { flex: 1; padding: 11px 13px; border-right: 1px dashed var(--line); }
+  .tappa .meta { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; }
+  .tappa .titolo { font-weight: 700; font-size: 15px; color: var(--text); margin-top: 3px; }
+  .tappa .luogo { font-size: 13px; color: var(--muted); margin-top: 1px; }
   .tappa .costo { width: 86px; display: flex; align-items: center; justify-content: center; }
-  .tappa .costo b { font-family: ui-monospace, monospace; font-size: 14px; }
+  .tappa .costo b { font-size: 14.5px; color: var(--navy); font-variant-numeric: tabular-nums; }
+  :root[data-theme="dark"] .tappa .costo b { color: var(--text); }
   .tappa.senza-costo .corpo { border-right: none; } /* attività gratuite: niente costo né linea tratteggiata */
   .vuoto { font-size: 13px; color: var(--muted-2); font-style: italic; }
   .suggerimento { font-size: 12px; color: var(--muted-2); text-align: center; margin: -4px 0 14px; }
@@ -358,22 +360,30 @@
   .fab { position: fixed; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; border: none; border-radius: 999px; padding: 14px 26px; font-size: 15px; font-weight: 700; box-shadow: 0 6px 18px rgba(0,0,0,.25); z-index: 20; }
 
   /* Mappa */
-  .gcard-wrap { position: relative; margin: 10px 0; border-radius: 16px; overflow: hidden; }
+  .gcard-wrap { position: relative; margin: 10px 0; border-radius: 18px; overflow: hidden; }
   .gcard-azioni { position: absolute; top: 0; bottom: 0; right: 0; width: 140px; display: flex; }
   .gcard-azioni button { flex: 1; border: none; font-size: 20px; color: #fff;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
   .gcard-azioni button small { font-size: 10px; font-weight: 700; }
   .ga-rinomina { background: #4264FB; }
   .ga-svuota { background: var(--danger); }
-  .gcard { position: relative; background: var(--surface); border-radius: 16px;
-    box-shadow: 0 1px 4px rgba(120,70,30,.07); will-change: transform; z-index: 1; }
-  .gcard-testa { display: flex; align-items: center; justify-content: space-between; padding: 14px; gap: 8px; }
-  .gcard-info b { font-size: 16px; color: var(--text); display: block; }
+  .gcard { position: relative; background: var(--surface); border: 1px solid var(--border-soft); border-radius: 18px;
+    box-shadow: 0 1px 4px rgba(22,38,76,.06); will-change: transform; z-index: 1; }
+  .gcard.aperta { border-color: color-mix(in srgb, var(--t-accent, var(--accent)) 45%, transparent); box-shadow: 0 6px 20px rgba(22,38,76,.10); }
+  .gcard-testa { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; gap: 12px; }
+  .gnum { flex: none; width: 46px; height: 46px; border-radius: 14px; background: var(--t-accent, var(--accent)); color: #fff;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1;
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--t-accent, var(--accent)) 35%, transparent); }
+  .gnum b { font-size: 19px; font-weight: 800; }
+  .gnum small { font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .85; margin-top: 2px; }
+  .gcard-info { flex: 1; min-width: 0; }
+  .gcard-info b { font-size: 16px; color: var(--text); display: block; font-family: 'Calistoga', Georgia, serif; font-weight: 400; }
   .gcard-info small { color: var(--muted); }
   .chevron { color: var(--muted-2); font-size: 17px; flex: none; }
   .gcard-corpo { padding: 0 10px 12px; }
-  .aggiungi-qui { width: 100%; margin-top: 10px; background: #FFFBF6; border: 1.5px dashed #E7C9B5;
-    border-radius: 12px; padding: 11px; color: var(--accent); font-weight: 600; font-size: 14px; }
+  .aggiungi-qui { width: 100%; margin-top: 10px; background: color-mix(in srgb, var(--t-accent, var(--accent)) 7%, var(--surface));
+    border: 1.5px dashed color-mix(in srgb, var(--t-accent, var(--accent)) 45%, transparent);
+    border-radius: 14px; padding: 11px; color: var(--t-accent, var(--accent)); font-weight: 700; font-size: 14px; }
   #vNomi input, .v-nome { margin-top: 8px; }
   .mini-btn { background: var(--ink); color: #fff; border: none; border-radius: 999px;
     padding: 7px 13px; font-size: 13px; font-weight: 600; }

@@ -940,17 +940,22 @@ let giornoAperto = null;
 function renderItinerario() {
   const m = $("vistaItinerario"); m.innerHTML =
     '<div class="suggerimento">Tocca un giorno per aprirlo · scorri ' + ico('cl') + ' per rinominare o svuotare</div>';
+  let numG = 0;
   for (const g of corrente.giorni) {
+    numG++;
     const costoG = g.tappe.reduce((s, t) => s + t.costo, 0);
     const aperto = giornoAperto === g.id;
+    const setti = g.data ? new Date(g.data + "T12:00:00")
+      .toLocaleDateString(LANG === "en" ? "en-GB" : "it-IT", { weekday: "short" }).replace(".", "") : "";
     const wrap = document.createElement("div"); wrap.className = "gcard-wrap";
     wrap.innerHTML = `
       <div class="gcard-azioni">
         <button class="ga-rinomina">${ico('edit')}<small>Rinomina</small></button>
         <button class="ga-svuota">${ico('trash')}<small>Svuota</small></button>
       </div>
-      <div class="gcard">
+      <div class="gcard${aperto ? " aperta" : ""}">
         <div class="gcard-testa">
+          <span class="gnum"><b>${numG}</b><small>${esc(setti)}</small></span>
           <div class="gcard-info">
             <b>${esc(g.titolo)}</b>
             <small>${fmtData(g.data)} · ${g.tappe.length ? t("it.activities", {n: g.tappe.length}) : t("it.freeDay")}${costoG ? " · " + eur(costoG) : ""}</small>
