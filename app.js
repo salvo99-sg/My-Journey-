@@ -158,6 +158,8 @@ const STR = {
     "home.eyebrow": "Agenda di viaggio", "home.title": "I miei viaggi",
     "home.empty1": "Nessun viaggio ancora.", "home.empty2": "Crea il primo con il pulsante qui sotto!",
     "home.import": "Importa viaggio da AI", "home.new": "+ Nuovo viaggio", "trip.addStop": "+ Aggiungi tappa",
+    "home.progress": "Avanzamento", "home.continue": "Continua a pianificare", "home.memories": "Ricordi recenti",
+    "home.done": "Conclusi", "home.day": "Giorno {a} di {b}", "home.startsIn": "Parte tra {n} giorni", "home.startsTomorrow": "Parte domani",
     "onb.welcome": "Il tuo diario<br>di viaggio", "onb.welcomeSub": "Personalizzalo in pochi secondi: bastano un paio di domande.",
     "onb.start": "Iniziamo", "onb.step1": "Passo 1 di 2", "onb.step2": "Passo 2 di 2",
     "onb.nickTitle": "Scegli il tuo nickname", "onb.color": "Colore del pallino",
@@ -229,6 +231,8 @@ const STR = {
     "home.eyebrow": "Travel journal", "home.title": "My trips",
     "home.empty1": "No trips yet.", "home.empty2": "Create your first one with the button below!",
     "home.import": "Import trip from AI", "home.new": "+ New trip", "trip.addStop": "+ Add stop",
+    "home.progress": "Progress", "home.continue": "Continue planning", "home.memories": "Recent memories",
+    "home.done": "Completed", "home.day": "Day {a} of {b}", "home.startsIn": "Starts in {n} days", "home.startsTomorrow": "Starts tomorrow",
     "onb.welcome": "Your travel<br>journal", "onb.welcomeSub": "Personalize it in seconds: just a couple of questions.",
     "onb.start": "Let's go", "onb.step1": "Step 1 of 2", "onb.step2": "Step 2 of 2",
     "onb.nickTitle": "Choose your nickname", "onb.color": "Dot colour",
@@ -521,7 +525,7 @@ function statoBadge(v) {
   const oggi = oggiISO();
   if (v.inizio && v.fine && oggi > v.fine) return { classe: "concluso", label: t("badge.concluso"), colore: "#a8a29e" };
   if (mancanzeViaggio(v).length)            return { classe: "bozza", label: t("badge.bozza"), colore: "#DC2626" };
-  if (oggi < v.inizio)                       return { classe: "programma", label: t("badge.programma"), colore: "#EA580C" };
+  if (oggi < v.inizio)                       return { classe: "programma", label: t("badge.programma"), colore: "#D97706" };
   return { classe: "corso", label: t("badge.corso"), colore: "#16a34a" };
 }
 const FASCE = [["sunrise","fa.morning"],["sun","fa.afternoon"],["moon","fa.evening"],["clock","fa.unplanned"]];
@@ -777,50 +781,92 @@ function renderHome() {
   $("fab").classList.remove("nascosto");
   $("fab").textContent = t("home.new");
   const m = $("listaViaggi"); m.innerHTML = "";
+  const rev = String((renderHome._rev = (renderHome._rev || 0) + 1));
+  m.dataset.rev = rev;
   if (viaggi.length === 0) {
     m.innerHTML = '<div class="vuoto" style="text-align:center;padding:30px 10px">' + esc(t("home.empty1")) + '<br>' + esc(t("home.empty2")) + ' ' + ico('globe') + '</div>';
     return;
   }
-  for (const v of viaggi) {
-    const sb = statoBadge(v);
-    const tema = temaViaggio(v);
-    const conDate = v.inizio && v.fine;
-    const quando = (conDate ? fmtData(v.inizio, true) + " → " + fmtData(v.fine, true) : t("date.tbd")) + " · " + v.persone + " " + ico('user');
-    const card = document.createElement("div"); card.className = "viaggio-card" + (tema ? " tema" : "") + (sb.classe === "bozza" ? " bozza" : "");
-    if (tema) {
-      card.style.setProperty("--t-accent", accentiTema(tema).acc);
-      card.style.backgroundImage = 'url("' + tema.poster + '")';
-      card.style.backgroundSize = "cover"; card.style.backgroundPosition = "center";
-      const media = tema.video
-        ? `<video class="tema-bg" autoplay loop muted playsinline poster="${tema.poster}"><source src="${tema.video}" type="video/mp4"></video>`
-        : tema.anim ? `<canvas class="tema-anim"></canvas>` : "";
-      card.innerHTML = `
-        ${media}
-        <div class="tema-veil"></div><div class="tema-accent"></div>
-        <div class="info">
-          <div class="tema-row">
-            <span class="tema-chip">${tema.paese}</span>
-            <span class="tema-chip"><span class="dot" style="background:${sb.colore}"></span>${sb.label}</span>
-          </div>
-          <div>
-            <h2>${esc(v.nome)}</h2>
-            <div class="quando">${quando}</div>
-          </div>
-        </div>
-        <button class="x">${ico('x')}</button>`;
-    } else {
-      const rigaQuando = sb.classe === "bozza"
-        ? `<div class="quando manca">${esc(t("badge.manca"))}: ${esc(mancanzeViaggio(v).map((x) => t("miss." + x)).join(" · "))}</div>`
-        : `<div class="quando">${quando}</div>`;
-      card.innerHTML = `
+
+  // ── HOME cut-over (design system): un viaggio in evidenza + sezioni ──
+  // In evidenza: prima un "in corso", poi il prossimo "in programma", poi il primo.
+  const tuttiV = viaggi.map((v) => ({ v, sb: statoBadge(v) }));
+  let hero = tuttiV.find((x) => x.sb.classe === "corso");
+  if (!hero) hero = tuttiV.filter((x) => x.sb.classe === "programma")
+    .sort((a, b) => ((a.v.inizio || "9999") > (b.v.inizio || "9999") ? 1 : -1))[0];
+  if (!hero) hero = tuttiV[0];
+  const attivi = tuttiV.filter((x) => x !== hero && x.sb.classe !== "concluso");
+  const conclusi = tuttiV.filter((x) => x !== hero && x.sb.classe === "concluso");
+
+  const giorniTra = (a, b) => Math.round((new Date(b) - new Date(a)) / 86400000);
+  const rigaQuando = (v) => ((v.inizio && v.fine)
+    ? fmtData(v.inizio, true) + " → " + fmtData(v.fine, true)
+    : esc(t("date.tbd"))) + " · " + v.persone + " " + ico('user');
+
+  // blocco di stato sotto la copertina dell'hero (avanzamento / countdown / mancanze)
+  function bloccoStato(v, sb) {
+    if (sb.classe === "corso" && v.inizio && v.fine) {
+      const tot = Math.max(1, giorniTra(v.inizio, v.fine) + 1);
+      const g = Math.min(tot, Math.max(1, giorniTra(v.inizio, oggiISO()) + 1));
+      const pc = Math.round((g / tot) * 100);
+      return `<div class="hj-prog"><div class="top"><span>${esc(t("home.progress"))}</span>` +
+        `<span>${esc(t("home.day").replace("{a}", g).replace("{b}", tot))} · ${pc}%</span></div>` +
+        `<div class="hj-bar"><i style="width:${pc}%"></i></div></div>`;
+    }
+    if (sb.classe === "programma" && v.inizio) {
+      const n = Math.max(0, giorniTra(oggiISO(), v.inizio));
+      const testo = n === 1 ? t("home.startsTomorrow") : t("home.startsIn").replace("{n}", n);
+      return `<div class="hj-prog"><div class="top"><span>${esc(testo)}</span></div><div class="hj-bar"><i style="width:6%"></i></div></div>`;
+    }
+    if (sb.classe === "bozza" && mancanzeViaggio(v).length)
+      return `<div class="quando manca" style="margin-top:10px">${esc(t("badge.manca"))}: ${esc(mancanzeViaggio(v).map((x) => t("miss." + x)).join(" · "))}</div>`;
+    return "";
+  }
+
+  function creaHero(x) {
+    const { v, sb } = x; const tema = temaViaggio(v);
+    const media = tema && tema.video
+      ? `<video class="tema-bg" autoplay loop muted playsinline poster="${tema.poster}"><source src="${tema.video}" type="video/mp4"></video>`
+      : tema && tema.anim ? `<canvas class="tema-anim"></canvas>` : "";
+    const card = document.createElement("div"); card.className = "hj-hero";
+    if (tema) card.style.setProperty("--t-accent", accentiTema(tema).acc);
+    card.innerHTML = `
       <div class="info">
-        <h2>${esc(v.nome)}</h2>
-        ${rigaQuando}
-        <span class="stato-badge sb-${sb.classe}"><span class="dot"></span>${sb.label}</span>
+        <div class="cover"${tema ? ` style="background-image:url('${tema.poster}')"` : ""}>
+          ${media}
+          <div class="veil"></div>
+          <div class="chips">
+            ${tema ? `<span class="hj-chip">${tema.paese}</span>` : ""}
+            <span class="hj-chip"><span class="dot" style="background:${sb.colore}"></span>${sb.label}</span>
+          </div>
+          <h2>${esc(v.nome)}</h2>
+        </div>
+        <div class="body">
+          <div class="quando">${rigaQuando(v)}</div>
+          ${bloccoStato(v, sb)}
+        </div>
       </div>
       <button class="x">${ico('x')}</button>`;
-    }
-    const _vbg = card.querySelector(".tema-bg"); if (_vbg) _vbg.play().catch(function () {});
+    return card;
+  }
+
+  function creaMini(x) {
+    const { v, sb } = x; const tema = temaViaggio(v);
+    const sotto = sb.classe === "bozza" && mancanzeViaggio(v).length
+      ? esc(t("badge.manca")) + ": " + esc(mancanzeViaggio(v).map((k) => t("miss." + k)).join(" · "))
+      : rigaQuando(v);
+    const card = document.createElement("div"); card.className = "hj-mini";
+    card.innerHTML = `
+      <div class="info">
+        <div class="thumb"${tema ? ` style="background-image:url('${tema.poster}')"` : ""}></div>
+        <div class="tx"><h2>${esc(v.nome)}</h2><div class="quando">${sotto}</div></div>
+        <span class="hj-pill p-${sb.classe}">${sb.label}</span>
+      </div>
+      <button class="x">${ico('x')}</button>`;
+    return card;
+  }
+
+  function agganciaCard(card, v) {
     card.querySelector(".info").addEventListener("click", () => apriViaggio(v.id));
     card.querySelector(".x").addEventListener("click", async () => {
       if (!(await chiediConferma(t("cf.delTripT"), '"' + v.nome + '" — ' + t("cf.delTripB"), t("common.delete"), true))) return;
@@ -831,10 +877,41 @@ function renderHome() {
       }
       renderHome();
     });
-    m.appendChild(card);
-    const _cv = card.querySelector(".tema-anim"); if (_cv && tema.anim) avviaTemaAnim(_cv, tema.anim, tema.accent);
   }
+
+  const heroEl = creaHero(hero);
+  m.appendChild(heroEl); agganciaCard(heroEl, hero.v);
+  const _vbg = heroEl.querySelector(".tema-bg"); if (_vbg) _vbg.play().catch(function () {});
+  const temaHero = temaViaggio(hero.v);
+  const _cv = heroEl.querySelector(".tema-anim"); if (_cv && temaHero && temaHero.anim) avviaTemaAnim(_cv, temaHero.anim, temaHero.accent);
+
+  for (const [lista, chiave] of [[attivi, "home.continue"], [conclusi, "home.done"]]) {
+    if (!lista.length) continue;
+    m.insertAdjacentHTML("beforeend", `<div class="hj-sect">${esc(t(chiave))}</div>`);
+    for (const x of lista) { const el = creaMini(x); m.appendChild(el); agganciaCard(el, x.v); }
+  }
+
+  sezioneRicordi(m, rev); // async: ultime foto come "Ricordi recenti"
   autoTemiHome(); // in sottofondo: assegna l'artwork per nazione anche alle città non nei pattern
+}
+
+// Ultime 3 foto (tutti i viaggi) come anteprime cliccabili in fondo alla Home.
+async function sezioneRicordi(m, rev) {
+  let tutte = [];
+  try { tutte = await dbTutti("foto"); } catch {}
+  if (!tutte.length || !m.isConnected || m.dataset.rev !== rev) return;
+  tutte.sort((a, b) => (b.quando || 0) - (a.quando || 0));
+  const wrap = document.createElement("div");
+  wrap.innerHTML = `<div class="hj-sect">${esc(t("home.memories"))}</div><div class="hj-mem"></div>`;
+  const grid = wrap.querySelector(".hj-mem");
+  for (const f of tutte.slice(0, 3)) {
+    const src = srcFoto(f); if (!src) continue;
+    const img = document.createElement("img");
+    img.src = src; img.alt = ""; img.loading = "lazy";
+    if (viaggi.some((v) => v.id === f.viaggioId)) img.addEventListener("click", () => apriViaggio(f.viaggioId));
+    grid.appendChild(img);
+  }
+  if (grid.children.length) m.appendChild(wrap);
 }
 
 // ============ VIAGGIO ============

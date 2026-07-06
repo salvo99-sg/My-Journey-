@@ -274,3 +274,8 @@ Ricevuti 2 riferimenti: poster Design System + brand/logo ufficiale. **La grafic
 
 **Stato consegna**: 7/13 · #8 libreria componenti: 28 file archiviati · + `theme/trip-themes.css` (theme engine) · + `styles/animations.css` (motion system) · + `styles/utilities.css` (utility layer) · + `styles/helpers.css` (helper layer) · **#10 JS avviato**: core (app, router, storage, state, theme, language) · ui (modal, animations) · modules (timeline, map, search, autocomplete, onboarding). Tutti i 9 moduli di App.loadModules consegnati + extra (state, autocomplete, onboarding, ui-controls, offline, sync, notifications, gestures) da registrare. + config/constants (statici).
 Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al consolidamento.
+
+## CUT-OVER · FASE C — avanzamento
+
+- ✅ **Home (app reale)** — `renderHome()` riscritto in stile DS: hero card (copertina tema + chip stato + titolo Calistoga + barra avanzamento "Giorno a di b"), sezioni "Continua a pianificare"/"Conclusi" con mini-card (thumb + pill stato), "Ricordi recenti" (ultime 3 foto da IndexedDB, cliccabili). Handler apri/elimina e temi video/canvas riusati identici. Nuove chiavi i18n `home.progress/continue/memories/done/day/startsIn/startsTomorrow` (IT+EN). CSS `hj-*` in index.html; vecchie regole `.viaggio-card` mantenute (da purgare a fine cut-over). Colore stato "programma" → #D97706. SW mj-v9.
+- ⏭ Prossimi: schermata Viaggio (tabs), Budget, Diario, Album, Biglietti, Impostazioni, bottom-nav.

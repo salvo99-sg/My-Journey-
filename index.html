@@ -311,6 +311,50 @@
   .tema-chip .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
   .viaggio-card .x { background: none; border: none; color: var(--line); font-size: 17px; padding: 6px; }
 
+  /* ===== HOME · cut-over design system (hero + sezioni + ricordi) ===== */
+  .hj-sect { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 800; margin: 22px 2px 10px; }
+  .hj-hero { position: relative; background: var(--surface); border: 1px solid var(--border-soft); border-radius: 24px; overflow: hidden; margin-bottom: 14px;
+    box-shadow: 0 10px 30px rgba(22,38,76,.10); transition: transform .2s cubic-bezier(.2,.8,.2,1), box-shadow .2s cubic-bezier(.2,.8,.2,1); }
+  .hj-hero:active { transform: scale(.985); }
+  .hj-hero .cover { position: relative; aspect-ratio: 16 / 10; background: linear-gradient(150deg, var(--navy), #2d4a86) center/cover no-repeat; }
+  .hj-hero .tema-bg, .hj-hero .tema-anim { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+  .hj-hero .veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(12,10,20,.12), rgba(12,10,20,0) 38%, rgba(12,8,20,.62)); }
+  .hj-hero .chips { position: absolute; top: 12px; left: 12px; display: flex; gap: 8px; flex-wrap: wrap; z-index: 3; }
+  .hj-chip { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.92); color: var(--ink); border-radius: 999px; padding: 6px 12px;
+    font-size: 11.5px; font-weight: 800; white-space: nowrap; box-shadow: 0 2px 10px rgba(0,0,0,.20); }
+  .hj-chip .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .hj-hero .cover h2 { position: absolute; left: 16px; right: 56px; bottom: 12px; z-index: 3; color: #fff;
+    font-family: 'Calistoga', Georgia, serif; font-weight: 400; font-size: 30px; text-shadow: 0 2px 16px rgba(0,0,0,.5); }
+  .hj-hero .body { padding: 13px 16px 15px; }
+  .hj-hero .body .quando { font-size: 13.5px; color: var(--muted); }
+  .hj-prog { margin-top: 11px; }
+  .hj-prog .top { display: flex; justify-content: space-between; gap: 10px; font-size: 12.5px; font-weight: 700; color: var(--muted-3); }
+  .hj-bar { height: 8px; border-radius: 999px; background: var(--border-soft-2); overflow: hidden; margin-top: 6px; }
+  .hj-bar i { display: block; height: 100%; border-radius: inherit; background: var(--t-accent, var(--accent)); transition: width .6s cubic-bezier(.2,.8,.2,1); }
+  .hj-hero .x { position: absolute; top: 10px; right: 10px; z-index: 4; border: none; color: #fff; background: rgba(0,0,0,.30);
+    border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+  .hj-mini { display: flex; align-items: center; background: var(--surface); border: 1px solid var(--border-soft); border-radius: 18px;
+    padding: 10px 6px 10px 12px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(120,70,30,.06), 0 1px 3px rgba(120,70,30,.05);
+    transition: transform .2s cubic-bezier(.2,.8,.2,1); }
+  .hj-mini:active { transform: scale(.985); }
+  .hj-mini .info { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+  .hj-mini .thumb { width: 54px; height: 54px; border-radius: 14px; flex: none; background: linear-gradient(150deg, var(--navy), #2d4a86) center/cover no-repeat; }
+  .hj-mini .tx { flex: 1; min-width: 0; }
+  .hj-mini h2 { font-family: 'Calistoga', Georgia, serif; font-weight: 400; font-size: 17px; color: var(--text); }
+  .hj-mini .quando { font-size: 12.5px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hj-pill { flex: none; border-radius: 999px; padding: 5px 11px; font-size: 11px; font-weight: 800; }
+  .hj-pill.p-bozza { background: rgba(220,38,38,.10); color: #b91c1c; }
+  .hj-pill.p-programma { background: rgba(217,119,6,.12); color: #92400e; }
+  .hj-pill.p-corso { background: rgba(22,163,74,.12); color: #15803d; }
+  .hj-pill.p-concluso { background: rgba(120,113,108,.14); color: var(--muted-3); }
+  :root[data-theme="dark"] .hj-pill.p-bozza { color: #f0888a; }
+  :root[data-theme="dark"] .hj-pill.p-programma { color: #f3b26a; }
+  :root[data-theme="dark"] .hj-pill.p-corso { color: #6fd598; }
+  .hj-mini .x { background: none; border: none; color: var(--line); font-size: 16px; padding: 8px; flex: none; }
+  .hj-mem { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .hj-mem img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 16px; display: block;
+    box-shadow: 0 2px 10px rgba(22,38,76,.10); }
+
   .fab { position: fixed; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; border: none; border-radius: 999px; padding: 14px 26px; font-size: 15px; font-weight: 700; box-shadow: 0 6px 18px rgba(0,0,0,.25); z-index: 20; }
 
   /* Mappa */
