@@ -34,7 +34,7 @@
 <link rel="stylesheet" href="design-system/spacing.css" />
 <style>
   :root {
-    --accent: #EA580C;          /* arancio principale */
+    --accent: #D97706;          /* arancio brand */
     --bg: #FFF7ED;              /* sfondo crema */
     --text: #1C1917;           /* testo scuro */
     --muted: #78716C;          /* testo attenuato */
@@ -45,7 +45,7 @@
     --border-soft-2: #F0DCCE;  /* bordo tenue 2 */
     --navy: #16264C;           /* blu notte */
     --navy-2: #2B3A55;         /* blu notte 2 */
-    --navy-home: #1E3160;      /* header home */
+    --navy-home: #16264C;      /* header home (brand navy) */
     --danger: #DC2626;         /* errori/elimina */
     --surface: #FFFFFF;        /* superfici bianche */
     --ink: #1C1917;            /* superfici scure (fab, pill scure) */
@@ -245,6 +245,8 @@
   /* Home: header in tinta unita, senza chiazza/glow */
   #schermataHome header { background: var(--navy-home); }
   #schermataHome header::after { display: none; }
+  .home-brand { display: block; width: 46px; height: 46px; border-radius: 13px; margin-bottom: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.30); }
   .testa-riga { display: flex; justify-content: space-between; align-items: center; }
   .countdown { display: inline-block; margin-top: 10px; background: var(--accent); color: #fff; border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 700; }
   .countdown.corso { background: #0891B2; }
@@ -791,6 +793,7 @@
 <div class="app" id="schermataHome">
   <header>
     <button class="home-avatar" id="homeAvatar" title="Il tuo profilo" aria-label="Il tuo profilo" data-i18n-title="ttl.profile"></button>
+    <img class="home-brand" src="design-system/pwa/icons/icon-192.png" alt="My Journey" width="46" height="46" />
     <div class="eyebrow" data-i18n="home.eyebrow">Agenda di viaggio</div>
     <h1 data-i18n="home.title">I miei viaggi</h1>
   </header>
