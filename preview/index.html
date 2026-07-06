@@ -1,0 +1,47 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Journey — Preview UI</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Calistoga&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="../design-system/pwa/icons/favicon-32.png">
+<style>
+:root{--navy:#16264C;--orange:#D97706;--cream:#FFF7ED;--taupe:#6B645D}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--navy);font-family:'Inter',system-ui,sans-serif}
+header{padding:38px 22px 10px;text-align:center}
+header img{width:210px;max-width:64%;height:auto}
+header p{color:var(--taupe);font-weight:600;letter-spacing:.02em;margin:14px 0 0}
+.note{max-width:720px;margin:18px auto 0;padding:12px 16px;border:1px solid rgba(22,38,76,.14);border-radius:14px;background:#fff;color:var(--taupe);font-size:14px;text-align:center}
+.note b{color:var(--navy)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:34px 22px;padding:34px 22px 70px;max-width:1400px;margin:0 auto}
+figure{margin:0;text-align:center}
+.frame{width:100%;max-width:340px;margin:0 auto;aspect-ratio:393/852;border-radius:34px;overflow:hidden;
+       border:1px solid rgba(22,38,76,.12);box-shadow:0 18px 50px rgba(22,38,76,.14);background:#fff}
+.frame iframe{width:393px;height:852px;border:0;transform-origin:top left;transform:scale(.865);pointer-events:none}
+@media(max-width:360px){.frame iframe{transform:scale(.8)}}
+figcaption{margin-top:12px;font-weight:700;color:var(--navy)}
+footer{text-align:center;color:var(--taupe);font-size:13px;padding:0 22px 50px}
+</style></head>
+<body>
+<header>
+  <img src="../design-system/brand/logo-lockup.png" alt="My Journey">
+  <p>Preview UI · design system + brand</p>
+  <div class="note">Anteprima statica della nuova interfaccia (light &amp; dark). L'app funzionante resta su
+  <b>«/»</b> ed è intatta: questa pagina serve solo a vedere dal vivo le nuove schermate. I dati sono d'esempio.</div>
+</header>
+<div class="grid">
+<figure><div class="frame"><iframe loading="lazy" src="scr-01-home.html"></iframe></div><figcaption>Home</figcaption></figure>
+<figure><div class="frame"><iframe loading="lazy" src="scr-02-itinerary.html"></iframe></div><figcaption>Itinerary</figcaption></figure>
+<figure><div class="frame"><iframe loading="lazy" src="scr-03-map.html"></iframe></div><figcaption>Map</figcaption></figure>
+<figure><div class="frame"><iframe loading="lazy" src="scr-04-budget.html"></iframe></div><figcaption>Budget</figcaption></figure>
+<figure><div class="frame"><iframe loading="lazy" src="scr-05-journal.html"></iframe></div><figcaption>Journal</figcaption></figure>
+<figure><div class="frame"><iframe loading="lazy" src="scr-06-memories.html"></iframe></div><figcaption>Memories</figcaption></figure>
+<figure><div class="frame"><iframe loading="lazy" src="scr-07-splash.html"></iframe></div><figcaption>Splash</figcaption></figure>
+<figure><div class="frame"><iframe loading="lazy" src="scr-08-settings.html"></iframe></div><figcaption>Settings</figcaption></figure>
+<figure><div class="frame"><iframe loading="lazy" src="scr-09-album.html"></iframe></div><figcaption>Album</figcaption></figure>
+<figure><div class="frame"><iframe loading="lazy" src="scr-10-tickets.html"></iframe></div><figcaption>Tickets</figcaption></figure>
+<figure><div class="frame"><iframe loading="lazy" src="scr-11-home-dark.html"></iframe></div><figcaption>Home Dark</figcaption></figure>
+<figure><div class="frame"><iframe loading="lazy" src="scr-12-map-dark.html"></iframe></div><figcaption>Map Dark</figcaption></figure>
+<figure><div class="frame"><iframe loading="lazy" src="scr-13-splash-dark.html"></iframe></div><figcaption>Splash Dark</figcaption></figure>
+</div>
+<footer>My Journey — anteprima di design. Non è l'app con i tuoi dati.</footer>
+</body></html>

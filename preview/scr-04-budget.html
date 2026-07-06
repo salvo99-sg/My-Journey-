@@ -1,0 +1,94 @@
+<!doctype html><html lang="it" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=393,initial-scale=1,viewport-fit=cover"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Calistoga&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../design-system/tokens.css">
+<link rel="stylesheet" href="../design-system/colors.css">
+<link rel="stylesheet" href="../design-system/typography.css">
+<link rel="stylesheet" href="../design-system/spacing.css">
+<link rel="stylesheet" href="../design-system/motion.css">
+<link rel="stylesheet" href="../design-system/styles/animations.css">
+<link rel="stylesheet" href="../design-system/design-system.css">
+<link rel="stylesheet" href="../design-system/theme/trip-themes.css">
+<link rel="stylesheet" href="../design-system/styles/utilities.css">
+<link rel="stylesheet" href="../design-system/styles/helpers.css">
+<link rel="stylesheet" href="../design-system/components/header.css">
+<link rel="stylesheet" href="../design-system/components/button.css">
+<link rel="stylesheet" href="../design-system/components/icon-button.css">
+<link rel="stylesheet" href="../design-system/components/fab.css">
+<link rel="stylesheet" href="../design-system/components/navigation.css">
+<link rel="stylesheet" href="../design-system/components/bottom-navigation.css">
+<link rel="stylesheet" href="../design-system/components/input.css">
+<link rel="stylesheet" href="../design-system/components/searchbar.css">
+<link rel="stylesheet" href="../design-system/components/search.css">
+<link rel="stylesheet" href="../design-system/components/select.css">
+<link rel="stylesheet" href="../design-system/components/accordion.css">
+<link rel="stylesheet" href="../design-system/components/calendar.css">
+<link rel="stylesheet" href="../design-system/components/trip-card.css">
+<link rel="stylesheet" href="../design-system/components/day-card.css">
+<link rel="stylesheet" href="../design-system/components/timeline-card.css">
+<link rel="stylesheet" href="../design-system/components/journey-timeline.css">
+<link rel="stylesheet" href="../design-system/components/map-dock.css">
+<link rel="stylesheet" href="../design-system/components/map-markers.css">
+<link rel="stylesheet" href="../design-system/components/modal.css">
+<link rel="stylesheet" href="../design-system/components/bottom-sheet.css">
+<link rel="stylesheet" href="../design-system/components/toast.css">
+<link rel="stylesheet" href="../design-system/components/album-card.css">
+<link rel="stylesheet" href="../design-system/components/photo-card.css">
+<link rel="stylesheet" href="../design-system/components/ticket-card.css">
+<link rel="stylesheet" href="../design-system/components/memory-card.css">
+<link rel="stylesheet" href="../design-system/components/empty-state.css">
+<link rel="stylesheet" href="../design-system/components/skeleton.css">
+
+<style>
+html,body{margin:0;padding:0}
+body{width:393px;min-height:852px;background:var(--color-bg);font-family:var(--font-ui);color:var(--color-text);overflow:hidden}
+*{-webkit-font-smoothing:antialiased}
+.scr{display:flex;flex-direction:column;min-height:852px}
+.pad{padding:0 18px}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 8px}
+.topbar .ed{font-family:var(--font-editorial);font-size:26px;line-height:1}
+.ico{display:inline-flex;width:40px;height:40px;border-radius:50%;background:var(--color-surface);align-items:center;justify-content:center;box-shadow:var(--shadow-xs);font-size:17px}
+.sect{font-size:11px;letter-spacing:.10em;text-transform:uppercase;color:var(--color-text-muted);font-weight:800;margin:20px 0 10px}
+.cover{background:linear-gradient(135deg,var(--trip-gradient-start),var(--trip-gradient-end))}
+.grad-navy{background:linear-gradient(160deg,#16264C,#22345f)}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--color-surface-secondary);font-size:12px;font-weight:700;color:var(--color-text-secondary)}
+.bnav{margin-top:auto;position:sticky;bottom:0;display:flex;justify-content:space-around;align-items:center;padding:10px 12px calc(env(safe-area-inset-bottom) + 12px);background:var(--glass-nav);backdrop-filter:blur(20px);border-top:1px solid var(--color-border)}
+.bnav a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:var(--color-text-muted);text-decoration:none}
+.bnav a.on{color:var(--trip-accent,#D97706)}
+.bnav .plus{width:52px;height:52px;border-radius:18px;background:var(--color-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:var(--shadow-md)}
+.bar{height:8px;border-radius:999px;background:var(--color-border);overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--trip-accent);border-radius:inherit}
+.card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-2xl);box-shadow:var(--shadow-sm)}
+.mark{position:relative;display:inline-flex;width:34px;height:34px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(0,0,0,.25)}
+.mark span{transform:rotate(45deg);color:#fff;font-size:13px;font-weight:800}
+</style>
+</head><body data-trip-theme="japan"><div class="scr" data-trip-theme="japan">
+<div class="topbar"><div>‹</div><div style="font-family:var(--font-editorial);font-size:20px">Budget</div><div>⋯</div></div>
+<div class="pad">
+  <div class="card" style="padding:20px;text-align:center;margin-top:6px">
+    <div style="font-size:12px;color:var(--color-text-secondary);font-weight:700">TOTALE</div>
+    <div style="font-family:var(--font-editorial);font-size:40px">€ 2.450</div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--color-text-secondary);margin:14px 0 6px"><span>Speso € 1.350</span><span>Rimane € 1.100</span></div>
+    <div class="bar"><i style="width:55%"></i></div>
+  </div>
+  <div class="sect">Categorie</div>
+  <div class="card" style="display:flex;align-items:center;gap:14px;padding:14px 16px;margin-bottom:10px">
+    <div style="width:42px;height:42px;border-radius:14px;background:var(--trip-accent-soft);color:var(--trip-accent);display:flex;align-items:center;justify-content:center;font-weight:800">✈</div>
+    <div style="flex:1"><div style="font-weight:700">Voli</div><div style="font-size:12px;color:var(--color-text-secondary)">2 biglietti</div></div>
+    <div style="font-weight:800">€ 580</div></div><div class="card" style="display:flex;align-items:center;gap:14px;padding:14px 16px;margin-bottom:10px">
+    <div style="width:42px;height:42px;border-radius:14px;background:var(--trip-accent-soft);color:var(--trip-accent);display:flex;align-items:center;justify-content:center;font-weight:800">🏨</div>
+    <div style="flex:1"><div style="font-weight:700">Alloggio</div><div style="font-size:12px;color:var(--color-text-secondary)">4 notti</div></div>
+    <div style="font-weight:800">€ 1.305</div></div><div class="card" style="display:flex;align-items:center;gap:14px;padding:14px 16px;margin-bottom:10px">
+    <div style="width:42px;height:42px;border-radius:14px;background:var(--trip-accent-soft);color:var(--trip-accent);display:flex;align-items:center;justify-content:center;font-weight:800">🍜</div>
+    <div style="flex:1"><div style="font-weight:700">Cibo</div><div style="font-size:12px;color:var(--color-text-secondary)"></div></div>
+    <div style="font-weight:800">€ 305</div></div><div class="card" style="display:flex;align-items:center;gap:14px;padding:14px 16px;margin-bottom:10px">
+    <div style="width:42px;height:42px;border-radius:14px;background:var(--trip-accent-soft);color:var(--trip-accent);display:flex;align-items:center;justify-content:center;font-weight:800">🚆</div>
+    <div style="flex:1"><div style="font-weight:700">Trasporti</div><div style="font-size:12px;color:var(--color-text-secondary)"></div></div>
+    <div style="font-weight:800">€ 305</div></div>
+</div>
+<nav class="bnav">
+<a class="">⌂<span>Home</span></a>
+<a class="">🗺<span>Mappa</span></a>
+<a><div class="plus">+</div></a>
+<a class="">✎<span>Diario</span></a>
+<a class="">◉<span>Profilo</span></a>
+</nav>
+</div></body></html>
