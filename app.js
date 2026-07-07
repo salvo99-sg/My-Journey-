@@ -1072,7 +1072,7 @@ function renderBudget() {
   const spese = corrente.spese || [];
   $("vistaBudget").innerHTML = `
     <div class="card totale" style="position:relative">
-      <div class="eyebrow" style="color:#78716c">${esc(t("bud.total"))}</div>
+      <div class="eyebrow">${esc(t("bud.total"))}</div>
       <div class="cifra">${eur(totale)}</div>
       <div class="sub" id="totValuta"></div>
       <button class="btn-cambio" id="btnCambio" title="Cambio valuta">
@@ -1088,7 +1088,7 @@ function renderBudget() {
       ${nomi.map((n, i) => `
         <div class="cat">
           <div class="riga"><span>${esc(n)}</span><b>${eur(Math.round(perPersona[i]))}</b></div>
-          <div class="pista"><div class="pieno" style="width:${(perPersona[i] / maxP) * 100}%;background:#0891B2"></div></div>
+          <div class="pista"><div class="pieno" style="width:${(perPersona[i] / maxP) * 100}%;background:var(--t-accent, var(--accent))"></div></div>
         </div>`).join("")}
     </div>
     <div class="card">

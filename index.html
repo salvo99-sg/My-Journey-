@@ -288,13 +288,16 @@
 
   .card { background: var(--surface); border: 1px solid var(--border-soft); border-radius: 20px; padding: 20px; margin-bottom: 14px; box-shadow: 0 1px 2px rgba(120,70,30,.06), 0 1px 3px rgba(120,70,30,.05); }
   .totale { text-align: center; }
-  .totale .cifra { font-size: 40px; font-weight: 700; color: var(--navy); margin: 4px 0; }
+  .totale .eyebrow { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; font-weight: 800; color: var(--muted) !important; font-family: 'Inter', sans-serif; }
+  .totale .cifra { font-size: 42px; font-weight: 400; color: var(--navy); margin: 4px 0; font-variant-numeric: tabular-nums; }
+  :root[data-theme="dark"] .totale .cifra { color: var(--text); }
   .totale .sub { font-size: 13px; color: var(--muted); }
   .cat { margin-top: 12px; }
-  .cat .riga { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 4px; }
-  .cat .riga b { font-family: ui-monospace, monospace; }
-  .cat .pista { height: 8px; background: var(--bg); border-radius: 999px; overflow: hidden; }
-  .cat .pieno { height: 100%; border-radius: 999px; }
+  .cat .riga { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px; }
+  .cat .riga b { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--navy); }
+  :root[data-theme="dark"] .cat .riga b { color: var(--text); }
+  .cat .pista { height: 8px; background: var(--border-soft-2); border-radius: 999px; overflow: hidden; }
+  .cat .pieno { height: 100%; border-radius: 999px; transition: width .6s cubic-bezier(.2,.8,.2,1); }
 
   .viaggio-card { background: var(--surface); border: 1px solid var(--border-soft); border-radius: 20px; padding: 16px; margin-bottom: 13px; display: flex; justify-content: space-between; align-items: center; gap: 10px; box-shadow: 0 1px 2px rgba(120,70,30,.06), 0 1px 3px rgba(120,70,30,.05); transition: transform .2s cubic-bezier(.2,.8,.2,1), box-shadow .2s cubic-bezier(.2,.8,.2,1); }
   .viaggio-card:active { transform: scale(.985); box-shadow: 0 6px 18px rgba(120,70,30,.12); }
@@ -385,16 +388,17 @@
     border: 1.5px dashed color-mix(in srgb, var(--t-accent, var(--accent)) 45%, transparent);
     border-radius: 14px; padding: 11px; color: var(--t-accent, var(--accent)); font-weight: 700; font-size: 14px; }
   #vNomi input, .v-nome { margin-top: 8px; }
-  .mini-btn { background: var(--ink); color: #fff; border: none; border-radius: 999px;
-    padding: 7px 13px; font-size: 13px; font-weight: 600; }
+  .mini-btn { background: var(--t-accent, var(--accent)); color: #fff; border: none; border-radius: 999px;
+    padding: 7px 14px; font-size: 13px; font-weight: 700; box-shadow: 0 3px 10px color-mix(in srgb, var(--t-accent, var(--accent)) 30%, transparent); }
   .spesa-riga { display: flex; justify-content: space-between; align-items: center; gap: 8px;
-    padding: 9px 0; border-bottom: 1px solid var(--bg); font-size: 14.5px; color: var(--text); }
+    padding: 10px 0; border-bottom: 1px solid var(--border-soft); font-size: 14.5px; color: var(--text); }
+  .spesa-riga b { font-variant-numeric: tabular-nums; }
   .spesa-riga small { color: var(--muted); display: block; }
   .spesa-riga .x { background: none; border: none; color: var(--line); font-size: 17px; }
   .btn-cambio { position: absolute; top: 12px; right: 12px; width: 42px; height: 42px;
-    border-radius: 50%; border: none; background: var(--ink);
+    border-radius: 50%; border: none; background: var(--navy);
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 3px 10px rgba(0,0,0,.25); }
+    box-shadow: 0 3px 10px rgba(22,38,76,.30); }
   .calc-display { background: var(--ink); border-radius: 16px; padding: 14px 12px; margin-top: 10px; position: relative; }
   .calc-riga { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 6px; padding-right: 52px; }
   .calc-riga span { font-size: 13px; font-weight: 800; color: var(--muted-2); letter-spacing: .5px; }
