@@ -2207,7 +2207,7 @@ async function renderFoto() {
   for (const f of tutte) (gruppi[f.localita] = gruppi[f.localita] || []).push(f);
   for (const [loc, foto] of Object.entries(gruppi)) {
     const sez = document.createElement("div"); sez.className = "gruppo-foto";
-    sez.innerHTML = `<h2>${ico('pin')} ${esc(loc)} <small style="color:#a8a29e">(${foto.length})</small></h2>`;
+    sez.innerHTML = `<h2>${ico('pin')} ${esc(loc)} <span class="gf-count">${foto.length}</span></h2>`;
     const griglia = document.createElement("div"); griglia.className = "griglia";
     for (const f of foto) {
       const img = document.createElement("img");
