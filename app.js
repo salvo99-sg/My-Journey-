@@ -1923,7 +1923,6 @@ function chipsPagatori(boxId, sel) {
     const c = document.createElement("button");
     c.type = "button";
     c.className = "chip" + (sel.includes(i) ? " scelto" : "");
-    if (sel.includes(i)) { c.style.background = "#0891B2"; c.style.borderColor = "#0891B2"; c.style.color = "#fff"; }
     c.textContent = nome;
     c.addEventListener("click", () => {
       const k = sel.indexOf(i);
