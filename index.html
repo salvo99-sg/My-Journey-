@@ -19,8 +19,8 @@
 <title>Agenda Viaggi</title>
 <link rel="manifest" href="manifest.json" />
 <meta name="theme-color" content="#16264C" />
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32-v2.png" />
-<link rel="apple-touch-icon" href="apple-touch-icon-v2.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="design-system/pwa/icons/favicon-32.png" />
+<link rel="apple-touch-icon" href="design-system/pwa/icons/apple-touch-icon.png" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -67,7 +67,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; touch-action: manipulation; }
   body { color: var(--text); font-family: 'Inter', 'Avenir Next', 'Segoe UI', system-ui, sans-serif; background: var(--bg); min-height: 100vh; }
   /* Titoli editoriali: serif caldo "rivista di viaggi" (il quaderno resta Caveat) */
-  header h1, #nomeViaggio, .viaggio-card h2, .totale .cifra, .gcard-info b,
+  header h1, #nomeViaggio, .totale .cifra, .gcard-info b,
   .modale h3, .visore .dida, .cq-titolo { font-family: 'Calistoga', Georgia, serif; font-weight: 400; }
   .app { max-width: 480px; margin: 0 auto; padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)); }
 
@@ -220,11 +220,6 @@
   .sottobar button.attiva { background: var(--t-accent, var(--accent)); border-color: transparent; color: #fff; }
 
   main { padding: 18px 16px; }
-  .giorno { margin-bottom: 24px; }
-  .giorno-testa { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
-  .giorno-testa h2 { font-size: 16px; color: var(--text); }
-  .giorno-testa h2 small { font-weight: 400; color: var(--muted-2); font-size: 12px; }
-  .giorno-testa span { font-family: ui-monospace, monospace; font-size: 11px; color: var(--muted); }
   .fascia { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted-2); margin: 10px 2px 6px; }
   .tappa { display: flex; background: var(--surface); border: 1px solid var(--border-soft); border-radius: 16px; overflow: hidden; margin-bottom: 9px; box-shadow: 0 1px 3px rgba(22,38,76,.06); }
   .tappa:active { transform: scale(.99); }
@@ -253,21 +248,9 @@
   .cat .pista { height: 8px; background: var(--border-soft-2); border-radius: 999px; overflow: hidden; }
   .cat .pieno { height: 100%; border-radius: 999px; transition: width .6s cubic-bezier(.2,.8,.2,1); }
 
-  .viaggio-card { background: var(--surface); border: 1px solid var(--border-soft); border-radius: 20px; padding: 16px; margin-bottom: 13px; display: flex; justify-content: space-between; align-items: center; gap: 10px; box-shadow: 0 1px 2px rgba(120,70,30,.06), 0 1px 3px rgba(120,70,30,.05); transition: transform .2s cubic-bezier(.2,.8,.2,1), box-shadow .2s cubic-bezier(.2,.8,.2,1); }
-  .viaggio-card:active { transform: scale(.985); box-shadow: 0 6px 18px rgba(120,70,30,.12); }
-  @media (hover: hover) { .viaggio-card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(120,70,30,.12); } }
-  .viaggio-card .info { flex: 1; }
-  .viaggio-card h2 { font-size: 18px; color: var(--text); }
-  .viaggio-card .quando { font-size: 13px; color: var(--muted); margin-top: 2px; }
-  .stato-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; padding: 5px 11px; border-radius: 999px; margin-top: 8px; letter-spacing: .3px; }
-  .stato-badge .dot { width: 6px; height: 6px; border-radius: 50%; }
-  .sb-corso { color: #15803d; background: rgba(22,163,74,.13); } .sb-corso .dot { background: #16a34a; }
-  .sb-programma { color: #c2410c; background: rgba(234,88,12,.13); } .sb-programma .dot { background: var(--accent); }
-  .sb-bozza { color: #b91c1c; background: rgba(220,38,38,.12); } .sb-bozza .dot { background: var(--danger); }
-  .sb-concluso { color: var(--muted); background: rgba(120,113,108,.14); } .sb-concluso .dot { background: var(--muted-2); }
-  .viaggio-card.bozza { border: 1px dashed rgba(220,38,38,.45); }
-  .viaggio-card .quando.manca { color: #b91c1c; }
-  .tema-chip .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+  /* testo "manca: ..." nelle card Home (bozze) */
+  .hj-hero .quando.manca, .hj-mini .quando.manca { color: #b91c1c; }
+  :root[data-theme="dark"] .hj-hero .quando.manca, :root[data-theme="dark"] .hj-mini .quando.manca { color: #f0888a; }
   .viaggio-card .x { background: none; border: none; color: var(--line); font-size: 17px; padding: 6px; }
 
   /* ===== HOME · cut-over design system (hero + sezioni + ricordi) ===== */
@@ -729,21 +712,6 @@
   .cq-info-chiudi { position: absolute; top: 12px; right: 14px; background: none; border: none; color: #5a6a86; font-size: 17px; }
 
   /* ===================== TEMI DESTINAZIONE ===================== */
-  /* --- card-gateway nella home --- */
-  .viaggio-card.tema { position: relative; overflow: hidden; aspect-ratio: 16 / 9; padding: 0; border: none; color: #fff; display: block; }
-  .viaggio-card.tema .tema-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
-  .viaggio-card.tema .tema-veil { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(20,12,28,.12) 0%, rgba(20,12,28,0) 30%, rgba(14,8,22,.76) 100%); }
-  .viaggio-card.tema .tema-anim { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-  .viaggio-card.tema .tema-accent { position: absolute; left: 0; bottom: 0; height: 4px; width: 100%; z-index: 2; background: linear-gradient(90deg, var(--t-accent,#E0566A), #FFB48A, var(--t-accent,#E0566A)); }
-  .viaggio-card.tema .info { position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 16px 18px; }
-  .viaggio-card.tema h2 { color: #fff; font-style: italic; font-size: 25px; margin: 2px 0 6px; text-shadow: 0 2px 14px rgba(0,0,0,.45); }
-  .viaggio-card.tema .quando { color: rgba(255,255,255,.94); font-size: 13px; }
-  .viaggio-card.tema .tema-row { display: flex; justify-content: flex-start; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
-  .viaggio-card.tema .stato { display: none; }
-  .tema-chip { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.18); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,.24); border-radius: 999px; padding: 6px 11px; font-size: 11.5px; font-weight: 700; white-space: nowrap; }
-  .viaggio-card.tema .tema-row { gap: 8px; }
-  .viaggio-card.tema .x { position: absolute; top: 10px; right: 10px; z-index: 3; color: #fff; background: rgba(0,0,0,.28); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; }
-
   /* --- header del viaggio a tema --- */
   #schermataViaggio header.tema { background: #1B1E4D; }
   #schermataViaggio header.tema::after { display: none; }

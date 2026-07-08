@@ -9,16 +9,16 @@
 // IMPORTANTE: a ogni cambio di strategia/struttura, alzare il numero di CACHE
 // (mj-vN). Il nuovo service worker cancella le cache vecchie all'attivazione.
 
-const CACHE = "mj-v16";
+const CACHE = "mj-v17";
 const CORE = [
   "./",
   "index.html",
   "app.js",
   "manifest.json",
-  "icon-192-v2.png",
-  "icon-512-v2.png",
-  "apple-touch-icon-v2.png",
-  "favicon-32-v2.png"
+  "design-system/pwa/icons/icon-192.png",
+  "design-system/pwa/icons/icon-512.png",
+  "design-system/pwa/icons/apple-touch-icon.png",
+  "design-system/pwa/icons/favicon-32.png"
 ];
 
 self.addEventListener("install", (e) => {
