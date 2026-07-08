@@ -69,68 +69,20 @@
   .modale h3, .visore .dida, .cq-titolo { font-family: 'Calistoga', Georgia, serif; font-weight: 400; }
   .app { max-width: 480px; margin: 0 auto; padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)); }
 
-  /* ===== SPLASH ===== */
+  /* ===== SPLASH (brand: logo su crema, opzione A) ===== */
   #splash { position: fixed; inset: 0; z-index: 200; overflow: hidden; transition: opacity .8s ease;
-    background: #05080F center top / cover no-repeat; }
+    background: var(--bg); display: flex; align-items: center; justify-content: center; }
   #splash.via { opacity: 0; pointer-events: none; }
-  /* lo sfondo vero e proprio: l'immagine del pianeta, a tutto schermo */
-  #sfondoSplash { position: absolute; inset: 0; width: 100%; height: 100%;
-    object-fit: cover; object-position: center top; z-index: 0; }
-  #cieloStelle { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
-  .stella { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: var(--surface);
-    opacity: .15; animation: brilla 3s ease-in-out infinite; }
-  @keyframes brilla { 50% { opacity: .85; } }
-
-  /* ===== FASE 2: atmosfera viva ===== */
-  /* respiro del pianeta: lo sfondo pulsa impercettibilmente, come galleggiasse nello spazio */
-  #sfondoSplash { animation: respiro 11s ease-in-out infinite; transform-origin: 50% 42%; }
-  @keyframes respiro {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.018); }
-  }
-  /* stelle brillanti: alcune più grandi, con un alone che pulsa a ritmi diversi */
-  .stella.viva { width: 3px; height: 3px; box-shadow: 0 0 6px 1px #cfe3ff; animation: brillaForte 4s ease-in-out infinite; }
-  @keyframes brillaForte { 0%,100% { opacity: .2; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.3); } }
-  /* stella cadente: una scia che taglia il cielo ogni tanto */
-  #stellaCadente { position: absolute; top: 0; left: 0; width: 2px; height: 2px; border-radius: 50%;
-    background: var(--surface); opacity: 0; z-index: 3; pointer-events: none;
-    box-shadow: 0 0 6px 2px #fff, 0 0 0 #fff; }
-  #stellaCadente.vola { animation: cade 1.1s ease-in forwards; }
-  @keyframes cade {
-    0% { opacity: 0; transform: translate(0,0) rotate(38deg); box-shadow: 0 0 6px 2px #fff, -2px 0 4px #ffffff88; }
-    8% { opacity: 1; }
-    100% { opacity: 0; transform: translate(280px, 220px) rotate(38deg); box-shadow: 0 0 6px 2px #fff, -120px 0 22px #ffffff66; }
-  }
-  /* bagliore pulsante sulla scia che orbita attorno al globo */
-  #bagliorescia { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: .55;
-    background: radial-gradient(ellipse 60% 8% at 50% 62%, #aee0ff55, transparent 70%);
-    animation: pulsaScia 5.5s ease-in-out infinite; }
-  @keyframes pulsaScia { 0%,100% { opacity: .25; } 50% { opacity: .7; } }
-
-  /* i testi e l'orologio vivono nel cielo basso lasciato libero dall'immagine */
-  .splash-testi { position: absolute; left: 0; right: 0; bottom: calc(40px + env(safe-area-inset-bottom, 0px));
-    text-align: center; color: #fff; z-index: 6; padding: 0 20px; }
-  .splash-testi .eyebrow { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; opacity: .6; }
-  #flipNome { font-family: 'Caveat', cursive; font-size: 34px; margin-top: 4px; color: #fff;
-    text-shadow: 0 2px 16px rgba(0,0,0,.6); min-height: 40px; }
-  .fc { display: flex; gap: 9px; justify-content: center; margin-top: 12px; perspective: 500px; }
-  .fc-unita { text-align: center; }
-  .fc-card { position: relative; background: linear-gradient(#2c2c31 48%, #18181b 52%); border-radius: 12px;
-    min-width: 62px; padding: 9px 4px; font-size: 42px; font-weight: 800; color: var(--bg);
-    font-variant-numeric: tabular-nums; box-shadow: 0 8px 20px rgba(0,0,0,.55), inset 0 1px 0 #ffffff14;
-    transform-style: preserve-3d; }
-  .fc-card::after { content: ''; position: absolute; left: 4px; right: 4px; top: 50%; height: 2px; background: #000c; }
-  .fc-card.gira { animation: ribalta .45s ease; }
-  @keyframes ribalta { 0% { transform: rotateX(0); } 45% { transform: rotateX(-86deg); } 100% { transform: rotateX(0); } }
-  .fc-eti { margin-top: 6px; font-size: 9px; letter-spacing: 2.5px; color: #C9A227; text-transform: uppercase; font-weight: 700; }
-  .fc-incorso { margin-top: 14px; font-size: 30px; font-weight: 800; color: #fff; }
-  .fc-incorso small { display: block; font-size: 13px; font-weight: 400; color: #C9A227; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
-  .btn-inizia { display: inline-flex; align-items: center; gap: 9px; margin: 20px auto 0; background: var(--accent); color: #fff; border: none; border-radius: 999px;
-    padding: 15px 40px; font-size: 17px; font-weight: 700; box-shadow: 0 8px 26px rgba(228,87,46,.45); }
+  .splash-brand { text-align: center; padding: 0 20px; animation: splash-entra .65s cubic-bezier(.2,.8,.2,1) both; }
+  .splash-brand img { width: 260px; max-width: 72vw; height: auto; }
+  .splash-brand .solo-dark { display: none; }
+  :root[data-theme="dark"] .splash-brand .solo-light { display: none; }
+  :root[data-theme="dark"] .splash-brand .solo-dark { display: inline; }
+  @keyframes splash-entra { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+  .btn-inizia { display: inline-flex; align-items: center; gap: 9px; margin: 34px auto 0; background: var(--accent); color: #fff; border: none; border-radius: 999px;
+    padding: 15px 40px; font-size: 17px; font-weight: 700; box-shadow: 0 8px 26px color-mix(in srgb, var(--accent) 40%, transparent); }
   .btn-inizia svg { width: 20px; height: 20px; fill: #fff; }
-  @media (prefers-reduced-motion: reduce) {
-    .stella, .stella.viva, .fc-card.gira, #sfondoSplash, #bagliorescia, #stellaCadente { animation: none !important; }
-  }
+  @media (prefers-reduced-motion: reduce) { .splash-brand { animation: none; } }
 
   /* Pulsanti per scegliere i file (etichette native, affidabili su iOS) */
   .bottone-file { display: flex; align-items: center; justify-content: center; flex: 1;
@@ -841,22 +793,11 @@
 </head>
 <body>
 
-<!-- ===== SPLASH ===== -->
+<!-- ===== SPLASH (brand) ===== -->
 <div id="splash">
-  <img id="sfondoSplash" src="sfondo.jpeg" alt="" />
-  <div id="bagliorescia"></div>
-  <div id="cieloStelle"></div>
-  <div id="stellaCadente"></div>
-  <div class="splash-testi">
-    <div class="eyebrow" data-i18n="splash.eyebrow">Diario di bordo</div>
-    <div id="flipNome"></div>
-    <div class="fc" id="fcOrologio">
-      <div class="fc-unita"><div class="fc-card" id="cardG">00</div><div class="fc-eti" data-i18n="cd.days">Giorni</div></div>
-      <div class="fc-unita"><div class="fc-card" id="cardO">00</div><div class="fc-eti" data-i18n="cd.hours">Ore</div></div>
-      <div class="fc-unita"><div class="fc-card" id="cardM">00</div><div class="fc-eti" data-i18n="cd.min">Minuti</div></div>
-      <div class="fc-unita"><div class="fc-card" id="cardS">00</div><div class="fc-eti" data-i18n="cd.sec">Secondi</div></div>
-    </div>
-    <div class="fc-incorso nascosto" id="fcInCorso"></div>
+  <div class="splash-brand">
+    <img class="solo-light" src="design-system/brand/logo-lockup.png" alt="My Journey" />
+    <img class="solo-dark" src="design-system/brand/logo-mono-light.png" alt="My Journey" />
     <button class="btn-inizia" id="btnInizia" data-i18n="splash.start">Inizia il viaggio</button>
   </div>
 </div>

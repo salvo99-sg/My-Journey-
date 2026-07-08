@@ -2974,77 +2974,11 @@ document.querySelectorAll(".velo").forEach((v) =>
   v.addEventListener("click", (e) => { if (e.target === v) v.classList.remove("aperto"); }));
 
 // ============ SPLASH ============
+// Splash brand (decisione: opzione A) — solo logo su crema, nessuna animazione.
+// I timer restano dichiarati perché chiudiSplash() li azzera in sicurezza.
 let fcTimer = null;
-function avviaSplash() {
-  const cielo = $("cieloStelle");
-  for (let i = 0; i < 70; i++) {
-    const st = document.createElement("span");
-    // ~1 stella su 5 è "viva": più grande e con alone pulsante
-    st.className = "stella" + (Math.random() < 0.2 ? " viva" : "");
-    st.style.left = Math.random() * 100 + "%";
-    st.style.top = Math.random() * 100 + "%";
-    st.style.animationDelay = (Math.random() * 4).toFixed(2) + "s";
-    cielo.appendChild(st);
-  }
-  avviaStellaCadente();
-  aggiornaCountdown();
-  fcTimer = setInterval(aggiornaCountdown, 1000);
-}
-// Stella cadente: parte da un punto casuale in alto, a intervalli irregolari
 let stellaCadenteTimer = null;
-function avviaStellaCadente() {
-  const sc = $("stellaCadente");
-  if (!sc) return;
-  const lancia = () => {
-    // se l'utente ha attivato "riduci movimento", non disturbo
-    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      stellaCadenteTimer = setTimeout(lancia, 9000); return;
-    }
-    sc.style.left = (8 + Math.random() * 55) + "%";
-    sc.style.top = (6 + Math.random() * 22) + "%";
-    sc.classList.remove("vola"); void sc.offsetWidth; sc.classList.add("vola");
-    stellaCadenteTimer = setTimeout(lancia, 5000 + Math.random() * 7000);
-  };
-  stellaCadenteTimer = setTimeout(lancia, 2500);
-}
-function setCifra(idCard, val) {
-  const card = $(idCard);
-  const v = String(Math.max(0, val)).padStart(2, "0");
-  if (card.textContent !== v) {
-    card.textContent = v;
-    card.classList.remove("gira");
-    void card.offsetWidth; // riavvia l'animazione di ribaltamento
-    card.classList.add("gira");
-  }
-}
-function aggiornaCountdown() {
-  const oggi = oggiISO();
-  const inCorso = viaggi.find((v) => oggi >= v.inizio && oggi <= v.fine);
-  const futuri = viaggi.filter((v) => v.inizio > oggi).sort((a, b) => (a.inizio < b.inizio ? -1 : 1));
-  const oro = $("fcOrologio"), ic = $("fcInCorso"), nome = $("flipNome");
-  if (inCorso) {
-    // Viaggio in corso: niente countdown, mostro "Giorno X/Y"
-    const giorno = Math.floor((new Date(oggi) - new Date(inCorso.inizio)) / 86400000) + 1;
-    const totale = Math.floor((new Date(inCorso.fine) - new Date(inCorso.inizio)) / 86400000) + 1;
-    nome.textContent = inCorso.nome;
-    ic.innerHTML = `${esc(t("splash.day"))} ${giorno}/${totale}<small>${esc(t("splash.bon"))}</small>`;
-    oro.classList.add("nascosto"); ic.classList.remove("nascosto");
-  } else if (futuri.length) {
-    const v = futuri[0];
-    nome.textContent = v.nome;
-    let diff = new Date(v.inizio + "T00:00:00") - new Date();
-    if (diff < 0) diff = 0;
-    setCifra("cardG", Math.floor(diff / 86400000));
-    setCifra("cardO", Math.floor(diff / 3600000) % 24);
-    setCifra("cardM", Math.floor(diff / 60000) % 60);
-    setCifra("cardS", Math.floor(diff / 1000) % 60);
-    oro.classList.remove("nascosto"); ic.classList.add("nascosto");
-  } else {
-    nome.innerHTML = esc(t("splash.worldWaits")) + " " + ico('globe');
-    ic.innerHTML = `${esc(t("splash.firstTrip"))}<small>${esc(t("splash.diaryReady"))}</small>`;
-    oro.classList.add("nascosto"); ic.classList.remove("nascosto");
-  }
-}
+function avviaSplash() {}
 function chiudiSplash() {
   if (fcTimer) { clearInterval(fcTimer); fcTimer = null; }
   if (stellaCadenteTimer) { clearTimeout(stellaCadenteTimer); stellaCadenteTimer = null; }
