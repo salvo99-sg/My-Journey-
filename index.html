@@ -62,7 +62,9 @@
   :root[data-theme="dark"] input, :root[data-theme="dark"] textarea, :root[data-theme="dark"] select { color: var(--text); }
 
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* touch-action: manipulation disattiva lo zoom da doppio tap (pinch e scroll restano);
+     la mappa non è toccata: le regole di Mapbox e #dockManiglia hanno specificità maggiore */
+  * { margin: 0; padding: 0; box-sizing: border-box; touch-action: manipulation; }
   body { color: var(--text); font-family: 'Inter', 'Avenir Next', 'Segoe UI', system-ui, sans-serif; background: var(--bg); min-height: 100vh; }
   /* Titoli editoriali: serif caldo "rivista di viaggi" (il quaderno resta Caveat) */
   header h1, #nomeViaggio, .viaggio-card h2, .totale .cifra, .gcard-info b,
