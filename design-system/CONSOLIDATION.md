@@ -294,3 +294,10 @@ Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al 
 - ✅ **Audit codice**: 45 file JS `node --check` OK; 3 JSON validi; zero riferimenti a file mancanti (index, preview, temi); zero variabili CSS senza definizione/fallback; tutte le classi generate dal JS hanno CSS. Smoke-test visivo Home post-pulizia: identico.
 - ℹ️ `remotion-headers/` (640MB), `.claude/`, `.agents/` sono solo locali (git-ignored), NON nel repository pubblicato.
 - SW mj-v17.
+
+## CONSEGNA SPRITE ICONE (a pezzi)
+- 📦 **PART 01 / Core Navigation** archiviato verbatim in `design-system/icons/sprite-parts/part-01-core-navigation.svg` — 20 symbol. Validazione: XML ok, tutti viewBox 24×24, zero colori/stili hardcoded, zero id duplicati.
+- 📝 **Id divergenti dal brief §3.2** (accettati, il designer ha scelto nomi semantici; mapping da fare al cablaggio): `tickets`≠ticket, `budget`≠wallet, `packing`≠bag, `trophies`≠trophy, `notifications`≠bell, `route`≠map-route. Extra non nel brief: `trip`, `dashboard` (utili, tenuti). `globe` già previsto dal vecchio sprite.
+- 📝 I symbol non portano attributi stroke (corretto per sprite): il contesto `fill:none; stroke:currentColor; stroke-width:2; linecap/linejoin:round` va applicato dalla classe CSS al momento dell'uso (verificato nel render di prova).
+- ⚠️ Osservazione design: `settings` (cerchio+raggi) somiglia a un'icona "sole/luminosità" — possibile confusione quando arriverà `sun` nel pezzo meteo. Da tenere d'occhio, eventualmente segnalare al designer.
+- ⏳ In attesa dei pezzi successivi (azioni, categorie/marker, meteo/meta, media, stati). Assemblaggio in `icons.svg` unico + cablaggio nell'app SOLO a consegna completa.
