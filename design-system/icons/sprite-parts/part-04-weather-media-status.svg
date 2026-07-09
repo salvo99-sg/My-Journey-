@@ -1,0 +1,89 @@
+<!-- =======================================================================
+My Journey Icons Sprite v1.0
+PART 04 / Weather · Media · Status
+Completes v1.0 (70 icons)
+======================================================================= -->
+
+<!-- SUN -->
+
+<symbol id="sun" viewBox="0 0 24 24">
+  <circle cx="12" cy="12" r="4"/>
+  <path d="M12 2v2"/>
+  <path d="M12 20v2"/>
+  <path d="M2 12h2"/>
+  <path d="M20 12h2"/>
+  <path d="M5 5l1.5 1.5"/>
+  <path d="M17.5 17.5L19 19"/>
+  <path d="M19 5l-1.5 1.5"/>
+  <path d="M5 19l1.5-1.5"/>
+</symbol>
+
+<!-- CLOUD -->
+
+<symbol id="cloud" viewBox="0 0 24 24">
+  <path d="M7 18h10a4 4 0 000-8 6 6 0 00-11-2A4 4 0 007 18z"/>
+</symbol>
+
+<!-- RAIN -->
+
+<symbol id="rain" viewBox="0 0 24 24">
+  <path d="M7 15h10a4 4 0 000-8 6 6 0 00-11-2A4 4 0 007 15z"/>
+  <path d="M9 18l-1 2"/>
+  <path d="M13 18l-1 2"/>
+  <path d="M17 18l-1 2"/>
+</symbol>
+
+<!-- STORM -->
+
+<symbol id="storm" viewBox="0 0 24 24">
+  <path d="M7 15h10a4 4 0 000-8 6 6 0 00-11-2A4 4 0 007 15z"/>
+  <path d="M12 15l-2 4h3l-2 4"/>
+</symbol>
+
+<!-- SNOW -->
+
+<symbol id="snow" viewBox="0 0 24 24">
+  <path d="M7 14h10a4 4 0 000-8 6 6 0 00-11-2A4 4 0 007 14z"/>
+  <path d="M9 18h0"/>
+  <path d="M12 20h0"/>
+  <path d="M15 18h0"/>
+</symbol>
+
+<!-- VIDEO -->
+
+<symbol id="video" viewBox="0 0 24 24">
+  <rect x="3" y="6" width="13" height="12" rx="2"/>
+  <path d="M16 10l5-3v10l-5-3z"/>
+</symbol>
+
+<!-- PLAY -->
+
+<symbol id="play" viewBox="0 0 24 24">
+  <path d="M8 6l10 6-10 6z"/>
+</symbol>
+
+<!-- PAUSE -->
+
+<symbol id="pause" viewBox="0 0 24 24">
+  <path d="M8 6v12"/>
+  <path d="M16 6v12"/>
+</symbol>
+
+<!-- OFFLINE -->
+
+<symbol id="offline" viewBox="0 0 24 24">
+  <path d="M4 4l16 16"/>
+  <path d="M8 10a6 6 0 018-1"/>
+  <path d="M10 15a3 3 0 014 0"/>
+</symbol>
+
+<!-- WIFI -->
+
+<symbol id="wifi" viewBox="0 0 24 24">
+  <path d="M4 9a12 12 0 0116 0"/>
+  <path d="M7 12a8 8 0 0110 0"/>
+  <path d="M10 15a4 4 0 014 0"/>
+  <circle cx="12" cy="19" r="1"/>
+</symbol>
+
+</svg>
