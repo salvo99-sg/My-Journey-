@@ -301,3 +301,8 @@ Questa checklist si aggiorna a ogni nuovo file e si esegue **tutta insieme** al 
 - 📝 I symbol non portano attributi stroke (corretto per sprite): il contesto `fill:none; stroke:currentColor; stroke-width:2; linecap/linejoin:round` va applicato dalla classe CSS al momento dell'uso (verificato nel render di prova).
 - ⚠️ Osservazione design: `settings` (cerchio+raggi) somiglia a un'icona "sole/luminosità" — possibile confusione quando arriverà `sun` nel pezzo meteo. Da tenere d'occhio, eventualmente segnalare al designer.
 - ⏳ In attesa dei pezzi successivi (azioni, categorie/marker, meteo/meta, media, stati). Assemblaggio in `icons.svg` unico + cablaggio nell'app SOLO a consegna completa.
+- 📦 **PART 02 / Actions** (20 symbol) + **PART 03 / Travel·Places·Transport** (20 symbol) archiviati verbatim in `sprite-parts/`. Validazione: XML ok, viewBox 24×24 tutti, zero hardcoded, zero id duplicati tra i 3 pezzi. **Totale: 60 id unici.**
+- 📝 Nota formato: part 02 e 03 consegnati senza wrapper `<svg>` (solo symbol) — verranno avvolti all'assemblaggio, nessun problema.
+- 📝 Quasi-duplicati semantici (scelta designer, tenuti entrambi): `favorite`≈`memories` (due cuori quasi identici), `photo`≈`album` (stesso disegno). Al cablaggio userò un solo id per contesto.
+- ⚠️ Osservazione design: `plane` a tratto molto stilizzato, poco leggibile a 16px (da verificare nell'uso reale; eventualmente feedback al designer).
+- ⏳ Mancano ancora (attesi nei prossimi pezzi): chevron (‹ › ▾), star/star-filled, heart-filled, pin, shopping, activity/attraction, set meteo (sun/cloud/rain/weather), clock, currency, tag, note, media (play/pause/skip), stati (offline/wifi/empty/lock), qr, sparkle.

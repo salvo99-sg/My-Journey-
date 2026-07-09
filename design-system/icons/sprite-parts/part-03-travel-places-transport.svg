@@ -1,0 +1,178 @@
+<!-- =======================================================================
+My Journey Icons Sprite v1.0
+PART 03 / Travel · Places · Transport
+======================================================================= -->
+
+<!-- PLANE -->
+
+<symbol id="plane" viewBox="0 0 24 24">
+  <path d="M2 12l20-5-5 5 5 5-20-5z"/>
+  <path d="M10 10l-2-5"/>
+  <path d="M10 14l-2 5"/>
+</symbol>
+
+<!-- AIRPORT -->
+
+<symbol id="airport" viewBox="0 0 24 24">
+  <path d="M12 3v18"/>
+  <path d="M8 8l4-2 4 2"/>
+  <path d="M6 14l6-2 6 2"/>
+</symbol>
+
+<!-- HOTEL -->
+
+<symbol id="hotel" viewBox="0 0 24 24">
+  <rect x="5" y="4" width="14" height="16" rx="2"/>
+  <path d="M9 8h2"/>
+  <path d="M13 8h2"/>
+  <path d="M9 12h2"/>
+  <path d="M13 12h2"/>
+  <path d="M8 20v-4h8v4"/>
+</symbol>
+
+<!-- RESTAURANT -->
+
+<symbol id="restaurant" viewBox="0 0 24 24">
+  <path d="M7 3v8"/>
+  <path d="M5 3v5"/>
+  <path d="M9 3v5"/>
+  <path d="M15 3v18"/>
+  <path d="M15 3c2 1 3 3 3 6"/>
+</symbol>
+
+<!-- CAFE -->
+
+<symbol id="cafe" viewBox="0 0 24 24">
+  <path d="M6 9h10v5a4 4 0 01-4 4h-2a4 4 0 01-4-4z"/>
+  <path d="M16 10h2a2 2 0 010 4h-2"/>
+  <path d="M8 4c1 1 1 2 0 3"/>
+  <path d="M11 4c1 1 1 2 0 3"/>
+</symbol>
+
+<!-- BEACH -->
+
+<symbol id="beach" viewBox="0 0 24 24">
+  <path d="M4 19h16"/>
+  <path d="M12 5v10"/>
+  <path d="M12 5a5 5 0 015 5H7a5 5 0 015-5z"/>
+</symbol>
+
+<!-- MOUNTAIN -->
+
+<symbol id="mountain" viewBox="0 0 24 24">
+  <path d="M3 20L10 8l3 5 2-3 6 10z"/>
+</symbol>
+
+<!-- MUSEUM -->
+
+<symbol id="museum" viewBox="0 0 24 24">
+  <path d="M3 8l9-4 9 4"/>
+  <path d="M5 10h14"/>
+  <path d="M7 10v8"/>
+  <path d="M11 10v8"/>
+  <path d="M15 10v8"/>
+  <path d="M4 20h16"/>
+</symbol>
+
+<!-- CAR -->
+
+<symbol id="car" viewBox="0 0 24 24">
+  <path d="M5 16V11l2-4h10l2 4v5"/>
+  <circle cx="8" cy="16" r="2"/>
+  <circle cx="16" cy="16" r="2"/>
+</symbol>
+
+<!-- TRAIN -->
+
+<symbol id="train" viewBox="0 0 24 24">
+  <rect x="6" y="3" width="12" height="14" rx="2"/>
+  <path d="M9 7h2"/>
+  <path d="M13 7h2"/>
+  <path d="M8 17l-2 4"/>
+  <path d="M16 17l2 4"/>
+</symbol>
+
+<!-- BUS -->
+
+<symbol id="bus" viewBox="0 0 24 24">
+  <rect x="5" y="3" width="14" height="15" rx="2"/>
+  <circle cx="8" cy="18" r="2"/>
+  <circle cx="16" cy="18" r="2"/>
+  <path d="M5 8h14"/>
+</symbol>
+
+<!-- TAXI -->
+
+<symbol id="taxi" viewBox="0 0 24 24">
+  <path d="M6 15V11l2-4h8l2 4v4"/>
+  <circle cx="8" cy="16" r="2"/>
+  <circle cx="16" cy="16" r="2"/>
+  <path d="M10 5h4"/>
+</symbol>
+
+<!-- FERRY -->
+
+<symbol id="ferry" viewBox="0 0 24 24">
+  <path d="M6 14h12l-2 4H8z"/>
+  <path d="M9 14V7h6v7"/>
+  <path d="M3 20c2-2 4-2 6 0 2-2 4-2 6 0 2-2 4-2 6 0"/>
+</symbol>
+
+<!-- WALK -->
+
+<symbol id="walk" viewBox="0 0 24 24">
+  <circle cx="12" cy="5" r="2"/>
+  <path d="M12 7l2 5"/>
+  <path d="M10 12l-2 4"/>
+  <path d="M14 12l3 3"/>
+  <path d="M10 10l-3 2"/>
+</symbol>
+
+<!-- BIKE -->
+
+<symbol id="bike" viewBox="0 0 24 24">
+  <circle cx="6" cy="17" r="3"/>
+  <circle cx="18" cy="17" r="3"/>
+  <path d="M9 17l3-7h3"/>
+  <path d="M12 10l4 7"/>
+</symbol>
+
+<!-- CAMPING -->
+
+<symbol id="camping" viewBox="0 0 24 24">
+  <path d="M4 20L12 5l8 15z"/>
+  <path d="M9 14h6"/>
+</symbol>
+
+<!-- PASSPORT -->
+
+<symbol id="passport" viewBox="0 0 24 24">
+  <rect x="6" y="3" width="12" height="18" rx="2"/>
+  <circle cx="12" cy="10" r="3"/>
+  <path d="M9 10h6"/>
+  <path d="M12 7v6"/>
+</symbol>
+
+<!-- SUITCASE -->
+
+<symbol id="suitcase" viewBox="0 0 24 24">
+  <rect x="5" y="7" width="14" height="13" rx="2"/>
+  <path d="M9 7V5h6v2"/>
+  <path d="M12 7v13"/>
+</symbol>
+
+<!-- CAMERA -->
+
+<symbol id="camera" viewBox="0 0 24 24">
+  <rect x="3" y="6" width="18" height="13" rx="2"/>
+  <circle cx="12" cy="12.5" r="3"/>
+  <path d="M8 6l1-2h6l1 2"/>
+</symbol>
+
+<!-- PHOTO -->
+
+<symbol id="photo" viewBox="0 0 24 24">
+  <rect x="3" y="5" width="18" height="14" rx="2"/>
+  <circle cx="9" cy="10" r="1.5"/>
+  <path d="M5 17l5-5 4 4 3-3 2 2"/>
+</symbol>
