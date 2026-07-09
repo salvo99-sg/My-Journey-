@@ -135,6 +135,36 @@ function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(
 function idratoIcone(root){ (root||document).querySelectorAll('[data-ic]').forEach(function(e){ e.innerHTML = ICONE[e.getAttribute('data-ic')] || ''; e.classList.add('ic'); }); }
 idratoIcone();
 
+// ===== SPRITE ICONE (design system v1.0) =====
+// Carica lo sprite del DS e sostituisce le icone inline che hanno un equivalente
+// (chiave app → id sprite). Se il caricamento fallisce (es. apertura via file://),
+// restano le icone inline di sempre: nessuna rottura. Le chiavi senza equivalente
+// (chevron, sunrise, moon, sparkle, users, handshake, currency, target, ecc.)
+// arriveranno col PART 05 del designer.
+const SPRITE_MAP = {
+  route: "route", plane: "plane", cal: "calendar", money: "budget", backpack: "packing",
+  cam: "camera", bed: "hotel", food: "restaurant", ticket: "tickets", plus: "add",
+  check: "check", map: "map", train: "train", boat: "ferry", sun: "sun", globe: "globe",
+  edit: "edit", home: "home", trophy: "trophies", pin: "location", trash: "delete",
+  x: "close", refresh: "refresh", copy: "copy", film: "video", car: "car",
+  user: "profile", play: "play", replay: "refresh", pause: "pause"
+};
+async function caricaSpriteIcone() {
+  try {
+    const r = await fetch("design-system/icons/icons.svg");
+    if (!r.ok) return;
+    let testo = await r.text();
+    testo = testo.replace(/id="/g, 'id="ic-'); // niente collisioni con gli id del documento
+    const div = document.createElement("div");
+    div.style.display = "none";
+    div.setAttribute("aria-hidden", "true");
+    div.innerHTML = testo;
+    document.body.prepend(div);
+    for (const k in SPRITE_MAP)
+      ICONE[k] = '<svg class="ics" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-' + SPRITE_MAP[k] + '"/></svg>';
+  } catch {}
+}
+
 // ============ COSTANTI E STATO ============
 const TIPI = {
   volo:       { label: "Volo",       icona: "plane", colore: "#3D5A80" },
@@ -3260,7 +3290,7 @@ document.addEventListener("click", (e) => {
 });
 
 applicaModoTema();
-apriDB().then(() => { applicaI18n(); aggiornaToggleLang(); aggiornaToggleTema(); renderHome(); avviaSplash(); });
+Promise.all([apriDB(), caricaSpriteIcone()]).then(() => { idratoIcone(); applicaI18n(); aggiornaToggleLang(); aggiornaToggleTema(); renderHome(); avviaSplash(); });
 
 // ============ PWA: registrazione service worker ============
 if ("serviceWorker" in navigator) {
